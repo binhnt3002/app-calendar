@@ -3,6 +3,17 @@ Page({
 
   },
   onLoad: function () {
-    console.log('Welcome to Mini Code')
+    tt.setWindowSize({
+      windowWidth: 1600,
+      windowHeight: 900,
+      x: 100,
+      y: 100,
+      success(res) {
+        console.log(JSON.stringify(res));
+      },
+      fail(res) {
+        console.log(`setWindowSize fail: ${JSON.stringify(res)}`);
+      },
+    });
   },
 })
