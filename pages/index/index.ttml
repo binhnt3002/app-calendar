@@ -1,1 +1,27 @@
-<view class="intro">test test</view>
+<view class="trang-report">
+  <view class="container-calendar">
+    <view class="header">
+      <text class="current-date">{{currentDate}}</text>
+      <view class="icons">
+        <image id="prev" class="material-symbols-rounded" bindtap="handlePrevNext" src="before.svg"></image>
+        <image id="next" class="material-symbols-rounded" bindtap="handlePrevNext" src="next.svg"></image>
+      </view>
+    </view>
+    <view class="calendar">
+      <view class="weeks">
+        <text>CN</text>
+        <text>T2</text>
+        <text>T3</text>
+        <text>T4</text>
+        <text>T5</text>
+        <text>T6</text>
+        <text>T7</text>
+      </view>
+      <view class="days">
+        <block wx:for="{{days}}" wx:key="index">
+          <text class="{{item.inactive ? 'inactive' : ''}} {{item.active ? 'active' : ''}}" data-day="{{item.day}}" bindtap="handleDayClick">{{item.day}}</text>
+        </block>
+      </view>      
+    </view>
+  </view>
+</view>

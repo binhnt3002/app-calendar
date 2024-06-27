@@ -1,4 +1,117 @@
-.intro {
-  margin: 30px;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bitgroup {
+  font-size: 25px;
+  font-weight: 500;
   text-align: center;
+}
+
+.container-calendar {
+  max-height: 800px;
+  max-width: 1300px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  margin-top: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px 5px;
+  justify-content: space-between;
+}
+
+.header .icons {
+  display: flex;
+}
+
+.header .icons text {
+  height: 10px;
+  width: 10px;
+  margin: 10px;
+  cursor: pointer;
+  color: #878787;
+  text-align: center;
+  line-height: 38px;
+  font-size: 1.9rem;
+  user-select: none;
+  border-radius: 50%;
+}
+
+.header .current-date {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.calendar {
+  padding: 10px;
+}
+
+.calendar .weeks {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendar .days {
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.calendar text {
+  color: #333;
+  width: calc(100% / 7);
+  font-size: 15px;
+  box-sizing: border-box; /* Để kích thước tính cả border */
+  border-bottom: 1px solid #ddd; /* Đường viền dưới của mỗi ô ngày, màu nhạt và mỏng hơn */
+  padding-left: 0.5rem; /* Khoảng cách bên trong ô ngày */
+  cursor: pointer;
+  align-items: flex-start; /* Căn lên góc trái của ô */
+  height: 80px; /* Chiều cao của mỗi ô ngày */
+  position: relative; /* Đặt vị trí tương đối cho ngày */
+}
+
+.calendar .weeks text {
+  font-weight: 500;
+  cursor: default;
+}
+
+.calendar .days text {
+  z-index: 1;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+.days text.inactive {
+  color: #aaa;
+}
+
+.days text.active {
+  color: red;
+}
+
+.days text::before {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  height: 30px;
+  width: 30px;
+  z-index: -1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.material-symbols-rounded {
+  width: 20px;
+  height: 20px;
+  margin: 8px;
 }
