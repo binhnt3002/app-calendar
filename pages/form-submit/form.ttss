@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.task-form {
+  margin-bottom: 20px;
+}
+
+.form-field {
+  margin-bottom: 10px;
+}
+
+.picker {
+  height: 25px;
+  line-height: 25px;
+  padding-left: 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+  font-size: 12px; /* Giảm kích thước chữ của picker */
+}
+
+input[type="text"], input[type="date"] {
+  height: 20px; /* Đã điều chỉnh lại thành 20px để đồng nhất */
+  line-height: 20px;
+  padding: 0 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+  font-size: 12px; /* Giảm kích thước chữ của input */
+}
+
+.task-list {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.task button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.main text{
+  font-size: 25px;
+}

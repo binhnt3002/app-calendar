@@ -1,0 +1,41 @@
+<view>
+  <view class="header">
+    <text>yoloooooo</text>
+  </view>
+  <view class="main">
+    <view class="task-form">
+      <view class="form-field">
+        <text>Việc cần làm</text>
+        <input type="text" id="task" placeholder="Enter task..." />
+      </view>
+      <view class="form-field">
+        <text>Hạn chót</text>
+        <input type="date" id="deadline" />
+      </view>
+      <view class="form-field">
+        <text>Tuần</text>
+        <picker mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
+          <view class="picker">
+            {{selectedWeek}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-field">
+        <text>Độ quan trọng</text>
+        <picker mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+          <view class="picker">
+            {{selectedImportant}}
+          </view>
+        </picker>
+      </view>
+      <view>
+        <button id="add-chart" style="margin-right:25px;">Add chart</button>
+        <button id="add-task">Add Task</button>
+      </view>
+
+    </view>
+    <view class="task-list" id="task-list">
+      <!-- Tasks will be added here dynamically -->
+    </view>
+  </view>
+</view>

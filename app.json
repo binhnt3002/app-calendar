@@ -1,11 +1,38 @@
 {
-  "pages":[
-    "pages/index/index"
+  "pages": [
+    "pages/index/index",
+    "pages/form-submit/form"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "Lịch",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3370FF",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/icon_API_HL.png",
+        "selectedIconPath": "image/clock-with-white-face.png",
+        "text": "lịch"
+      },
+      {
+        "pagePath": "pages/form-submit/form",
+        "iconPath": "images/icon_API_HL.png",
+        "selectedIconPath": "image/clock-with-white-face.png",
+        "text": "form"
+      }
+    ]
+  },
+  "ext": {
+    "defaultPages": {
+      "sidebarMode": "pages/index/index",
+      "PCMode": "pages/index/index"
+    }
   }
-} 
+}
