@@ -35,7 +35,8 @@ async function getUserToken(code) {
         key: 'app_access_token',
         success: function (res) {
             const app_access_token = res.data
-            const url = "https://open.larksuite.com/open-apis/authen/v1/oidc/access_token"
+            // const url = "https://open.larksuite.com/open-apis/authen/v1/oidc/access_token"
+            const url = 'https://open.larksuite.com/open-apis/authen/v1/access_token'; //update có thông tin user infor
             const headers = {
                 'content-type': 'application/json',
                 'Authorization': 'Bearer ' + app_access_token
@@ -89,6 +90,5 @@ async function getUserInfo() {
         }
     })
 }
-
 
 export { getAppAccessToken , getUserInfo, getAuthorizationCode}

@@ -2,7 +2,14 @@
   <view class="header">
     <text>yoloooooo</text>
   </view>
+  
   <view class="main">
+    <view>
+      <block>
+        <image class="userinfo-avatar" src="{{userInfo.avatar_url}}"></image>
+        <text class="userinfo-nickname">Hi, {{userInfo.name}}\n<text class="bit">{{currentCompany}}</text></text>
+      </block>
+    </view>
     <view class="task-form">
       <view class="form-field">
         <text>Việc cần làm</text>
@@ -38,4 +45,5 @@
       <!-- Tasks will be added here dynamically -->
     </view>
   </view>
+
 </view>
