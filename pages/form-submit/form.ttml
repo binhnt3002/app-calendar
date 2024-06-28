@@ -37,7 +37,7 @@
       </view>
       <view>
         <button id="add-chart" style="margin-right:25px;">Add chart</button>
-        <button id="add-task">Add Task</button>
+        <button id="add-task" bindtap="onCreateEvent">Add Task</button>
       </view>
 
     </view>

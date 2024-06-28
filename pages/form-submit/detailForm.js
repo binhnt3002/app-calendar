@@ -32,36 +32,32 @@ const botSearchCalendar = (access_token, query) => {
   }
   sendRequest(url, 'POST', headers, body).then((rs) => {
     console.log(rs.data.items[0].calendar_id);
+    return rs.data.items[0].calendar_id;
   })
 }
-const botCreateEvent = (access_token,calendar_id) => {
-  const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/"+calendar_id+"/events";
-  const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${access_token}`
-  }
+//phần body của tạo event lấy từ base
+const bodyCreateEvent = (eventTitle,eventDescription, dateStart, timeStart, dateEnd, timeEnd, visibilityType) => {
+  // const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/"+calendar_id+"/events";
+  // const headers = {
+  //   'Content-Type': 'application/json',
+  //   'Authorization': `Bearer ${access_token}`
+  // }
   const body =
   {
-    "summary": "Event title",
-    "description": "Event description",
+    "summary": eventTitle,
+    "description": eventDescription,
     "need_notification": true,
     "start_time": {
-      "date": "2018-09-01",
-      // "timestamp": "1602504000",
+      "date": dateStart,
+      // "timestamp": timeStart,
       // "timezone": "Asia/Shanghai"
     },
     "end_time": {
-      "date": "2018-09-01",
-      // "timestamp": "1602504000",
+      "date": dateEnd,
+      "timestamp": timeEnd,
       // "timezone": "Asia/Shanghai"
     },
-    // "vchat": {
-    //     "vc_type": "third_party",
-    //     "icon_type": "vc",
-    //     "description": "Initiate a video conference",
-    //     "meeting_url": "https://example.com"
-    // },
-    "visibility": "public",
+    "visibility": visibilityType,
     // "attendee_ability": "can_see_others",
     "free_busy_status": "free",
     "color": -1,
@@ -72,5 +68,6 @@ const botCreateEvent = (access_token,calendar_id) => {
     ],
     "recurrence": "FREQ=DAILY;INTERVAL=2",
   }
+  return body;
 }
-export { botCreateCalendar, botSearchCalendar };
+export { botCreateCalendar, botSearchCalendar, bodyCreateEvent };
