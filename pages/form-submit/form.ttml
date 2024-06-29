@@ -82,6 +82,16 @@
           </view>
         </picker>
       </view>
+
+      <view class="form-field">
+        <text>chọn lịch</text>
+        <picker mode="selector" id="week" range="{{lich}}" bindchage="onCalendarChage">
+          <view class="picker">
+            {{chonlich}}
+          </view>
+        </picker>
+      </view>
+
     </view>
     <view class="note-info" style="margin-top: 10px;">
       <text>Ghi chú</text>
