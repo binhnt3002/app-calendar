@@ -1,4 +1,4 @@
-<view class="trang-report">
+<!-- <view class="trang-report">
   <view class="container-calendar">
     <view class="header">
       <text class="current-date">{{currentDate}}</text>
@@ -24,4 +24,4 @@
       </view>      
     </view>
   </view>
-</view>
+</view> -->

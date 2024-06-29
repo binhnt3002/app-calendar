@@ -1,3 +1,5 @@
+import {getCalendarList} from './function/apiFunction';
+
 Page({
   data: {
     weekOptions: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
@@ -12,6 +14,18 @@ Page({
     selectedTime1: '', // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDate2: '', // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: '', // Thêm selectedTime để lưu ngày và giờ được chọn
+    userInfo: {},
+    calendarID: "",
+    lich: [],
+    chonlich:"",
+    dataLich: []
+  },
+
+  onCalendarChage(e) {
+    this.setData({
+      chonlich: this.data.lich[e.detail.value],
+      calendarID: that.data.dataLich.find(item => item.summary === this.data.chonlich).calendar_id
+    });
   },
 
   onWeekChange: function (e) {
@@ -25,6 +39,7 @@ Page({
       selectedImportant: this.data.importantOptions[e.detail.value]
     });
   },
+
 
   onCategoryChange: function (e) {
     this.setData({
@@ -77,5 +92,36 @@ Page({
     this.setData({
       selectedTime2: e.detail.value
     });
+  },
+  
+  onReady() {
+    this.setCalendarData();
+  },
+
+
+  setCalendarData() {
+    let that = this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        tt.showToast({
+          title: 'Đang lấy dữ liệu',
+          icon: 'loading',
+        })
+        const access_token = res.data.access_token;
+        getCalendarList(access_token).then((result) => {
+          console.log(result.data.calendar_list);
+          result.data.calendar_list.forEach(element => {
+            that.data.dataLich.push(element);
+            that.data.lich.push(element.summary);
+            tt.showToast({
+              title: 'Lấy dữ liệu thành công',
+              icon: 'success',
+              duration: 2000
+            })
+          });
+        });
+      }      
+    })
   }
 });

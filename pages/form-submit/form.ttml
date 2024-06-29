@@ -2,6 +2,7 @@
   <view class="header">
     <text>Biểu mẫu dựa theo idea từ paint của nhân lê</text>
   </view>
+  
   <view class="main">
     <view class="section-user">
       <text class="user-info">User info</text>
@@ -93,4 +94,5 @@
     </view>
 
   </view>
+
 </view>
