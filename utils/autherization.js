@@ -1,6 +1,6 @@
 import { sendRequest } from "./sendRequest";
 
-
+const globalData = getApp();
 async function getAuthorizationCode() {
     tt.login({
         success: function (res) {
