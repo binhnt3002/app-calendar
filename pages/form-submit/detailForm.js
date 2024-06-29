@@ -1,5 +1,5 @@
 //phần body của tạo event lấy từ base
-const bodyCreateEvent = (eventTitle,eventDescription, timeStart, timeEnd, visibilityType) => {
+const bodyCreateEvent = (eventTitle, eventDescription, timeStart, timeEnd, visibilityType) => {
   const body =
   {
     "summary": eventTitle,
@@ -28,4 +28,36 @@ const bodyCreateEvent = (eventTitle,eventDescription, timeStart, timeEnd, visibi
   }
   return body;
 }
-export {bodyCreateEvent};
+const bodyScheduleParticipants = (type,id,res) => {
+  const body =
+  {
+    "attendees": [
+      {
+        "type": type, //user, chat, resource, third_party
+        "is_optional": true,
+        "user_id": id,
+        // "chat_id": "oc_xxxxxxxxx",
+        // "room_id": "omm_xxxxxxxx",
+        // "third_party_email": "wangwu@email.com",
+        "operate_id": res.data.open_id,
+        // "resource_customization": [
+        //   {
+        //     "index_key": "16281481596100",
+        //     "input_content": "xxx",
+        //     "options": [
+        //       {
+        //         "option_key": "16281481596185",
+        //         "others_content": "xxx"
+        //       }
+        //     ]
+        //   }
+        // ]
+      }
+    ],
+    "need_notification": true,
+    // "is_enable_admin": false,
+    // "instance_start_time_admin": "1647320400"
+  }
+  return body;
+}
+export { bodyCreateEvent, bodyScheduleParticipants };

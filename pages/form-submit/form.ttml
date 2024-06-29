@@ -39,6 +39,7 @@
         <button id="add-chart" bindtap="onCreateCalendar" style="margin-right:25px;">Create Calendar</button>
         <button id="add-task" bindtap="onCreateEvent">Create Event</button>
         <button id="add-task" bindtap="onSearchCalendar">Search</button>
+        <button id="add-task" bindtap="createScheduleParticipants">Mời</button>
       </view>
 
     </view>

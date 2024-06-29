@@ -1,5 +1,5 @@
 import { sendRequest } from '../../utils/sendRequest.js';
-import { bodyCreateEvent } from './detailForm.js';
+import { bodyCreateEvent, bodyScheduleParticipants } from './detailForm.js';
 Page({
   data: {
     weekOptions: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
@@ -12,6 +12,7 @@ Page({
     query: "",
     timeStart:"",
     timeEnd:"",
+    eventId:"",
   },
 
   onWeekChange: function (e) {
@@ -24,25 +25,6 @@ Page({
     this.setData({
       selectedImportant: this.data.importantOptions[e.detail.value]
     });
-  },
-  //click tạo event
-  onCreateEvent: function (e) {
-    let that = this;
-    tt.getStorage({
-      key: 'user_access_token',
-      success: (res) => {
-        const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/" + that.data.calendarIdPrimary + "/events";
-        // const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/feishu.cn_YwYMMtmCwvWIcxO1mXfyVg@group.calendar.feishu.cn/events";
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${res.data.access_token}`
-        }
-        const body = bodyCreateEvent("Alo", "Thông tin chi tiết", "1719714600", "1719721800", "default");
-        sendRequest(url, "POST", headers, body).then((rs) => {
-          console.log(rs.data.event.event_id);
-        })
-      }
-    })
   },
 
   //click tạo calendar -> lấy id
@@ -71,6 +53,7 @@ Page({
       }
     })
   },
+
   //tìm kiếm lịch với điều kiện
   onSearchCalendar() {
     let that = this;
@@ -127,6 +110,45 @@ Page({
       },
     })
   },
+  
+  //click tạo event
+  onCreateEvent: function (e) {
+    let that = this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/" + that.data.calendarIdPrimary + "/events";
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${res.data.access_token}`
+        }
+        const body = bodyCreateEvent("Mosila", "Thông tin chi tiết", "1719801000", "1719808200", "default");
+        sendRequest(url, "POST", headers, body).then((rs) => {
+          console.log("Tạo event thành công");
+          that.setData({"eventId": rs.data.event.event_id})
+        })
+      }
+    })
+  },
+
+  //tạo người tham dự
+  createScheduleParticipants(){
+    let that=this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/"+that.data.calendarIdPrimary+"/events/"+that.data.eventId+"/attendees";
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${res.data.access_token}`
+        }
+        const body = bodyScheduleParticipants("user","ou_9bab5b13719c7d1a8776627231696951",res)
+        sendRequest(url, "POST", headers, body).then((rs) => {
+          console.log(rs);
+        })
+      }
+    })
+  },
 
   onLoad() {
     let that = this;
@@ -135,7 +157,6 @@ Page({
       success: (res) => {
         console.log(res.data.access_token);
         that.setData({ userInfo: res.data })
-        that.setData({ query: "hihi" })
       },
       fail: (res) => {
         console.log('goi storage loi :', res.errMsg);
