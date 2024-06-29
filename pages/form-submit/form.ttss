@@ -1,75 +1,145 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+.container {
+  max-width: 1000px;
+  max-height: 800px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+  margin: 0 auto;
+  overflow: hidden;
+  font-size: 14px; /* Giảm kích thước chữ chung */
 }
-
 .header {
   background-color: #007bff;
   color: white;
   text-align: center;
-  padding: 1rem 0;
+  padding: 0.5rem 0; /* Giảm padding */
+  font-size: 16px; /* Giảm kích thước chữ của header */
+}
+body {
+  font-family: Arial, sans-serif;
+  /* margin: 0;
+  padding: 0; */
+}
+.user-info {
+  font-size: 14px; /* Kích thước chữ của phần user-info */
 }
 
-.main {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+.main { 
+  padding: 10px;
+  /* display: flex; */
+  flex-direction: column;
 }
-
+.task-name{
+  width: auto;
+  
+}
+.section-user {
+  align-self: flex-end; /* Đặt phần user-info ở bên phải */
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-right: 40px;
+}
 .task-form {
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Giảm khoảng cách giữa form và task list */
+  margin-top: 10px;
 }
+.component{
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
 
-.form-field {
+}
+.section-user {
+  align-self: flex-end; /* Đặt phần user-info ở bên phải */
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-right: 40px;
+}
+.form-time{
+  border: #f1f1f1;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.picker {
-  height: 25px;
-  line-height: 25px;
+.form-field{
+  justify-content: space-between;
+  display: block !important;
+  flex-direction: column;
+  /* margin: 50px; */
+}
+
+.input-text{
+  margin-top: 5px;
+}
+
+
+
+
+
+
+
+
+.picker,
+input[type="text"]{
+  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
+  line-height: 30px;
   padding-left: 5px;
   background-color: #f1f1f1;
   border-radius: 5px;
   border: 1px solid #ddd;
-  margin-top: 5px;
-  font-size: 12px; /* Giảm kích thước chữ của picker */
+  margin-top: 3px; /* Giảm khoảng cách trên */
+  font-size: 12px;
+  width: 200px;
 }
 
-input[type="text"], input[type="date"] {
-  height: 20px; /* Đã điều chỉnh lại thành 20px để đồng nhất */
-  line-height: 20px;
-  padding: 0 5px;
+.picker1,
+input[type="date"] {
+  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
+  line-height: 30px;
+  padding-left: 5px;
   background-color: #f1f1f1;
   border-radius: 5px;
   border: 1px solid #ddd;
-  margin-top: 5px;
-  font-size: 12px; /* Giảm kích thước chữ của input */
+  margin-top: 3px; /* Giảm khoảng cách trên */
+  font-size: 12px;
+  width: 150px;
 }
 
-.task-list {
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
-.task {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
+.form-buttons .btn{
+  color: #ffffff;
+  background-color: #007bff;
+  margin: 20px;
   border-radius: 5px;
-}
-
-.task button {
-  background-color: #28a745;
-  color: white;
   border: none;
-  border-radius: 3px;
-  cursor: pointer;
+ 
+}
+.btn:hover{
+  background-color: rgb(255, 255, 255);
+  color: #007bff;
+  cursor:pointer;
+  position:relative;
 }
 
-.main text{
-  font-size: 25px;
+
+.btn:before,.btn:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #007bff;
+  transition:500ms ease all;
+}
+.btn:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.btn:hover:before,.btn:hover:after{
+  width:70%;
+  transition:800ms ease all;
 }
