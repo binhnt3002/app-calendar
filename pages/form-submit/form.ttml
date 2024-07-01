@@ -106,3 +106,12 @@
   </view>
 
 </view>
+
+<chart
+  canvas-id="chart"
+  spec="{{ spec }}"
+  styles="{{ styles }}"
+  events="{{ events }}"
+  bind:chartinit="onChartInit"
+  bind:chartready="onChartReady"
+/>

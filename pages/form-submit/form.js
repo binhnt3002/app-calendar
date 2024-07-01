@@ -18,13 +18,40 @@ Page({
     calendarID: "",
     lich: [],
     chonlich:"",
-    dataLich: []
+    dataLich: [],
+
+    canvasId: 'chartId', // canvasId unique chart Id
+    events: [], // events custom events
+    styles: `
+      height: 50vh;
+      width: 100%
+    `, // style string
+    // Chart configuration options
+    spec: {
+      type: 'pie',
+      data: [
+        {
+          id: 'data1',
+          values: [
+            { value: 335, name: 'Direct Access' },
+            { value: 310, name: 'Email Marketing' },
+            { value: 274, name: 'Affiliate Advertising' },
+            { value: 123, name: 'Search Engine' },
+            { value: 215, name: 'Video Advertising' }
+          ]
+        }
+      ],
+      outerRadius: 0.6,
+      categoryField: 'name',
+      valueField: 'value'
+    }
+
   },
 
-  onCalendarChage(e) {
+  onCalendarChage: function(e) {
     this.setData({
       chonlich: this.data.lich[e.detail.value],
-      calendarID: that.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
+      calendarID: this.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
     });
   },
 
@@ -96,6 +123,10 @@ Page({
   
   onReady() {
     this.setCalendarData();
+    
+  const vchart = new VChart(this.data.spec);
+    
+  vchart.renderSync();  
   },
 
 
