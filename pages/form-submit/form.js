@@ -24,7 +24,7 @@ Page({
   onCalendarChage(e) {
     this.setData({
       chonlich: this.data.lich[e.detail.value],
-      calendarID: that.data.dataLich.find(item => item.summary === this.data.chonlich).calendar_id
+      calendarID: that.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
     });
   },
 
