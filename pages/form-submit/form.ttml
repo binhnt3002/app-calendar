@@ -76,13 +76,13 @@
       </view>
       <view class="date-picker">
         <text>time 2</text>
-        <picker mode="date" id="datePicker" bindchange="onDateChange2">
+        <picker mode="time" id="datePicker" bindchange="onTimeChange1">
           <view class="picker1">
-            {{selectedDate2}}
+            {{selectedTime1}}
           </view>
         </picker>
       </view>
-
+<!-- 
       <view class="form-field">
         <text>chọn lịch</text>
         <picker mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
@@ -90,7 +90,7 @@
             {{chonlich}}
           </view>
         </picker>
-      </view>
+      </view> -->
 
     </view>
     <view class="note-info" style="margin-top: 10px;">
