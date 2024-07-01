@@ -11,7 +11,7 @@
     <block class="task-name" >
       <view>
         <text>Việc cần làm</text>
-        <input class="input-text" type="text" id="task" placeholder="Enter task..." />
+        <input class="input-text" type="text" id="task" placeholder="Enter task..." bindinput="inputTittle" />
     </block>
     <view class="task-form">
       <view class="component">
@@ -95,12 +95,12 @@
     </view>
     <view class="note-info" style="margin-top: 10px;">
       <text>Ghi chú</text>
-      <input class="input-text" placeholder="Ghi chú ở đâyy......">
+      <input class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote">
     </view>
 
     <view class="form-buttons">
       <button class="btn" >Add event</button>
-      <button class="btn" >Add Task</button>
+      <button class="btn" bindtap="createTask" >Add Task</button>
     </view>
 
   </view>
@@ -112,6 +112,4 @@
   spec="{{ spec }}"
   styles="{{ styles }}"
   events="{{ events }}"
-  bind:chartinit="onChartInit"
-  bind:chartready="onChartReady"
 />

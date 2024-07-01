@@ -1,4 +1,5 @@
-import {getCalendarList} from './function/apiFunction';
+import { bodyCreateEvent } from './detailForm';
+import { createEvent, getCalendarList } from './function/apiFunction';
 
 Page({
   data: {
@@ -15,11 +16,12 @@ Page({
     selectedDate2: '', // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: '', // Thêm selectedTime để lưu ngày và giờ được chọn
     userInfo: {},
-    calendarID: "",
+    calendarID: '',
     lich: [],
-    chonlich:"",
+    chonlich: '',
     dataLich: [],
-
+    inputValue: '',
+    inputNote: '',
     canvasId: 'chartId', // canvasId unique chart Id
     events: [], // events custom events
     styles: `
@@ -48,7 +50,18 @@ Page({
 
   },
 
-  onCalendarChage: function(e) {
+  inputTittle: function (e) {
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+  inputNote: function (e) {
+    this.setData({
+      inputNote: e.detail.value
+    })
+  },
+
+  onCalendarChage: function (e) {
     this.setData({
       chonlich: this.data.lich[e.detail.value],
       calendarID: this.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
@@ -85,6 +98,8 @@ Page({
       selectedDate1: e.detail.value
     });
   },
+
+
   // onDateChange1: function (e) {
   //   const selectedDate = e.detail.value; // Get selected date in YYYY-MM-DD format
 
@@ -120,15 +135,10 @@ Page({
       selectedTime2: e.detail.value
     });
   },
-  
+
   onReady() {
     this.setCalendarData();
-    
-  const vchart = new VChart(this.data.spec);
-    
-  vchart.renderSync();  
   },
-
 
   setCalendarData() {
     let that = this;
@@ -146,7 +156,32 @@ Page({
             lich: result.data.calendar_list.map(item => item.summary),
           })
         });
-      }      
+      }
     })
-  }
+  },
+
+  createTask() {
+    let that = this;
+    console.log(that.data.inputValue);
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        if (that.data.inputValue != ''&& that.data.calendarID !='') {
+          //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
+          const body = bodyCreateEvent(that.data.inputValue, that.data.inputNote, '1719883800', '1719891000', 'default');
+          createEvent(res.data.access_token, that.data.calendarID,body).then((rs) => {
+            tt.showToast({
+              title: 'Tạo xong',
+              icon: 'success',
+            });
+          })
+        } else {
+          tt.showToast({
+            title: 'Thiếu dữ liệu',
+            icon: 'error',
+          });
+        }
+      }
+    })
+  },
 });
