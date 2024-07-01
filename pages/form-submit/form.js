@@ -1,3 +1,5 @@
+import {getCalendarList} from './function/apiFunction';
+
 Page({
   data: {
     weekOptions: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
@@ -12,6 +14,45 @@ Page({
     selectedTime1: '', // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDate2: '', // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: '', // Thêm selectedTime để lưu ngày và giờ được chọn
+    userInfo: {},
+    calendarID: "",
+    lich: [],
+    chonlich:"",
+    dataLich: [],
+
+    canvasId: 'chartId', // canvasId unique chart Id
+    events: [], // events custom events
+    styles: `
+      height: 50vh;
+      width: 100%
+    `, // style string
+    // Chart configuration options
+    spec: {
+      type: 'pie',
+      data: [
+        {
+          id: 'data1',
+          values: [
+            { value: 335, name: 'Direct Access' },
+            { value: 310, name: 'Email Marketing' },
+            { value: 274, name: 'Affiliate Advertising' },
+            { value: 123, name: 'Search Engine' },
+            { value: 215, name: 'Video Advertising' }
+          ]
+        }
+      ],
+      outerRadius: 0.6,
+      categoryField: 'name',
+      valueField: 'value'
+    }
+
+  },
+
+  onCalendarChage: function(e) {
+    this.setData({
+      chonlich: this.data.lich[e.detail.value],
+      calendarID: this.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
+    });
   },
 
   onWeekChange: function (e) {
@@ -25,6 +66,7 @@ Page({
       selectedImportant: this.data.importantOptions[e.detail.value]
     });
   },
+
 
   onCategoryChange: function (e) {
     this.setData({
@@ -74,5 +116,34 @@ Page({
     this.setData({
       selectedTime2: e.detail.value
     });
+  },
+  
+  onReady() {
+    this.setCalendarData();
+    
+  const vchart = new VChart(this.data.spec);
+    
+  vchart.renderSync();  
+  },
+
+
+  setCalendarData() {
+    let that = this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        tt.showToast({
+          title: 'Đang lấy dữ liệu',
+          icon: 'loading',
+        })
+        const access_token = res.data.access_token;
+        getCalendarList(access_token).then((result) => {
+          that.setData({
+            dataLich: result.data.calendar_list,
+            lich: result.data.calendar_list.map(item => item.summary),
+          })
+        });
+      }      
+    })
   }
 });

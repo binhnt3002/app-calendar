@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@visactor/lark-vchart": "^1.11.6"
+  }
+}

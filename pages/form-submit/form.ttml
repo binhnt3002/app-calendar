@@ -2,6 +2,7 @@
   <view class="header">
     <text>Biểu mẫu dựa theo idea từ paint của nhân lê</text>
   </view>
+  
   <view class="main">
     <view class="section-user">
       <text class="user-info">User info</text>
@@ -81,6 +82,16 @@
           </view>
         </picker>
       </view>
+
+      <view class="form-field">
+        <text>chọn lịch</text>
+        <picker mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+          <view class="picker">
+            {{chonlich}}
+          </view>
+        </picker>
+      </view>
+
     </view>
     <view class="note-info" style="margin-top: 10px;">
       <text>Ghi chú</text>
@@ -93,4 +104,14 @@
       </view>
     </block>
   </view>
+
 </view>
+
+<chart
+  canvas-id="chart"
+  spec="{{ spec }}"
+  styles="{{ styles }}"
+  events="{{ events }}"
+  bind:chartinit="onChartInit"
+  bind:chartready="onChartReady"
+/>
