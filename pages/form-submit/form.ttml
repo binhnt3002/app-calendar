@@ -85,7 +85,7 @@
 
       <view class="form-field">
         <text>chọn lịch</text>
-        <picker mode="selector" id="week" range="{{lich}}" bindchage="onCalendarChage">
+        <picker mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
           <view class="picker">
             {{chonlich}}
           </view>

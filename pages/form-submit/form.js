@@ -110,16 +110,10 @@ Page({
         })
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
-          console.log(result.data.calendar_list);
-          result.data.calendar_list.forEach(element => {
-            that.data.dataLich.push(element);
-            that.data.lich.push(element.summary);
-            tt.showToast({
-              title: 'Lấy dữ liệu thành công',
-              icon: 'success',
-              duration: 2000
-            })
-          });
+          that.setData({
+            dataLich: result.data.calendar_list,
+            lich: result.data.calendar_list.map(item => item.summary),
+          })
         });
       }      
     })
