@@ -7,7 +7,7 @@
       <text class="user-info">User info</text>
       <text class="user-info">thích gì thì ghi ở đâádasdasdasdasdy</text>
     </view>
-    <block class="task-name">
+    <block class="task-name" >
       <view>
         <text>Việc cần làm</text>
         <input class="input-text" type="text" id="task" placeholder="Enter task..." style="margin-top: 5px;" />
@@ -55,7 +55,7 @@
             </picker>
           </view>
         </block>
-
+        
       </view>
     </view>
     <block class="form-time">
@@ -65,7 +65,7 @@
       </view>
     </block>
     <view style="display:flex; margin-top: 10px;">
-      <view class="date-picker" style="margin-right:15px;">
+      <view class="date-picker" style="margin-right:20px;">
         <text>time 1</text>
         <picker mode="date" id="datePicker" bindchange="onDateChange1">
           <view class="picker1">
@@ -86,11 +86,11 @@
       <text>Ghi chú</text>
       <textarea class="input-text" placeholder="Ghi chú ở đâyy......">
     </view>
-    <block class="container-btn">
-      <view class="form-buttons">
-        <button class="btn" >Add event</button>
-        <button class="btn" >Add Task</button>
-      </view>
-    </block>
+
+    <view class="form-buttons">
+      <button class="btn" >Add event</button>
+      <button class="btn" >Add Task</button>
+    </view>
+
   </view>
 </view>

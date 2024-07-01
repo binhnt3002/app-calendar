@@ -78,7 +78,7 @@ textarea {
   height: 80px;
   padding: 10px 5px;
   box-sizing: border-box;
-  border: 1px solid #f1f1f1;
+  border: 1px solid #a4a1a1;
   border-radius: 4px;
   background-color: #f8f8f8;
   resize: none;
@@ -118,23 +118,13 @@ input[type="date"] {
   width: 150px;
 }
 
-.container-btn{
-  display: flex;
-  justify-self: end;
-}
-
-.form-buttons {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .form-buttons .btn{
   color: #ffffff;
   background-color: #007bff;
-  /* margin: px; */
+  margin: 20px;
   border-radius: 5px;
   border: none;
-  margin: 10px 0px 10px 15px;
+ 
 }
 .btn:hover{
   background-color: rgb(255, 255, 255);

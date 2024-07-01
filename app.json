@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/form-submit/form"
+    "pages/form-submit/form",
+    "pages/form-submit2/form"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -26,6 +27,12 @@
         "iconPath": "images/icon_API_HL.png",
         "selectedIconPath": "image/clock-with-white-face.png",
         "text": "form"
+      },
+      {
+        "pagePath": "pages/form-submit2/form",
+        "iconPath": "images/icon_API_HL.png",
+        "selectedIconPath": "image/clock-with-white-face.png",
+        "text": "form2"
       }
     ]
   },
