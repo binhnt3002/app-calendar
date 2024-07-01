@@ -75,7 +75,7 @@
         </picker>
       </view>
       <view class="date-picker">
-        <text>time 2</text>
+        <text>time 1</text>
         <picker mode="time" id="datePicker" bindchange="onTimeChange1">
           <view class="picker1">
             {{selectedTime1}}
@@ -92,6 +92,24 @@
         </picker>
       </view> -->
 
+    </view>
+    <view style="display:flex; margin-top: 10px;">
+      <view class="date-picker" style="margin-right:15px;">
+        <text>time 2</text>
+        <picker mode="date" id="datePicker" bindchange="onDateChange1">
+          <view class="picker1">
+            {{selectedDate1}}
+          </view>
+        </picker>
+      </view>
+      <view class="date-picker">
+        <text>time 2</text>
+        <picker mode="time" id="datePicker" bindchange="onTimeChange1">
+          <view class="picker1">
+            {{selectedTime1}}
+          </view>
+        </picker>
+      </view>
     </view>
     <view class="note-info" style="margin-top: 10px;">
       <text>Ghi chú</text>
