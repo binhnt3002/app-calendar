@@ -11,7 +11,7 @@
     <block class="task-name" >
       <view>
         <text>Việc cần làm</text>
-        <input class="input-text" type="text" id="task" placeholder="Enter task..." />
+        <input class="input-text" type="text" id="task" placeholder="Enter task..."  bindinput="bindKeyInput"/>
     </block>
     <view class="task-form">
       <view class="component">
@@ -68,7 +68,7 @@
     <view style="display:flex; margin-top: 10px;">
       <view class="date-picker" style="margin-right:20px;">
         <text>time 1</text>
-        <picker mode="date" id="datePicker" bindchange="onDateChange1">
+        <picker mode="date"  id="datePicker" bindchange="onDateChange1">
           <view class="picker1">
             {{selectedDate1}}
           </view>

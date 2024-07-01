@@ -7,6 +7,7 @@ App({
     getUserInfo();
   },
   GlobalConfig: {
-
+    baseId:"",
+    tableId:"",
   }
 })
