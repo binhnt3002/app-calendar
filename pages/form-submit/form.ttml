@@ -2,7 +2,7 @@
   <view class="header">
     <text>Biểu mẫu dựa theo idea từ paint của nhân lê</text>
   </view>
-  
+
   <view class="main">
     <view class="section-user">
       <text class="user-info">User info</text>
@@ -11,7 +11,7 @@
     <block class="task-name">
       <view>
         <text>Việc cần làm</text>
-        <input class="input-text" type="text" id="task" placeholder="Enter task..." style="margin-top: 5px;" />
+        <textarea class="input-text" type="text" id="task" placeholder="Enter task..." style="margin-top: 5px;margin-right: 10px;">
     </block>
     <view class="task-form">
       <view class="component">
@@ -19,7 +19,7 @@
           <view>
             <text>Tuần</text>
             <picker mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
-              <view class="picker">
+              <view class="picker-text">
                 {{selectedWeek}}
               </view>
             </picker>
@@ -29,7 +29,7 @@
           <view>
             <text>Thể loại</text>
             <picker mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
-              <view class="picker">
+              <view class="picker-text">
                 {{selectedCategory}}
               </view>
             </picker>
@@ -39,7 +39,7 @@
           <view>
             <text>Cấp bách</text>
             <picker mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
-              <view class="picker">
+              <view class="picker-text">
                 {{selectedurgent}}
               </view>
             </picker>
@@ -50,7 +50,7 @@
           <view>
             <text style="color:red;">Độ quan trọng</text>
             <picker mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
-              <view class="picker">
+              <view class="picker-text">
                 {{selectedImportant}}
               </view>
             </picker>
@@ -59,58 +59,63 @@
 
       </view>
     </view>
-    <block class="form-time">
+    <block class="select-time">
       <view>
         <text>Số giờ cần có</text>
         <input class="input-text" type="time" name="txtTime" id="txtTime" />
       </view>
     </block>
-    <view style="display:flex; margin-top: 10px;">
-      <view class="date-picker" style="margin-right:15px;">
-        <text>time 1</text>
-        <picker mode="date" id="datePicker" bindchange="onDateChange1">
-          <view class="picker1">
-            {{selectedDate1}}
-          </view>
-        </picker>
-      </view>
-      <view class="date-picker">
-        <text>time 1</text>
-        <picker mode="time" id="datePicker" bindchange="onTimeChange1">
-          <view class="picker1">
-            {{selectedTime1}}
-          </view>
-        </picker>
-      </view>
-<!-- 
-      <view class="form-field">
-        <text>chọn lịch</text>
-        <picker mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
-          <view class="picker">
-            {{chonlich}}
-          </view>
-        </picker>
-      </view> -->
 
-    </view>
-    <view style="display:flex; margin-top: 10px;">
-      <view class="date-picker" style="margin-right:15px;">
-        <text>time 2</text>
-        <picker mode="date" id="datePicker" bindchange="onDateChange1">
-          <view class="picker1">
-            {{selectedDate1}}
-          </view>
-        </picker>
+    <view class="form-time">
+      <view class="component-picker-time">
+        <view class="content-pick">
+          <block class="date-selection" >
+            <text>Ngày giờ bắt đầu</text>
+            <block class="box-time">
+              <picker mode="date" id="datePicker" bindchange="onDateChange1">
+                <view class="picker-date">
+                  {{selectedDate1}}
+                </view>
+              </picker>
+              <picker mode="time" id="datePicker" bindchange="onTimeChange1">
+                <view class="picker-time">
+                  {{selectedTime1}}
+                </view>
+              </picker>
+            </block>
+          </block>
+        </view>
+        <view class="content-pick">
+          <block class="date-selection">
+            <text>Ngày giờ kết thúc</text>
+            <block class="box-time">
+              <picker mode="date" id="datePicker" bindchange="onDateChange2">
+                <view class="picker-date">
+                  {{selectedDate2}}
+                </view>
+              </picker>
+              <picker mode="time" id="datePicker" bindchange="onTimeChange2">
+                <view class="picker-time">
+                  {{selectedTime2}}
+                </view>
+              </picker>
+            </block>
+          </block>
+        </view>      
+  <!-- 
+        <view class="form-field">
+          <text>chọn lịch</text>
+          <picker mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+            <view class="picker">
+              {{chonlich}}
+            </view>
+          </picker>
+        </view> -->
+  
       </view>
-      <view class="date-picker">
-        <text>time 2</text>
-        <picker mode="time" id="datePicker" bindchange="onTimeChange1">
-          <view class="picker1">
-            {{selectedTime1}}
-          </view>
-        </picker>
-      </view>
     </view>
+    
+  
     <view class="note-info" style="margin-top: 10px;">
       <text>Ghi chú</text>
       <textarea class="input-text" placeholder="Ghi chú ở đâyy......">

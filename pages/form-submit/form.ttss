@@ -6,32 +6,28 @@
   margin: 0 auto;
   overflow: hidden;
   font-size: 14px; /* Giảm kích thước chữ chung */
+  font-family: Arial, sans-serif;
+}
+
+.main{
+  padding:0 10px;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 .header {
+  /* height: 50%; */
   background-color: #007bff;
   color: white;
   text-align: center;
   padding: 0.5rem 0; /* Giảm padding */
   font-size: 16px; /* Giảm kích thước chữ của header */
 }
-body {
-  font-family: Arial, sans-serif;
-  /* margin: 0;
-  padding: 0; */
-}
+
 .user-info {
   font-size: 14px; /* Kích thước chữ của phần user-info */
 }
 
-.main { 
-  padding: 10px;
-  /* display: flex; */
-  flex-direction: column;
-}
-.task-name{
-  width: auto;
-  
-}
 .section-user {
   align-self: flex-end; /* Đặt phần user-info ở bên phải */
   padding: 10px;
@@ -57,7 +53,7 @@ body {
   margin-bottom: 10px;
   margin-right: 40px;
 }
-.form-time{
+.select-time{
   border: #f1f1f1;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -70,11 +66,14 @@ body {
   /* margin: 50px; */
 }
 
+.input-text{
+  width: 95%;
+}
 
 
 textarea {
   margin-top: 5px;
-  width: 100%;
+  width: 95%;
   height: 80px;
   padding: 10px 5px;
   box-sizing: border-box;
@@ -82,50 +81,62 @@ textarea {
   border-radius: 4px;
   background-color: #f8f8f8;
   resize: none;
-}
-
-.note-info input {
-  height: 100px;/* Đảm bảo input dãn ra full width */
-  word-break: break-word; /* Tự động xuống dòng khi vượt quá chiều rộng */
+  /* margin-right: ; */
 }
 
 
 
 
-.picker,
-input[type="text"]{
+
+
+.picker-text{
   height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
   line-height: 30px;
-  padding-left: 5px;
+  /* padding-left: 5px; */
   background-color: #f1f1f1;
   border-radius: 5px;
   border: 1px solid #ddd;
   margin-top: 3px; /* Giảm khoảng cách trên */
-  font-size: 12px;
+  font-size: 13px;
   width: 200px;
+  text-align: center;
 }
 
-.picker1,
-input[type="date"] {
+.picker-date{
   height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
   line-height: 30px;
-  padding-left: 5px;
+  /* padding-left: 5px; */
   background-color: #f1f1f1;
   border-radius: 5px;
   border: 1px solid #ddd;
   margin-top: 3px; /* Giảm khoảng cách trên */
-  font-size: 12px;
-  width: 150px;
+  font-size: 13px;
+  width: 80px;
+  text-align: center;
+}
+.picker-time{
+  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
+  line-height: 30px;
+  /* padding-left: 5px; */
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-top: 3px; /* Giảm khoảng cách trên */
+  font-size: 13px;
+  width: 50px;
+  text-align: center;
+
 }
 
 .container-btn{
   display: flex;
-  justify-self: end;
+  /* justify-self: end; */
 }
 
 .form-buttons {
   display: flex;
   justify-content: flex-end;
+  margin-right: 50px;
 }
 
 .form-buttons .btn{
@@ -143,6 +154,24 @@ input[type="date"] {
   position:relative;
 }
 
+
+.component-picker-time{
+  display: flex ;
+  margin-top: 7px;
+}
+.content-pick{
+  /* display: flex; */
+  gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+ .date-selection{
+  /* display: contents; */
+}
+
+.box-time{
+  display: flex !important;
+}
 
 .btn:before,.btn:after{
   content:'';

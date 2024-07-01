@@ -80,35 +80,35 @@ Page({
     });
   },
 
-  // onDateChange1: function (e) {
+  onDateChange1: function (e) {
+    this.setData({
+      selectedDate1: e.detail.value
+    });
+  },
+  // onDateChange1: function (event) {
+  //   const selectedDate = event.detail.value; 
+  //   const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
+
+  //   timePicker.addEventListener('timeChange', (event) => {
+  //     const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
+  //   });
+
+  //   const dateTime = new Date(`${selectedDate} ${timePicker}`); 
+
   //   this.setData({
-  //     selectedDate1: e.detail.value
+  //     selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
   //   });
   // },
-  onDateChange1: function (event) {
-    const selectedDate = event.detail.value; 
-    const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
 
-    timePicker.addEventListener('timeChange', (event) => {
-      const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
-    });
-
-    const dateTime = new Date(`${selectedDate} ${timePicker}`); 
-
+  onTimeChange1: function (e) {
     this.setData({
-      selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
+      selectedTime1: e.detail.value
     });
   },
 
-  // onTimeChange1: function (e) {
-  //   this.setData({
-  //     selectedTime1: e.detail.value
-  //   });
-  // },
-
   onDateChange2: function (e) {
     this.setData({
-      selectedDate2: selectedDate2.datetimepicker()
+      selectedDate2: e.detail.value
     });
   },
 
