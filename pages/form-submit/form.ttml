@@ -68,7 +68,7 @@
     <view style="display:flex; margin-top: 10px;">
       <view class="date-picker" style="margin-right:15px;">
         <text>time 1</text>
-        <picker mode="date" id="datePicker" bindchange="onDateChange1">
+        <picker mode="date"  id="datePicker" bindchange="onDateChange1">
           <view class="picker1">
             {{selectedDate1}}
           </view>
