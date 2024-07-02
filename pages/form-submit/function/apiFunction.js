@@ -1,7 +1,8 @@
-import { sendRequest } from "../../../utils/sendRequest";
+import { sendRequest } from "../../../utils/sendRequest";    
+
+const appVar = getApp();
 
 const getCalendarList = (access_token) => {
-    let listcalendar = [];
     const url = "https://open.larksuite.com/open-apis/calendar/v4/calendars/";
     const headers = {
         'Authorization': `Bearer ${access_token}`
@@ -47,7 +48,19 @@ const createInvitation = (access_token,calendarId,eventID,data) => {
     return sendRequest(url, 'POST', headers, body);
 }
 
+const createRecord = (access_token,data) => {
+    const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records`;
+    const headers = {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json'
+    }
+
+    const body = data;
+    
+    return sendRequest(url, 'POST', headers, body);
+}
 
 
 
-export { getCalendarList , createEvent, createInvitation, getGroupId }
+
+export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord }

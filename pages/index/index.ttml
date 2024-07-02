@@ -25,3 +25,11 @@
     </view>
   </view>
 </view> -->
+
+
+<chart
+  canvas-id="chart"
+  spec="{{ spec }}"
+  styles="{{ styles }}"
+  events="{{ events }}"
+/>

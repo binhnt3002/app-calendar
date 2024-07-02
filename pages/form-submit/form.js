@@ -1,5 +1,7 @@
 import {getCalendarList} from './function/apiFunction';
 
+
+
 Page({
   data: {
     weekOptions: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
@@ -19,34 +21,9 @@ Page({
     lich: [],
     chonlich:"",
     dataLich: [],
-
-    canvasId: 'chartId', // canvasId unique chart Id
-    events: [], // events custom events
-    styles: `
-      height: 50vh;
-      width: 100%
-    `, // style string
-    // Chart configuration options
-    spec: {
-      type: 'pie',
-      data: [
-        {
-          id: 'data1',
-          values: [
-            { value: 335, name: 'Direct Access' },
-            { value: 310, name: 'Email Marketing' },
-            { value: 274, name: 'Affiliate Advertising' },
-            { value: 123, name: 'Search Engine' },
-            { value: 215, name: 'Video Advertising' }
-          ]
-        }
-      ],
-      outerRadius: 0.6,
-      categoryField: 'name',
-      valueField: 'value'
-    }
-
   },
+
+  
 
   onCalendarChage: function(e) {
     this.setData({
@@ -120,12 +97,13 @@ Page({
   
   onReady() {
     this.setCalendarData();
-    
-  const vchart = new VChart(this.data.spec);
-    
-  vchart.renderSync();  
   },
 
+  converButton() { 
+    let a = this.dateTimeToTimestamp(this.data.selectedDate1, this.data.selectedTime1);
+    console.log(a);
+  },
+  
 
   setCalendarData() {
     let that = this;
@@ -145,5 +123,12 @@ Page({
         });
       }      
     })
-  }
+  },
+
+  dateTimeToTimestamp:function(date,time) { 
+    let datetime = new Date(`${date} ${time}`);
+    let timestamp = datetime.getTime();
+    // console.log(timestamp);
+    return Math.floor(timestamp / 1000);
+  },
 });

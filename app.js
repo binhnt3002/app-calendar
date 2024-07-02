@@ -7,6 +7,7 @@ App({
     getUserInfo();
   },
   GlobalConfig: {
-
+    baseId:"FeaubtGlja6dtds66P7l6iYbgwd",
+    tableId:"tblPjWdyJh5OdMZe",
   }
 })
