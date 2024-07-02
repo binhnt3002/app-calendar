@@ -2,11 +2,6 @@
   <view class="header">
     <text>Biểu mẫu dựa theo idea từ paint của nhân lê</text>
   </view>
-  <view class="main">
-    <view class="section-user">
-      <image class="userinfo-avatar" src="{{userInfo.avatar_url}}"></image>
-      <text class="userinfo-nickname" style="color: red; font-family:serif;">Xin chào, {{userInfo.name}}</text>
-    </view>
     <block class="task-name">
       <view>
         <text>Việc cần làm</text>
@@ -16,8 +11,8 @@
     <view class="row">
       <view class="col-12 col-sm-3">
         <text>Tuần</text>
-        <picker class="picker-text" mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
-          {{selectedWeek}}
+        <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+          {{chonlich}}
         </picker>
       </view>
       <view class="col-12 col-sm-3">

@@ -30,7 +30,7 @@ Page({
 
   setInvites(){
     const invite = this.data.invite;
-    this.setDate({
+    this.setData({
       invite : invite
     });
   },

@@ -15,7 +15,6 @@ Page({
     selectedTime1: '', // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDate2: '', // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: '', // Thêm selectedTime để lưu ngày và giờ được chọn
-    userInfo: {},
     calendarID: '',
     lich: [],
     chonlich: '',
