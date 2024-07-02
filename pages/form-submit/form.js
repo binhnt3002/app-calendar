@@ -138,6 +138,16 @@ Page({
 
   onReady() {
     this.setCalendarData();
+    this.getUserInfo();
+  },
+  getUserInfo(){
+    let that = this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) =>{
+        that.setData({userInfo:res.data});
+      }
+    })
   },
 
   setCalendarData() {
