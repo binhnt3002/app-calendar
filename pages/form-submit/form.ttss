@@ -1,3 +1,4 @@
+@import 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css';
 .container {
   max-width: 1000px;
   max-height: 800px;
@@ -45,7 +46,6 @@
   gap: 15px;
   flex-wrap: wrap;
   width: 100%;
-
 }
 .section-user {
   align-self: flex-end; /* Đặt phần user-info ở bên phải */
@@ -67,15 +67,15 @@
 }
 
 .input-text{
-  width: 95%;
+  width: 99%;
 }
 
 
 textarea {
   margin-top: 5px;
-  width: 95%;
+  width: 99%;
   height: 80px;
-  padding: 10px 5px;
+  padding: 10px 0;
   box-sizing: border-box;
   border: 1px solid #f1f1f1;
   border-radius: 4px;
@@ -83,10 +83,6 @@ textarea {
   resize: none;
   /* margin-right: ; */
 }
-
-
-
-
 
 
 .picker-text{
@@ -98,7 +94,7 @@ textarea {
   border: 1px solid #ddd;
   margin-top: 3px; /* Giảm khoảng cách trên */
   font-size: 13px;
-  width: 200px;
+  width: auto;
   text-align: center;
 }
 
@@ -108,50 +104,44 @@ textarea {
   /* padding-left: 5px; */
   background-color: #f1f1f1;
   border-radius: 5px;
-  border: 1px solid #ddd;
-  margin-top: 3px; /* Giảm khoảng cách trên */
+  /* border: 1px solid #ddd; */
+  /* margin-top: 3px; */
   font-size: 13px;
-  width: 80px;
-  text-align: center;
+  min-width:auto;
+  text-align: center;  
 }
+
 .picker-time{
   height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
   line-height: 30px;
   /* padding-left: 5px; */
   background-color: #f1f1f1;
   border-radius: 5px;
-  border: 1px solid #ddd;
-  margin-top: 3px; /* Giảm khoảng cách trên */
+  /* border: 1px solid #ddd; */
+  margin-left:-25px; 
   font-size: 13px;
-  width: 50px;
+  width: 60px;
   text-align: center;
 
 }
 
-.container-btn{
-  display: flex;
-  /* justify-self: end; */
-}
 
-.form-buttons {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 50px;
-}
 
-.form-buttons .btn{
-  color: #ffffff;
-  background-color: #007bff;
-  /* margin: px; */
-  border-radius: 5px;
-  border: none;
-  margin: 10px 0px 10px 15px;
+button{
+  height: 50px !important;
+  font-size: 15px !important;
+  line-height: 5px !important;
+  border: none !important;
 }
 .btn:hover{
   background-color: rgb(255, 255, 255);
   color: #007bff;
   cursor:pointer;
   position:relative;
+}
+
+.note-info{
+  display: block;
 }
 
 
@@ -165,12 +155,15 @@ textarea {
   flex-wrap: wrap;
   width: 100%;
 }
- .date-selection{
-  /* display: contents; */
-}
+
 
 .box-time{
-  display: flex !important;
+  display: flex ;
+  flex-direction: row ;
+}
+
+.box-time picker { 
+  flex: 1;
 }
 
 .btn:before,.btn:after{
