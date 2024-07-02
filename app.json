@@ -2,7 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/form-submit/form",
-    "pages/form-submit2/form"
+    "pages/form-submit2/event"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -29,7 +29,7 @@
         "text": "form"
       },
       {
-        "pagePath": "pages/form-submit2/form",
+        "pagePath": "pages/form-submit2/event",
         "iconPath": "images/icon_API_HL.png",
         "selectedIconPath": "image/clock-with-white-face.png",
         "text": "form2"

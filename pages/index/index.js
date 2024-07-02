@@ -90,7 +90,6 @@ Page({
         sendRequest(url, "POST", headers, body).then((result) => {
           let a = 0;
           let that = this;
-          // console.log(result.data.items);
           result.data.items.filter(item => item.fields["Thể loại"] == "Việc chính" ? a++ : a)
           console.log(a);
         

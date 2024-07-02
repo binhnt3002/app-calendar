@@ -1,0 +1,64 @@
+<view class="container">
+  <view class="header">
+    <text>hello bro</text>
+  </view>
+  <view class="body">
+    <view class="box">
+      <view class="row">
+        <view class="col-7">
+          <text class="block">Danh sách event</text>
+          <scroll-view class="event-box" scroll-y="true">
+            <block wx:for="{{events}}" wx:key="*this">
+              <view class="event-item">
+                <view class="event-details">
+                  <text class="block">{{item}}</text>
+                </view>
+                <view class="event-checkbox">
+                  <checkbox></checkbox>
+                </view>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+        <view class="col-3">
+          <text class="block">Danh sách mời</text>
+          <scroll-view class="event-list" scroll-y="true">
+            <view class="list-item" style="padding: 10px;">
+              <block wx:for="{{invite}}" wx:key="index">
+                <text class="block">{{item}}</text>
+              </block>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+      <view class="row">
+        <view class="col-8">
+          <view class="event-daily">
+            <view class="evt-col">
+              <input placeholder="nhập số phút">
+            </view>
+            <view class="evt-col">
+              <picker mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
+                <view class="picker-text">
+                  {{selectedWeek}}
+                </view>
+              </picker>
+            </view>
+            <view class="evt-col">
+              <input placeholder="quyền 3 cái">
+            </view>
+          </view>
+        </view>
+        <view class="col-2">
+          <view class="form-buttons">
+            <button class="btn">Add event</button>
+          </view>
+        </view>        
+      </view>
+    </view>
+
+  </view>
+  <view class="footer">
+    <!-- Nội dung của footer -->
+  </view>
+</view>
