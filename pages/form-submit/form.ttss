@@ -48,10 +48,12 @@
   width: 100%;
 }
 .section-user {
-  align-self: flex-end; /* Đặt phần user-info ở bên phải */
+  align-items: center; /* Đặt phần user-info ở bên phải */
   padding: 10px;
   margin-bottom: 10px;
   margin-right: 40px;
+  display: flex;
+  justify-content: right;
 }
 .select-time{
   border: #f1f1f1;
@@ -192,11 +194,11 @@ button{
 }
 .userinfo-avatar {
   border-radius: 128rpx;
-  width: 128rpx;
-  height: 128rpx;
+  width: 100px;
+  height: 100px;
 }
 .userinfo-nickname {
   font-weight: bold;
-  margin-top: 20rpx;
-  font-size: 1em;
+  /* margin-top: 20rpx; */
+  font-size: 20px;
 }

@@ -1,6 +1,5 @@
-import {getCalendarList} from './function/apiFunction';
-
-
+import { bodyCreateEvent } from './detailForm';
+import { createEvent, getCalendarList } from './function/apiFunction';
 
 Page({
   data: {
@@ -17,15 +16,52 @@ Page({
     selectedDate2: '', // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: '', // Thêm selectedTime để lưu ngày và giờ được chọn
     userInfo: {},
-    calendarID: "",
+    calendarID: '',
     lich: [],
-    chonlich:"",
+    chonlich: '',
     dataLich: [],
+    inputValue: '',
+    inputNote: '',
+    canvasId: 'chartId', // canvasId unique chart Id
+    events: [], // events custom events
+    styles: `
+      height: 50vh;
+      width: 100%
+    `, // style string
+    // Chart configuration options
+    spec: {
+      type: 'pie',
+      data: [
+        {
+          id: 'data1',
+          values: [
+            { value: 335, name: 'Direct Access' },
+            { value: 310, name: 'Email Marketing' },
+            { value: 274, name: 'Affiliate Advertising' },
+            { value: 123, name: 'Search Engine' },
+            { value: 215, name: 'Video Advertising' }
+          ]
+        }
+      ],
+      outerRadius: 0.6,
+      categoryField: 'name',
+      valueField: 'value'
+    }
+
   },
 
-  
+  inputTittle: function (e) {
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+  inputNote: function (e) {
+    this.setData({
+      inputNote: e.detail.value
+    })
+  },
 
-  onCalendarChage: function(e) {
+  onCalendarChage: function (e) {
     this.setData({
       chonlich: this.data.lich[e.detail.value],
       calendarID: this.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
@@ -62,8 +98,12 @@ Page({
       selectedDate1: e.detail.value
     });
   },
-  // onDateChange1: function (event) {
-  //   const selectedDate = event.detail.value; 
+
+
+  // onDateChange1: function (e) {
+  //   const selectedDate = e.detail.value; // Get selected date in YYYY-MM-DD format
+
+  //   // Get selected time from another input field or event (e.g., time picker)
   //   const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
 
   //   timePicker.addEventListener('timeChange', (event) => {
@@ -94,16 +134,20 @@ Page({
       selectedTime2: e.detail.value
     });
   },
-  
+
   onReady() {
     this.setCalendarData();
+    this.getUserInfo();
   },
-
-  converButton() { 
-    let a = this.dateTimeToTimestamp(this.data.selectedDate1, this.data.selectedTime1);
-    console.log(a);
+  getUserInfo(){
+    let that = this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) =>{
+        that.setData({userInfo:res.data});
+      }
+    })
   },
-  
 
   setCalendarData() {
     let that = this;
@@ -121,14 +165,32 @@ Page({
             lich: result.data.calendar_list.map(item => item.summary),
           })
         });
-      }      
+      }
     })
   },
 
-  dateTimeToTimestamp:function(date,time) { 
-    let datetime = new Date(`${date} ${time}`);
-    let timestamp = datetime.getTime();
-    // console.log(timestamp);
-    return Math.floor(timestamp / 1000);
+  createTask() {
+    let that = this;
+    console.log(that.data.inputValue);
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        if (that.data.inputValue != ''&& that.data.calendarID !='') {
+          //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
+          const body = bodyCreateEvent(that.data.inputValue, that.data.inputNote, '1719883800', '1719891000', 'default');
+          createEvent(res.data.access_token, that.data.calendarID,body).then((rs) => {
+            tt.showToast({
+              title: 'Tạo xong',
+              icon: 'success',
+            });
+          })
+        } else {
+          tt.showToast({
+            title: 'Thiếu dữ liệu',
+            icon: 'error',
+          });
+        }
+      }
+    })
   },
 });
