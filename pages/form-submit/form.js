@@ -57,31 +57,31 @@ Page({
     });
   },
 
-  // onDateChange1: function (e) {
-  //   this.setData({
-  //     selectedDate1: e.detail.value
-  //   });
-  // },
-  onDateChange1: function (event) {
-    const selectedDate = event.detail.value; 
-    const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
-
-    timePicker.addEventListener('timeChange', (event) => {
-      const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
-    });
-
-    const dateTime = new Date(`${selectedDate} ${timePicker}`); 
-
+  onDateChange1: function (e) {
     this.setData({
-      selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
+      selectedDate1: e.detail.value
     });
   },
+  // onDateChange1: function (event) {
+  //   const selectedDate = event.detail.value; 
+    // const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
 
-  // onTimeChange1: function (e) {
-  //   this.setData({
-  //     selectedTime1: e.detail.value
-  //   });
-  // },
+    // timePicker.addEventListener('timeChange', (event) => {
+    //   const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
+    // });
+
+    // const dateTime = new Date(`${selectedDate} ${timePicker}`); 
+
+    // this.setData({
+    //   selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
+    // });
+  
+
+  onTimeChange1: function (e) {
+    this.setData({
+      selectedTime1: e.detail.value
+    });
+  },
 
   onDateChange2: function (e) {
     this.setData({
@@ -97,6 +97,11 @@ Page({
   
   onReady() {
     this.setCalendarData();
+  },
+
+  converButton() { 
+    let a = this.dateTimeToTimestamp(this.data.selectedDate1, this.data.selectedTime1);
+    console.log(a);
   },
   
 
@@ -120,10 +125,10 @@ Page({
     })
   },
 
-  dateTimeToTimestamp(date,time) { 
+  dateTimeToTimestamp:function(date,time) { 
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
-    console.log(timestamp);
+    // console.log(timestamp);
     return Math.floor(timestamp / 1000);
   },
 });

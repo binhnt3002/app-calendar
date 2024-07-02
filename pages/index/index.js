@@ -1,5 +1,6 @@
-// import { getUserInfo, getBodyByDemand } from './detail';
-// import { sendRequest } from '../../utils/sendRequest';
+import { sendRequest } from "../../utils/sendRequest";
+
+const appVar = getApp();
 
 Page({
   data: {
@@ -13,12 +14,106 @@ Page({
     ],
     currentDate: '',
     days: [],
+
+    valuesRecord: 0,
+
+    // Chart configuration options
+
+    canvasId: 'chartId', 
+    events: [], 
+    styles: `
+      height: 50vh;
+      width: 100%
+    `, 
+    spec: {
+      type: 'pie',
+      data: [
+        {
+          id: 'data1',
+          values: [
+            
+
+          ]
+        }
+      ],
+      outerRadius: 0.6,
+      categoryField: 'name',
+      valueField: 'value'
+    }
   },
 
   onLoad() {
-    this.renderCalendar();
+    // this.renderCalendar();
+    this.getValueRecord();
   },
 
+
+  getValueRecord() {
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        const access_token = res.data.access_token;
+        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+        const headers = {
+          'Authorization': `Bearer ${access_token}`,
+          'Content-Type': 'application/json'
+        }
+
+        const body = {
+          "field_names": [
+            "Việc cần làm",
+            "Thể loại",
+            "Quan trọng",
+            "Cấp bách",
+            "Số giờ cần có"
+          ],
+
+          "filter": {
+            "conjunction": "and",
+            "conditions": [
+              {
+                "field_name": "Person",
+                "operator": "is",
+                "value": [
+                  "ou_9bab5b13719c7d1a8776627231696951"
+                ]
+              }
+            ]
+          },
+          "automatic_fields": false
+        }
+
+        tt.showToast({
+          title:"đang tải dữ liệu",
+          icon:"loading"
+        }),
+        sendRequest(url, "POST", headers, body).then((result) => {
+          let a = 0;
+          let that = this;
+          // console.log(result.data.items);
+          result.data.items.filter(item => item.fields["Thể loại"] == "Việc chính" ? a++ : a)
+          console.log(a);
+        
+          let spec = that.data.spec
+          spec.data[0].values.push({
+            value : a,
+            name: "Việc chính"
+          })
+
+          that.setData({
+            spec
+          })
+          tt.showToast({
+            title:"Tải dữ liệu thành công",
+            icon:"success"
+          })
+
+          
+          
+        })
+      }  
+    })
+  },
 
   renderCalendar() {
     const { currYear, currMonth, date, months } = this.data;

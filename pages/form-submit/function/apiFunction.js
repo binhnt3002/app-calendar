@@ -1,4 +1,4 @@
-import { sendRequest } from "../../../utils/sendRequest";
+import { sendRequest } from "../../../utils/sendRequest";    
 
 const appVar = getApp();
 

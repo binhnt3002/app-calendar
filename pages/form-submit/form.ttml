@@ -117,7 +117,7 @@
     </view>
     <block class="container-btn">
       <view class="form-buttons">
-        <button class="btn" >Add event</button>
+        <button class="btn" bindtap="converButton">Add event</button>
         <button class="btn" >Add Task</button>
       </view>
     </block>
@@ -125,11 +125,3 @@
 
 </view>
 
-<chart
-  canvas-id="chart"
-  spec="{{ spec }}"
-  styles="{{ styles }}"
-  events="{{ events }}"
-  bind:chartinit="onChartInit"
-  bind:chartready="onChartReady"
-/>
