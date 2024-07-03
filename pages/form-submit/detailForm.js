@@ -1,6 +1,6 @@
 
 //phần body của tạo event lấy từ base
-const bodyCreateEvent = (eventTitle, eventDescription, timeStart, timeEnd, visibilityType) => {
+const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, visibilityType) => {
   const body =
   {
     "summary": eventTitle,
@@ -23,7 +23,6 @@ const bodyCreateEvent = (eventTitle, eventDescription, timeStart, timeEnd, visib
         "minutes": 5
       }
     ],
-    "recurrence": "FREQ=DAILY;INTERVAL=2",
   }
   return body;
 }
@@ -59,4 +58,24 @@ const bodyScheduleParticipants = (type,id,res) => {
   }
   return body;
 }
-export { bodyCreateEvent, bodyScheduleParticipants };
+const bodyCreateRecord = (vieccanlam,theloai,quantrong,capbach,sogio,nguoi,batdau,ketthuc,ghichu,evId) =>{
+  const body=
+  {
+    "fields": {
+      "Việc cần làm": vieccanlam,
+      "Thể loại": theloai,
+      "Quan trọng": quantrong,
+      "Cấp bách": capbach,
+      "Số giờ cần có":sogio,
+      "Người": [{
+        "id": nguoi
+      }],
+      "Ngày - Giờ bắt đầu": 1674206443000,
+      "Ngày - Giờ kết thúc": 1674206443000,
+      "Ghi chú": ghichu,
+      "EventID": evId,
+    }
+  }
+  return body
+}
+export { bodyCreateTask, bodyScheduleParticipants };

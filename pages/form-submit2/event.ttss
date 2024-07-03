@@ -54,7 +54,6 @@
 .col-8 {
   flex: 1;
   max-width: calc(80% - 10px);
-  border-right: 1px solid #ccc;
 }
 
 .col-2 {
@@ -129,7 +128,7 @@
   display: flex;
   justify-content: center; /* Canh giữa nội dung trong mỗi cột */
   align-items: center; /* Căn nội dung theo chiều dọc trong mỗi cột */
-  border-right: 1px solid #ccc; /* Đường viền phân cách giữa các cột */
+  /* border-right: 1px solid #ccc; Đường viền phân cách giữa các cột */
 }
 
 .event-daily .evt-col:last-child {
