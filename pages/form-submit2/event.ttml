@@ -1,6 +1,6 @@
 <view class="container">
   <view class="header">
-    <text>hello bro</text>
+    <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
   <view class="body">
     <view class="box">
@@ -38,9 +38,10 @@
               <input placeholder="nhập số phút">
             </view>
             <view class="evt-col">
-              <picker mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
+            <view style="color: brown; margin-right: 5px; font-weight: bold; ">LẶP LẠI </view>
+              <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{frequencyOptions}}" bindchange="onFrequencyChange">
                 <view class="picker-text">
-                  {{selectedWeek}}
+                  {{selectedFrequency}}
                 </view>
               </picker>
             </view>
@@ -51,9 +52,14 @@
         </view>
         <view class="col-2">
           <view class="form-buttons">
-            <button class="btn">Add event</button>
+            <button class="btn">Thêm sự kiện</button>
           </view>
-        </view>        
+        </view>
+        <view class="col-2">
+          <view class="form-buttons">
+            <button class="btn" bindtap="listUser">Thêm người</button>
+          </view>
+        </view>          
       </view>
     </view>
 
