@@ -6,11 +6,10 @@ Page({
       'event 11', 'event 12', 'event 13', 'event 14', 'event 15',
       'event 16', 'event 17', 'event 18', 'event 19', 'event 20'
     ],
-    invite: [
-      'Châu Đức Thạnh', 'Trương Hoàng Gay', 'Thảo Gay', 'Heloo GAy','Why are you gei','you are gay!','Châu Đức Thạnh', 'Trương Hoàng Gay', 'Thảo Gay', 'Heloo GAy','Why are you gei','you are gay!','Châu Đức Thạnh', 'Trương Hoàng Gay', 'Thảo Gay', 'Heloo GAy','Why are you gei','you are gay!','Châu Đức Thạnh', 'Trương Hoàng Gay', 'Thảo Gay', 'Heloo GAy','Why are you gei','you are gay!'
-    ],
-    weekOptions: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
-    selectedWeek: 'Tuần 1',
+    invite: [],
+    inviteOpenId: [],
+    frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
+    selectedFrequency: 'Hàng ngày',
   },
 
   onLoad() {
@@ -35,11 +34,47 @@ Page({
     });
   },
 
-  onWeekChange: function (e) {
+  onFrequencyChange: function (e) {
     this.setData({
-      selectedWeek: this.data.weekOptions[e.detail.value]
+      selectedFrequency: this.data.frequencyOptions[e.detail.value]
     });
   },
 
+  listUser(){
+    let that = this;
+    let invite = that.data.invite;
+    let inviteOpenId = that.data.inviteOpenId;
+
+    tt.chooseContact({
+      multi: true,
+      ignore: false,
+      maxNum: 10,
+      limitTips: 10,
+      externalContact: true,
+      enableChooseDepartment: true,
+      disableChosenIds: [
+          ...that.data.inviteOpenId
+      ],
+      success(res) {
+
+        console.log(res);
+  
+        res.data.map(item =>{
+          invite.push(item.name),
+          inviteOpenId.push(item.openId)
+        })
+        
+        that.setData({
+          invite,
+          inviteOpenId
+        })
+        console.log(that.data.invite);
+        console.log(that.data.inviteOpenId);
+      },
+      fail(res) {
+        console.log(`chooseContact fail: ${JSON.stringify(res)}`);
+      }
+  });
+  }
 
 });

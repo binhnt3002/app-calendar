@@ -159,6 +159,7 @@ Page({
         })
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
+          console.log(result.data.calendar_list);
           that.setData({
             dataLich: result.data.calendar_list,
             lich: result.data.calendar_list.map(item => item.summary),
