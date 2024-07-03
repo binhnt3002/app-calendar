@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -70,13 +70,13 @@
   color: #333;
   width: calc(100% / 7);
   font-size: 15px;
-  box-sizing: border-box; /* Để kích thước tính cả border */
-  border-bottom: 1px solid #ddd; /* Đường viền dưới của mỗi ô ngày, màu nhạt và mỏng hơn */
-  padding-left: 0.5rem; /* Khoảng cách bên trong ô ngày */
+  box-sizing: border-box; 
+  border-bottom: 1px solid #ddd; 
+  padding-left: 0.5rem;
   cursor: pointer;
-  align-items: flex-start; /* Căn lên góc trái của ô */
-  height: 80px; /* Chiều cao của mỗi ô ngày */
-  position: relative; /* Đặt vị trí tương đối cho ngày */
+  align-items: flex-start; 
+  height: 80px; 
+  position: relative; 
 }
 
 .calendar .weeks text {
@@ -114,4 +114,18 @@
   width: 20px;
   height: 20px;
   margin: 8px;
+} */
+
+@import 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css';
+
+
+.container {
+  max-width: 1500px;
+  max-height: 800px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+  margin: 0 auto;
+  overflow: hidden;
+  font-size: 14px; /* Giảm kích thước chữ chung */
+  font-family: Arial, sans-serif;
 }
