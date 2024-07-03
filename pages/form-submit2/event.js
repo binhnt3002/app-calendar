@@ -49,7 +49,7 @@ Page({
     tt.chooseContact({
       multi: true,
       ignore: false,
-      maxNum: 10,
+      maxNum: 100,
       limitTips: 10,
       externalContact: true,
       enableChooseDepartment: true,
