@@ -1,4 +1,4 @@
-import { bodyCreateEvent } from './detailForm';
+import { bodyCreateTask } from './detailForm';
 import { createEvent, getCalendarList } from './function/apiFunction';
 
 Page({
@@ -177,7 +177,7 @@ Page({
       success: (res) => {
         if (that.data.inputValue != ''&& that.data.calendarID !='') {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
-          const body = bodyCreateEvent(that.data.inputValue, that.data.inputNote, '1719883800', '1719891000', 'default');
+          const body = bodyCreateTask(that.data.inputValue, that.data.inputNote, '1719883800', '1719891000', 'default');
           createEvent(res.data.access_token, that.data.calendarID,body).then((rs) => {
             tt.showToast({
               title: 'Tạo xong',
@@ -186,7 +186,7 @@ Page({
           })
         } else {
           tt.showToast({
-            title: 'Thiếu dữ liệu',
+            title: 'Thiếu dữ liệu tên hoặc loại lịch',
             icon: 'error',
           });
         }

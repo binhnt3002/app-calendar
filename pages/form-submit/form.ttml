@@ -5,7 +5,7 @@
     <block class="task-name">
       <view>
         <text>Việc cần làm</text>
-        <textarea class="input-text" type="text" id="task" placeholder="Nội dung công việc..." style="margin-top: 5px;margin-right: 10px;">
+        <textarea class="input-text" type="text" id="task" placeholder="Nội dung công việc..." style="margin-top: 5px;margin-right: 10px;" bindblur="inputTittle">
     </block>
 
     <view class="row">
@@ -79,12 +79,12 @@
     </view>
     <view class="note-info" style="margin-top: 10px;">
       <text>Ghi chú</text>
-      <textarea class="input-text" placeholder="Ghi chú ở đây......">
+      <textarea class="input-text" placeholder="Ghi chú ở đây......" bindblur="inputNote">
     </view>
     <block >
       <view class="d-flex justify-content-end">
         <!-- <button class="btn btn-primary" >Add event</button> -->
-        <button class="btn btn-primary m-2" >Tạo công việc</button>
+        <button class="btn btn-primary m-2" bindtap="createTask">Tạo công việc</button>
       </view>
     </block>
   </view>
