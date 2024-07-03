@@ -198,4 +198,14 @@ Page({
       }
     })
   },
+
+
+    dateTimeToTimestamp:function(date,time) { 
+      let datetime = new Date(`${date} ${time}`);
+      let timestamp = datetime.getTime();
+      return Math.floor(timestamp / 1000);
+  },
+
+
+
 });
