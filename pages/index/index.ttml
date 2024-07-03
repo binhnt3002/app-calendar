@@ -29,36 +29,51 @@
 
 
 <view class="container">
-  <view>
-    <view class="row">
-      <view class="col">
-        <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
-      </view>
-      <view class="col">
-        <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
-      </view>
-    </view>
-    <view class="row">
-      <view class="col-6" style="margin-top: 70px;">
-        <view>TIÊU CHUẢN KIẾN NGHỊ</view>
-        <view style="">
-          <view decode>A > 65% (càng cao càng tốt)</view>
-          <text decode>B &lt; 30% </text>
-          <view>C: 5-10%</view>
-        </view>
-        <view style="display: block; margin-top: 20px;">
-          <view decode>1: >65% (càng cao càng tốt) </view>
-          <text decode>2: &lt; 30% </text>
-          <view>3: 5-10%</view>
-          <view>Còn dư: 10% </view>
-        </view>
-      </view>
-      <view class="col-6">
 
+  <view class="row">
+    <view class="col-6">
+      <view class="dash-board">
         <chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" />
       </view>
     </view>
+    <view class="col-6">
+      <view class="dash-board">
+        <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
+      </view>
+    </view>
   </view>
+
+
+  <view class="row">
+    <view class="col-6">
+      <view class="dash-board">
+        <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
+      </view>
+    </view>
+    <view class="col-6">
+      <view class="text-list">
+        <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; ">TIÊU CHUẨN KIẾN NGHỊ</text>
+        <view class="row mt-2 me-2" >
+          <view class="col-6">
+            <text decode>A: > 65% (càng cao càng tốt) \n</text>
+            <text decode>B: &lt; 30% \n</text>
+            <text>C: 5-10%</text>
+          </view>
+          <view class="col-6">
+            <text decode>1: >65% (càng cao càng tốt)\n</text>
+            <text decode>2: &lt; 30% \n</text>
+            <text>3: 5-10% \n</text>
+            <text>Còn dư: 10% </text>
+          </view>
+        </view>
+        
+
+
+      </view>
+    </view>
+
+  </view>
+</view>
 
 
 </view>

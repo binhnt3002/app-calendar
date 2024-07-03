@@ -60,7 +60,7 @@ Page({
         item: {
           visible: true,
           padding: {
-            right: 100,
+            right: 50,
           },
           background: {
             style: {
