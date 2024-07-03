@@ -3,25 +3,31 @@ import { createEvent, getCalendarList, createRecord } from './function/apiFuncti
 
 Page({
   data: {
-    weekOptions: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
-    selectedWeek: 'Tuần 1',
-    importantOptions: ['A', 'B', 'C'],
-    selectedImportant: 'A',
-    categoryOptions: ['Việc Chính', 'Dự án', 'Việc phát sinh', 'Việc cần đôn đốc', 'Đọc & học'],
-    selectedCategory: 'Việc Chính',
-    urgentOptions: ['1', '2', '3'],
-    selectedurgent: '1',
-    selectedDate1: '', // Thêm selectedDate để lưu ngày và giờ được chọn
-    selectedTime1: '', // Thêm selectedTime để lưu ngày và giờ được chọn
-    selectedDate2: '', // Thêm selectedDate để lưu ngày và giờ được chọn
-    selectedTime2: '', // Thêm selectedTime để lưu ngày và giờ được chọn
-    calendarID: '',
+    weekOptions: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
+    selectedWeek: "Tuần 1",
+    importantOptions: ["A", "B", "C"],
+    selectedImportant: "A",
+    categoryOptions: [
+      "Việc Chính",
+      "Dự án",
+      "Việc phát sinh",
+      "Việc cần đôn đốc",
+      "Đọc & học",
+    ],
+    selectedCategory: "Việc Chính",
+    urgentOptions: ["1", "2", "3"],
+    selectedurgent: "1",
+    selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
+    selectedTime1: "", // Thêm selectedTime để lưu ngày và giờ được chọn
+    selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
+    selectedTime2: "", // Thêm selectedTime để lưu ngày và giờ được chọn
+    calendarID: "",
     lich: [],
-    chonlich: '',
+    chonlich: "",
     dataLich: [],
-    inputValue: '',
-    inputNote: '',
-    canvasId: 'chartId', // canvasId unique chart Id
+    inputValue: "",
+    inputNote: "",
+    canvasId: "chartId", // canvasId unique chart Id
     events: [], // events custom events
     styles: `
       height: 50vh;
@@ -29,75 +35,74 @@ Page({
     `, // style string
     // Chart configuration options
     spec: {
-      type: 'pie',
+      type: "pie",
       data: [
         {
-          id: 'data1',
+          id: "data1",
           values: [
-            { value: 335, name: 'Direct Access' },
-            { value: 310, name: 'Email Marketing' },
-            { value: 274, name: 'Affiliate Advertising' },
-            { value: 123, name: 'Search Engine' },
-            { value: 215, name: 'Video Advertising' }
-          ]
-        }
+            { value: 335, name: "Direct Access" },
+            { value: 310, name: "Email Marketing" },
+            { value: 274, name: "Affiliate Advertising" },
+            { value: 123, name: "Search Engine" },
+            { value: 215, name: "Video Advertising" },
+          ],
+        },
       ],
       outerRadius: 0.6,
-      categoryField: 'name',
-      valueField: 'value'
-    }
-
+      categoryField: "name",
+      valueField: "value",
+    },
   },
 
   inputTittle: function (e) {
     this.setData({
-      inputValue: e.detail.value
-    })
+      inputValue: e.detail.value,
+    });
   },
   inputNote: function (e) {
     this.setData({
-      inputNote: e.detail.value
-    })
+      inputNote: e.detail.value,
+    });
   },
 
   onCalendarChage: function (e) {
     this.setData({
       chonlich: this.data.lich[e.detail.value],
-      calendarID: this.data.dataLich.find(item => item.summary === this.data.lich[e.detail.value]).calendar_id
+      calendarID: this.data.dataLich.find(
+        (item) => item.summary === this.data.lich[e.detail.value]
+      ).calendar_id,
     });
   },
 
   onWeekChange: function (e) {
     this.setData({
-      selectedWeek: this.data.weekOptions[e.detail.value]
+      selectedWeek: this.data.weekOptions[e.detail.value],
     });
   },
 
   onImportantChange: function (e) {
     this.setData({
-      selectedImportant: this.data.importantOptions[e.detail.value]
+      selectedImportant: this.data.importantOptions[e.detail.value],
     });
   },
 
-
   onCategoryChange: function (e) {
     this.setData({
-      selectedCategory: this.data.categoryOptions[e.detail.value]
+      selectedCategory: this.data.categoryOptions[e.detail.value],
     });
   },
 
   onUrgentChange: function (e) {
     this.setData({
-      selectedurgent: this.data.urgentOptions[e.detail.value]
+      selectedurgent: this.data.urgentOptions[e.detail.value],
     });
   },
 
   onDateChange1: function (e) {
     this.setData({
-      selectedDate1: e.detail.value
+      selectedDate1: e.detail.value,
     });
   },
-
 
   // onDateChange1: function (e) {
   //   const selectedDate = e.detail.value; // Get selected date in YYYY-MM-DD format
@@ -109,7 +114,7 @@ Page({
   //     const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
   //   });
 
-  //   const dateTime = new Date(`${selectedDate} ${timePicker}`); 
+  //   const dateTime = new Date(`${selectedDate} ${timePicker}`);
 
   //   this.setData({
   //     selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
@@ -118,19 +123,19 @@ Page({
 
   onTimeChange1: function (e) {
     this.setData({
-      selectedTime1: e.detail.value
+      selectedTime1: e.detail.value,
     });
   },
 
   onDateChange2: function (e) {
     this.setData({
-      selectedDate2: e.detail.value
+      selectedDate2: e.detail.value,
     });
   },
 
   onTimeChange2: function (e) {
     this.setData({
-      selectedTime2: e.detail.value
+      selectedTime2: e.detail.value,
     });
   },
 
@@ -138,32 +143,32 @@ Page({
     this.setCalendarData();
     this.getUserInfo();
   },
-  getUserInfo(){
+  getUserInfo() {
     let that = this;
     tt.getStorage({
-      key: 'user_access_token',
-      success: (res) =>{
-        that.setData({userInfo:res.data});
-      }
-    })
+      key: "user_access_token",
+      success: (res) => {
+        that.setData({ userInfo: res.data });
+      },
+    });
   },
 
   setCalendarData() {
     let that = this;
     tt.getStorage({
-      key: 'user_access_token',
+      key: "user_access_token",
       success: (res) => {
         tt.showToast({
-          title: 'Đang lấy dữ liệu',
-          icon: 'loading',
-        })
+          title: "Đang lấy dữ liệu",
+          icon: "loading",
+        });
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
           console.log(result.data.calendar_list);
           that.setData({
             dataLich: result.data.calendar_list,
-            lich: result.data.calendar_list.map(item => item.summary),
-          })
+            lich: result.data.calendar_list.map((item) => item.summary),
+          });
         });
       }
     })
@@ -193,4 +198,14 @@ Page({
       }
     })
   },
+
+
+    dateTimeToTimestamp:function(date,time) { 
+      let datetime = new Date(`${date} ${time}`);
+      let timestamp = datetime.getTime();
+      return Math.floor(timestamp / 1000);
+  },
+
+
+
 });

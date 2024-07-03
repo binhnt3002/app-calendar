@@ -133,7 +133,8 @@ button{
   height: 50px !important;
   font-size: 15px !important;
   line-height: 5px !important;
-  border: none !important;
+  /* border: none !important; */
+  
 }
 .btn:hover{
   background-color: rgb(255, 255, 255);
@@ -168,7 +169,7 @@ button{
   flex: 1;
 }
 
-.btn:before,.btn:after{
+/* .btn:before,.btn:after{
   content:'';
   position:absolute;
   top:0;
@@ -187,7 +188,7 @@ button{
 .btn:hover:before,.btn:hover:after{
   width:70%;
   transition:800ms ease all;
-}
+} */
 .page-body-info {
   padding-bottom: 0;
   height: 260px;

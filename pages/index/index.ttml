@@ -27,9 +27,46 @@
 </view> -->
 
 
-<chart
-  canvas-id="chart"
-  spec="{{ spec }}"
-  styles="{{ styles }}"
-  events="{{ events }}"
-/>
+
+<view class="container">
+  <view>
+    <view class="row">
+      <view class="col">
+        <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
+      </view>
+      <view class="col">
+        <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
+      </view>
+    </view>
+    <view class="row">
+      <view class="col-6" style="margin-top: 70px;">
+        <view>TIÊU CHUẢN KIẾN NGHỊ</view>
+        <view style="">
+          <view decode>A > 65% (càng cao càng tốt)</view>
+          <text decode>B &lt; 30% </text>
+          <view>C: 5-10%</view>
+        </view>
+        <view style="display: block; margin-top: 20px;">
+          <view decode>1: >65% (càng cao càng tốt) </view>
+          <text decode>2: &lt; 30% </text>
+          <view>3: 5-10%</view>
+          <view>Còn dư: 10% </view>
+        </view>
+      </view>
+      <view class="col-6">
+
+        <chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" />
+      </view>
+    </view>
+  </view>
+
+
+</view>
+
+<!-- <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
+
+
+<chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
+
+
+<chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" /> -->
