@@ -27,9 +27,23 @@
 </view> -->
 
 
-<chart
-  canvas-id="chart"
-  spec="{{ spec }}"
-  styles="{{ styles }}"
-  events="{{ events }}"
-/>
+
+  <chart
+    canvas-id="chart"
+    spec="{{ spec }}"
+    styles="{{ styles }}"
+  />
+
+
+  <chart
+    canvas-id="iiii"
+    spec="{{ spec2 }}"
+    styles="{{ styles }}"
+  />
+
+
+  <chart
+    canvas-id="asdasdasd"
+    spec="{{ spec3 }}"
+    styles="{{ styles }}"
+  />

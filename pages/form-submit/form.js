@@ -128,7 +128,7 @@ Page({
   dateTimeToTimestamp:function(date,time) { 
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
-    // console.log(timestamp);
+    console.log(timestamp);
     return Math.floor(timestamp / 1000);
   },
 });

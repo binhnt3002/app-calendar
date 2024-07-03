@@ -15,9 +15,9 @@
 
     <view class="row">
       <view class="col-12 col-sm-3">
-        <text>Tuần</text>
-        <picker class="picker-text" mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
-          {{selectedWeek}}
+        <text>Chọn lịch</text>
+        <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+          {{chonlich}}
         </picker>
       </view>
       <view class="col-12 col-sm-3">
@@ -39,7 +39,6 @@
         </picker>
       </view>
     </view>
-   
     <block class="select-time">
       <view>
         <text>Số giờ cần có</text>

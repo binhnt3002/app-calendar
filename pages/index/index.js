@@ -15,12 +15,11 @@ Page({
     currentDate: '',
     days: [],
 
-    valuesRecord: 0,
+    userInfo: {},
 
     // Chart configuration options
 
-    canvasId: 'chartId', 
-    events: [], 
+    
     styles: `
       height: 50vh;
       width: 100%
@@ -32,14 +31,103 @@ Page({
           id: 'data1',
           values: [
             
-
           ]
         }
       ],
       outerRadius: 0.6,
-      categoryField: 'name',
-      valueField: 'value'
+      categoryField: 'type',
+      valueField: 'value',
+
+  //     label: {
+  //       visible: true,
+  //       position: 'top',
+  //       offset: 2,
+  //       style: {
+  //         fill: '#333',
+  //         fontWeight: 'bold'
+  //       }
+  // },
+
+      legends: {
+      visible: true,
+      orient: 'top',
+      item: {
+        visible: true,
+        padding: {
+          right: 100
+        },
+        background: {
+          style: {
+            fill: 'transparent'
+          }
+        } 
     }
+  },
+
+    },
+
+    spec2: {
+      type: 'pie',
+      data: [
+        {
+          id: 'data2',
+          values: [
+          ]
+        }
+      ],
+      outerRadius: 0.6,
+      categoryField: 'type',
+      valueField: 'value',
+
+      legends: {
+      visible: true,
+      orient: 'top',
+      item: {
+        visible: true,
+        padding: {
+          right: 10
+        },
+        background: {
+          style: {
+            fill: 'transparent'
+          }
+        } 
+    }
+  },
+
+    },
+
+    spec3: {
+      type: 'pie',
+      data: [
+        {
+          id: 'data3',
+          values: [
+          ]
+        }
+      ],
+      outerRadius: 0.6,
+      categoryField: 'type',
+      valueField: 'value',
+
+      legends: {
+      visible: true,
+      orient: 'top',
+      item: {
+        visible: true,
+        padding: {
+          right: 10
+        },
+        background: {
+          style: {
+            fill: 'transparent'
+          }
+        } 
+    }
+  },
+
+    },
+
   },
 
   onLoad() {
@@ -47,8 +135,19 @@ Page({
     this.getValueRecord();
   },
 
+  getDataUser() {
+    tt.getStorage({
+      key: 'user_info',
+      success: (res) => {
+        this.setData({
+          userInfo: res.data
+        })
+      }
+    });
+  },
 
   getValueRecord() {
+    this.getDataUser();
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
@@ -75,7 +174,7 @@ Page({
                 "field_name": "Person",
                 "operator": "is",
                 "value": [
-                  "ou_9bab5b13719c7d1a8776627231696951"
+                  this.data.userInfo.open_id
                 ]
               }
             ]
@@ -88,27 +187,75 @@ Page({
           icon:"loading"
         }),
         sendRequest(url, "POST", headers, body).then((result) => {
-          let a = 0;
           let that = this;
-          result.data.items.filter(item => item.fields["Thể loại"] == "Việc chính" ? a++ : a)
-          console.log(a);
-        
+          let spec3 = this.data.spec3;
+          spec3.data[0].values.push(
+            {
+              value: result.data.items.filter(item => item.fields["Cấp bách"] == "1")?.length || 0,
+              type: "Cấp bách 1"
+            },
+            {
+              value: result.data.items.filter(item => item.fields["Cấp bách"] == "2")?.length || 0,
+              type: "Cấp bách 2"
+            },
+            {
+              value: result.data.items.filter(item => item.fields["Cấp bách"] == "3")?.length || 0,
+              type: "Cấp bách 3"
+            },
+          )
+
+          let spec2 = that.data.spec2;
+          spec2.data[0].values.push(
+            {
+            value: result.data.items.filter(item => item.fields["Quan trọng"] == "A")?.length || 0,
+            type: "A"
+            },
+            {
+            value: result.data.items.filter(item => item.fields["Quan trọng"] == "B")?.length || 0,
+            type: "B"
+            },
+            {
+            value: result.data.items.filter(item => item.fields["Quan trọng"] == "C")?.length || 0,
+            type: "C"
+            },
+          )
+          
           let spec = that.data.spec
-          spec.data[0].values.push({
-            value : a,
-            name: "Việc chính"
-          })
+          spec.data[0].values.push(
+          
+            {
+              value :  result.data.items.filter(item => item.fields["Thể loại"] == "Việc chính")?.length || 0,
+              type: "Việc chính",
+            },
+
+            {
+              value: result.data.items.filter(item => item.fields["Thể loại"] == "Việc phát sinh")?.length || 0,
+              type: "Việc phát sinh"
+            },
+
+            {
+              value: result.data.items.filter(item => item.fields["Thể loại"] == "Việc cần đàn đốc")?.length || 0,
+              type: "Việc cần đàn đốc"
+            },
+
+            {
+              value: result.data.items.filter(item => item.fields["Thể loại"] == "Đọc & học")?.length || 0,
+              type: "Đọc & học"
+            },
+
+            {
+              value: result.data.items.filter(item => item.fields["Thể loại"] == "Dự án")?.length || 0,
+              type: "Cấp bách"
+            }
+          )
 
           that.setData({
-            spec
+            spec,spec2,spec3
           })
           tt.showToast({
             title:"Tải dữ liệu thành công",
             icon:"success"
           })
-
-          
-          
         })
       }  
     })
