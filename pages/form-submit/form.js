@@ -1,5 +1,5 @@
-import { bodyCreateTask } from './detailForm';
-import { createEvent, getCalendarList } from './function/apiFunction';
+import { bodyCreateTask, bodyCreateRecord } from './detailForm';
+import { createEvent, getCalendarList, createRecord } from './function/apiFunction';
 
 Page({
   data: {

@@ -78,4 +78,4 @@ const bodyCreateRecord = (vieccanlam,theloai,quantrong,capbach,sogio,nguoi,batda
   }
   return body
 }
-export { bodyCreateTask, bodyScheduleParticipants };
+export { bodyCreateTask, bodyScheduleParticipants, bodyCreateRecord };
