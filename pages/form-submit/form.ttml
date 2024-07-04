@@ -1,92 +1,95 @@
-<view class="container">
-  <view class="header">
-    <text>Biểu mẫu tạo công việc</text>
-  </view>
+<view class="page-task-form">
+  <view class="container">
+    <view class="header">
+      <text>Biểu mẫu dựa theo idea từ paint của nhân lê</text>
+    </view>
     <block class="task-name">
       <view>
         <text>Việc cần làm</text>
-        <textarea class="input-text" type="text" id="task" placeholder="Nội dung công việc..." style="margin-top: 5px;margin-right: 10px;" bindblur="inputTittle">
-    </block>
-
-    <view class="row">
-      <view class="col-12 col-sm-3">
-        <text>Chọn lịch</text>
-        <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
-          {{chonlich}}
-        </picker>
+        <textarea class="input-text" type="text" id="task" placeholder="Enter task..."
+          style="margin-top: 5px;margin-right: 10px;">
+      </block>
+  
+      <view class="row">
+        <view class="col-12 col-sm-3">
+          <text>Chọn lịch</text>
+          <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+            {{chonlich}}
+          </picker>
+        </view>
+        <view class="col-12 col-sm-3">
+          <text>Thể loại</text>
+          <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+            {{selectedCategory}}
+          </picker>
+        </view>
+        <view class="col-12 col-sm-3">
+          <text>Cấp bách</text>
+          <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
+            {{selectedurgent}}
+          </picker>
+        </view>
+        <view class="col-12 col-sm-3">
+          <text style="color:red;">Độ quan trọng</text>
+          <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+            {{selectedImportant}}
+          </picker>
+        </view>
       </view>
-      <view class="col-12 col-sm-3">
-        <text>Thể loại</text>
-        <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
-          {{selectedCategory}}
-        </picker>
+      <block class="select-time">
+        <view>
+          <text>Số giờ cần có</text>
+          <input class="input-text" type="number" name="txtTime" id="txtTime" />
+        </view>
+      </block>
+      <view class="row">
+        <view class="col-12 col-sm-6">
+          <view class="col-12">
+            <text style="margin-left: -10px;">Ngày giờ bắt đầu</text>
+          </view>
+          <view class="row">
+            <view class="col-5">
+              <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
+                {{selectedDate1}}
+              </picker>
+            </view>
+            <view class="col-3">
+              <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+                {{selectedTime1}}
+              </picker>
+            </view>
+          </view>
+        </view>
+        <view class="col-12 col-sm-6">
+          <view class="col-12">
+            <text style="margin-left: -10px;">Ngày giờ kết thúc</text>
+          </view>
+          <view class="row">
+            <view class="col-5">
+              <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange2">
+                {{selectedDate2}}
+              </picker>
+            </view>
+            <view class="col-3">
+              <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+                {{selectedTime2}}
+              </picker>
+            </view>
+          </view>
+        </view>
       </view>
-      <view class="col-12 col-sm-3">
-        <text>Cấp bách</text>
-        <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
-          {{selectedurgent}}
-        </picker>
+      <view class="note-info" style="margin-top: 10px;">
+        <text>Ghi chú</text>
+        <textarea class="input-text" placeholder="Ghi chú ở đâyy......">
       </view>
-      <view class="col-12 col-sm-3">
-        <text style="color:red;">Độ quan trọng</text>
-        <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
-          {{selectedImportant}}
-        </picker>
-      </view>
+      <block >
+        <view class="d-flex justify-content-end">
+          <!-- <button class="btn btn-primary" >Add event</button> -->
+          <button class="btn btn-primary m-2" >Add Task</button>
+        </view>
+      </block>
     </view>
-    <block class="select-time">
-      <view>
-        <text>Số giờ cần có</text>
-        <input class="input-text" type="time" name="txtTime" id="txtTime" />
-      </view>
-    </block>
-    <view class="row">
-      <view class="col-12 col-sm-6">
-        <view class="col-12">
-          <text style="margin-left: -10px;">Ngày giờ bắt đầu</text>
-        </view>
-        <view class="row">
-          <view class="col-5">
-            <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
-              {{selectedDate1}}
-            </picker>
-          </view>
-          <view class="col-3">
-            <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-              {{selectedTime1}}
-            </picker>
-          </view>
-        </view>
-      </view>
-      <view class="col-12 col-sm-6">
-        <view class="col-12">
-          <text style="margin-left: -10px;">Ngày giờ kết thúc</text>
-        </view>
-        <view class="row">
-          <view class="col-5">
-            <picker class="picker-date" mode="date" id="datePicker" start="{{selectedDate1}}" bindchange="onDateChange2">
-              {{selectedDate2}}
-            </picker>
-          </view>
-          <view class="col-3">
-            <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-              {{selectedTime2}}
-            </picker>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="note-info" style="margin-top: 10px;">
-      <text>Ghi chú</text>
-      <textarea class="input-text" placeholder="Ghi chú ở đây......" bindblur="inputNote">
-    </view>
-    <block >
-      <view class="d-flex justify-content-end">
-        <!-- <button class="btn btn-primary" >Add event</button> -->
-        <button class="btn btn-primary m-2" bindtap="createTask">Tạo công việc</button>
-      </view>
-    </block>
+  
   </view>
-
+  
 </view>
-
