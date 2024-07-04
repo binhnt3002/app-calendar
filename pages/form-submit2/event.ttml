@@ -2,11 +2,11 @@
   <view class="header">
     <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
-  <view class="body">
+  <view class="body" style="background-color: rgb(229, 229, 229,1);">
     <view class="box">
       <view class="row">
         <view class="col-7">
-          <text class="block">Danh sách event</text>
+          <text class="block">Danh sách sự kiện</text>
           <scroll-view class="event-box" scroll-y="true">
             <block wx:for="{{events}}" wx:key="*this">
               <view class="event-item">
@@ -38,13 +38,14 @@
               <input placeholder="nhập số phút">
             </view>
             <view class="evt-col">
-            <view style="color: brown; margin-right: 5px; font-weight: bold; ">LẶP LẠI </view>
-              <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{frequencyOptions}}" bindchange="onFrequencyChange">
-                <view class="picker-text">
+              <view style="color: brown; margin-right: 5px; font-weight: bold; ">LẶP LẠI </view>
+                <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{frequencyOptions}}" bindchange="onFrequencyChange">
+                <view class="picker-text" style="background-color: rgb(225, 225, 225, 0.8);">
                   {{selectedFrequency}}
                 </view>
-              </picker>
-            </view>
+                </picker>
+              </view>
+            
             <view class="evt-col">
               <input placeholder="quyền 3 cái">
             </view>
@@ -65,6 +66,6 @@
 
   </view>
   <view class="footer">
-    <!-- Nội dung của footer -->
+    Nội dung của footer
   </view>
 </view>

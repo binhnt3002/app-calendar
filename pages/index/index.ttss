@@ -156,5 +156,5 @@
   box-shadow: 10px 10px 30px rgba(106, 105, 105, 0.2);
 }
 text{
-
+ font-size: 20px;
 }

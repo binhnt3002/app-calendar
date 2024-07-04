@@ -128,6 +128,32 @@ Page({
         },
       },
     },
+
+    spec4: {
+      type: "bar",
+      data: [
+        {
+          id: "data2",
+          values: [],
+        },
+      ],
+      xField: 'type',
+      yField: 'value',
+      seriesField: 'type',
+
+      legends: [{ 
+        visible: true, 
+        position: 'middle', 
+        orient: 'bottom' ,
+        item: {
+          visible: true,
+          padding: {
+            right: 10,
+          },
+         
+        },
+    }],
+    },
   },
 
   onLoad() {
@@ -279,10 +305,36 @@ Page({
               }
             );
 
+            let spec4 = that.data.spec4;
+            spec4.data[0].values.push(
+              {
+                value:
+                  result.data.items.filter(
+                    (item) => item.fields["Quan trọng"] == "A"
+                  )?.length || 0,
+                type: "A",
+              },
+              {
+                value:
+                  result.data.items.filter(
+                    (item) => item.fields["Quan trọng"] == "B"
+                  )?.length || 0,
+                type: "B",
+              },
+              {
+                value:
+                  result.data.items.filter(
+                    (item) => item.fields["Quan trọng"] == "C"
+                  )?.length || 0,
+                type: "C",
+              }
+            );
+
             that.setData({
               spec,
               spec2,
               spec3,
+              spec4,
             });
             tt.showToast({
               title: "Tải dữ liệu thành công",
@@ -293,63 +345,5 @@ Page({
     });
   },
 
-  renderCalendar() {
-    const { currYear, currMonth, date, months } = this.data;
-    let firstDayofMonth = new Date(currYear, currMonth, 1).getDay();
-    let lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate();
-    let lastDayofMonth = new Date(
-      currYear,
-      currMonth,
-      lastDateofMonth
-    ).getDay();
-    let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate();
 
-    let liTag = [];
-
-    for (let i = firstDayofMonth; i > 0; i--) {
-      liTag.push({ day: lastDateofLastMonth - i + 1, inactive: true });
-    }
-
-    for (let i = 1; i <= lastDateofMonth; i++) {
-      let isToday =
-        i === date.getDate() &&
-        currMonth === new Date().getMonth() &&
-        currYear === new Date().getFullYear();
-      liTag.push({ day: i, active: isToday });
-    }
-
-    for (let i = lastDayofMonth; i < 6; i++) {
-      liTag.push({ day: i - lastDayofMonth + 1, inactive: true });
-    }
-
-    this.setData({
-      currentDate: `${months[currMonth]} ${currYear}`,
-      days: liTag,
-    });
-  },
-
-  handlePrevNext(e) {
-    const { id } = e.currentTarget;
-    let { currYear, currMonth, date } = this.data;
-
-    currMonth = id === "prev" ? currMonth - 1 : currMonth + 1;
-
-    if (currMonth < 0 || currMonth > 11) {
-      let newDate = new Date(currYear, currMonth, 1);
-      currYear = newDate.getFullYear();
-      currMonth = newDate.getMonth();
-      date = newDate;
-    } else {
-      date = new Date();
-    }
-
-    this.setData({
-      currYear,
-      currMonth,
-      date,
-    });
-
-    this.renderCalendar();
-    this.fetchUserData();
-  },
 });
