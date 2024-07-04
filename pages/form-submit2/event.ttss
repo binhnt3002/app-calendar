@@ -27,6 +27,8 @@
   border: 2px solid rgb(226, 202, 202);
   padding: 10px;
   margin-bottom: 20px;
+  border-radius: 5px;
+
 }
 
 .row {
@@ -75,9 +77,10 @@
   border: 1px solid #ccc;
   margin-top: 10px;
   width: calc(100% - 22px); /* Để lại khoảng trống 2px bên trong khung */
-  max-height: 300px; /* Giới hạn chiều cao để hiển thị tối đa 15 dòng */
+  height: 100px; /* Giới hạn chiều cao để hiển thị tối đa 15 dòng */
   overflow-y: scroll;
   padding: 5px; /* Thêm padding vào bố cục nội dung */
+  border-radius: 5px;
   box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước tổng */
 }
 
@@ -121,6 +124,7 @@
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
+  border-radius: 5px;
 }
 
 .event-daily .evt-col {

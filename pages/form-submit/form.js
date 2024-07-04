@@ -1,5 +1,5 @@
-import { bodyCreateTask } from './detailForm';
-import { createEvent, getCalendarList } from './function/apiFunction';
+import { bodyCreateTask } from "./detailForm";
+import { createEvent, getCalendarList } from "./function/apiFunction";
 
 Page({
   data: {
@@ -170,42 +170,46 @@ Page({
             lich: result.data.calendar_list.map((item) => item.summary),
           });
         });
-      }
-    })
+      },
+    });
   },
 
   createTask() {
     let that = this;
     console.log(that.data.inputValue);
     tt.getStorage({
-      key: 'user_access_token',
+      key: "user_access_token",
       success: (res) => {
-        if (that.data.inputValue != ''&& that.data.calendarID !='') {
+        if (that.data.inputValue != "" && that.data.calendarID != "") {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
-          const body = bodyCreateTask(that.data.inputValue, that.data.inputNote, '1719883800', '1719891000', 'default');
-          createEvent(res.data.access_token, that.data.calendarID,body).then((rs) => {
-            tt.showToast({
-              title: 'Tạo xong',
-              icon: 'success',
-            });
-          })
+          const body = bodyCreateTask(
+            that.data.inputValue,
+            that.data.inputNote,
+            "1719883800",
+            "1719891000",
+            "default"
+          );
+          createEvent(res.data.access_token, that.data.calendarID, body).then(
+            (rs) => {
+              tt.showToast({
+                title: "Tạo xong",
+                icon: "success",
+              });
+            }
+          );
         } else {
           tt.showToast({
-            title: 'Thiếu dữ liệu tên hoặc loại lịch',
-            icon: 'error',
+            title: "Thiếu dữ liệu tên hoặc loại lịch",
+            icon: "error",
           });
         }
-      }
-    })
+      },
+    });
   },
 
-
-    dateTimeToTimestamp:function(date,time) { 
-      let datetime = new Date(`${date} ${time}`);
-      let timestamp = datetime.getTime();
-      return Math.floor(timestamp / 1000);
+  dateTimeToTimestamp: function (date, time) {
+    let datetime = new Date(`${date} ${time}`);
+    let timestamp = datetime.getTime();
+    return Math.floor(timestamp / 1000);
   },
-
-
-
 });
