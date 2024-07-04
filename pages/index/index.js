@@ -40,7 +40,7 @@ Page({
           values: [],
         },
       ],
-      outerRadius: 0.6,
+      outerRadius: 0.8,
       categoryField: "type",
       valueField: "value",
 
@@ -60,7 +60,7 @@ Page({
         item: {
           visible: true,
           padding: {
-            right: 50,
+            right: 30,
           },
           background: {
             style: {
@@ -79,7 +79,7 @@ Page({
           values: [],
         },
       ],
-      outerRadius: 0.6,
+      outerRadius: 0.8,
       categoryField: "type",
       valueField: "value",
 
@@ -108,7 +108,7 @@ Page({
           values: [],
         },
       ],
-      outerRadius: 0.6,
+      outerRadius: 0.8,
       categoryField: "type",
       valueField: "value",
 

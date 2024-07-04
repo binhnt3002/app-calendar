@@ -32,7 +32,7 @@ height: 1000px;
 }
 .header {
   /* height: 50%; */
-  background-color: #007bff;
+  background: linear-gradient(135deg, rgba(34, 193, 195, 1) 30%, rgb(67, 79, 248) 70%);
   margin-bottom: 10px;
   color: white;
   text-align: center;

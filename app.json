@@ -18,21 +18,21 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "images/icon_API_HL.png",
-        "selectedIconPath": "image/clock-with-white-face.png",
-        "text": "Thống kê"
+        "iconPath": "images/chart-line-solid.png",
+        "selectedIconPath": "images/chart.svg",
+        "text": "\t   Thống kê hằng tuần"
       },
       {
         "pagePath": "pages/form-submit/form",
-        "iconPath": "images/icon_API_HL.png",
-        "selectedIconPath": "image/clock-with-white-face.png",
-        "text": "Công việc"
+        "iconPath": "images/task-black.svg",
+        "selectedIconPath": "images/tasks-blue.svg",
+        "text": "\t   Tạo công việc"
       },
       {
         "pagePath": "pages/form-submit2/event",
-        "iconPath": "images/icon_API_HL.png",
-        "selectedIconPath": "image/clock-with-white-face.png",
-        "text": "Sự kiện"
+        "iconPath": "images/event-black.svg",
+        "selectedIconPath": "images/event-blue.svg",
+        "text": "\t   Tạo sự kiện"
       }
     ]
   },
