@@ -64,7 +64,7 @@
         </view>
         <view class="row">
           <view class="col-5">
-            <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange2">
+            <picker class="picker-date" mode="date" id="datePicker" start="{{selectedDate1}}" bindchange="onDateChange2">
               {{selectedDate2}}
             </picker>
           </view>
