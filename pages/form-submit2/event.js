@@ -1,17 +1,21 @@
 import { sendRequest } from "../../utils/sendRequest";
-import { getCalendarList } from "../form-submit/function/apiFunction";
+import { getCalendarList, createInvitation } from "../form-submit/function/apiFunction";
+import { bodyScheduleParticipants } from "../form-submit/detailForm";
 Page({
   data: {
     events: [],
-    dataEvents:[],
+    eventsID: [],
     invite: [],
     inviteOpenId: [],
+    avatarUrl:[],
+    inviteData: [],
     frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
     selectedFrequency: 'Hàng ngày',
     calendarID: '',
     lich: [],
     chonlich: '',
     dataLich: [],
+    idCongViec:'',
   },
 
   onLoad() {
@@ -46,7 +50,8 @@ Page({
     let that = this;
     let invite = that.data.invite;
     let inviteOpenId = that.data.inviteOpenId;
-
+    let avatarUrl = that.data.avatarUrl;
+    let inviteData = that.data.inviteData;
     tt.chooseContact({
       multi: true,
       ignore: false,
@@ -62,16 +67,26 @@ Page({
         console.log(res);
 
         res.data.map(item => {
-          invite.push(item.name),
-          inviteOpenId.push(item.openId)
+            invite.push({name: item.name}),
+            inviteOpenId.push(item.openId),
+            avatarUrl.push({url: item.avatarUrls[0]})
         })
+        
+        inviteData = invite.map((item, index) => ({
+          name: item.name,
+          url: avatarUrl[index] ? avatarUrl[index].url: undefined // Handle potential mismatched lengths
+        }));
 
         that.setData({
           invite,
-          inviteOpenId
+          inviteOpenId,
+          avatarUrl,
+          inviteData
         })
         console.log(that.data.invite);
         console.log(that.data.inviteOpenId);
+        console.log(that.data.avatarUrl);
+        console.log(that.data.inviteData);
       },
       fail(res) {
         console.log(`chooseContact fail: ${JSON.stringify(res)}`);
@@ -80,20 +95,23 @@ Page({
   },
   onReady() {
     let that = this;
-    that.setCalendarDataEvent();
+    // that.setCalendarDataEvent();
     that.listTask();
   },
 
   listTask() {
+    tt.showToast({
+      title: 'Đang lấy dữ liệu',
+      icon: 'loading',
+    })
     let that = this;
     let events = that.data.events;
-    let dataEvt = that.data.dataEvents;
+    let eventsID = that.data.eventsID;
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
-        const url = 'https://open.larksuite.com/open-apis/calendar/v4/calendars/'+that.data.calendarID+'/events';
-        const url2 = 'https://open.larksuite.com/open-apis/bitable/v1/apps/FeaubtGlja6dtds66P7l6iYbgwd/tables/tblPjWdyJh5OdMZe/records/search';
-        
+        const url = 'https://open.larksuite.com/open-apis/bitable/v1/apps/FeaubtGlja6dtds66P7l6iYbgwd/tables/tblPjWdyJh5OdMZe/records/search';
+
         const headers = {
           'Authorization': `Bearer ${res.data.access_token}`,
           'Content-Type': 'application/json'
@@ -106,7 +124,7 @@ Page({
           "sort": [
             {
               "field_name": "Thể loại",
-              "desc": true
+              "desc": false
             }
           ],
           "filter": {
@@ -123,18 +141,57 @@ Page({
           },
           "automatic_fields": false
         }
-        sendRequest(url2, 'POST', headers, body).then((resp) => {
+        sendRequest(url, 'POST', headers, body).then((resp) => {
+          tt.showToast({
+            title: 'Hoàn tất dữ liệu',
+            icon: 'success',
+          })
           console.log(resp);
-          resp.data.items.map (i => i.fields["Việc cần làm"].map(item => events.push(item.text)[0]));
-          resp.data.items.map (i => i.fields["EventID"].map(item => dataEvt.push(item.text)[0]));
-          that.setData({dataEvt})
-          that.setData({events})
+          resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));
+          resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
+
+          const updatedEvents = events.map((event, index) => {
+            // Check if the index matches an ID in eventsID (assuming arrays have same length)
+            if (index < eventsID.length) {
+              return {
+                ...event, // Spread existing event properties
+                value: eventsID[index],
+                checked: false,
+              };
+            } else {
+              // Return the original event if no corresponding ID is found
+              return event;
+            }
+          });
+          events = updatedEvents;
+          that.setData({ eventsID })
+          that.setData({ events })
           console.log(that.data.events);
-          console.log(that.data.dataEvents);
         })
       }
     })
   },
+
+  checkboxChange: function (e) {
+    let that = this;
+    let currentValue = e.currentTarget.dataset;
+    console.log(currentValue);
+    that.setData({
+      events: that.data.events.map(i => {
+        if (i.value == currentValue.eventid && i.checked == false) {
+          i.checked = !currentValue.checked;
+        }
+        else {
+          i.checked = false;
+        }
+        return i
+      }),
+      idCongViec: currentValue.eventid
+    })
+    console.log('Checkbox change，value：', that.data.idCongViec)
+    console.log(that.data.events);
+  },
+
   setCalendarDataEvent() {
     let that = this;
     tt.getStorage({

@@ -180,7 +180,10 @@ Page({
     let endTime = that.dateTimeToTimestamp(that.data.selectedDate2, that.data.selectedTime2);
     let input = that.data.inputValue;
     let inputNote = that.data.inputNote;
-
+    tt.showToast({
+      title: 'Vui lòng chờ...',
+      icon: 'load',
+    });
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
