@@ -7,7 +7,7 @@
     <view class="body">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
-        <textarea class="input-text" type="text" id="task" placeholder="Enter task..."
+        <textarea class="input-text" type="text" id="task" bindblur="inputTittle" placeholder="Enter task..."
           style="margin-top: 5px;margin-right: 10px;">
       </block>
       <view class="row">
@@ -83,7 +83,7 @@
         </view>
         <view class="note-info" style="margin-top: 1px;">
           <text class="title1">Ghi chú</text>
-          <textarea class="input-text" placeholder="Ghi chú ở đâyy......">
+          <textarea class="input-text" bindblur="inputNote" placeholder="Ghi chú ở đâyy......">
         </view>
         <block >
           <view class="d-flex justify-content-end">

@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { bodyCreateTask } from "./detailForm";
-import { createEvent, getCalendarList } from "./function/apiFunction";
-=======
 import { bodyCreateTask, bodyCreateRecord } from './detailForm';
 import { createEvent, getCalendarList, createRecord } from './function/apiFunction';
->>>>>>> origin/nhanver2
 
 Page({
   data: {
@@ -33,7 +28,7 @@ Page({
     inputValue: "",
     inputNote: "",
     canvasId: "chartId", // canvasId unique chart Id
-    eventId:'',
+    eventId: '',
     styles: `
       height: 50vh;
       width: 100%
@@ -181,50 +176,30 @@ Page({
 
   createTask() {
     let that = this;
-    let startTime = that.dateTimeToTimestamp(that.data.selectedDate1,that.data.selectedTime1);
-    let endTime = that.dateTimeToTimestamp(that.data.selectedDate2,that.data.selectedTime2);
+    let startTime = that.dateTimeToTimestamp(that.data.selectedDate1, that.data.selectedTime1);
+    let endTime = that.dateTimeToTimestamp(that.data.selectedDate2, that.data.selectedTime2);
     let input = that.data.inputValue;
     let inputNote = that.data.inputNote;
 
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
-<<<<<<< HEAD
-        if (that.data.inputValue != "" && that.data.calendarID != "") {
-          //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
-          const body = bodyCreateTask(
-            that.data.inputValue,
-            that.data.inputNote,
-            "1719883800",
-            "1719891000",
-            "default"
-          );
-          createEvent(res.data.access_token, that.data.calendarID, body).then(
-            (rs) => {
-              tt.showToast({
-                title: "Tạo xong",
-                icon: "success",
-              });
-            }
-          );
-        } else {
-          tt.showToast({
-            title: "Thiếu dữ liệu tên hoặc loại lịch",
-            icon: "error",
-=======
-        if (input != '' && that.data.calendarID != '' && that.data.selectedDate1 !='' && that.data.selectedDate2 !='' && that.data.selectedTime1!='' && that.data.selectedTime2 !='') {
+        if (input != '' && that.data.calendarID != '' && that.data.selectedDate1 != '' && that.data.selectedDate2 != '' && that.data.selectedTime1 != '' && that.data.selectedTime2 != '') {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
           const body = bodyCreateTask(input, inputNote, startTime, endTime, 'default');
           createEvent(res.data.access_token, that.data.calendarID, body).then((rs) => {
             console.log(rs);
-            that.setData({eventId: rs.data.event.event_id});
+            that.setData({ eventId: rs.data.event.event_id });
             console.log(that.data.eventId);
             tt.showToast({
               title: 'Task Calendar',
               icon: 'success',
             });
-            const body2 = bodyCreateRecord(input,that.data.selectedCategory,that.data.selectedImportant, that.data.selectedurgent,5,res.data.open_id,startTime,endTime,inputNote,that.data.eventId);
-            createRecord(res.data.access_token,body2).then((rs) =>{
+            const body2 = bodyCreateRecord(input, that.data.selectedCategory, 
+              that.data.selectedImportant, that.data.selectedurgent, 
+              5, res.data.open_id, startTime, endTime, 
+              inputNote, that.data.eventId);
+            createRecord(res.data.access_token, body2).then((rs) => {
               console.log(rs);
               tt.showToast({
                 title: 'Đã lưu dữ liệu',
@@ -236,17 +211,12 @@ Page({
           tt.showToast({
             title: 'Vui lòng nhập đầy đủ dữ liệu',
             icon: 'error',
->>>>>>> origin/nhanver2
           });
         }
       },
     });
   },
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/nhanver2
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
