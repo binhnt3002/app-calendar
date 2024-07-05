@@ -173,7 +173,7 @@ Page({
               {
                 field_name: "Person",
                 operator: "is",
-                value: [this.data.userInfo.open_id],
+                value: [res.data.open_id],
               },
             ],
           },

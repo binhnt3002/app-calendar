@@ -9,7 +9,11 @@
   font-family: Arial, sans-serif;
   background-color: #fff;
 }
-
+.userinfo-avatar {
+  border-radius: 128rpx;
+  width: 12rpx;
+  height: 12rpx;
+}
 .header {
   background-color: #007bff;
   color: white;
