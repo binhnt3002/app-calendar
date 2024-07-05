@@ -67,15 +67,15 @@ const bodyCreateRecord = (vieccanlam,theloai,quantrong,capbach,sogio,nguoi,batda
       "Quan trọng": quantrong,
       "Cấp bách": capbach,
       "Số giờ cần có":sogio,
-      "Người": [{
+      "Person": [{
         "id": nguoi
       }],
-      "Ngày - Giờ bắt đầu": 1674206443000,
-      "Ngày - Giờ kết thúc": 1674206443000,
+      "Ngày - Giờ bắt đầu": batdau,
+      "Ngày - Giờ kết thúc": ketthuc,
       "Ghi chú": ghichu,
       "EventID": evId,
     }
   }
   return body
 }
-export { bodyCreateTask, bodyScheduleParticipants };
+export { bodyCreateTask, bodyScheduleParticipants, bodyCreateRecord };

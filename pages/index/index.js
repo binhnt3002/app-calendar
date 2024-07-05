@@ -30,7 +30,7 @@ Page({
 
     styles: `
       height: 50vh;
-      width: 100%
+      width: 100%;
     `,
     spec: {
       type: "pie",
@@ -211,6 +211,7 @@ Page({
           icon: "loading",
         }),
           sendRequest(url, "POST", headers, body).then((result) => {
+            console.log(result);
             let that = this;
             let spec3 = this.data.spec3;
             spec3.data[0].values.push(
