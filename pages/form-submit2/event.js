@@ -16,6 +16,7 @@ Page({
     chonlich: '',
     dataLich: [],
     idCongViec:'',
+    attendees: [],
   },
 
   onLoad() {
@@ -81,12 +82,10 @@ Page({
           invite,
           inviteOpenId,
           avatarUrl,
-          inviteData
+          inviteData,
         })
-        console.log(that.data.invite);
+
         console.log(that.data.inviteOpenId);
-        console.log(that.data.avatarUrl);
-        console.log(that.data.inviteData);
       },
       fail(res) {
         console.log(`chooseContact fail: ${JSON.stringify(res)}`);
@@ -95,10 +94,13 @@ Page({
   },
   onReady() {
     let that = this;
-    // that.setCalendarDataEvent();
+    that.setCalendarDataEvent();
+    
+  },
+  onShow(){
+    let that = this;
     that.listTask();
   },
-
   listTask() {
     tt.showToast({
       title: 'Đang lấy dữ liệu',
@@ -192,6 +194,38 @@ Page({
     console.log(that.data.events);
   },
 
+  addEventParticipate(){
+    let that = this;
+    let inviteOpenId = that.data.inviteOpenId;
+    let attendees = that.data.attendees;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        const access_token = res.data.access_token;
+        inviteOpenId.forEach((id, index) => {
+          const body = bodyScheduleParticipants("user", id, res);
+          createInvitation(access_token,
+                           "feishu.cn_faIOwqQ2lmmKlc6qu9NSue@group.calendar.feishu.cn",
+                           that.data.idCongViec, body)
+            .then((result) => {
+              console.log(result);
+              // that.setData({attendees})
+              tt.showToast({
+                title: 'Đã mời',
+                icon: 'success',
+              });
+            })
+            .catch((error) => {
+              console.error("Error sending invitation:", error);
+              // Handle invitation sending errors gracefully (optional)
+            });
+        });
+
+
+      }
+    })
+  },
+
   setCalendarDataEvent() {
     let that = this;
     tt.getStorage({
@@ -212,5 +246,21 @@ Page({
       }
     })
   },
+  onLoad(){
+    let that = this;
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        const access_token = res.data.access_token;
+        const headers = {
+          'Authorization': `Bearer ${res.data.access_token}`,
+          'Content-Type': 'application/json'
+        }
+        sendRequest("https://open.larksuite.com/open-apis/calendar/v4/calendars/feishu.cn_faIOwqQ2lmmKlc6qu9NSue@group.calendar.feishu.cn/events",'GET',headers,{}).then((res)=>{
+          console.log(res);
+        })
+      }
+    })
+  }
 
 });

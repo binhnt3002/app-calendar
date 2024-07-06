@@ -8,13 +8,13 @@ Page({
     importantOptions: ["A", "B", "C"],
     selectedImportant: "A",
     categoryOptions: [
-      "Việc Chính",
+      "Việc chính",
       "Dự án",
       "Việc phát sinh",
       "Việc cần đôn đốc",
       "Đọc & học",
     ],
-    selectedCategory: "Việc Chính",
+    selectedCategory: "Việc chính",
     urgentOptions: ["1", "2", "3"],
     selectedurgent: "1",
     selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
@@ -195,10 +195,10 @@ Page({
             that.setData({eventId: rs.data.event.event_id});
             console.log(that.data.eventId);
             tt.showToast({
-              title: 'Task Calendar',
+              title: 'Tạo xong công việc',
               icon: 'success',
             });
-            const body2 = bodyCreateRecord(input,that.data.selectedCategory,that.data.selectedImportant, that.data.selectedurgent,5,res.data.open_id,startTime,endTime,inputNote,that.data.eventId);
+            const body2 = bodyCreateRecord(input,that.data.selectedCategory,that.data.selectedImportant, that.data.selectedurgent,5,res.data.open_id,startTime,endTime,inputNote,that.data.eventId,that.data.calendarID);
             createRecord(res.data.access_token,body2).then((rs) =>{
               console.log(rs);
               tt.showToast({

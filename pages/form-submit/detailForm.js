@@ -53,12 +53,12 @@ const bodyScheduleParticipants = (type,id,res) => {
       }
     ],
     "need_notification": true,
-    // "is_enable_admin": false,
+    "is_enable_admin": false,
     // "instance_start_time_admin": "1647320400"
   }
   return body;
 }
-const bodyCreateRecord = (vieccanlam,theloai,quantrong,capbach,sogio,nguoi,batdau,ketthuc,ghichu,evId) =>{
+const bodyCreateRecord = (vieccanlam,theloai,quantrong,capbach,sogio,nguoi,batdau,ketthuc,ghichu,evId,caId) =>{
   const body=
   {
     "fields": {
@@ -74,6 +74,7 @@ const bodyCreateRecord = (vieccanlam,theloai,quantrong,capbach,sogio,nguoi,batda
       "Ngày - Giờ kết thúc": ketthuc,
       "Ghi chú": ghichu,
       "EventID": evId,
+      "CalendarID": caId,
     }
   }
   return body

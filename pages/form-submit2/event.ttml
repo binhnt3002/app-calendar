@@ -57,7 +57,7 @@
         </view>
         <view class="col-2">
           <view class="form-buttons">
-            <button class="btn" bindtap="">Thêm sự kiện</button>
+            <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
           </view>
         </view>
         <view class="col-2">
