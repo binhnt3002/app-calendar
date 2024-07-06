@@ -1,5 +1,5 @@
 import { bodyCreateTask } from "./detailForm";
-import { createEvent, getCalendarList } from "./function/apiFunction";
+import { createEvent, createRecord, getCalendarList } from "./function/apiFunction";
 
 Page({
   data: {
@@ -27,31 +27,7 @@ Page({
     dataLich: [],
     inputValue: "",
     inputNote: "",
-    canvasId: "chartId", // canvasId unique chart Id
-    events: [], // events custom events
-    styles: `
-      height: 50vh;
-      width: 100%
-    `, // style string
-    // Chart configuration options
-    spec: {
-      type: "pie",
-      data: [
-        {
-          id: "data1",
-          values: [
-            { value: 335, name: "Direct Access" },
-            { value: 310, name: "Email Marketing" },
-            { value: 274, name: "Affiliate Advertising" },
-            { value: 123, name: "Search Engine" },
-            { value: 215, name: "Video Advertising" },
-          ],
-        },
-      ],
-      outerRadius: 0.6,
-      categoryField: "name",
-      valueField: "value",
-    },
+    inputHours: 0,
   },
 
   inputTittle: function (e) {
@@ -62,6 +38,12 @@ Page({
   inputNote: function (e) {
     this.setData({
       inputNote: e.detail.value,
+    });
+  },
+
+  inputNeededHours: function (e) {
+    this.setData({
+      inputHours: e.detail.value,
     });
   },
 
@@ -102,24 +84,12 @@ Page({
     this.setData({
       selectedDate1: e.detail.value,
     });
+    if (this.data.selectedDate1 > this.data.selectedDate2) {
+      this.setData({
+        selectedDate2: this.data.selectedDate1,
+      })
+    }
   },
-
-  // onDateChange1: function (e) {
-  //   const selectedDate = e.detail.value; // Get selected date in YYYY-MM-DD format
-
-  //   // Get selected time from another input field or event (e.g., time picker)
-  //   const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
-
-  //   timePicker.addEventListener('timeChange', (event) => {
-  //     const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
-  //   });
-
-  //   const dateTime = new Date(`${selectedDate} ${timePicker}`);
-
-  //   this.setData({
-  //     selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
-  //   });
-  // },
 
   onTimeChange1: function (e) {
     this.setData({
@@ -131,6 +101,11 @@ Page({
     this.setData({
       selectedDate2: e.detail.value,
     });
+    if (this.data.selectedDate1 > this.data.selectedDate2) {
+      this.setData({
+        selectedDate2: this.data.selectedDate1,
+      })
+    }
   },
 
   onTimeChange2: function (e) {
@@ -139,19 +114,13 @@ Page({
     });
   },
 
-  onReady() {
+  
+
+
+  onShow() {
     this.setCalendarData();
-    this.getUserInfo();
   },
-  getUserInfo() {
-    let that = this;
-    tt.getStorage({
-      key: "user_access_token",
-      success: (res) => {
-        that.setData({ userInfo: res.data });
-      },
-    });
-  },
+
 
   setCalendarData() {
     let that = this;
@@ -180,23 +149,47 @@ Page({
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
-        if (that.data.inputValue != "" && that.data.calendarID != "") {
+        if (that.data.inputValue != "" && that.data.selectedDate1 != "" && that.data.selectedTime1 != "" && that.data.selectedDate2 != "" && that.data.selectedTime2 != "") {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
           const body = bodyCreateTask(
             that.data.inputValue,
             that.data.inputNote,
-            "1719883800",
-            "1719891000",
+            this.dateTimeToTimestamp(
+              that.data.selectedDate1,
+              that.data.selectedTime1
+            ),
+            this.dateTimeToTimestamp(
+              that.data.selectedDate2,
+              that.data.selectedTime2
+            ),
             "default"
           );
           createEvent(res.data.access_token, that.data.calendarID, body).then(
             (rs) => {
+              console.log(rs);
+
               tt.showToast({
                 title: "Tạo xong",
                 icon: "success",
               });
             }
           );
+          const body2 = {
+            "fields": {
+              "Việc cần làm": that.data.inputValue,
+              "Thể loại": that.data.selectedCategory,
+              "Quan trọng": that.data.selectedImportant,
+              "Cấp bách": that.data.selectedurgent,
+              "Số giờ cần có": that.data.inputHours,
+              "Person": [{
+                "id": res.data.open_id,
+              }]
+              
+            }
+          }
+          createRecord(res.data.access_token, body2).then((rs) => {
+            console.log(rs);
+          });
         } else {
           tt.showToast({
             title: "Thiếu dữ liệu tên hoặc loại lịch",
@@ -210,6 +203,6 @@ Page({
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
-    return Math.floor(timestamp / 1000);
+    return (Math.floor(timestamp / 1000)).toString();
   },
 });

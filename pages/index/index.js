@@ -150,30 +150,18 @@ Page({
           padding: {
             right: 10,
           },
-         
         },
     }],
     },
   },
 
-  onLoad() {
-    // this.renderCalendar();
-    this.getValueRecord();
+  onShow() {
+    this.reloadDashboard();
   },
 
-  getDataUser() {
-    tt.getStorage({
-      key: "user_info",
-      success: (res) => {
-        this.setData({
-          userInfo: res.data,
-        });
-      },
-    });
-  },
+
 
   getValueRecord() {
-    this.getDataUser();
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -199,7 +187,7 @@ Page({
               {
                 field_name: "Person",
                 operator: "is",
-                value: [this.data.userInfo.open_id],
+                value: [res.data.open_id],
               },
             ],
           },
@@ -345,5 +333,11 @@ Page({
     });
   },
 
+  reloadDashboard: function () {
+    this.data.spec.data[0].values = [];
+    this.data.spec2.data[0].values = [];
+    this.data.spec3.data[0].values = [];
+    this.getValueRecord();
+  }
 
 });

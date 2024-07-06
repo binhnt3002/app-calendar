@@ -8,7 +8,7 @@
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
         <textarea class="input-text" type="text" id="task" placeholder="Enter task..."
-          style="margin-top: 5px;margin-right: 10px;">
+          style="margin-top: 5px;margin-right: 10px;" bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
@@ -40,7 +40,7 @@
         <view class="col-12">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <input class="input-text" type="number" name="txtTime" id="txtTime" style="border: none;" />
+            <input class="input-text" type="number" name="txtTime" id="txtTime" bindinput="inputNeededHours" style="border: none;" />
           </block>
         </view>
       </view>
@@ -69,7 +69,7 @@
             </view>
             <view class="row">
               <view class="col-5">
-                <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange2">
+                <picker class="picker-date" mode="date" id="datePicker" start="{{selectedDate1}}" bindchange="onDateChange2">
                   {{selectedDate2}}
                 </picker>
               </view>
@@ -83,7 +83,7 @@
         </view>
         <view class="note-info" style="margin-top: 1px;">
           <text class="title1">Ghi chú</text>
-          <textarea class="input-text" placeholder="Ghi chú ở đâyy......">
+          <textarea class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote">
         </view>
         <block >
           <view class="d-flex justify-content-end">

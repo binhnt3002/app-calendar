@@ -2,11 +2,14 @@ import {
   getAppAccessToken,
   getAuthorizationCode,
   getUserInfo,
+  refeshTOken,
 } from "./utils/autherization";
 
 App({
   onLaunch: function () {
-    this.authorize();
+    // getAuthorizationCode()
+    getAppAccessToken();
+
   },
 
   authorize() {
