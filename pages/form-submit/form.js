@@ -1,5 +1,9 @@
-import { bodyCreateTask } from "./detailForm";
-import { createEvent, getCalendarList } from "./function/apiFunction";
+import { bodyCreateTask, bodyCreateRecord } from "./detailForm";
+import {
+  createEvent,
+  getCalendarList,
+  createRecord,
+} from "./function/apiFunction";
 
 Page({
   data: {
@@ -8,13 +12,13 @@ Page({
     importantOptions: ["A", "B", "C"],
     selectedImportant: "A",
     categoryOptions: [
-      "Việc Chính",
+      "Việc chính",
       "Dự án",
       "Việc phát sinh",
       "Việc cần đôn đốc",
       "Đọc & học",
     ],
-    selectedCategory: "Việc Chính",
+    selectedCategory: "Việc chính",
     urgentOptions: ["1", "2", "3"],
     selectedurgent: "1",
     selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
@@ -28,7 +32,7 @@ Page({
     inputValue: "",
     inputNote: "",
     canvasId: "chartId", // canvasId unique chart Id
-    events: [], // events custom events
+    eventId: "",
     styles: `
       height: 50vh;
       width: 100%
@@ -176,30 +180,73 @@ Page({
 
   createTask() {
     let that = this;
-    console.log(that.data.inputValue);
+    let startTime = that.dateTimeToTimestamp(
+      that.data.selectedDate1,
+      that.data.selectedTime1
+    );
+    let endTime = that.dateTimeToTimestamp(
+      that.data.selectedDate2,
+      that.data.selectedTime2
+    );
+    let input = that.data.inputValue;
+    let inputNote = that.data.inputNote;
+    tt.showToast({
+      title: "Vui lòng chờ...",
+      icon: "load",
+    });
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
-        if (that.data.inputValue != "" && that.data.calendarID != "") {
+        if (
+          input != "" &&
+          that.data.calendarID != "" &&
+          that.data.selectedDate1 != "" &&
+          that.data.selectedDate2 != "" &&
+          that.data.selectedTime1 != "" &&
+          that.data.selectedTime2 != ""
+        ) {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
           const body = bodyCreateTask(
-            that.data.inputValue,
-            that.data.inputNote,
-            "1719883800",
-            "1719891000",
+            input,
+            inputNote,
+            startTime,
+            endTime,
             "default"
           );
           createEvent(res.data.access_token, that.data.calendarID, body).then(
             (rs) => {
+              console.log(rs);
+              that.setData({ eventId: rs.data.event.event_id });
+              console.log(that.data.eventId);
               tt.showToast({
-                title: "Tạo xong",
+                title: "Tạo xong công việc",
                 icon: "success",
+              });
+              const body2 = bodyCreateRecord(
+                input,
+                that.data.selectedCategory,
+                that.data.selectedImportant,
+                that.data.selectedurgent,
+                5,
+                res.data.open_id,
+                startTime,
+                endTime,
+                inputNote,
+                that.data.eventId,
+                that.data.calendarID
+              );
+              createRecord(res.data.access_token, body2).then((rs) => {
+                console.log(rs);
+                tt.showToast({
+                  title: "Đã lưu dữ liệu",
+                  icon: "success",
+                });
               });
             }
           );
         } else {
           tt.showToast({
-            title: "Thiếu dữ liệu tên hoặc loại lịch",
+            title: "Vui lòng nhập đầy đủ dữ liệu",
             icon: "error",
           });
         }

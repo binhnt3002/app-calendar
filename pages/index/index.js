@@ -1,32 +1,32 @@
-import { sendRequest } from "../../utils/sendRequest";
+// import { sendRequest } from "../../utils/sendRequest";
 
-const appVar = getApp();
+// const appVar = getApp();
 
-Page({
-  data: {
-    date: new Date(),
-    currYear: new Date().getFullYear(),
-    currMonth: new Date().getMonth(),
-    months: [
-      "Tháng 1 - ",
-      "Tháng 2 - ",
-      "Tháng 3 - ",
-      "Tháng 4 - ",
-      "Tháng 5 - ",
-      "Tháng 6 - ",
-      "Tháng 7 - ",
-      "Tháng 8 - ",
-      "Tháng 9 - ",
-      "Tháng 10 - ",
-      "Tháng 11 - ",
-      "Tháng 12 - ",
-    ],
-    currentDate: "",
-    days: [],
+// Page({
+//   data: {
+//     date: new Date(),
+//     currYear: new Date().getFullYear(),
+//     currMonth: new Date().getMonth(),
+//     months: [
+//       "Tháng 1 - ",
+//       "Tháng 2 - ",
+//       "Tháng 3 - ",
+//       "Tháng 4 - ",
+//       "Tháng 5 - ",
+//       "Tháng 6 - ",
+//       "Tháng 7 - ",
+//       "Tháng 8 - ",
+//       "Tháng 9 - ",
+//       "Tháng 10 - ",
+//       "Tháng 11 - ",
+//       "Tháng 12 - ",
+//     ],
+//     currentDate: "",
+//     days: [],
 
-    userInfo: {},
+//     userInfo: {},
 
-    // Chart configuration options
+//     // Chart configuration options
 
     styles: `
       height: 50vh;
@@ -161,81 +161,82 @@ Page({
     this.getValueRecord();
   },
 
-  getDataUser() {
-    tt.getStorage({
-      key: "user_info",
-      success: (res) => {
-        this.setData({
-          userInfo: res.data,
-        });
-      },
-    });
-  },
+//   getDataUser() {
+//     tt.getStorage({
+//       key: "user_info",
+//       success: (res) => {
+//         this.setData({
+//           userInfo: res.data,
+//         });
+//       },
+//     });
+//   },
 
-  getValueRecord() {
-    this.getDataUser();
-    tt.getStorage({
-      key: "user_access_token",
-      success: (res) => {
-        const access_token = res.data.access_token;
-        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
-        const headers = {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        };
+//   getValueRecord() {
+//     this.getDataUser();
+//     tt.getStorage({
+//       key: "user_access_token",
+//       success: (res) => {
+//         const access_token = res.data.access_token;
+//         const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+//         const headers = {
+//           Authorization: `Bearer ${access_token}`,
+//           "Content-Type": "application/json",
+//         };
 
-        const body = {
-          field_names: [
-            "Việc cần làm",
-            "Thể loại",
-            "Quan trọng",
-            "Cấp bách",
-            "Số giờ cần có",
-          ],
+//         const body = {
+//           field_names: [
+//             "Việc cần làm",
+//             "Thể loại",
+//             "Quan trọng",
+//             "Cấp bách",
+//             "Số giờ cần có",
+//           ],
 
-          filter: {
-            conjunction: "and",
-            conditions: [
-              {
-                field_name: "Person",
-                operator: "is",
-                value: [this.data.userInfo.open_id],
-              },
-            ],
-          },
-          automatic_fields: false,
-        };
+//           filter: {
+//             conjunction: "and",
+//             conditions: [
+//               {
+//                 field_name: "Person",
+//                 operator: "is",
+//                 value: [res.data.open_id],
+//               },
+//             ],
+//           },
+//           automatic_fields: false,
+//         };
 
-        tt.showToast({
-          title: "đang tải dữ liệu",
-          icon: "loading",
-        }),
-          sendRequest(url, "POST", headers, body).then((result) => {
-            let that = this;
-            let spec3 = this.data.spec3;
-            spec3.data[0].values.push(
-              {
-                value:
-                  result.data.items.filter(
-                    (item) => item.fields["Cấp bách"] == "1"
-                  )?.length || 0,
-                type: "Cấp bách 1",
-              },
-              {
-                value:
-                  result.data.items.filter(
-                    (item) => item.fields["Cấp bách"] == "2"
-                  )?.length || 0,
-                type: "Cấp bách 2",
-              },
-              {
-                value:
-                  result.data.items.filter(
-                    (item) => item.fields["Cấp bách"] == "3"
-                  )?.length || 0,
-                type: "Cấp bách 3",
-              }
-            );
+//         tt.showToast({
+//           title: "đang tải dữ liệu",
+//           icon: "loading",
+//         }),
+//           sendRequest(url, "POST", headers, body).then((result) => {
+//             console.log(result);
+//             let that = this;
+//             let spec3 = this.data.spec3;
+//             spec3.data[0].values.push(
+//               {
+//                 value:
+//                   result.data.items.filter(
+//                     (item) => item.fields["Cấp bách"] == "1"
+//                   )?.length || 0,
+//                 type: "Cấp bách 1",
+//               },
+//               {
+//                 value:
+//                   result.data.items.filter(
+//                     (item) => item.fields["Cấp bách"] == "2"
+//                   )?.length || 0,
+//                 type: "Cấp bách 2",
+//               },
+//               {
+//                 value:
+//                   result.data.items.filter(
+//                     (item) => item.fields["Cấp bách"] == "3"
+//                   )?.length || 0,
+//                 type: "Cấp bách 3",
+//               }
+//             );
 
             let spec2 = that.data.spec2;
             spec2.data[0].values.push(
