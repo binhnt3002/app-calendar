@@ -1,5 +1,9 @@
 import { bodyCreateTask } from "./detailForm";
-import { createEvent, createRecord, getCalendarList } from "./function/apiFunction";
+import {
+  createEvent,
+  createRecord,
+  getCalendarList,
+} from "./function/apiFunction";
 
 Page({
   data: {
@@ -43,7 +47,7 @@ Page({
 
   inputNeededHours: function (e) {
     this.setData({
-      inputHours: e.detail.value,
+      inputHours: parseInt(e.detail.value),
     });
   },
 
@@ -87,7 +91,7 @@ Page({
     if (this.data.selectedDate1 > this.data.selectedDate2) {
       this.setData({
         selectedDate2: this.data.selectedDate1,
-      })
+      });
     }
   },
 
@@ -104,7 +108,7 @@ Page({
     if (this.data.selectedDate1 > this.data.selectedDate2) {
       this.setData({
         selectedDate2: this.data.selectedDate1,
-      })
+      });
     }
   },
 
@@ -114,13 +118,9 @@ Page({
     });
   },
 
-  
-
-
   onShow() {
     this.setCalendarData();
   },
-
 
   setCalendarData() {
     let that = this;
@@ -149,7 +149,13 @@ Page({
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
-        if (that.data.inputValue != "" && that.data.selectedDate1 != "" && that.data.selectedTime1 != "" && that.data.selectedDate2 != "" && that.data.selectedTime2 != "") {
+        if (
+          that.data.inputValue != "" &&
+          that.data.selectedDate1 != "" &&
+          that.data.selectedTime1 != "" &&
+          that.data.selectedDate2 != "" &&
+          that.data.selectedTime2 != ""
+        ) {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
           const body = bodyCreateTask(
             that.data.inputValue,
@@ -157,11 +163,11 @@ Page({
             this.dateTimeToTimestamp(
               that.data.selectedDate1,
               that.data.selectedTime1
-            ),
+            ).toString(),
             this.dateTimeToTimestamp(
               that.data.selectedDate2,
               that.data.selectedTime2
-            ),
+            ).toString(),
             "default"
           );
           createEvent(res.data.access_token, that.data.calendarID, body).then(
@@ -175,18 +181,32 @@ Page({
             }
           );
           const body2 = {
-            "fields": {
+            fields: {
               "Việc cần làm": that.data.inputValue,
               "Thể loại": that.data.selectedCategory,
               "Quan trọng": that.data.selectedImportant,
               "Cấp bách": that.data.selectedurgent,
               "Số giờ cần có": that.data.inputHours,
-              "Person": [{
-                "id": res.data.open_id,
-              }]
-              
-            }
-          }
+              Person: [
+                {
+                  id: res.data.open_id,
+                },
+              ],
+              "Ngày - Giờ bắt đầu":
+                this.dateTimeToTimestamp(
+                  that.data.selectedDate1,
+                  that.data.selectedTime1
+                ) * 1000,
+              "Ngày - Giờ kết thúc":
+                this.dateTimeToTimestamp(
+                  that.data.selectedDate1,
+                  that.data.selectedTime1
+                ) * 1000,
+              "Ghi chú": that.data.inputNote,
+              CalendarID: that.data.calendarID,
+            },
+          };
+          console.log(body2);
           createRecord(res.data.access_token, body2).then((rs) => {
             console.log(rs);
           });
@@ -203,6 +223,6 @@ Page({
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
-    return (Math.floor(timestamp / 1000)).toString();
+    return Math.floor(timestamp / 1000);
   },
 });

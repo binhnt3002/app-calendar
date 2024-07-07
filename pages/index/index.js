@@ -1,4 +1,5 @@
 import { sendRequest } from "../../utils/sendRequest";
+import { createSpec } from "./spec/getSpec";
 
 const appVar = getApp();
 
@@ -32,136 +33,54 @@ Page({
       height: 50vh;
       width: 100%
     `,
-    spec: {
-      type: "pie",
-      data: [
-        {
-          id: "data1",
-          values: [],
-        },
-      ],
-      outerRadius: 0.8,
-      categoryField: "type",
-      valueField: "value",
+    spec: createSpec("pie", "data1", 30, 0),
 
-      //     label: {
-      //       visible: true,
-      //       position: 'top',
-      //       offset: 2,
-      //       style: {
-      //         fill: '#333',
-      //         fontWeight: 'bold'
-      //       }
-      // },
+    spec2: createSpec("pie", "data2", 30, 0),
 
-      legends: {
-        visible: true,
-        orient: "top",
-        item: {
-          visible: true,
-          padding: {
-            right: 30,
-          },
-          background: {
-            style: {
-              fill: "transparent",
-            },
-          },
-        },
-      },
-    },
+    spec3: createSpec("pie", "data3", 30, 0),
 
-    spec2: {
-      type: "pie",
-      data: [
-        {
-          id: "data2",
-          values: [],
-        },
-      ],
-      outerRadius: 0.8,
-      categoryField: "type",
-      valueField: "value",
+    spec4: createSpec("bar", "data4", 30, 0),
 
-      legends: {
-        visible: true,
-        orient: "top",
-        item: {
-          visible: true,
-          padding: {
-            right: 10,
-          },
-          background: {
-            style: {
-              fill: "transparent",
-            },
-          },
-        },
-      },
-    },
+    // spec4: {
+    //   type: "bar",
+    //   data: [
+    //     {
+    //       id: "data2",
+    //       values: [],
+    //     },
+    //   ],
+    //   xField: "type",
+    //   yField: "value",
+    //   seriesField: "type",
 
-    spec3: {
-      type: "pie",
-      data: [
-        {
-          id: "data3",
-          values: [],
-        },
-      ],
-      outerRadius: 0.8,
-      categoryField: "type",
-      valueField: "value",
-
-      legends: {
-        visible: true,
-        orient: "top",
-        item: {
-          visible: true,
-          padding: {
-            right: 10,
-          },
-          background: {
-            style: {
-              fill: "transparent",
-            },
-          },
-        },
-      },
-    },
-
-    spec4: {
-      type: "bar",
-      data: [
-        {
-          id: "data2",
-          values: [],
-        },
-      ],
-      xField: 'type',
-      yField: 'value',
-      seriesField: 'type',
-
-      legends: [{ 
-        visible: true, 
-        position: 'middle', 
-        orient: 'bottom' ,
-        item: {
-          visible: true,
-          padding: {
-            right: 10,
-          },
-        },
-    }],
-    },
+    //   legends: [
+    //     {
+    //       visible: true,
+    //       position: "middle",
+    //       orient: "bottom",
+    //       item: {
+    //         visible: true,
+    //         padding: {
+    //           right: 10,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // },
   },
 
   onShow() {
     this.reloadDashboard();
   },
 
-
-
   getValueRecord() {
+    const addInfor = {
+      xField: "type",
+      yField: "value",
+      seriesField: "type",
+    };
+    Object.assign(this.data.spec4, addInfor);
+
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -199,6 +118,7 @@ Page({
           icon: "loading",
         }),
           sendRequest(url, "POST", headers, body).then((result) => {
+            console.log(result.data);
             let that = this;
             let spec3 = this.data.spec3;
             spec3.data[0].values.push(
@@ -338,6 +258,5 @@ Page({
     this.data.spec2.data[0].values = [];
     this.data.spec3.data[0].values = [];
     this.getValueRecord();
-  }
-
+  },
 });
