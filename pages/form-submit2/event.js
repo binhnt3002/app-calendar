@@ -1,6 +1,6 @@
 import { sendRequest } from "../../utils/sendRequest";
-import { getCalendarList, createInvitation, getGroupId, getEvent } from "../form-submit/function/apiFunction";
-import { bodyScheduleParticipants } from "../form-submit/detailForm";
+import { getCalendarList, createInvitation, getGroupId, getEvent, updateEvent } from "../form-submit/function/apiFunction";
+import { bodyScheduleParticipants, bodyUpdateEvent } from "../form-submit/detailForm";
 Page({
   data: {
     events: [],
