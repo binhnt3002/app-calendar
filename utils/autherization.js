@@ -1,10 +1,19 @@
 import { sendRequest } from "./sendRequest";
 
 const globalData = getApp();
-async function getAuthorizationCode() {
+async function getAuthorizationCode(app_access_token) {
     tt.login({
-        success: function (res) {
-            getUserToken(res.code);
+        success:  function (res) {
+            const code = res.code
+            return getUserToken(app_access_token, code).then((result) => {
+                try {
+                    tt.setStorageSync("user_access_token", result.data);
+                    console.log("đăng nhập thanh cong : " + result.data);
+                    getUserInfo(result.data.access_token);
+                }catch (e) {
+                    console.log(e)
+                }
+            });
         },
         fail: function(res) {
             console.log("không đăng nhập được : " + res);
@@ -27,14 +36,12 @@ async function getAppAccessToken() {
             key:"app_access_token",
             data:result.app_access_token
         })
+        getAuthorizationCode(result.app_access_token)
     });
 }
 
-async function getUserToken(code) {
-    tt.getStorage({
-        key: 'app_access_token',
-        success: function (res) {
-            const app_access_token = res.data
+async function getUserToken(app_token,code) {
+            const app_access_token = app_token
             // const url = "https://open.larksuite.com/open-apis/authen/v1/oidc/access_token"
             const url = 'https://open.larksuite.com/open-apis/authen/v1/access_token'; //update có thông tin user infor
             const headers = {
@@ -45,31 +52,12 @@ async function getUserToken(code) {
                 "grant_type": "authorization_code",
                 "code": code
             }
-            sendRequest(url, "POST", headers, body).then((result) => {
-                tt.setStorage({
-                    key:"user_access_token",
-                    data: result.data
-                })
-            });
-        }
-
-        , fail: function (res) {
-            console.log("không đăng nhap user token : " + res);
-        }
-
-        , complete: function (res) {
-            console.log("đăng nhap user token ");
-        }   
-
-    });
+            return sendRequest(url, "POST", headers, body);
 }
 
 
-async function getUserInfo() {
-    tt.getStorage({
-        key : 'user_access_token',
-        success: function(res) {
-            const access_token = res.data.access_token;
+async function getUserInfo(user_token) {
+            const access_token = user_token;
             const url = "https://open.larksuite.com/open-apis/authen/v1/user_info";
             const headers = {
                 'content-type': 'application/json',
@@ -81,14 +69,22 @@ async function getUserInfo() {
                     data: result.data
                 })
             });
-        },
-        fail(res) {
-            console.log("lỗi không lấy được userInfo : " + res);
-        },
-        complete(res) {
-            console.log("lấy thành công userInfo ");
-        }
-    })
 }
 
-export { getAppAccessToken , getUserInfo, getAuthorizationCode}
+async function refeshTOken(app_token, refres_tok) {
+    const url = "https://open.larksuite.com/open-apis/authen/v1/refresh_token"
+    const headers = {
+        'content-type': "application/json; charset=utf-8",
+        'Authorization': 'Bearer ' + app_token,
+    }
+    const body = {
+        "grant_type": "refresh_token",
+        "refresh_token": refres_tok
+    }
+
+    sendRequest(url, "POST", headers, body).then((result) => {
+        console.log(result);
+    });
+}
+
+export { getAppAccessToken , getUserInfo, getAuthorizationCode, refeshTOken}

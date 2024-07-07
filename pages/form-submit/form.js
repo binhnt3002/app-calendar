@@ -1,8 +1,8 @@
-import { bodyCreateTask, bodyCreateRecord } from "./detailForm";
+import { bodyCreateTask } from "./detailForm";
 import {
   createEvent,
-  getCalendarList,
   createRecord,
+  getCalendarList,
 } from "./function/apiFunction";
 
 Page({
@@ -26,36 +26,13 @@ Page({
     selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     calendarID: "",
+    eventId: "",
     lich: [],
     chonlich: "",
     dataLich: [],
     inputValue: "",
     inputNote: "",
-    canvasId: "chartId", // canvasId unique chart Id
-    eventId: "",
-    styles: `
-      height: 50vh;
-      width: 100%
-    `, // style string
-    // Chart configuration options
-    spec: {
-      type: "pie",
-      data: [
-        {
-          id: "data1",
-          values: [
-            { value: 335, name: "Direct Access" },
-            { value: 310, name: "Email Marketing" },
-            { value: 274, name: "Affiliate Advertising" },
-            { value: 123, name: "Search Engine" },
-            { value: 215, name: "Video Advertising" },
-          ],
-        },
-      ],
-      outerRadius: 0.6,
-      categoryField: "name",
-      valueField: "value",
-    },
+    inputHours: 0,
   },
 
   inputTittle: function (e) {
@@ -66,6 +43,12 @@ Page({
   inputNote: function (e) {
     this.setData({
       inputNote: e.detail.value,
+    });
+  },
+
+  inputNeededHours: function (e) {
+    this.setData({
+      inputHours: parseInt(e.detail.value),
     });
   },
 
@@ -106,24 +89,12 @@ Page({
     this.setData({
       selectedDate1: e.detail.value,
     });
+    if (this.data.selectedDate1 > this.data.selectedDate2) {
+      this.setData({
+        selectedDate2: this.data.selectedDate1,
+      });
+    }
   },
-
-  // onDateChange1: function (e) {
-  //   const selectedDate = e.detail.value; // Get selected date in YYYY-MM-DD format
-
-  //   // Get selected time from another input field or event (e.g., time picker)
-  //   const timePicker = document.getElementById('timePicker'); // Replace with your time picker's ID
-
-  //   timePicker.addEventListener('timeChange', (event) => {
-  //     const selectedTime = event.detail.selectedTime; // Replace with the property name containing the selected time
-  //   });
-
-  //   const dateTime = new Date(`${selectedDate} ${timePicker}`);
-
-  //   this.setData({
-  //     selectedDate1: dateTime.toISOString() // Store combined date and time in ISO format
-  //   });
-  // },
 
   onTimeChange1: function (e) {
     this.setData({
@@ -135,6 +106,11 @@ Page({
     this.setData({
       selectedDate2: e.detail.value,
     });
+    if (this.data.selectedDate1 > this.data.selectedDate2) {
+      this.setData({
+        selectedDate2: this.data.selectedDate1,
+      });
+    }
   },
 
   onTimeChange2: function (e) {
@@ -143,18 +119,8 @@ Page({
     });
   },
 
-  onReady() {
+  onShow() {
     this.setCalendarData();
-    this.getUserInfo();
-  },
-  getUserInfo() {
-    let that = this;
-    tt.getStorage({
-      key: "user_access_token",
-      success: (res) => {
-        that.setData({ userInfo: res.data });
-      },
-    });
   },
 
   setCalendarData() {
@@ -180,26 +146,15 @@ Page({
 
   createTask() {
     let that = this;
-    let startTime = that.dateTimeToTimestamp(
-      that.data.selectedDate1,
-      that.data.selectedTime1
-    );
-    let endTime = that.dateTimeToTimestamp(
-      that.data.selectedDate2,
-      that.data.selectedTime2
-    );
-    let input = that.data.inputValue;
-    let inputNote = that.data.inputNote;
     tt.showToast({
       title: "Vui lòng chờ...",
-      icon: "load",
+      icon: "info",
     });
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
         if (
-          input != "" &&
-          that.data.calendarID != "" &&
+          that.data.inputTittle != "" &&
           that.data.selectedDate1 != "" &&
           that.data.selectedDate2 != "" &&
           that.data.selectedTime1 != "" &&
@@ -207,43 +162,62 @@ Page({
         ) {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
           const body = bodyCreateTask(
-            input,
-            inputNote,
-            startTime,
-            endTime,
+            that.data.inputValue,
+            that.data.inputNote,
+            this.dateTimeToTimestamp(
+              that.data.selectedDate1,
+              that.data.selectedTime1
+            ).toString(),
+            this.dateTimeToTimestamp(
+              that.data.selectedDate2,
+              that.data.selectedTime2
+            ).toString(),
             "default"
           );
           createEvent(res.data.access_token, that.data.calendarID, body).then(
             (rs) => {
               console.log(rs);
+
               that.setData({ eventId: rs.data.event.event_id });
-              console.log(that.data.eventId);
+
               tt.showToast({
                 title: "Tạo xong công việc",
                 icon: "success",
               });
-              const body2 = bodyCreateRecord(
-                input,
-                that.data.selectedCategory,
-                that.data.selectedImportant,
-                that.data.selectedurgent,
-                5,
-                res.data.open_id,
-                startTime,
-                endTime,
-                inputNote,
-                that.data.eventId,
-                that.data.calendarID
-              );
-              createRecord(res.data.access_token, body2).then((rs) => {
-                console.log(rs);
-                tt.showToast({
-                  title: "Đã lưu dữ liệu",
-                  icon: "success",
-                });
-              });
             }
           );
+
+          const body2 = {
+            fields: {
+              "Việc cần làm": that.data.inputValue,
+              "Thể loại": that.data.selectedCategory,
+              "Quan trọng": that.data.selectedImportant,
+              "Cấp bách": that.data.selectedurgent,
+              "Số giờ cần có": that.data.inputHours,
+              Person: [
+                {
+                  id: res.data.open_id,
+                },
+              ],
+              "Ngày - Giờ bắt đầu":
+                this.dateTimeToTimestamp(
+                  that.data.selectedDate1,
+                  that.data.selectedTime1
+                ) * 1000,
+              "Ngày - Giờ kết thúc":
+                this.dateTimeToTimestamp(
+                  that.data.selectedDate1,
+                  that.data.selectedTime1
+                ) * 1000,
+              "Ghi chú": that.data.inputNote,
+              EventID: that.data.eventId,
+              CalendarID: that.data.calendarID,
+            },
+          };
+          console.log(body2);
+          createRecord(res.data.access_token, body2).then((rs) => {
+            console.log(rs);
+          });
         } else {
           tt.showToast({
             title: "Vui lòng nhập đầy đủ dữ liệu",

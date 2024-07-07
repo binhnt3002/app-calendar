@@ -1,0 +1,34 @@
+const createSpec = (typeChart, idData, paddingR, paddingL) => {
+  const spec = {
+    type: typeChart,
+    data: [
+      {
+        id: `${idData}`,
+        values: [],
+      },
+    ],
+    outerRadius: 0.8,
+    categoryField: "type",
+    valueField: "value",
+    legends: {
+      visible: true,
+      orient: "top",
+      item: {
+        visible: true,
+        padding: {
+          right: paddingR,
+          left: paddingL,
+        },
+        background: {
+          style: {
+            fill: "transparent",
+          },
+        },
+      },
+    },
+  };
+
+  return spec;
+};
+
+export { createSpec };

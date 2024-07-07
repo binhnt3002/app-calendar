@@ -2,11 +2,15 @@ import {
   getAppAccessToken,
   getAuthorizationCode,
   getUserInfo,
+  refeshTOken,
 } from "./utils/autherization";
 
 App({
   onLaunch: function () {
-    this.authorize();
+    // getAuthorizationCode()
+    
+    setInterval(getAppAccessToken(), 3600000);
+
   },
 
   authorize() {
