@@ -11,6 +11,8 @@ Page({
     inviteData: [],
     frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
     selectedFrequency: 'Hàng ngày',
+    permissionOptions : ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
+    selectedPermission : 'Không',
     calendarID: '',
     lich: [],
     chonlich: '',
@@ -44,6 +46,12 @@ Page({
   onFrequencyChange: function (e) {
     this.setData({
       selectedFrequency: this.data.frequencyOptions[e.detail.value]
+    });
+  },
+
+  onPermissionChange: function (e) {
+    this.setData({
+      selectedPermission: this.data.permissionOptions[e.detail.value]
     });
   },
 

@@ -1,6 +1,6 @@
 <div class="page-task-form">
 
-  <view class="form-1" style="background-color: rgb(229, 229, 229,1);">
+  <view class="form-1" style="background-image: url(https://img.freepik.com/free-photo/light-steel-blue-watercolor-background_53876-101917.jpg?w=996&t=st=1720342832~exp=1720343432~hmac=e367fa4c05b66110f454aeb3fc0152695afdced1186fa8b6baf0f743cc02aa04);">
     <view class="header">
       <text>TẠO TASK</text>
     </view>
@@ -63,7 +63,7 @@
               </view>
             </view>
           </view>
-          <view class="col-12 col-sm-6" style="margin-top: 10px">
+          <view class="col-12 col-sm-6">
             <view class="col-12">
               <text class="title1" style="margin-left: -10px;">Ngày giờ kết thúc</text>
             </view>
@@ -88,7 +88,7 @@
         <block >
           <view class="d-flex justify-content-end">
             <!-- <button class="btn btn-primary" >Add event</button> -->
-            <button class="btn btn-primary m-2" bindtap="createTask" >Add Task</button>
+            <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Add Task</button>
           </view>
         </block> 
     </view>

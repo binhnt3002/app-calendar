@@ -24,8 +24,7 @@ height: 1000px;
   overflow: hidden;
   font-size: 14px; /* Giảm kích thước chữ chung */
   font-family: Arial, sans-serif;
- 
-  
+  background-size: cover;
 
 }
 
@@ -112,7 +111,7 @@ textarea {
   /* background-color: #3485B7; */
   resize: none;
   border: none;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   /* color: #3485B7; */
 }
 
@@ -170,10 +169,10 @@ button{
   height: 50px !important;
   font-size: 15px !important;
   line-height: 5px !important;
-  /* background: linear-gradient(135deg, #A2DBF2 30%, #045A97 70%); */
-  /* border: none !important; */
   background: #045A97 !important;
+  border-radius: 5px !important;
 }
+
 .btn:hover{
   background-color: rgb(255, 255, 255);
   color: black;
@@ -241,4 +240,8 @@ button{
   font-weight: bold;
   /* margin-top: 20rpx; */
   font-size: 20px;
+}
+
+.btn {
+  
 }

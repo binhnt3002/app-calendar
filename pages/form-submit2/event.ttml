@@ -2,7 +2,7 @@
   <view class="header">
     <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
-  <view class="body" style="background-color: rgb(229, 229, 229,1);">
+  <view class="body" style="background-image: url(https://img.freepik.com/free-photo/light-steel-blue-watercolor-background_53876-101917.jpg?w=996&t=st=1720342832~exp=1720343432~hmac=e367fa4c05b66110f454aeb3fc0152695afdced1186fa8b6baf0f743cc02aa04);">
     <view class="box">
       <view class="row">
         <view class="col-7">
@@ -37,10 +37,10 @@
         </view>
       </view>
       <view class="row">
-        <view class="col-8">
+        <view class="col-7">
           <view class="event-daily">
             <view class="evt-col">
-              <input placeholder="nhập số phút">
+              <input type="number" placeholder="Nhập số phút">
             </view>
             <view class="evt-col">
               <view style="color: brown; margin-right: 5px; font-weight: bold; ">LẶP LẠI </view>
@@ -52,25 +52,32 @@
               </view>
             
             <view class="evt-col">
-              <input placeholder="quyền 3 cái">
+              <view style="margin-right: 5px; font-weight: bold; ">Quyền</view>
+              <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{permissionOptions}}" bindchange="onPermissionChange">
+                <view class="picker-text" style="background-color: rgb(225, 225, 225, 0.8);">
+                  {{selectedPermission}}
+                </view>
             </view>
           </view>
         </view>
-        <view class="col-2">
-          <view class="form-buttons">
-            <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
+        <!-- <view class="col-2">
+          
+        </view> -->
+        <view class="col-3">
+          <view style="display:flex; justify-content: flex-end;">
+            <view class="form-buttons">
+              <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
+            </view>
+            <view class="form-buttons" style="margin-left:10px;">
+              <button class="btn" bindtap="listUser">Thêm người</button>
+            </view>
+          </view>      
           </view>
-        </view>
-        <view class="col-2">
-          <view class="form-buttons">
-            <button class="btn" bindtap="listUser">Thêm người</button>
-          </view>
-        </view>          
       </view>
     </view>
 
   </view>
-  <view class="footer">
+  <!-- <view class="footer">
     Nội dung của footer
-  </view>
+  </view> -->
 </view>
