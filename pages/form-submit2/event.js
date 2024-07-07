@@ -1,5 +1,5 @@
 import { sendRequest } from "../../utils/sendRequest";
-import { getCalendarList, createInvitation } from "../form-submit/function/apiFunction";
+import { getCalendarList, createInvitation, getGroupId, getEvent } from "../form-submit/function/apiFunction";
 import { bodyScheduleParticipants } from "../form-submit/detailForm";
 Page({
   data: {
@@ -7,15 +7,13 @@ Page({
     eventsID: [],
     invite: [],
     inviteOpenId: [],
-    avatarUrl:[],
+    avatarUrl: [],
     inviteData: [],
     frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
     selectedFrequency: 'Hàng ngày',
     calendarID: '',
-    lich: [],
-    chonlich: '',
-    dataLich: [],
-    idCongViec:'',
+    arCalendarId: [],
+    idCongViec: '',
     attendees: [],
   },
 
@@ -68,14 +66,14 @@ Page({
         console.log(res);
 
         res.data.map(item => {
-            invite.push({name: item.name}),
+          invite.push({ name: item.name }),
             inviteOpenId.push(item.openId),
-            avatarUrl.push({url: item.avatarUrls[0]})
+            avatarUrl.push({ url: item.avatarUrls[0] })
         })
-        
+
         inviteData = invite.map((item, index) => ({
           name: item.name,
-          url: avatarUrl[index] ? avatarUrl[index].url: undefined // Handle potential mismatched lengths
+          url: avatarUrl[index] ? avatarUrl[index].url : undefined // Handle potential mismatched lengths
         }));
 
         that.setData({
@@ -92,15 +90,12 @@ Page({
       }
     });
   },
-  onReady() {
-    let that = this;
-    that.setCalendarDataEvent();
-    
-  },
-  onShow(){
+
+  onShow() {
     let that = this;
     that.listTask();
   },
+
   listTask() {
     tt.showToast({
       title: 'Đang lấy dữ liệu',
@@ -109,6 +104,7 @@ Page({
     let that = this;
     let events = that.data.events;
     let eventsID = that.data.eventsID;
+    let arCalendarId = that.data.arCalendarId;
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
@@ -121,7 +117,8 @@ Page({
         const body = {
           "field_names": [
             "Việc cần làm",
-            "EventID"
+            "EventID",
+            "CalendarID"
           ],
           "sort": [
             {
@@ -149,8 +146,12 @@ Page({
             icon: 'success',
           })
           console.log(resp);
-          resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));
-          resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
+          events = [],
+            eventsID = [],
+            arCalendarId = [],
+            resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));
+            resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
+            resp.data.items.map(i => i.fields["CalendarID"].map(item => arCalendarId.push(item.text)[0]));
 
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
@@ -158,6 +159,7 @@ Page({
               return {
                 ...event, // Spread existing event properties
                 value: eventsID[index],
+                id: arCalendarId[index],
                 checked: false,
               };
             } else {
@@ -165,9 +167,9 @@ Page({
               return event;
             }
           });
+
           events = updatedEvents;
-          that.setData({ eventsID })
-          that.setData({ events })
+          that.setData({ eventsID, events, arCalendarId })
           console.log(that.data.events);
         })
       }
@@ -178,75 +180,91 @@ Page({
     let that = this;
     let currentValue = e.currentTarget.dataset;
     console.log(currentValue);
-    that.setData({
-      events: that.data.events.map(i => {
-        if (i.value == currentValue.eventid && i.checked == false) {
-          i.checked = !currentValue.checked;
-        }
-        else {
-          i.checked = false;
-        }
-        return i
-      }),
-      idCongViec: currentValue.eventid
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        getEvent(res.data.access_token, currentValue.calendar, currentValue.eventid).then((rs) => {
+          // console.log(rs);
+          that.setData({
+            events: that.data.events.map(i => {
+              if (i.value == currentValue.eventid && i.checked == false) {
+                i.checked = !currentValue.checked;
+              }
+              else {
+                i.checked = false;
+              }
+              return i
+            })
+          })
+          if (rs.data.event.status !== "confirmed" || currentValue.checked == true) {
+            tt.showToast({
+              title: 'Chưa chọn hoặc công việc không tồn tại',
+              icon: 'error',
+            });
+            that.setData({
+              idCongViec: '',
+              calendarID: ''
+            })
+          }
+          else {
+            that.setData({
+              idCongViec: currentValue.eventid,
+              calendarID: currentValue.calendar
+            })
+
+          }
+          console.log(that.data.events);
+        })
+      }
     })
-    console.log('Checkbox change，value：', that.data.idCongViec)
-    console.log(that.data.events);
   },
 
-  addEventParticipate(){
+  addEventParticipate() {
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
     let attendees = that.data.attendees;
-    tt.getStorage({
-      key: 'user_access_token',
-      success: (res) => {
-        const access_token = res.data.access_token;
-        inviteOpenId.forEach((id, index) => {
-          const body = bodyScheduleParticipants("user", id, res);
-          createInvitation(access_token,
-                           "feishu.cn_faIOwqQ2lmmKlc6qu9NSue@group.calendar.feishu.cn",
-                           that.data.idCongViec, body)
-            .then((result) => {
-              console.log(result);
-              // that.setData({attendees})
-              tt.showToast({
-                title: 'Đã mời',
-                icon: 'success',
+    if (that.data.idCongViec != '' && that.data.calendarID != '' && inviteOpenId.length>0) {
+      tt.getStorage({
+        key: 'user_access_token',
+        success: (res) => {
+          const access_token = res.data.access_token;
+          inviteOpenId.forEach((id, index) => {
+            const body = bodyScheduleParticipants("user", id, res);
+            createInvitation(access_token,
+              that.data.calendarID,
+              that.data.idCongViec, body)
+              .then((result) => {
+                console.log(result);
+                // that.setData({attendees})
+                tt.showToast({
+                  title: 'Đã mời',
+                  icon: 'success',
+                });
+                that.setData({
+                  events: that.data.events.map(i => {i.checked = false; return i}),
+                  inviteOpenId: [],
+                  invite: [],
+                  inviteData: [],
+                  avatarUrl:[]
+                })
+              })
+              .catch((error) => {
+                console.error("Error sending invitation:", error);
+                // Handle invitation sending errors gracefully (optional)
               });
-            })
-            .catch((error) => {
-              console.error("Error sending invitation:", error);
-              // Handle invitation sending errors gracefully (optional)
-            });
-        });
+          });
+        }
+      })
+    } else {
+      tt.showToast({
+        title: 'Vui lòng đủ thông tin',
+        icon: 'error',
+      });
+    }
 
-
-      }
-    })
   },
 
-  setCalendarDataEvent() {
-    let that = this;
-    tt.getStorage({
-      key: 'user_access_token',
-      success: (res) => {
-        tt.showToast({
-          title: 'Đang lấy dữ liệu',
-          icon: 'loading',
-        })
-        const access_token = res.data.access_token;
-        getCalendarList(access_token).then((result) => {
-          console.log(result.data.calendar_list);
-          that.setData({
-            dataLich: result.data.calendar_list,
-            lich: result.data.calendar_list.map(item => item.summary),
-          })
-        });
-      }
-    })
-  },
-  onLoad(){
+  onLoad() {
     let that = this;
     tt.getStorage({
       key: 'user_access_token',
@@ -256,11 +274,10 @@ Page({
           'Authorization': `Bearer ${res.data.access_token}`,
           'Content-Type': 'application/json'
         }
-        sendRequest("https://open.larksuite.com/open-apis/calendar/v4/calendars/feishu.cn_faIOwqQ2lmmKlc6qu9NSue@group.calendar.feishu.cn/events",'GET',headers,{}).then((res)=>{
-          console.log(res);
+        getGroupId(access_token).then((rs) => {
+          console.log(rs);
         })
       }
     })
   }
-
 });
