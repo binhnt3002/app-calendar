@@ -6,11 +6,9 @@ import {
 } from "./utils/autherization";
 
 App({
-  onLaunch: function () {
-    // getAuthorizationCode()
-    
-    setInterval(getAppAccessToken(), 3600000);
-
+  onLaunch: function () {    
+    // setInterval(, 3600000);
+    getAppAccessToken()
   },
 
   authorize() {

@@ -25,11 +25,14 @@ Page({
     currentDate: "",
     days: [],
 
+    userInfo: {},
+
     // Chart configuration options
 
-    styles: `height: 50vh;
-      width: 100%;`,
-
+    styles: `
+      height: 50vh;
+      width: 100%
+    `,
     spec: createSpec("pie", "data1", 30, 0),
 
     spec2: createSpec("pie", "data2", 30, 0),
@@ -38,50 +41,83 @@ Page({
 
     spec4: createSpec("bar", "data4", 30, 0),
 
+    // spec4: {
+    //   type: "bar",
+    //   data: [
+    //     {
+    //       id: "data2",
+    //       values: [],
+    //     },
+    //   ],
+    //   xField: "type",
+    //   yField: "value",
+    //   seriesField: "type",
 
-    onShow() {
-      console.log(123);
-      this.reloadDashboard();
-    },
+    //   legends: [
+    //     {
+    //       visible: true,
+    //       position: "middle",
+    //       orient: "bottom",
+    //       item: {
+    //         visible: true,
+    //         padding: {
+    //           right: 10,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // },
+  },
 
-    getValueRecord() {
-      const addInfor = {
-        xField: "type",
-        yField: "value",
-        seriesField: "type",
-      };
-      Object.assign(this.data.spec4, addInfor);
+  onShow() {
+    this.reloadDashboard();
+  },
 
-      tt.getStorage({
-        key: "user_access_token",
-        success: (res) => {
-          const access_token = res.data.access_token;
-          const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
-          const headers = {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          };
+  getValueRecord() {
+    const addInfor = {
+      xField: "type",
+      yField: "value",
+      seriesField: "type",
+    };
+    Object.assign(this.data.spec4, addInfor);
 
-          const body = {
-            filter: {
-              conjunction: "and",
-              conditions: [
-                {
-                  field_name: "Person",
-                  operator: "is",
-                  value: [res.data.open_id],
-                },
-              ],
-            },
-            automatic_fields: false,
-          };
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const access_token = res.data.access_token;
+        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+        const headers = {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        };
 
-          tt.showToast({
-            title: "đang tải dữ liệu",
-            icon: "loading",
-          }),
-            sendRequest(url, "POST", headers, body)
-            .then((result) => {
+        const body = {
+          field_names: [
+            "Việc cần làm",
+            "Thể loại",
+            "Quan trọng",
+            "Cấp bách",
+            "Số giờ cần có",
+          ],
+
+          filter: {
+            conjunction: "and",
+            conditions: [
+              {
+                field_name: "Person",
+                operator: "is",
+                value: [res.data.open_id],
+              },
+            ],
+          },
+          automatic_fields: false,
+        };
+
+        tt.showToast({
+          title: "đang tải dữ liệu",
+          icon: "loading",
+        }),
+          sendRequest(url, "POST", headers, body).then((result) => {
             console.log(result.data);
             let that = this;
             let spec3 = this.data.spec3;
@@ -173,7 +209,7 @@ Page({
                   result.data.items.filter(
                     (item) => item.fields["Thể loại"] == "Dự án"
                   )?.length || 0,
-                type: "Cấp bách",
+                type: "Dự án",
               }
             );
 
@@ -213,16 +249,14 @@ Page({
               icon: "success",
             });
           });
-        },
-      });
-    },
+      },
+    });
+  },
 
-    reloadDashboard: function () {
-      this.data.spec.data[0].values = [];
-      this.data.spec2.data[0].values = [];
-      this.data.spec3.data[0].values = [];
-      this.data.spec4.data[0].values = [];
-      this.getValueRecord();
-    },
+  reloadDashboard: function () {
+    this.data.spec.data[0].values = [];
+    this.data.spec2.data[0].values = [];
+    this.data.spec3.data[0].values = [];
+    this.getValueRecord();
   },
 });

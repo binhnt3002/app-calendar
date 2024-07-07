@@ -180,6 +180,38 @@ Page({
 
               that.setData({ eventId: rs.data.event.event_id });
 
+              const body2 = {
+                fields: {
+                  "Việc cần làm": that.data.inputValue,
+                  "Thể loại": that.data.selectedCategory,
+                  "Quan trọng": that.data.selectedImportant,
+                  "Cấp bách": that.data.selectedurgent,
+                  "Số giờ cần có": that.data.inputHours,
+                  Person: [
+                    {
+                      id: res.data.open_id,
+                    },
+                  ],
+                  "Ngày - Giờ bắt đầu":
+                    this.dateTimeToTimestamp(
+                      that.data.selectedDate1,
+                      that.data.selectedTime1
+                    ) * 1000,
+                  "Ngày - Giờ kết thúc":
+                    this.dateTimeToTimestamp(
+                      that.data.selectedDate1,
+                      that.data.selectedTime1
+                    ) * 1000,
+                  "Ghi chú": that.data.inputNote,
+                  EventID: that.data.eventId,
+                  CalendarID: that.data.calendarID,
+                },
+              };
+              console.log(body2);
+              createRecord(res.data.access_token, body2).then((rs) => {
+                console.log(rs);
+              });
+
               tt.showToast({
                 title: "Tạo xong công việc",
                 icon: "success",
@@ -187,37 +219,7 @@ Page({
             }
           );
 
-          const body2 = {
-            fields: {
-              "Việc cần làm": that.data.inputValue,
-              "Thể loại": that.data.selectedCategory,
-              "Quan trọng": that.data.selectedImportant,
-              "Cấp bách": that.data.selectedurgent,
-              "Số giờ cần có": that.data.inputHours,
-              Person: [
-                {
-                  id: res.data.open_id,
-                },
-              ],
-              "Ngày - Giờ bắt đầu":
-                this.dateTimeToTimestamp(
-                  that.data.selectedDate1,
-                  that.data.selectedTime1
-                ) * 1000,
-              "Ngày - Giờ kết thúc":
-                this.dateTimeToTimestamp(
-                  that.data.selectedDate1,
-                  that.data.selectedTime1
-                ) * 1000,
-              "Ghi chú": that.data.inputNote,
-              EventID: that.data.eventId,
-              CalendarID: that.data.calendarID,
-            },
-          };
-          console.log(body2);
-          createRecord(res.data.access_token, body2).then((rs) => {
-            console.log(rs);
-          });
+          
         } else {
           tt.showToast({
             title: "Vui lòng nhập đầy đủ dữ liệu",
