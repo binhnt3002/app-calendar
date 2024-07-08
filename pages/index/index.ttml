@@ -50,7 +50,7 @@
         <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
       </view>
     </view>
-    <view class="col-6">
+    <!-- <view class="col-6">
       <view class="text-list">
         <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; ">TIÊU CHUẨN KIẾN NGHỊ</text>
         <view class="row mt-2" >
@@ -67,7 +67,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
 
   </view>
   <view class="row">
