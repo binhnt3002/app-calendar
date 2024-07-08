@@ -1,43 +1,14 @@
-<!-- <view class="trang-report">
-  <view class="container-calendar">
-    <view class="header">
-      <text class="current-date">{{currentDate}}</text>
-      <view class="icons">
-        <image id="prev" class="material-symbols-rounded" bindtap="handlePrevNext" src="before.svg"></image>
-        <image id="next" class="material-symbols-rounded" bindtap="handlePrevNext" src="next.svg"></image>
-      </view>
-    </view>
-    <view class="calendar">
-      <view class="weeks">
-        <text>CN</text>
-        <text>T2</text>
-        <text>T3</text>
-        <text>T4</text>
-        <text>T5</text>
-        <text>T6</text>
-        <text>T7</text>
-      </view>
-      <view class="days">
-        <block wx:for="{{days}}" wx:key="index">
-          <text class="{{item.inactive ? 'inactive' : ''}} {{item.active ? 'active' : ''}}" data-day="{{item.day}}" bindtap="handleDayClick">{{item.day}}</text>
-        </block>
-      </view>      
-    </view>
-  </view>
-</view> -->
-
-
-
 <view class="container">
-
   <view class="row">
     <view class="col-6">
       <view class="dash-board">
+        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Độ cấp bách</text>
         <chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" />
       </view>
     </view>
     <view class="col-6">
       <view class="dash-board">
+        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Độ quan trọng</text>
         <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
       </view>
     </view>
@@ -47,11 +18,12 @@
   <view class="row">
     <view class="col-6">
       <view class="dash-board">
-        <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
+        <!-- <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Các loại công việc</text>
+        <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" /> -->
       </view>
     </view>
-    <!-- <view class="col-6">
-      <view class="text-list">
+    <view class="col-6">
+      <!-- <view class="text-list">
         <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; ">TIÊU CHUẨN KIẾN NGHỊ</text>
         <view class="row mt-2" >
           <view class="col-12 mb-2">
@@ -66,14 +38,21 @@
             <text class="m-4">Còn dư: 10% </text>
           </view>
         </view>
+      </view> -->
+      <view class="dash-board">
+        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Các loại công việc</text>
+
+        <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
+
       </view>
-    </view> -->
+    </view>
 
   </view>
   <view class="row">
     <view class="col-6">
       <view class="dash-board">
         <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
+
       </view>
     </view>
     <view class="col-6">

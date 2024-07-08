@@ -1,6 +1,6 @@
 <div class="page-task-form">
 
-  <view class="form-1" style="background-image: url(https://img.freepik.com/free-photo/light-steel-blue-watercolor-background_53876-101917.jpg?w=996&t=st=1720342832~exp=1720343432~hmac=e367fa4c05b66110f454aeb3fc0152695afdced1186fa8b6baf0f743cc02aa04);">
+  <view class="form-1" style="background-image: url('https://i.imgur.com/PyLYyPA.jpeg');">
     <view class="header">
       <text>TẠO TASK</text>
     </view>
