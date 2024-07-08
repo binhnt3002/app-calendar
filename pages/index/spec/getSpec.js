@@ -26,6 +26,10 @@ const createSpec = (typeChart, idData, paddingR, paddingL) => {
         },
       },
     },
+    label: {
+      visible: true,
+    },
+    
   };
 
   return spec;

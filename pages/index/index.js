@@ -5,26 +5,6 @@ const appVar = getApp();
 
 Page({
   data: {
-    date: new Date(),
-    currYear: new Date().getFullYear(),
-    currMonth: new Date().getMonth(),
-    months: [
-      "Tháng 1 - ",
-      "Tháng 2 - ",
-      "Tháng 3 - ",
-      "Tháng 4 - ",
-      "Tháng 5 - ",
-      "Tháng 6 - ",
-      "Tháng 7 - ",
-      "Tháng 8 - ",
-      "Tháng 9 - ",
-      "Tháng 10 - ",
-      "Tháng 11 - ",
-      "Tháng 12 - ",
-    ],
-    currentDate: "",
-    days: [],
-
     userInfo: {},
 
     // Chart configuration options
@@ -40,33 +20,6 @@ Page({
     spec3: createSpec("pie", "data3", 30, 0),
 
     spec4: createSpec("bar", "data4", 30, 0),
-
-    // spec4: {
-    //   type: "bar",
-    //   data: [
-    //     {
-    //       id: "data2",
-    //       values: [],
-    //     },
-    //   ],
-    //   xField: "type",
-    //   yField: "value",
-    //   seriesField: "type",
-
-    //   legends: [
-    //     {
-    //       visible: true,
-    //       position: "middle",
-    //       orient: "bottom",
-    //       item: {
-    //         visible: true,
-    //         padding: {
-    //           right: 10,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
   },
 
 
@@ -128,8 +81,14 @@ Page({
           sendRequest(url, "POST", headers, body).then((result) => {
             console.log(result.data);
             let that = this;
+
+            // Calculate total values for percentage calculation
+            const totalCapBach = result.data.items.length;
+            const totalQuanTrong = result.data.items.length;
+            const totalTheLoai = result.data.items.length;
+
             let spec3 = this.data.spec3;
-            spec3.data[0].values.push(
+            spec3.data[0].values = [
               {
                 value:
                   result.data.items.filter(
@@ -151,10 +110,17 @@ Page({
                   )?.length || 0,
                 type: "Cấp bách 3",
               }
-            );
+            ];
+
+            // Add percentage to each value
+            spec3.data[0].values = spec3.data[0].values.map((item) => {
+              const percentage = ((item.value / totalCapBach) * 100).toFixed(2);
+              item.type = `${item.type}: ${percentage}%`;
+              return item;
+            });
 
             let spec2 = that.data.spec2;
-            spec2.data[0].values.push(
+            spec2.data[0].values = [
               {
                 value:
                   result.data.items.filter(
@@ -166,7 +132,7 @@ Page({
                 value:
                   result.data.items.filter(
                     (item) => item.fields["Quan trọng"] == "B"
-                  )?.length || 0,
+                  )?.length || 0 ,
                 type: "B",
               },
               {
@@ -176,10 +142,17 @@ Page({
                   )?.length || 0,
                 type: "C",
               }
-            );
+            ];
 
-            let spec = that.data.spec;
-            spec.data[0].values.push(
+            // Add percentage to each value
+            spec2.data[0].values = spec2.data[0].values.map((item) => {
+              const percentage = ((item.value / totalQuanTrong) * 100).toFixed(2);
+              item.type = `${item.type}: ${percentage}%`;
+              return item;
+            });
+
+            let spec4 = that.data.spec4;
+            spec4.data[0].values = [
               {
                 value:
                   result.data.items.filter(
@@ -199,7 +172,7 @@ Page({
               {
                 value:
                   result.data.items.filter(
-                    (item) => item.fields["Thể loại"] == "Việc cần đàn đốc"
+                    (item) => item.fields["Thể loại"] == "Việc cần đôn đốc"
                   )?.length || 0,
                 type: "Việc cần đàn đốc",
               },
@@ -219,38 +192,17 @@ Page({
                   )?.length || 0,
                 type: "Dự án",
               }
-            );
+            ];
 
-            let spec4 = that.data.spec4;
-            spec4.data[0].values.push(
-              {
-                value:
-                  result.data.items.filter(
-                    (item) => item.fields["Quan trọng"] == "A"
-                  )?.length || 0,
-                type: "A",
-              },
-              {
-                value:
-                  result.data.items.filter(
-                    (item) => item.fields["Quan trọng"] == "B"
-                  )?.length || 0,
-                type: "B",
-              },
-              {
-                value:
-                  result.data.items.filter(
-                    (item) => item.fields["Quan trọng"] == "C"
-                  )?.length || 0,
-                type: "C",
-              }
-            );
-            tt.showToast({
-              title: "Tải dữ liệu thành công",
-              icon: "success",
-            });
+
+            // Add percentage to each value
+            // spec4.data[0].values = spec4.data[0].values.map((item) => {
+            //   const percentage = ((item.value / totalTheLoai) * 100).toFixed(2);
+            //   item.type = `${item.type}: ${percentage}%`;
+            //   return item;
+            // });
+
             that.setData({
-              spec,
               spec2,
               spec3,
               spec4,
@@ -267,6 +219,7 @@ Page({
     this.data.spec.data[0].values = [];
     this.data.spec2.data[0].values = [];
     this.data.spec3.data[0].values = [];
+    this.data.spec4.data[0].values = [];
     this.getValueRecord();
   },
 
