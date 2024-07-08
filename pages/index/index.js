@@ -69,8 +69,17 @@ Page({
     // },
   },
 
+
   onShow() {
-    this.reloadDashboard();
+    let that = this;
+    tt.showToast({
+      title: "đợi khoảng 3 - 5s",
+      icon: "loading",      
+    });
+    setTimeout(() => {
+      that.reloadDashboard();
+    },3000);
+
   },
 
   getValueRecord() {
@@ -113,10 +122,7 @@ Page({
           automatic_fields: false,
         };
 
-        tt.showToast({
-          title: "đang tải dữ liệu",
-          icon: "loading",
-        }),
+        
           sendRequest(url, "POST", headers, body).then((result) => {
             console.log(result.data);
             let that = this;
@@ -237,20 +243,22 @@ Page({
                 type: "C",
               }
             );
-
+            tt.showToast({
+              title: "Tải dữ liệu thành công",
+              icon: "success",
+            });
             that.setData({
               spec,
               spec2,
               spec3,
               spec4,
             });
-            tt.showToast({
-              title: "Tải dữ liệu thành công",
-              icon: "success",
-            });
+            
           });
       },
     });
+    
+    
   },
 
   reloadDashboard: function () {
@@ -259,4 +267,5 @@ Page({
     this.data.spec3.data[0].values = [];
     this.getValueRecord();
   },
+
 });

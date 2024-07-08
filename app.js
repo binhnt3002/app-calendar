@@ -7,37 +7,35 @@ import {
 
 App({
   onLaunch: function () {
-    // getAuthorizationCode()
-    getAppAccessToken();
+    let that = this;
+    tt.showLoading({
+      "title": "Loading",
+      "mask": false,
+
+      success(res) {
+        // setInterval(() => {
+        // },7200000);
+        that.authorize();
+
+        tt.hideLoading({ 
+          success(res) {
+            console.log(JSON.stringify(res));
+          },
+          fail(res) {
+            console.log(`hideLoading fail: ${JSON.stringify(res)}`);
+          }
+      });
+        console.log(JSON.stringify(res));
+      },
+      fail(res) {
+        console.log(`showLoading fail: ${JSON.stringify(res)}`);
+      }
+  });
 
   },
 
   authorize() {
-    const appInstance = getApp();
-    getAuthorizationCode()
-      .then((code) => {
-        console.log(`Authorization code: ${code}`);
-        return getAppAccessToken(
-          appInstance.GlobalConfig.appId,
-          appInstance.GlobalConfig.appSecret
-        ).then((tokenData) => {
-          getUserAccessToken(tokenData.app_access_token, code).then(
-            (userData) => {
-              try {
-                tt.setStorageSync("user_info", {
-                  nickName: userData.data.name,
-                  avatarUrl: userData.data.avatar_url,
-                });
-              } catch (error) {
-                console.log(`setStorageSync fail: ${JSON.stringify(error)}`);
-              }
-            }
-          );
-        });
-      })
-      .catch((error) => {
-        console.error(`Error: ${error.errString} (errno: ${error.errno})`);
-      });
+    getAppAccessToken();
   },
   GlobalConfig: {
     baseId: "FeaubtGlja6dtds66P7l6iYbgwd",
