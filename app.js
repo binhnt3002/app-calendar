@@ -6,6 +6,7 @@ import {
 } from "./utils/autherization";
 
 App({
+
   onLaunch: function () {
     let that = this;
     tt.showLoading({

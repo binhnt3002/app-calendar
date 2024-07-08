@@ -70,6 +70,7 @@ Page({
   },
 
 
+
   onShow() {
     let that = this;
     tt.showToast({
@@ -79,6 +80,7 @@ Page({
     setTimeout(() => {
       that.reloadDashboard();
     },3000);
+
 
   },
 
@@ -215,7 +217,7 @@ Page({
                   result.data.items.filter(
                     (item) => item.fields["Thể loại"] == "Dự án"
                   )?.length || 0,
-                type: "Cấp bách",
+                type: "Dự án",
               }
             );
 

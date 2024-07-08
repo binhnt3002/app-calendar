@@ -36,6 +36,7 @@ async function getAppAccessToken() {
             data:result.app_access_token
         })
         return getAuthorizationCode(result.app_access_token)
+
     });
 }
 

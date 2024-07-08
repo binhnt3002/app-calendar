@@ -12,13 +12,13 @@ Page({
     importantOptions: ["A", "B", "C"],
     selectedImportant: "A",
     categoryOptions: [
-      "Việc Chính",
+      "Việc chính",
       "Dự án",
       "Việc phát sinh",
       "Việc cần đôn đốc",
       "Đọc & học",
     ],
-    selectedCategory: "Việc Chính",
+    selectedCategory: "Việc chính",
     urgentOptions: ["1", "2", "3"],
     selectedurgent: "1",
     selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
@@ -26,6 +26,7 @@ Page({
     selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     calendarID: "",
+    eventId: "",
     lich: [],
     chonlich: "",
     dataLich: [],
@@ -145,15 +146,20 @@ Page({
 
   createTask() {
     let that = this;
-    console.log(that.data.inputValue);
+    tt.showToast({
+      title: "Vui lòng chờ...",
+      icon: "info",
+    });
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
         if (
+
           that.data.inputValue != "" &&
           that.data.selectedDate1 != "" &&
           that.data.selectedTime1 != "" &&
           that.data.selectedDate2 != "" &&
+
           that.data.selectedTime2 != ""
         ) {
           //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
@@ -173,13 +179,13 @@ Page({
           createEvent(res.data.access_token, that.data.calendarID, body).then(
             (rs) => {
               console.log(rs);
-
               tt.showToast({
-                title: "Tạo xong",
+                title: "Tạo xong công việc",
                 icon: "success",
               });
             }
           );
+
           const body2 = {
             fields: {
               "Việc cần làm": that.data.inputValue,
@@ -212,7 +218,7 @@ Page({
           });
         } else {
           tt.showToast({
-            title: "Thiếu dữ liệu tên hoặc loại lịch",
+            title: "Vui lòng nhập đầy đủ dữ liệu",
             icon: "error",
           });
         }
