@@ -41,7 +41,7 @@
         <view class="col-4">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <picker class="picker-text" mode="selector" id="important" range="{{weekOptions}}" bindchange="onHoursChange">
+            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onHoursChange">
               {{selectedHours}}
             </picker>
           </block>  
