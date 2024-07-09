@@ -7,7 +7,7 @@
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
         <textarea class="input-text" type="text" id="task" placeholder="Enter task..."
-          style="margin-top: 5px;margin-right: 10px;" bindinput="inputTittle">
+          style="margin-top: 5px;margin-right: 10px;"value="{{inputValue}}" bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
@@ -39,7 +39,7 @@
         <view class="col-12">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <input class="input-text" type="number" name="txtTime" id="txtTime" bindinput="inputNeededHours" style="border: none;" />
+            <input class="input-text" type="number" value="{{inputHours}}" name="txtTime" id="txtTime" bindinput="inputNeededHours" style="border: none;" />
           </block>
         </view>
       </view>
@@ -82,7 +82,7 @@
         </view>
         <view class="note-info" style="margin-top: 1px;">
           <text class="title1">Ghi chú</text>
-          <textarea class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote">
+          <textarea class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote" >
         </view>
         <block >
           <view class="d-flex justify-content-end">

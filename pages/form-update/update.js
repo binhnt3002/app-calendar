@@ -1,3 +1,4 @@
+import { sendRequest } from "../../utils/sendRequest";
 import { bodyCreateTask } from "./detailForm";
 import {
   createEvent,
@@ -118,6 +119,9 @@ Page({
       selectedTime2: e.detail.value,
     });
   },
+  onLoad() {
+    this.getRecordDetail();
+  },
 
   onShow() {
     this.setCalendarData();
@@ -144,84 +148,51 @@ Page({
     });
   },
 
-  createTask() {
-    let that = this;
-    tt.showToast({
-      title: "Vui lòng chờ...",
-      icon: "info",
-    });
+  getRecordDetail() {
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
-        if (
+        const access_token = res.data.access_token;
+        const url =
+          "https://open.larksuite.com/open-apis/bitable/v1/apps/FeaubtGlja6dtds66P7l6iYbgwd/tables/tblPjWdyJh5OdMZe/records/search";
+        const headers = {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        };
+        const body = {
+          field_names: [
+            "Việc cần làm",
+            "Thể loại",
+            "Quan trọng",
+            "Cấp bách",
+            "Số giờ cần có",
+          ],
+          filter: {
+            conjunction: "and",
+            conditions: [
+              {
+                field_name: "Person",
+                operator: "is",
+                value: [res.data.open_id],
+              },
+              {
+                field_name: "Việc cần làm",
+                operator: "is",
+                value: ["dự án mới 2"],
+              },
+            ],
+          },
+          automatic_fields: false,
+        };
 
-          that.data.inputValue != "" &&
-          that.data.selectedDate1 != "" &&
-          that.data.selectedTime1 != "" &&
-          that.data.selectedDate2 != "" &&
+        sendRequest(url, "POST", headers, body).then((result) => {
+          console.log(result);
 
-          that.data.selectedTime2 != ""
-        ) {
-          //body createEvent (eventTitle, eventDescription, timeStart, timeEnd, visibilityType)
-          const body = bodyCreateTask(
-            that.data.inputValue,
-            that.data.inputNote,
-            this.dateTimeToTimestamp(
-              that.data.selectedDate1,
-              that.data.selectedTime1
-            ).toString(),
-            this.dateTimeToTimestamp(
-              that.data.selectedDate2,
-              that.data.selectedTime2
-            ).toString(),
-            "default"
-          );
-          createEvent(res.data.access_token, that.data.calendarID, body).then(
-            (rs) => {
-              console.log(rs);
-              tt.showToast({
-                title: "Tạo xong công việc",
-                icon: "success",
-              });
-            }
-          );
-
-          const body2 = {
-            fields: {
-              "Việc cần làm": that.data.inputValue,
-              "Thể loại": that.data.selectedCategory,
-              "Quan trọng": that.data.selectedImportant,
-              "Cấp bách": that.data.selectedurgent,
-              "Số giờ cần có": that.data.inputHours,
-              Person: [
-                {
-                  id: res.data.open_id,
-                },
-              ],
-              "Ngày - Giờ bắt đầu":
-                this.dateTimeToTimestamp(
-                  that.data.selectedDate1,
-                  that.data.selectedTime1
-                ) * 1000,
-              "Ngày - Giờ kết thúc":
-                this.dateTimeToTimestamp(
-                  that.data.selectedDate1,
-                  that.data.selectedTime1
-                ) * 1000,
-              "Ghi chú": that.data.inputNote,
-              CalendarID: that.data.calendarID,
-            },
-          };
-          console.log(body2);
-          createRecord(res.data.access_token, body2).then((rs) => {
-            console.log(rs);
+          this.setData({
+            inputValue: result.data.items[0].fields["Việc cần làm"][0].text,
+            inputHours: result.data.items[0].fields["Số giờ cần có"],
           });
-        } else {
-          tt.showToast({
-            title: "Vui lòng nhập đầy đủ dữ liệu",
-            icon: "error",
-          });
-        }
+        });
       },
     });
   },
