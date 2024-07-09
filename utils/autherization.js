@@ -1,19 +1,18 @@
 import { sendRequest } from "./sendRequest";
 
-const globalData = getApp();
+
 async function getAuthorizationCode(app_access_token) {
     tt.login({
-        success:  function (res) {
+        success:  async function (res) {
             const code = res.code
             return getUserToken(app_access_token, code).then((result) => {
-                try {
-                    tt.setStorageSync("user_access_token", result.data);
-                    console.log("đăng nhập thanh cong : " + result.data);
-                    getUserInfo(result.data.access_token);
-                }catch (e) {
-                    console.log(e)
-                }
-            });
+                console.log(result);
+                tt.setStorage({
+                    key:"user_access_token",
+                    data:result.data    
+                })
+                getUserInfo(result.data.access_token)
+            });            
         },
         fail: function(res) {
             console.log("không đăng nhập được : " + res);
@@ -36,7 +35,8 @@ async function getAppAccessToken() {
             key:"app_access_token",
             data:result.app_access_token
         })
-        getAuthorizationCode(result.app_access_token)
+        return getAuthorizationCode(result.app_access_token)
+
     });
 }
 

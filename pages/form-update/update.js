@@ -9,8 +9,6 @@ Page({
   data: {
     weekOptions: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
     selectedWeek: "Tuần 1",
-    hours: ["1","2","3","4","5","6","7","8","9","10"],
-    selectedHours: "1",
     importantOptions: ["A", "B", "C"],
     selectedImportant: "A",
     categoryOptions: [
@@ -36,8 +34,6 @@ Page({
     inputNote: "",
     inputHours: 0,
   },
-
-  
 
   inputTittle: function (e) {
     this.setData({
@@ -74,11 +70,6 @@ Page({
   onImportantChange: function (e) {
     this.setData({
       selectedImportant: this.data.importantOptions[e.detail.value],
-    });
-  },
-  onSelectedHours: function (e) {
-    this.setData({
-      selectedHours: this.data.hours[e.detail.value],
     });
   },
 
@@ -120,12 +111,6 @@ Page({
         selectedDate2: this.data.selectedDate1,
       });
     }
-  },
-
-  onTimeChange2: function (e) {
-    this.setData({
-      selectedTime2: e.detail.value,
-    });
   },
 
   onTimeChange2: function (e) {
