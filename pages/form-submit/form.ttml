@@ -1,13 +1,13 @@
 <div class="page-task-form">
 
-  <view class="form-1" style="background-image: url('https://i.imgur.com/PyLYyPA.jpeg');">
+  <view class="form-1" style="background:#c9d9e5 ;">
     <view class="header">
-      <text>TẠO TASK</text>
+      <text>TẠO CÔNG VIỆC</text>
     </view>
     <view class="body">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
-        <textarea class="input-text" type="text" id="task" placeholder="Enter task..."
+        <textarea class="input-text" type="text" id="task" placeholder="Nhập chi tiết công việc..."
           style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
       </block>
       <view class="row">
@@ -36,50 +36,73 @@
           </picker>
         </view>
       </view>
+      <!-- Seclected time -->
       <view class="row" style="margin-top: 10px;">
-        <view class="col-12">
+        <view class="col-4">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <input class="input-text" type="number" name="txtTime" id="txtTime" bindinput="inputNeededHours" style="border: none;" />
+            <picker class="picker-text" mode="selector" id="important" range="{{weekOptions}}" bindchange="onHoursChange">
+              {{selectedHours}}
+            </picker>
+          </block>  
+        </view>
+        <view class="col-4">
+          <block class="select-time"> 
+            <text class="title1" >Ngày bắt đầu</text>
+            <picker  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
+              {{selectedDate1}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-4">
+          <block class="select-time"> 
+            <text class="title1" >Ngày kết thúc</text>
+            <picker class="picker-date" mode="date" id="datePicker" start="{{selectedDate1}}" bindchange="onDateChange2">
+              {{selectedDate2}}
+            </picker>
           </block>
         </view>
       </view>
-        
+
+      <!-- Seclected time -->
+
         <view class="row" style="margin-top: 10px;">
-          <view class="col-12 col-sm-6">
+          <view class="col-6">
             <view class="col-12">
-              <text class="title1" style="margin-left: -15px;">Ngày giờ bắt đầu</text>
+              <text class="title1" style="margin-left: -15px;">Chọn thời gian làm việc theo mỗi thứ</text>
             </view>
             <view class="row">
-              <view class="col-5">
-                <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
-                  {{selectedDate1}}
-                </picker>
-              </view>
               <view class="col-3">
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                  {{selectedTime1}}
-                </picker>
+                <block class="select-time"> 
+                  <picker class="picker-text" mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
+                    {{selectedWeek}}
+                  </picker>
+                </block>
+              </view>
+              <view class="col-5">
+                <block class="select-time">
+                  <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
+                    {{selectedDate1}}
+                  </picker>
+                </block>
+              </view>
+              <view class="col-2">
+                <block class="select-time"></block>
+                  <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+                    {{selectedTime1}}
+                  </picker>
+                </block>
+              </view>
+              <view class="col-2">
+                <block class="select-time">
+                  <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+                    {{selectedTime2}}
+                  </picker>
+                </block>               
               </view>
             </view>
           </view>
-          <view class="col-12 col-sm-6">
-            <view class="col-12">
-              <text class="title1" style="margin-left: -10px;">Ngày giờ kết thúc</text>
-            </view>
-            <view class="row">
-              <view class="col-5">
-                <picker class="picker-date" mode="date" id="datePicker" start="{{selectedDate1}}" bindchange="onDateChange2">
-                  {{selectedDate2}}
-                </picker>
-              </view>
-              <view class="col-3">
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                  {{selectedTime2}}
-                </picker>
-              </view>
-            </view>
-          </view>
+         
         </view>
         <view class="note-info" style="margin-top: 1px;">
           <text class="title1">Ghi chú</text>
@@ -88,7 +111,7 @@
         <block >
           <view class="d-flex justify-content-end">
             <!-- <button class="btn btn-primary" >Add event</button> -->
-            <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Add Task</button>
+            <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Tạo Task</button>
           </view>
         </block> 
     </view>

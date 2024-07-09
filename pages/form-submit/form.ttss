@@ -122,9 +122,10 @@ textarea {
   /* padding-left: 5px; */
   background-color: rgb(255, 255, 255,0.8);
   border-radius: 5px;
+  padding: 0;
   
   /* border: 1px solid #ddd; */
-  margin-top: 3px; /* Giảm khoảng cách trên */
+  /* margin-top: 3px; */
   margin-bottom: 5px;
   font-size: 13px;
   width: auto;
@@ -132,7 +133,7 @@ textarea {
 }
 
 .picker-date{
-  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
+  height:30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
   line-height: 30px;
   /* padding-left: 5px; */
   background-color: rgb(255, 255, 255,0.8);
@@ -151,11 +152,10 @@ textarea {
   background-color: rgb(255, 255, 255,0.8);
   border-radius: 5px;
   /* border: 1px solid #ddd; */
-  margin-left:-25px; 
+  /* margin-left:-25px;  */
   font-size: 13px;
   width: 60px;
   text-align: center;
-
 }
 
 .title1{
@@ -174,8 +174,7 @@ button{
 }
 
 .btn:hover{
-  background-color: rgb(255, 255, 255);
-  color: black;
+  opacity: 0.8 !important;
   cursor:pointer;
   position:relative;
 }
