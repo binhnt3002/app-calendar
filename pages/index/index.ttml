@@ -2,69 +2,126 @@
   <view class="row">
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Độ cấp bách</text>
+        <view class="text-list">
+          <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; font-size: 15px;">TIÊU CHUẨN KIẾN NGHỊ</text>
+          <view class="container text-center" style="height: auto !important;">
+            <view class="row align-items-start" style="border-bottom: 1px solid rgb(248, 223, 223);">
+              <view class="col" style="border-right: 1px solid rgb(248, 223, 223)">
+                <view class="row-detail">
+                  <text class="row-title">Độ quan trọng</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">A: {{percentA}}%</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">B: {{percentB}}%</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">C: {{percentC}}%</text>
+                </view>
+              </view>
+              <view class="col" style="border-right: 1px solid rgb(248, 223, 223);">
+                <view class="row-detail">
+                  <text class="row-title">Tiêu chuẩn</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;" decode>A: &gt; 65%</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;" decode>B: &lt; 30%</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">C: 5-10%</text>
+                </view>
+              </view>
+              <view class="col">
+                <view class="row-detail">
+                  <text class="row-title">Nhận định</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">{{assessmentA}}</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">{{assessmentB}}</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">{{assessmentC}}</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="row align-items-start" style="border-bottom: 1px solid rgb(248, 223, 223);">
+              <view class="col" style="border-right: 1px solid rgb(248, 223, 223);">
+                <view class="row-detail">
+                  <text class="row-title">Độ cấp bách</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">1: {{percent1}}%</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">2: {{percent2}}%</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">3: {{percent3}}%</text>
+                </view>
+              </view>
+              <view class="col" style="border-right: 1px solid rgb(248, 223, 223);">
+                <view class="row-detail">
+                  <text class="row-title">Tiêu chuẩn</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;" decode>1: &gt; 65%</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;" decode>2: &lt; 30%</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">3: 5-10%</text>
+                </view>
+              </view>
+              <view class="col">
+                <view class="row-detail">
+                  <text class="row-title">Nhận định</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">{{assessment1}}</text>
+                </view>
+                <view class="row-detail">
+                  <text style="font-size: 15px;">{{assessment2}}</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">{{assessment3}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="col-6">
+      <view class="dash-board">
+        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center; font-weight: bold; ">Các loại công việc</text>       
+        <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
+      </view>
+    </view>
+  </view>
+  <view class="row">
+    <view class="col-6">
+      <view class="dash-board">
+        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ cấp bách</text>
         <chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" />
       </view>
     </view>
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Độ quan trọng</text>
+        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ quan trọng</text>
         <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
       </view>
     </view>
   </view>
-
-
-  <view class="row">
-    <view class="col-6">
-      <view class="dash-board">
-        <!-- <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Các loại công việc</text>
-        <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" /> -->
-      </view>
-    </view>
-    <view class="col-6">
-      <!-- <view class="text-list">
-        <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; ">TIÊU CHUẨN KIẾN NGHỊ</text>
-        <view class="row mt-2" >
-          <view class="col-12 mb-2">
-            <text class="m-4" decode>A: > 65% (càng cao càng tốt) \n</text>
-            <text class="m-4" decode>B: &lt; 30% \n</text>
-            <text class="m-4" >C: 5-10%</text>
-          </view>
-          <view class="col-12 ms-2">
-            <text class="m-4" decode>1: >65% (càng cao càng tốt)\n</text>
-            <text class="m-4" decode>2: &lt; 30% \n</text>
-            <text class="m-4">3: 5-10% \n</text>
-            <text class="m-4">Còn dư: 10% </text>
-          </view>
-        </view>
-      </view> -->
-      <view class="dash-board">
-        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center;">Các loại công việc</text>
-
-        <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
-
-      </view>
-    </view>
-
-  </view>
-  <view class="row">
-    <view class="col-6">
-      <view class="dash-board">
-        <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
-
-      </view>
-    </view>
-    <view class="col-6">
-      <view class="dash-board">
-        <!-- <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" /> -->
-      </view>
-    </view>
-  </view>
 </view>
 
 
-</view>
 
 <!-- <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
 

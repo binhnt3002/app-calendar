@@ -7,14 +7,14 @@ const createSpec = (typeChart, idData, paddingR, paddingL) => {
         values: [],
       },
     ],
-    outerRadius: 0.8,
+    outerRadius: 0.6,
     categoryField: "type",
     valueField: "value",
     legends: {
-      visible: true,
+      // visible: true,
       orient: "top",
       item: {
-        visible: true,
+        // visible: true,
         padding: {
           right: paddingR,
           left: paddingL,
