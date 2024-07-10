@@ -301,7 +301,8 @@ Page({
             assessment2,
             assessment3,
             distance1,
-            percentdistance
+            percentdistance,
+            totalHours
           });
 
         });
