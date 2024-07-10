@@ -3,8 +3,8 @@
     <view class="col-6">
       <view class="dash-board">
         <view class="text-list">
-          <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; font-size: 15px;">TIÊU CHUẨN KIẾN NGHỊ</text>
-          <view class="container text-center" style="height: auto !important;">
+          <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; font-size: 14px;">TIÊU CHUẨN KIẾN NGHỊ</text>
+          <view class="container text-center" style="height: auto !important; margin-top: 15px;">
             <view class="row align-items-start" style="border-bottom: 1px solid rgb(248, 223, 223);">
               <view class="col" style="border-right: 1px solid rgb(248, 223, 223)">
                 <view class="row-detail">
@@ -100,7 +100,7 @@
     </view>
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center; font-weight: bold; ">Các loại công việc</text>       
+        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold; ">Các loại công việc</text>       
         <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
       </view>
     </view>
@@ -108,13 +108,13 @@
   <view class="row">
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ cấp bách</text>
+        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ cấp bách</text>
         <chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" />
       </view>
     </view>
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 5px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ quan trọng</text>
+        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ quan trọng</text>
         <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
       </view>
     </view>
