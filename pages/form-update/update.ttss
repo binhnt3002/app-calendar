@@ -1,247 +1,63 @@
-@import 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css';
-
-.page-task-form{
-/* background-color: rgb(255, 255, 255); */
-width: 100%;
-height: 1000px;
-/* background-image: url(/images/anhnen.jpg); */
-
-
-}
-
-.body{
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.form-1 {
+.container {
+  width: 100%;
   max-width: 1000px;
-  /* max-height: 800px; */
-  height: fit-content;
-  border-radius: 10px;
-  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
-  overflow: hidden;
-  font-size: 14px; /* Giảm kích thước chữ chung */
-  font-family: Arial, sans-serif;
-  background-size: cover;
-
 }
 
-
-.main{
-  padding:0 10px;
-  flex-direction: column;
-  height: 100%;
+.box {
   width: 100%;
-}
-.header {
-  /* height: 50%; */
-  /* background: linear-gradient(135deg, rgba(34, 193, 195, 1) 30%, rgb(67, 79, 248) 70%); */
-  margin-bottom: 10px;
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0; /* Giảm padding */
-  font-size: 20px; /* Giảm kích thước chữ của header */
-  background: #045A97 !important;
-  font-weight: bolder;
-}
-
-.user-info {
-  font-size: 14px; /* Kích thước chữ của phần user-info */
-}
-
-.section-user {
-  align-self: flex-end; /* Đặt phần user-info ở bên phải */
-  padding: 10px;
-  margin-bottom: 10px;
-  margin-right: 40px;
-}
-.task-form {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px; /* Giảm khoảng cách giữa form và task list */
-  margin-top: 10px;
-}
-.component{
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  width: 100%;
-}
-.section-user {
-  align-items: center; /* Đặt phần user-info ở bên phải */
-  padding: 10px;
-  margin-bottom: 10px;
-  margin-right: 40px;
-  display: flex;
-  justify-content: right;
-}
-.select-time{
-  border: #f1f1f1;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.form-field{
-  justify-content: space-between;
-  display: block !important;
-  flex-direction: column;
-  /* margin: 50px; */
-}
-
-.input-text{
-  width: 100%;
-  background-color: rgb(255, 255, 255,0.8);
-  padding: 5px;
-}
-
-/* .task-name{
-  margin-top: 10px;
-} */
-
-textarea {
-  margin-top: 5px;
-  width: 99%;
-  height: 80px;
-  padding: 10px 0;
   box-sizing: border-box;
-  /* border: 1px solid #f1f1f1; */
-  border-radius: 4px;
-  /* background-color: #3485B7; */
-  resize: none;
-  border: none;
-  /* margin-bottom: 10px; */
-  /* color: #3485B7; */
 }
 
-
-.picker-text{
-  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
-  line-height: 30px;
-  /* padding-left: 5px; */
-  background-color: rgb(255, 255, 255,0.8);
-  border-radius: 5px;
-  
-  /* border: 1px solid #ddd; */
-  margin-top: 3px; /* Giảm khoảng cách trên */
-  margin-bottom: 5px;
-  font-size: 13px;
-  width: auto;
+.header {
+  padding: 10px;
+  background-color: #045A97;
+  width: 100%;
   text-align: center;
+  color: white;
 }
 
-.picker-date{
-  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
-  line-height: 30px;
-  /* padding-left: 5px; */
-  background-color: rgb(255, 255, 255,0.8);
-  border-radius: 5px;
-  /* border: 1px solid #ddd; */
-  /* margin-top: 3px; */
-  font-size: 13px;
-  min-width:auto;
-  text-align: center;  
+.body {
+  width: 100%;
+  max-width: fit-content;
 }
 
-.picker-time{
-  height: 30px; /* Đảm bảo tất cả các trường đều có chiều cao đồng nhất */
-  line-height: 30px;
-  /* padding-left: 5px; */
-  background-color: rgb(255, 255, 255,0.8);
-  border-radius: 5px;
-  /* border: 1px solid #ddd; */
-  margin-left:-25px; 
-  font-size: 13px;
-  width: 60px;
-  text-align: center;
-
+.table-container {
+  width: 100%;
+  max-width: fit-content;
+  height: 400px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
+  overflow: auto;
 }
 
-.title1{
-  font-weight: bold;
-  font-size: 16px ;
-  color: #045A97 !important;
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 1000px; /* Đặt chiều rộng bằng với chiều rộng của container */
 }
 
-
-button{
-  height: 50px !important;
-  font-size: 15px !important;
-  line-height: 5px !important;
-  background: #045A97 !important;
-  border-radius: 5px !important;
-}
-
-.btn:hover{
-  background-color: rgb(255, 255, 255);
-  color: black;
-  cursor:pointer;
-  position:relative;
-}
-
-.note-info{
-  /* background-color: ; */
-  display: block;
-}
-
-
-.component-picker-time{
-  display: flex ;
-  margin-top: 7px;
-}
-.content-pick{
-  /* display: flex; */
-  gap: 15px;
-  flex-wrap: wrap;
+.row {
+  display: flex;
   width: 100%;
 }
 
-
-.box-time{
-  display: flex ;
-  flex-direction: row ;
-}
-
-.box-time picker { 
+.col {
   flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  height: 50px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
+  max-width: 100px; /* Điều chỉnh chiều rộng theo yêu cầu của bạn */
+  min-width: 100px;
 }
 
-/* .btn:before,.btn:after{
-  content:'';
-  position:absolute;
-  top:0;
-  right:0;
-  height:2px;
-  width:0;
-  background: #007bff;
-  transition:500ms ease all;
-}
-.btn:after{
-  right:inherit;
-  top:inherit;
-  left:0;
-  bottom:0;
-}
-.btn:hover:before,.btn:hover:after{
-  width:70%;
-  transition:800ms ease all;
-} */
-.page-body-info {
-  padding-bottom: 0;
-  height: 260px;
-}
-.userinfo-avatar {
-  border-radius: 128rpx;
-  width: 100px;
-  height: 100px;
-}
-.userinfo-nickname {
+.header-row {
+  /* background-color: #f2f2f2; */
   font-weight: bold;
-  /* margin-top: 20rpx; */
-  font-size: 20px;
-}
-
-.btn {
-  
 }

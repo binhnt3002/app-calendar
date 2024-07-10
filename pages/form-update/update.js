@@ -1,205 +1,193 @@
-import { sendRequest } from "../../utils/sendRequest";
-import { bodyCreateTask } from "./detailForm";
-import {
-  createEvent,
-  createRecord,
-  getCalendarList,
-} from "./function/apiFunction";
-
 Page({
   data: {
-    weekOptions: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
-    selectedWeek: "Tuần 1",
-    importantOptions: ["A", "B", "C"],
-    selectedImportant: "A",
-    categoryOptions: [
-      "Việc chính",
-      "Dự án",
-      "Việc phát sinh",
-      "Việc cần đôn đốc",
-      "Đọc & học",
+    tableData: [
+      {
+        col1: "Giá trị 1.1",
+        col2: "Giá trị 1.2",
+        col3: "Giá trị 1.3",
+        col4: "Giá trị 1.4",
+        col5: "Giá trị 1.5",
+        col6: "Giá trị 1.6",
+        col7: "Giá trị 1.7",
+        col8: "Giá trị 1.8",
+        col9: "Giá trị 1.9",
+      },
+      {
+        col1: "Giá trị 2.1",
+        col2: "Giá trị 2.2",
+        col3: "Giá trị 2.3",
+        col4: "Giá trị 2.4",
+        col5: "Giá trị 2.5",
+        col6: "Giá trị 2.6",
+        col7: "Giá trị 2.7",
+        col8: "Giá trị 2.8",
+        col9: "Giá trị 2.9",
+      },
+      {
+        col1: "Giá trị 3.1",
+        col2: "Giá trị 3.2",
+        col3: "Giá trị 3.3",
+        col4: "Giá trị 3.4",
+        col5: "Giá trị 3.5",
+        col6: "Giá trị 3.6",
+        col7: "Giá trị 3.7",
+        col8: "Giá trị 3.8",
+        col9: "Giá trị 3.9",
+      },
+      {
+        col1: "Giá trị 4.1",
+        col2: "Giá trị 4.2",
+        col3: "Giá trị 4.3",
+        col4: "Giá trị 4.4",
+        col5: "Giá trị 4.5",
+        col6: "Giá trị 4.6",
+        col7: "Giá trị 4.7",
+        col8: "Giá trị 4.8",
+        col9: "Giá trị 4.9",
+      },
+      {
+        col1: "Giá trị 5.1",
+        col2: "Giá trị 5.2",
+        col3: "Giá trị 5.3",
+        col4: "Giá trị 5.4",
+        col5: "Giá trị 5.5",
+        col6: "Giá trị 5.6",
+        col7: "Giá trị 5.7",
+        col8: "Giá trị 5.8",
+        col9: "Giá trị 5.9",
+      },
+      {
+        col1: "Giá trị 6.1álkdjnqkwandlqkwnlk",
+        col2: "Giá trị 6.2",
+        col3: "Giá trị 6.3",
+        col4: "Giá trị 6.4",
+        col5: "Giá trị 6.5",
+        col6: "Giá trị 6.6",
+        col7: "Giá trị 6.7",
+        col8: "Giá trị 6.8",
+        col9: "Giá trị 6.9",
+      },
+      {
+        col1: "Giá trị 7.1",
+        col2: "Giá trị 7.2",
+        col3: "Giá trị 7.3",
+        col4: "Giá trị 7.4",
+        col5: "Giá trị 7.5",
+        col6: "Giá trị 7.6",
+        col7: "Giá trị 7.7",
+        col8: "Giá trị 7.8",
+        col9: "Giá trị 7.9",
+      },
+      {
+        col1: "Giá trị 8.1",
+        col2: "Giá trị 8.2",
+        col3: "Giá trị 8.3",
+        col4: "Giá trị 8.4",
+        col5: "Giá trị 8.5",
+        col6: "Giá trị 8.6",
+        col7: "Giá trị 8.7",
+        col8: "Giá trị 8.8",
+        col9: "Giá trị 8.9",
+      },
+      {
+        col1: "Giá trị 9.1",
+        col2: "Giá trị 9.2",
+        col3: "Giá trị 9.3",
+        col4: "Giá trị 9.4",
+        col5: "Giá trị 9.5",
+        col6: "Giá trị 9.6",
+        col7: "Giá trị 9.7",
+        col8: "Giá trị 9.8",
+        col9: "Giá trị 9.9",
+      },
+      {
+        col1: "Giá trị 10.1",
+        col2: "Giá trị 10.2",
+        col3: "Giá trị 10.3",
+        col4: "Giá trị 10.4",
+        col5: "Giá trị 10.5poqwjdkqnkwdnq",
+        col6: "Giá trị 10.6",
+        col7: "Giá trị 10.7",
+        col8: "Giá trị 10.8",
+        col9: "Giá trị 10.9",
+      },
+      {
+        col1: "Giá trị 11.1",
+        col2: "Giá trị 11.2",
+        col3: "Giá trị 11.3",
+        col4: "Giá trị 11.4",
+        col5: "Giá trị 11.5",
+        col6: "Giá trị 11.6",
+        col7: "Giá trị 11.7",
+        col8: "Giá trị 11.8",
+        col9: "Giá trị 11.9",
+      },
+      {
+        col1: "Giá trị 12.1",
+        col2: "Giá trị 12.2",
+        col3: "Giá trị 12.3",
+        col4: "Giá trị 12.4",
+        col5: "Giá trị 12.5",
+        col6: "Giá trị 12.6",
+        col7: "Giá trị 12.7",
+        col8: "Giá trị 12.8",
+        col9: "Giá trị 12.9",
+      },
+      {
+        col1: "Giá trị 13.1",
+        col2: "Giá trị 13.2pợignwoeifnwoiefnnio",
+        col3: "Giá trị 13.3",
+        col4: "Giá trị 13.4",
+        col5: "Giá trị 13.5",
+        col6: "Giá trị 13.6",
+        col7: "Giá trị 13.7",
+        col8: "Giá trị 13.8",
+        col9: "Giá trị 13.9",
+      },
+      {
+        col1: "Giá trị 14.1",
+        col2: "Giá trị 14.2",
+        col3: "Giá trị 14.3",
+        col4: "Giá trị 14.4",
+        col5: "Giá trị 14.5",
+        col6: "Giá trị 14.6",
+        col7: "Giá trị 14.7",
+        col8: "Giá trị 14.8",
+        col9: "Giá trị 14.9",
+      },
+      {
+        col1: "Giá trị 15.1",
+        col2: "Giá trị 15.2",
+        col3: "Giá trị 15.3",
+        col4: "Giá trị 15.4",
+        col5: "Giá trị 15.5",
+        col6: "Giá trị 15.6",
+        col7: "Giá trị 15.7",
+        col8: "Giá trị 15.8",
+        col9: "Giá trị 15.9",
+      },
+      {
+        col1: "Giá trị 16.1",
+        col2: "Giá trị 16.2",
+        col3: "Giá trị 16.3",
+        col4: "Giá trị 16.4",
+        col5: "Giá trị 16.5",
+        col6: "Giá trị 16.6",
+        col7: "Giá trị 16.7",
+        col8: "Giá trị 16.8",
+        col9: "Giá trị 16.9",
+      },
+      {
+        col1: "Giá trị 17.1",
+        col2: "Giá trị 17.2",
+        col3: "Giá trị 17.3",
+        col4: "Giá trị 17.4",
+        col5: "Giá trị 17.5",
+        col6: "Giá trị 17.6",
+        col7: "Giá trị 17.7",
+        col8: "Giá trị 17.8",
+        col9: "Giá trị 17.9",
+      },
     ],
-    selectedCategory: "Việc chính",
-    urgentOptions: ["1", "2", "3"],
-    selectedurgent: "1",
-    selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
-    selectedTime1: "", // Thêm selectedTime để lưu ngày và giờ được chọn
-    selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
-    selectedTime2: "", // Thêm selectedTime để lưu ngày và giờ được chọn
-    calendarID: "",
-    eventId: "",
-    lich: [],
-    chonlich: "",
-    dataLich: [],
-    inputValue: "",
-    inputNote: "",
-    inputHours: 0,
-  },
-
-  inputTittle: function (e) {
-    this.setData({
-      inputValue: e.detail.value,
-    });
-  },
-  inputNote: function (e) {
-    this.setData({
-      inputNote: e.detail.value,
-    });
-  },
-
-  inputNeededHours: function (e) {
-    this.setData({
-      inputHours: parseInt(e.detail.value),
-    });
-  },
-
-  onCalendarChage: function (e) {
-    this.setData({
-      chonlich: this.data.lich[e.detail.value],
-      calendarID: this.data.dataLich.find(
-        (item) => item.summary === this.data.lich[e.detail.value]
-      ).calendar_id,
-    });
-  },
-
-  onWeekChange: function (e) {
-    this.setData({
-      selectedWeek: this.data.weekOptions[e.detail.value],
-    });
-  },
-
-  onImportantChange: function (e) {
-    this.setData({
-      selectedImportant: this.data.importantOptions[e.detail.value],
-    });
-  },
-
-  onCategoryChange: function (e) {
-    this.setData({
-      selectedCategory: this.data.categoryOptions[e.detail.value],
-    });
-  },
-
-  onUrgentChange: function (e) {
-    this.setData({
-      selectedurgent: this.data.urgentOptions[e.detail.value],
-    });
-  },
-
-  onDateChange1: function (e) {
-    this.setData({
-      selectedDate1: e.detail.value,
-    });
-    if (this.data.selectedDate1 > this.data.selectedDate2) {
-      this.setData({
-        selectedDate2: this.data.selectedDate1,
-      });
-    }
-  },
-
-  onTimeChange1: function (e) {
-    this.setData({
-      selectedTime1: e.detail.value,
-    });
-  },
-
-  onDateChange2: function (e) {
-    this.setData({
-      selectedDate2: e.detail.value,
-    });
-    if (this.data.selectedDate1 > this.data.selectedDate2) {
-      this.setData({
-        selectedDate2: this.data.selectedDate1,
-      });
-    }
-  },
-
-  onTimeChange2: function (e) {
-    this.setData({
-      selectedTime2: e.detail.value,
-    });
-  },
-  onLoad() {
-    this.getRecordDetail();
-  },
-
-  onShow() {
-    this.setCalendarData();
-  },
-
-  setCalendarData() {
-    let that = this;
-    tt.getStorage({
-      key: "user_access_token",
-      success: (res) => {
-        tt.showToast({
-          title: "Đang lấy dữ liệu",
-          icon: "loading",
-        });
-        const access_token = res.data.access_token;
-        getCalendarList(access_token).then((result) => {
-          console.log(result.data.calendar_list);
-          that.setData({
-            dataLich: result.data.calendar_list,
-            lich: result.data.calendar_list.map((item) => item.summary),
-          });
-        });
-      },
-    });
-  },
-
-  getRecordDetail() {
-    tt.getStorage({
-      key: "user_access_token",
-      success: (res) => {
-        const access_token = res.data.access_token;
-        const url =
-          "https://open.larksuite.com/open-apis/bitable/v1/apps/FeaubtGlja6dtds66P7l6iYbgwd/tables/tblPjWdyJh5OdMZe/records/search";
-        const headers = {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        };
-        const body = {
-          field_names: [
-            "Việc cần làm",
-            "Thể loại",
-            "Quan trọng",
-            "Cấp bách",
-            "Số giờ cần có",
-          ],
-          filter: {
-            conjunction: "and",
-            conditions: [
-              {
-                field_name: "Person",
-                operator: "is",
-                value: [res.data.open_id],
-              },
-              {
-                field_name: "Việc cần làm",
-                operator: "is",
-                value: ["dự án mới 2"],
-              },
-            ],
-          },
-          automatic_fields: false,
-        };
-
-        sendRequest(url, "POST", headers, body).then((result) => {
-          console.log(result);
-
-          this.setData({
-            inputValue: result.data.items[0].fields["Việc cần làm"][0].text,
-            inputHours: result.data.items[0].fields["Số giờ cần có"],
-          });
-        });
-      },
-    });
-  },
-
-  dateTimeToTimestamp: function (date, time) {
-    let datetime = new Date(`${date} ${time}`);
-    let timestamp = datetime.getTime();
-    return Math.floor(timestamp / 1000);
   },
 });

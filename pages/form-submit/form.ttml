@@ -41,46 +41,12 @@
         <view class="col-4">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
+            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onHoursChange">
               {{selectedHours}}
             </picker>
           </block>  
         </view>
-        <view class="col-8">
-          <view class="col-12">
-            <text class="title1" style="margin-left: -15px;">Chọn thời gian làm việc</text>
-          </view>
-          <view class="row">
-            <view class="col-3">
-              <block class="select-time"> 
-                <picker class="picker-text" mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
-                  {{selectedWeek}}
-                </picker>
-              </block>
-            </view>
-            <view class="col-5">
-              <block class="select-time">
-                <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" placeholder="yyyy-mm-dd">
-                  {{selectedDate1}}
-                </picker>
-              </block>
-            </view>
-            <view class="col-2">
-              <block class="select-time"></block>
-                <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                  {{selectedTime1}}
-                </picker>
-              </block>
-            </view>
-            <view class="col-2">
-              <block class="select-time">
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                  {{selectedTime2}}
-                </picker>
-              </block>               
-            </view>
-          </view>
-        <!-- <view class="col-4">
+        <view class="col-4">
           <block class="select-time"> 
             <text class="title1" >Ngày bắt đầu</text>
             <picker  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
@@ -95,15 +61,56 @@
               {{selectedDate2}}
             </picker>
           </block>
-        </view> -->
+        </view>
       </view>
 
       <!-- Seclected time -->
 
-        <view class="row" style="margin-top: 10px;">
-          
-          </view>
+      <view class="row"  style="margin-top: 10px;">
+        <view class="col-12">
+          <text class="title1" >Chọn thời gian làm việc</text>
+        </view>      
+      </view>
+      <view class="row">
+        <view class="col-2">
+          <block class="select-time"> 
+            <picker class="picker-text" mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
+              {{selectedWeek}}
+            </picker>
+          </block>
         </view>
+        <view class="col-4">
+          <block class="select-time">
+            <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+              {{selectedDate3}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-2">
+          <block class="select-time">
+            <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+              {{selectedTime1}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-2">
+          <block class="select-time">
+            <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+              {{selectedTime2}}
+            </picker>
+          </block>               
+        </view> 
+        <view class="col-2">
+          <block class="select-time">
+            <label> 
+            Lặp lại
+              <checkbox bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
+            </label>
+          </block>               
+        </view> 
+      </view>
+         
+      
         <view class="note-info" style="margin-top: 1px;">
           <text class="title1">Ghi chú</text>
           <textarea class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote">
