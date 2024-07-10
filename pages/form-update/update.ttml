@@ -17,6 +17,7 @@
             <view class="col">Tiêu đề 7</view>
             <view class="col">Tiêu đề 8</view>
             <view class="col">Tiêu đề 9</view>
+            <view class="col">Tiêu đề 10</view>
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{tableData}}" wx:key="index">
@@ -30,6 +31,7 @@
               <view class="col">{{item.col7}}</view>
               <view class="col">{{item.col8}}</view>
               <view class="col">{{item.col9}}</view>
+              <view class="col">{{item.col10}}</view>
             </view>
           </block>
         </view>

@@ -38,7 +38,7 @@
       </view>
       <view class="row">
         <view class="col-7">
-          <view class="event-daily">
+          <!-- <view class="event-daily">
             <view class="evt-col">
               <input type="number" placeholder="Nhập số phút">
             </view>
@@ -58,11 +58,8 @@
                   {{selectedPermission}}
                 </view>
             </view>
-          </view>
+          </view> -->
         </view>
-        <!-- <view class="col-2">
-          
-        </view> -->
         <view class="col-3">
           <view style="display:flex; justify-content: flex-end;">
             <view class="form-buttons">
