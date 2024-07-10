@@ -4,28 +4,37 @@
   </view>
   <view class="body">
     <view class="box">
-      <scroll-view scroll-y="true" class="table-container">
-        <scroll-view scroll-x="true" class="table-scroll">
-          <view class="table" style="font-size: 15px;">
-            <!-- Row đầu tiên là tiêu đề -->
-            <view class="row header-row">
-              <view class="col">Tiêu đề 1</view>
-              <view class="col">Tiêu đề 2</view>
-              <view class="col">Tiêu đề 3</view>
-              <view class="col">Tiêu đề 4</view>
-              <view class="col">Tiêu đề 5</view>
-              <view class="col">Tiêu đề 6</view>
-              <view class="col">Tiêu đề 7</view>
-              <view class="col">Tiêu đề 8</view>
-              <view class="col">Tiêu đề 9</view>
-              <view class="col">Tiêu đề 10</view>
-            </view>
-            <!-- Các dòng dữ liệu -->
-            <block wx:for="{{tableData}}" wx:key="index">
-              <template is="tableRow" data="{{item}}"/>
-            </block>
+      <scroll-view scroll-y="true" scroll-x="true" class="table-container">
+        <view class="table" style="font-size: 15px;">
+          <!-- Row đầu tiên là tiêu đề -->
+          <view class="row header-row">
+            <view class="col">Tiêu đề 1</view>
+            <view class="col">Tiêu đề 2</view>
+            <view class="col">Tiêu đề 3</view>
+            <view class="col">Tiêu đề 4</view>
+            <view class="col">Tiêu đề 5</view>
+            <view class="col">Tiêu đề 6</view>
+            <view class="col">Tiêu đề 7</view>
+            <view class="col">Tiêu đề 8</view>
+            <view class="col">Tiêu đề 9</view>
+            <view class="col">Tiêu đề 10</view>
           </view>
-        </scroll-view>
+          <!-- Các dòng dữ liệu -->
+          <block wx:for="{{tableData}}" wx:key="index">
+            <view class="row">
+              <view class="col">{{item.col1}}</view>
+              <view class="col">{{item.col2}}</view>
+              <view class="col">{{item.col3}}</view>
+              <view class="col">{{item.col4}}</view>
+              <view class="col">{{item.col5}}</view>
+              <view class="col">{{item.col6}}</view>
+              <view class="col">{{item.col7}}</view>
+              <view class="col">{{item.col8}}</view>
+              <view class="col">{{item.col9}}</view>
+              <view class="col">{{item.col10}}</view>
+            </view>
+          </block>
+        </view>
       </scroll-view>
     </view>
   </view>
@@ -33,18 +42,3 @@
     <button>check var</button>
   </view>
 </view>
-
-<template name="tableRow">
-  <view class="row">
-    <view class="col">{{item.col1}}</view>
-    <view class="col">{{item.col2}}</view>
-    <view class="col">{{item.col3}}</view>
-    <view class="col">{{item.col4}}</view>
-    <view class="col">{{item.col5}}</view>
-    <view class="col">{{item.col6}}</view>
-    <view class="col">{{item.col7}}</view>
-    <view class="col">{{item.col8}}</view>
-    <view class="col">{{item.col9}}</view>
-    <view class="col">{{item.col10}}</view>
-  </view>
-</template>

@@ -27,13 +27,9 @@
 
 .table-container {
   width: 100%;
+  max-width: fit-content;
   height: 400px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
-  overflow-y: auto;
-}
-
-.table-scroll {
-  width: 1000px; /* Đặt chiều rộng bằng với chiều rộng của container */
-  overflow-x: auto;
+  overflow: auto;
 }
 
 .table {
@@ -62,5 +58,6 @@
 }
 
 .header-row {
+  /* background-color: #f2f2f2; */
   font-weight: bold;
 }
