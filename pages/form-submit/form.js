@@ -7,12 +7,13 @@ import {
 
 Page({
   data: {
-    weekOptions: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
+    weekOptions: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
     selectedWeek: "Thứ 2",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     selectedHours: "1",
     importantOptions: ["A", "B", "C"],
     selectedImportant: "A",
+    isLoop: false,
     categoryOptions: [
       "Việc chính",
       "Dự án",
@@ -20,6 +21,33 @@ Page({
       "Việc cần đôn đốc",
       "Đọc & học",
     ],
+    dailyData: [{
+      "Thứ 2": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      },
+      "Thứ 3": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      },
+      "Thứ 4": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      },
+      "Thứ 5": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      },
+      "Thứ 6": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      },
+      "Thứ 7": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      },
+      "Chủ nhật": {
+        date: "", startTime: "", endTime: "", isLoop: false,
+      }
+    }],
+
+
+
+
     selectedCategory: "Việc chính",
     urgentOptions: ["1", "2", "3"],
     selectedurgent: "1",
@@ -29,6 +57,7 @@ Page({
     selectedTime1: "Bắt đầu", // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: "Kết thúc", // Thêm selectedTime để lưu ngày và giờ được chọn
+    selectedDate3: "",
     calendarID: "",
     eventId: "",
     lich: [],
@@ -76,10 +105,35 @@ Page({
     });
   },
 
+  checkboxChange: function (e) {
+    this.setData({
+      isLoop: !e.detail.value,
+    });
+    console.log(e.detail.value);
+
+    let data = this.data.dailyData;
+    data[0][this.data.selectedWeek].date = this.data.selectedDate3;
+    data[0][this.data.selectedWeek].startTime = this.data.selectedTime1;
+    data[0][this.data.selectedWeek].endTime = this.data.selectedTime2
+    data[0][this.data.selectedWeek].isLoop = !e.detail.value
+    this.setData({
+      dailyData: data
+    })
+  },
+
+
   onWeekChange: function (e) {
     this.setData({
       selectedWeek: this.data.weekOptions[e.detail.value],
     });
+    let data = this.data.dailyData[0][this.data.selectedWeek];
+
+    this.setData({
+      selectedDate3: data.date,
+      selectedTime1: data.startTime,
+      selectedTime2: data.endTime,
+      isLoop: data.isLoop
+    })
   },
 
   onCategoryChange: function (e) {
@@ -124,6 +178,44 @@ Page({
     });
   },
 
+  onDateChange3: function (e) {
+    this.setData({
+      selectedDate3: e.detail.value,
+    });
+    let currentDate = new Date(e.detail.value)
+    if (currentDate.getDay() === 1) {
+      this.setData({
+        selectedWeek: "Thứ 2"
+      })
+    }
+    else if (currentDate.getDay() === 2) {
+      this.setData({
+        selectedWeek: "Thứ 3"
+      })
+    } else if (currentDate.getDay() === 3) {
+      this.setData({
+        selectedWeek: "Thứ 4"
+      })
+    } else if (currentDate.getDay() === 4) {
+      this.setData({
+        selectedWeek: "Thứ 5"
+      })
+    } else if (currentDate.getDay() === 5) {
+      this.setData({
+        selectedWeek: "Thứ 6"
+      })
+    } else if (currentDate.getDay() === 6) {
+      this.setData({
+        selectedWeek: "Thứ 7"
+      })
+    } else {
+      this.setData({
+        selectedWeek: "Chủ nhật"
+      })
+    }
+  },
+
+
   onDateChange2: function (e) {
     this.setData({
       selectedDate2: e.detail.value,
@@ -141,6 +233,14 @@ Page({
     this.setData({
       selectedTime2: e.detail.value,
     });
+    let data = this.data.dailyData;
+    data[0][this.data.selectedWeek].date = this.data.selectedDate3,
+      data[0][this.data.selectedWeek].startTime = this.data.selectedTime1,
+      data[0][this.data.selectedWeek].endTime = this.data.selectedTime2
+    data[0][this.data.selectedWeek].isLoop = this.data.isLoop
+    this.setData({
+      dailyData: data
+    })
   },
 
   onShow() {
