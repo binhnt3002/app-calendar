@@ -2,7 +2,7 @@
   <view class="header">
     <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
-  <view class="body" style="background-image: url('https://i.imgur.com/PyLYyPA.jpeg');">
+  <view class="body" style="background:rgb(196, 211, 226);">
     <view class="box">
       <view class="row">
         <view class="col-7">
