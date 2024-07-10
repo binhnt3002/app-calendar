@@ -11,8 +11,8 @@ Page({
     inviteData: [],
     frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
     selectedFrequency: 'Hàng ngày',
-    permissionOptions : ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
-    selectedPermission : 'Không',
+    permissionOptions: ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
+    selectedPermission: 'Không',
     calendarID: '',
     arCalendarId: [],
     idCongViec: '',
@@ -70,9 +70,6 @@ Page({
         ...that.data.inviteOpenId
       ],
       success(res) {
-
-        console.log(res);
-
         res.data.map(item => {
           invite.push({ name: item.name }),
             inviteOpenId.push(item.openId),
@@ -80,6 +77,7 @@ Page({
         })
 
         inviteData = invite.map((item, index) => ({
+          id: index,
           name: item.name,
           url: avatarUrl[index] ? avatarUrl[index].url : undefined // Handle potential mismatched lengths
         }));
@@ -91,7 +89,7 @@ Page({
           inviteData,
         })
 
-        console.log(that.data.inviteOpenId);
+        console.log(that.data.inviteData);
       },
       fail(res) {
         console.log(`chooseContact fail: ${JSON.stringify(res)}`);
@@ -158,8 +156,8 @@ Page({
             eventsID = [],
             arCalendarId = [],
             resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));
-            resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
-            resp.data.items.map(i => i.fields["CalendarID"].map(item => arCalendarId.push(item.text)[0]));
+          resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
+          resp.data.items.map(i => i.fields["CalendarID"].map(item => arCalendarId.push(item.text)[0]));
 
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
@@ -231,7 +229,7 @@ Page({
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
     let attendees = that.data.attendees;
-    if (that.data.idCongViec != '' && that.data.calendarID != '' && inviteOpenId.length>0) {
+    if (that.data.idCongViec != '' && that.data.calendarID != '' && inviteOpenId.length > 0) {
       tt.getStorage({
         key: 'user_access_token',
         success: (res) => {
@@ -249,11 +247,11 @@ Page({
                   icon: 'success',
                 });
                 that.setData({
-                  events: that.data.events.map(i => {i.checked = false; return i}),
+                  events: that.data.events.map(i => { i.checked = false; return i }),
                   inviteOpenId: [],
                   invite: [],
                   inviteData: [],
-                  avatarUrl:[]
+                  avatarUrl: []
                 })
               })
               .catch((error) => {
@@ -270,6 +268,28 @@ Page({
       });
     }
 
+  },
+
+  removeElement: function (e) {
+    console.log(e);
+    let that = this
+    let index = e.currentTarget.id;
+    
+    const iO = [...that.data.inviteOpenId];
+    iO.splice(index, 1);
+    const newData = [...that.data.inviteData]; // Create a copy of the array
+    newData.splice(index, 1); // Remove the element at the specified index
+    const newAvartarUrl = [...that.data.avatarUrl];
+    newAvartarUrl.splice(index, 1);
+    const newInvite = [...that.data.invite];
+    newInvite.splice(index, 1)
+
+    that.setData({
+      inviteData: newData,
+      inviteOpenId: iO,
+      avatarUrl: newAvartarUrl,
+      invite: newInvite
+    }); // Update the data in the component
   },
 
   onLoad() {
