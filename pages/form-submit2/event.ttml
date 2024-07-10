@@ -50,6 +50,11 @@
                     <view class="event-details" style="margin-left:5px;">
                       <text class="block">{{item.name}}</text>
                     </view>
+                    <view class="event-checkbox">
+                      <checkbox bindtap="checkGroupChange"  data-chat="{{item.id}}" 
+                                                          data-checked="{{item.checked}}" 
+                                                          checked="{{item.checked}}"></checkbox>
+                    </view>
                     <button bindtap="removeElement2" id="{{item.id}}">x</button>
                   </view>
                 </block>

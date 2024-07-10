@@ -1,6 +1,6 @@
 import { sendRequest } from "../../utils/sendRequest";
 import { getCalendarList, createInvitation, getGroupId, getEvent, updateEvent } from "../form-submit/function/apiFunction";
-import { bodyScheduleParticipants, bodyUpdateEvent } from "../form-submit/detailForm";
+import { bodyScheduleParticipants, bodyUpdateEvent, bodyScheduleParticipantsGroup } from "../form-submit/detailForm";
 Page({
   data: {
     events: [],
@@ -24,6 +24,7 @@ Page({
     calendarID: '',
     arCalendarId: [],
     idCongViec: '',
+    idGroup: '',
     attendees: [],
   },
 
@@ -134,7 +135,8 @@ Page({
             chatData = chat.map((item, index) => ({
               id: chatId[index],
               name: item,
-              url: chatAvatar[index]
+              url: chatAvatar[index],
+              checked: false
             }));
             that.setData({
               chat,
@@ -276,6 +278,30 @@ Page({
     })
   },
 
+  checkGroupChange: function (e) {
+    let that = this;
+    let currentValue = e.currentTarget.dataset;
+    console.log(currentValue);
+    that.setData({
+      chatData: that.data.chatData.map(i => {
+        if (i.id == currentValue.chat && i.checked == false) {
+          i.checked = !currentValue.checked;
+        }
+        else {
+          i.checked = false;
+        }
+        return i
+      }),
+    })
+    if (currentValue.checked != false){
+      that.setData({idGroup: ''})
+    } else {
+      that.setData({idGroup: currentValue.chat})
+    }
+    
+    console.log(that.data.chatData);
+  },
+
   addEventParticipate() {
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
@@ -330,7 +356,7 @@ Page({
     const newData = [...that.data.inviteData];
     const newAvartarUrl = [...that.data.avatarUrl];
     const newInvite = [...that.data.invite];
-    
+
     const indexToRemove = newData.findIndex(item => item.id === index); // Find element index
 
     if (indexToRemove !== -1) {
