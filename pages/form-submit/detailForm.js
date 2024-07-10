@@ -1,20 +1,20 @@
 
 //phần body của tạo event lấy từ base
-const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, visibilityType) => {
+const bodyCreateTask = (eventTitle, eventDescription, dateStart, dateEnd, timeStart, timeEnd, recurrence) => {
   const body =
   {
     "summary": eventTitle,
     "description": eventDescription,
     "need_notification": true,
     "start_time": {
-      // "date": dateStart,
+      "date": dateStart,
       "timestamp": timeStart,
     },
     "end_time": {
-      // "date": dateEnd,
+      "date": dateEnd,
       "timestamp": timeEnd,
     },
-    "visibility": visibilityType,
+    "visibility": "default",
     // "attendee_ability": "can_see_others",
     "free_busy_status": "free",
     "color": -1,
@@ -23,6 +23,9 @@ const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, visibi
         "minutes": 5
       }
     ],
+  }
+  if (recurrence) {
+    return { ...body, ...{ "recurrence": "FREQ=WEEKLY;" } };
   }
   return body;
 }
