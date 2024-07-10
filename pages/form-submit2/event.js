@@ -9,10 +9,16 @@ Page({
     inviteOpenId: [],
     avatarUrl: [],
     inviteData: [],
+
+    chat: [],
+    chatId: [],
+    chatAvatar: [],
+    chatData: [],
+
     frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
     selectedFrequency: 'Hàng ngày',
-    permissionOptions : ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
-    selectedPermission : 'Không',
+    permissionOptions: ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
+    selectedPermission: 'Không',
     invitePersonOptions: ['Cá nhân', 'Nhóm'],
     selectedInvitePerson: 'Cá nhân',
     calendarID: '',
@@ -67,42 +73,79 @@ Page({
     let inviteOpenId = that.data.inviteOpenId;
     let avatarUrl = that.data.avatarUrl;
     let inviteData = that.data.inviteData;
-    tt.chooseContact({
-      multi: true,
-      ignore: false,
-      maxNum: 100,
-      limitTips: 10,
-      externalContact: true,
-      enableChooseDepartment: true,
-      disableChosenIds: [
-        ...that.data.inviteOpenId
-      ],
-      success(res) {
-        res.data.map(item => {
-          invite.push({ name: item.name }),
-            inviteOpenId.push(item.openId),
-            avatarUrl.push({ url: item.avatarUrls[0] })
-        })
+    let chat = that.data.chat;
+    let chatId = that.data.chatId;
+    let chatAvatar = that.data.chatAvatar;
+    let chatData = that.data.chatData;
+    if (that.data.selectedInvitePerson == "Cá nhân") {
+      tt.chooseContact({
+        multi: true,
+        ignore: false,
+        maxNum: 100,
+        limitTips: 10,
+        externalContact: true,
+        enableChooseDepartment: true,
+        disableChosenIds: [
+          ...that.data.inviteOpenId
+        ],
+        success(res) {
+          console.log(res);
+          res.data.map(item => {
+            invite.push({ name: item.name }),
+              inviteOpenId.push(item.openId),
+              avatarUrl.push({ url: item.avatarUrls[0] })
+          })
 
-        inviteData = invite.map((item, index) => ({
-          id: index,
-          name: item.name,
-          url: avatarUrl[index] ? avatarUrl[index].url : undefined // Handle potential mismatched lengths
-        }));
+          inviteData = invite.map((item, index) => ({
+            id: inviteOpenId[index],
+            name: item.name,
+            url: avatarUrl[index] ? avatarUrl[index].url : undefined // Handle potential mismatched lengths
+          }));
 
-        that.setData({
-          invite,
-          inviteOpenId,
-          avatarUrl,
-          inviteData,
-        })
+          that.setData({
+            invite,
+            inviteOpenId,
+            avatarUrl,
+            inviteData,
+          })
 
-        console.log(that.data.inviteData);
-      },
-      fail(res) {
-        console.log(`chooseContact fail: ${JSON.stringify(res)}`);
-      }
-    });
+          console.log(that.data.inviteData);
+        },
+        fail(res) {
+          console.log(`chooseContact fail: ${JSON.stringify(res)}`);
+        }
+      });
+    } else {
+      tt.getStorage({
+        key: 'user_access_token',
+        success: (res) => {
+          const access_token = res.data.access_token;
+          const headers = {
+            'Authorization': `Bearer ${res.data.access_token}`,
+            'Content-Type': 'application/json'
+          }
+          getGroupId(access_token).then((rs) => {
+            console.log(rs);
+            rs.data.items.map(i => {
+              chat.push(i.name),
+                chatAvatar.push(i.avatar),
+                chatId.push(i.chat_id)
+            })
+            chatData = chat.map((item, index) => ({
+              id: chatId[index],
+              name: item,
+              url: chatAvatar[index]
+            }));
+            that.setData({
+              chat,
+              chatId,
+              chatAvatar,
+              chatData,
+            })
+          })
+        }
+      })
+    }
   },
 
   onShow() {
@@ -282,38 +325,56 @@ Page({
     console.log(e);
     let that = this
     let index = e.currentTarget.id;
-    
+
     const iO = [...that.data.inviteOpenId];
-    iO.splice(index, 1);
-    const newData = [...that.data.inviteData]; // Create a copy of the array
-    newData.splice(index, 1); // Remove the element at the specified index
+    const newData = [...that.data.inviteData];
     const newAvartarUrl = [...that.data.avatarUrl];
-    newAvartarUrl.splice(index, 1);
     const newInvite = [...that.data.invite];
-    newInvite.splice(index, 1)
+    
+    const indexToRemove = newData.findIndex(item => item.id === index); // Find element index
 
-    that.setData({
-      inviteData: newData,
-      inviteOpenId: iO,
-      avatarUrl: newAvartarUrl,
-      invite: newInvite
-    }); // Update the data in the component
+    if (indexToRemove !== -1) {
+      newData.splice(indexToRemove, 1);
+      iO.splice(indexToRemove, 1);
+      newAvartarUrl.splice(indexToRemove, 1);
+      newInvite.splice(indexToRemove, 1); // Remove the element at the found index
+      this.setData({
+        inviteData: newData,
+        inviteOpenId: iO,
+        avatarUrl: newAvartarUrl,
+        invite: newInvite
+      }); // Update the data in the component
+
+    } else {
+      console.error("Element with ID", index, "not found in chatData"); // Handle potential errors
+    }
   },
+  removeElement2: function (e) {
+    console.log(e);
+    let that = this
+    let index = e.currentTarget.id;
 
-  onLoad() {
-    let that = this;
-    tt.getStorage({
-      key: 'user_access_token',
-      success: (res) => {
-        const access_token = res.data.access_token;
-        const headers = {
-          'Authorization': `Bearer ${res.data.access_token}`,
-          'Content-Type': 'application/json'
-        }
-        getGroupId(access_token).then((rs) => {
-          console.log(rs);
-        })
-      }
-    })
-  }
+    const newChatId = [...that.data.chatId];
+    const newChatData = [...that.data.chatData];
+    const newChatAvatar = [...that.data.chatAvatar];
+    const newChat = [...that.data.chat];
+
+    const indexToRemove = newChatData.findIndex(item => item.id === index); // Find element index
+
+    if (indexToRemove !== -1) {
+      newChatData.splice(indexToRemove, 1);
+      newChatId.splice(indexToRemove, 1);
+      newChatAvatar.splice(indexToRemove, 1);
+      newChat.splice(indexToRemove, 1); // Remove the element at the found index
+      this.setData({
+        chatData: newChatData,
+        chatId: newChatId,
+        chatAvatar: newChatAvatar,
+        chat: newChat
+      }); // Update the data in the component
+
+    } else {
+      console.error("Element with ID", index, "not found in chatData"); // Handle potential errors
+    }
+  },
 });
