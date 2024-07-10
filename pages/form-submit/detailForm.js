@@ -61,6 +61,25 @@ const bodyScheduleParticipants = (type, id, res) => {
   }
   return body;
 }
+const bodyScheduleParticipantsGroup = (type, id, res) => {
+  const body =
+  {
+    "attendees": [
+      {
+        "type": type, //user, chat, resource, third_party
+        "is_optional": true,
+        // "user_id": id,
+        "chat_id": id,
+        // "room_id": "omm_xxxxxxxx",
+        // "third_party_email": "wangwu@email.com",
+        "operate_id": res.data.open_id,
+      }
+    ],
+    "need_notification": true,
+    "is_enable_admin": false,
+  }
+  return body;
+}
 const bodyCreateRecord = (vieccanlam, theloai, quantrong, capbach, sogio, nguoi, batdau, ketthuc, ghichu, evId, caId) => {
   const body =
   {
@@ -110,4 +129,4 @@ const bodyUpdateEvent = () => {
   }
   return body
 }
-export { bodyCreateTask, bodyScheduleParticipants, bodyCreateRecord, bodyUpdateEvent };
+export { bodyCreateTask, bodyScheduleParticipants, bodyCreateRecord, bodyUpdateEvent, bodyScheduleParticipantsGroup };
