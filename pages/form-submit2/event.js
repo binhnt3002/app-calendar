@@ -11,8 +11,10 @@ Page({
     inviteData: [],
     frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
     selectedFrequency: 'Hàng ngày',
-    permissionOptions: ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
-    selectedPermission: 'Không',
+    permissionOptions : ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
+    selectedPermission : 'Không',
+    invitePersonOptions: ['Cá nhân', 'Nhóm'],
+    selectedInvitePerson: 'Cá nhân',
     calendarID: '',
     arCalendarId: [],
     idCongViec: '',
@@ -39,6 +41,12 @@ Page({
     this.setData({
       invite: invite
     });
+  },
+
+  onInvitePerson: function (e) {
+    this.setData({
+      selectedInvitePerson: this.data.invitePersonOptions[e.detail.value]
+    })
   },
 
   onFrequencyChange: function (e) {

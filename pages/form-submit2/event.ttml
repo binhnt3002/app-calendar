@@ -21,7 +21,16 @@
           </scroll-view>
         </view>
         <view class="col-3">
-          <text class="block">Danh sách mời</text>
+          <view class="row">
+            <text class="block">Danh sách mời</text>
+            <picker class="picker-text" 
+              style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" 
+              mode="selector" id="invitePerson" 
+              range="{{invitePersonOptions}}" 
+              bindchange="onInvitePerson">
+                {{selectedInvitePerson}}
+            </picker>
+          </view>
           <scroll-view class="event-list" scroll-y="true">
             <view class="list-item" style="padding: 10px;">
               <block wx:for="{{inviteData}}" wx:key="*this.value">

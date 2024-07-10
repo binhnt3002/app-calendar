@@ -53,7 +53,7 @@ Page({
     selectedurgent: "1",
     // timeOnWeek: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ7"],
     // selectedTimeOnWeek: "Thứ 2",
-    selectedDate1: "Chọn ngày", // Thêm selectedDate để lưu ngày và giờ được chọn
+    selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime1: "Bắt đầu", // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     selectedTime2: "Kết thúc", // Thêm selectedTime để lưu ngày và giờ được chọn
@@ -120,6 +120,8 @@ Page({
       dailyData: data
     })
   },
+
+
 
 
   onWeekChange: function (e) {
