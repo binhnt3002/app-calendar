@@ -7,8 +7,8 @@ import {
 
 Page({
   data: {
-    weekOptions: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
-    selectedWeek: "Tuần 1",
+    weekOptions: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
+    selectedWeek: "Thứ 2",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     selectedHours: "1",
     importantOptions: ["A", "B", "C"],
@@ -25,10 +25,10 @@ Page({
     selectedurgent: "1",
     // timeOnWeek: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ7"],
     // selectedTimeOnWeek: "Thứ 2",
-    selectedDate1: "", // Thêm selectedDate để lưu ngày và giờ được chọn
-    selectedTime1: "", // Thêm selectedTime để lưu ngày và giờ được chọn
+    selectedDate1: "Chọn ngày", // Thêm selectedDate để lưu ngày và giờ được chọn
+    selectedTime1: "Bắt đầu", // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDate2: "", // Thêm selectedDate để lưu ngày và giờ được chọn
-    selectedTime2: "", // Thêm selectedTime để lưu ngày và giờ được chọn
+    selectedTime2: "Kết thúc", // Thêm selectedTime để lưu ngày và giờ được chọn
     calendarID: "",
     eventId: "",
     lich: [],
