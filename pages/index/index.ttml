@@ -16,8 +16,11 @@
                 <view class="row-detail">
                   <text style="font-size: 15px;">B: {{percentB}}%</text>
                 </view>
-                <view style="padding-bottom: 5px; padding-top: 5px;">
+                <view class="row-detail">
                   <text style="font-size: 15px;">C: {{percentC}}%</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">Dư: {{distance1}}%</text>
                 </view>
               </view>
               <view class="col" style="border-right: 1px solid rgb(248, 223, 223);">
@@ -30,8 +33,11 @@
                 <view class="row-detail">
                   <text style="font-size: 15px;" decode>B: &lt; 30%</text>
                 </view>
-                <view style="padding-bottom: 5px; padding-top: 5px;">
+                <view class="row-detail">
                   <text style="font-size: 15px;">C: 5-10%</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;" decode>Dư: &lt; 10% </text>
                 </view>
               </view>
               <view class="col">
@@ -44,8 +50,11 @@
                 <view class="row-detail">
                   <text style="font-size: 15px;">{{assessmentB}}</text>
                 </view>
-                <view style="padding-bottom: 5px; padding-top: 5px;">
+                <view class="row-detail">
                   <text style="font-size: 15px;">{{assessmentC}}</text>
+                </view>
+                <view style="padding-bottom: 5px; padding-top: 5px;">
+                  <text style="font-size: 15px;">{{percentdistance}}</text>
                 </view>
               </view>
             </view>
@@ -96,7 +105,7 @@
             </view>
 
               <view class="row align-items-start" style="display:flex; align-items: center;">
-                <view class="col-6">
+                <view class="col-6" style="padding-top: 5px;">
                   <text style="font-size: 15px;">Số giờ thực tế trong tuần: </text>
                 </view>
                 <view class="col-6">

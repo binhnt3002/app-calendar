@@ -249,6 +249,7 @@ Page({
           const assessmentA = percentA > 65 ? "Tốt" : "Chưa tốt";
           const assessmentB = percentB < 30 ? "Tốt" : "Chưa tốt";
           const assessmentC = percentC >= 5 && percentC <= 10 ? "Tốt" : "Chưa tốt";
+          
 
 
           const percent1 = ((totalHours1/totalHours)*100).toFixed(0);
@@ -258,6 +259,10 @@ Page({
           const assessment1 = percent1 > 65 ? "Tốt" : "Chưa tốt";
           const assessment2 = percent2 < 30 ? "Tốt" : "Chưa tốt";
           const assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
+
+          const distance1 = ((distance/totalHours)*100).toFixed(0);
+          console.log(distance1)
+          const percentdistance = distance1 < 10 ? "Tốt" : "Chưa tốt";
 
 
           this.setData({
@@ -275,7 +280,9 @@ Page({
             percent3,
             assessment1,
             assessment2,
-            assessment3
+            assessment3,
+            distance1,
+            percentdistance
           });
 
         });
