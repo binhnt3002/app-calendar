@@ -92,9 +92,9 @@
         </view> -->
         <view class="col-3">
           <view style="display:flex; justify-content: flex-end;">
-            <view class="form-buttons">
-              <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
-            </view>
+              <view class="form-buttons">
+                <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
+              </view>
             <view class="form-buttons" style="margin-left:10px;">
               <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn" bindtap="listUser">Thêm người</button>
               <button wx:else class="btn" bindtap="listUser">Xem nhóm</button>

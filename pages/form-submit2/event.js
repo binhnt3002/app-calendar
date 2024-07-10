@@ -293,29 +293,69 @@ Page({
         return i
       }),
     })
-    if (currentValue.checked != false){
-      that.setData({idGroup: ''})
+    if (currentValue.checked != false) {
+      that.setData({ idGroup: '' })
     } else {
-      that.setData({idGroup: currentValue.chat})
+      that.setData({ idGroup: currentValue.chat })
     }
-    
+
     console.log(that.data.chatData);
   },
 
   addEventParticipate() {
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
+    let idGroup = that.data.idGroup;
     let attendees = that.data.attendees;
-    if (that.data.idCongViec != '' && that.data.calendarID != '' && inviteOpenId.length > 0) {
-      tt.getStorage({
-        key: 'user_access_token',
-        success: (res) => {
-          const access_token = res.data.access_token;
-          inviteOpenId.forEach((id, index) => {
-            const body = bodyScheduleParticipants("user", id, res);
+    if (that.data.selectedInvitePerson === "Cá nhân") {
+      if (that.data.idCongViec != '' && that.data.calendarID != '' && inviteOpenId.length > 0) {
+        tt.getStorage({
+          key: 'user_access_token',
+          success: (res) => {
+            const access_token = res.data.access_token;
+            inviteOpenId.forEach((id, index) => {
+              const body = bodyScheduleParticipants("user", id, res);
+              createInvitation(access_token,
+                that.data.calendarID,
+                that.data.idCongViec, body)
+                .then((result) => {
+                  console.log(result);
+                  // that.setData({attendees})
+                  tt.showToast({
+                    title: 'Đã mời',
+                    icon: 'success',
+                  });
+                  that.setData({
+                    events: that.data.events.map(i => { i.checked = false; return i }),
+                    inviteOpenId: [],
+                    invite: [],
+                    inviteData: [],
+                    avatarUrl: []
+                  })
+                })
+                .catch((error) => {
+                  console.error("Error sending invitation:", error);
+                  // Handle invitation sending errors gracefully (optional)
+                });
+            });
+          }
+        })
+      } else {
+        tt.showToast({
+          title: 'Vui lòng đủ thông tin',
+          icon: 'error',
+        });
+      }
+    } else {
+      if (that.data.idCongViec != '' && that.data.calendarID != '' && idGroup != '') {
+        tt.getStorage({
+          key: 'user_access_token',
+          success: (res) => {
+            const access_token = res.data.access_token;
+            const bodyGroup = bodyScheduleParticipantsGroup("chat", idGroup, res);
             createInvitation(access_token,
               that.data.calendarID,
-              that.data.idCongViec, body)
+              that.data.idCongViec, bodyGroup)
               .then((result) => {
                 console.log(result);
                 // that.setData({attendees})
@@ -325,24 +365,32 @@ Page({
                 });
                 that.setData({
                   events: that.data.events.map(i => { i.checked = false; return i }),
+
                   inviteOpenId: [],
                   invite: [],
                   inviteData: [],
-                  avatarUrl: []
+                  avatarUrl: [],
+
+                  chatData: [],
+                  chat: [],
+                  chatId: [],
+                  chatAvatar: []
                 })
               })
               .catch((error) => {
                 console.error("Error sending invitation:", error);
                 // Handle invitation sending errors gracefully (optional)
               });
-          });
-        }
-      })
-    } else {
-      tt.showToast({
-        title: 'Vui lòng đủ thông tin',
-        icon: 'error',
-      });
+
+          }
+        })
+      }
+      else {
+        tt.showToast({
+          title: 'Vui lòng đủ thông tin',
+          icon: 'error',
+        });
+      }
     }
 
   },
