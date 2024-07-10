@@ -20,6 +20,7 @@ Page({
     spec3: createSpec("pie", "data3", 30, 0),
 
     spec4: createSpec("bar", "data4", 30, 0),
+    totalHoursInWeek:48
   },
 
 
@@ -35,6 +36,20 @@ Page({
     }, 3000);
 
 
+  },
+  calculateTotal(listItems,key, condition) {
+    return listItems.reduce((total, item) => {
+      if (item.fields[key] === condition) {
+        return total + item.fields["Số giờ cần có"];
+      }
+      return total;
+    }, 0);
+  },
+  onChangeHoursWeek(e){
+    this.setData({
+      totalHoursInWeek: e.detail.value
+    })
+    this.reloadDashboard()
   },
 
   getValueRecord() {
@@ -80,80 +95,102 @@ Page({
 
         sendRequest(url, "POST", headers, body).then((result) => {
           console.log(result.data);
-          let that = this;
+          let listItems = result.data.items;
+          let totalHours1 = this.calculateTotal(listItems,"Cấp bách", "1");
+          let totalHours2 = this.calculateTotal(listItems,"Cấp bách", "2");
+          let totalHours3 = this.calculateTotal(listItems,"Cấp bách", "3");
+          let totalHoursQuanTrongA = this.calculateTotal(listItems,"Quan trọng", "A");
+          let totalHoursQuanTrongB = this.calculateTotal(listItems,"Quan trọng", "B");
+          let totalHoursQuanTrongC = this.calculateTotal(listItems,"Quan trọng", "C");
+
+
+          let totalHours = totalHours1 + totalHours2 + totalHours3;
+          let distance = totalHours - this.data.totalHoursInWeek;
+          let spec3 = this.data.spec3;
+          let spec2 = this.data.spec2;
+          // Add percentage to each value
+          if(distance>=0){
+            spec3.data[0].values = [
+              {
+                value:totalHours1,
+                type: "1: "+((totalHours1/totalHours)*100).toFixed(0)+" % - " + totalHours1 + " giờ",
+              },
+              {
+                value: totalHours2,
+                type: "2: "+((totalHours2/totalHours)*100).toFixed(0)+" % - " + totalHours2 + " giờ",
+              },
+              {
+                value:totalHours3,
+                type: "3: "+ ((totalHours3/totalHours)*100).toFixed(0)+" % - " + totalHours3 + " giờ",
+              },
+              {
+                value:distance,
+                type: "Thiếu: "+ ((distance/totalHours)*100).toFixed(0)+" % - " + distance + " giờ"
+              }
+            ];
+            spec2.data[0].values = [
+              {
+                value:totalHoursQuanTrongA,
+                type: "A: "+((totalHoursQuanTrongA/totalHours)*100).toFixed(0)+" % - " + totalHoursQuanTrongA + " giờ",
+              },
+              {
+                value: totalHoursQuanTrongB,
+                type: "B: "+((totalHoursQuanTrongB/totalHours)*100).toFixed(0)+" % - " + totalHoursQuanTrongB + " giờ",
+              },
+              {
+                value:totalHoursQuanTrongC,
+                type: "C: "+ ((totalHoursQuanTrongC/totalHours)*100).toFixed(0)+" % - " + totalHoursQuanTrongC + " giờ",
+              },
+              {
+                value:distance,
+                type: "Thiếu: "+ ((distance/totalHours)*100).toFixed(0)+" % - " + distance + " giờ"
+              }
+            ];
+
+          }
+          else {
+            spec3.data[0].values = [
+              {
+                value:totalHours1,
+                type: "1: "+((totalHours1/totalHours)*100).toFixed(0)+" % - " + totalHours1 + " giờ",
+              },
+              {
+                value: totalHours2,
+                type: "2: "+((totalHours2/totalHours)*100).toFixed(0)+" % - " + totalHours2 + " giờ",
+              },
+              {
+                value:totalHours3,
+                type: "3: "+ ((totalHours3/totalHours)*100).toFixed(0)+" % - " + totalHours3 + " giờ",
+              },
+              {
+                value:-distance,
+                type: "Dư: "+ ((-distance/totalHours)*100).toFixed(0)+" % - " + (-distance) + " giờ"
+              }
+            ];
+            spec2.data[0].values = [
+              {
+                value:totalHoursQuanTrongA,
+                type: "A: "+((totalHoursQuanTrongA/totalHours)*100).toFixed(0)+" % - " + totalHoursQuanTrongA + " giờ",
+              },
+              {
+                value: totalHoursQuanTrongB,
+                type: "B: "+((totalHoursQuanTrongB/totalHours)*100).toFixed(0)+" % - " + totalHoursQuanTrongB + " giờ",
+              },
+              {
+                value:totalHoursQuanTrongC,
+                type: "C: "+ ((totalHoursQuanTrongC/totalHours)*100).toFixed(0)+" % - " + totalHoursQuanTrongC + " giờ",
+              },
+              {
+                value:-distance,
+                type: "Dư: "+ ((-distance/totalHours)*100).toFixed(0)+" % - " + (-distance) + " giờ"
+              }
+            ];
+          }
 
           // Calculate total values for percentage calculation
-          const totalCapBach = result.data.items.length;
-          const totalQuanTrong = result.data.items.length;
           const totalTheLoai = result.data.items.length;
 
-          let spec3 = this.data.spec3;
-          spec3.data[0].values = [
-            {
-              value:
-                result.data.items.filter(
-                  (item) => item.fields["Cấp bách"] == "1"
-                )?.length || 0,
-              type: "Cấp bách 1",
-            },
-            {
-              value:
-                result.data.items.filter(
-                  (item) => item.fields["Cấp bách"] == "2"
-                )?.length || 0,
-              type: "Cấp bách 2",
-            },
-            {
-              value:
-                result.data.items.filter(
-                  (item) => item.fields["Cấp bách"] == "3"
-                )?.length || 0,
-              type: "Cấp bách 3",
-            }
-          ];
-
-          // Add percentage to each value
-          spec3.data[0].values = spec3.data[0].values.map((item) => {
-            const percentage = ((item.value / totalCapBach) * 100).toFixed();
-            item.type = `${item.type}: ${percentage}%`;
-            return item;
-          });
-
-          let spec2 = that.data.spec2;
-          spec2.data[0].values = [
-            {
-              value:
-                result.data.items.filter(
-                  (item) => item.fields["Quan trọng"] == "A"
-                )?.length || 0,
-              type: "A",
-            },
-            {
-              value:
-                result.data.items.filter(
-                  (item) => item.fields["Quan trọng"] == "B"
-                )?.length || 0,
-              type: "B",
-            },
-            {
-              value:
-                result.data.items.filter(
-                  (item) => item.fields["Quan trọng"] == "C"
-                )?.length || 0,
-              type: "C",
-            }
-          ];
-
-          // Add percentage to each value
-          spec2.data[0].values = spec2.data[0].values.map((item) => {
-            const percentage = ((item.value / totalQuanTrong) * 100).toFixed(0);
-            item.type = `${item.type}: ${percentage}%`;
-            return item;
-
-          });
-
-
-          let spec4 = that.data.spec4;
+          let spec4 = this.data.spec4;
           spec4.data[0].values = [
             {
               value:
@@ -204,26 +241,26 @@ Page({
             return item;
           });
 
-          // Update the percentage values in the text elements
-          const percentA = parseFloat(spec2.data[0].values.find(item => item.type.startsWith('A')).type.split(': ')[1]);
-          const percentB = parseFloat(spec2.data[0].values.find(item => item.type.startsWith('B')).type.split(': ')[1]);
-          const percentC = parseFloat(spec2.data[0].values.find(item => item.type.startsWith('C')).type.split(': ')[1]);
-
-
-          const percent1 = parseFloat(spec3.data[0].values.find(item => item.type.startsWith('Cấp bách 1')).type.split(': ')[1]);
-          const percent2 = parseFloat(spec3.data[0].values.find(item => item.type.startsWith('Cấp bách 2')).type.split(': ')[1]);
-          const percent3 = parseFloat(spec3.data[0].values.find(item => item.type.startsWith('Cấp bách 3')).type.split(': ')[1]);
-
+        
+          const percentA = ((totalHoursQuanTrongA/totalHours)*100).toFixed(0);
+          const percentB = ((totalHoursQuanTrongB/totalHours)*100).toFixed(0);
+          const percentC = ((totalHoursQuanTrongC/totalHours)*100).toFixed(0);
+          
           const assessmentA = percentA > 65 ? "Tốt" : "Chưa tốt";
           const assessmentB = percentB < 30 ? "Tốt" : "Chưa tốt";
           const assessmentC = percentC >= 5 && percentC <= 10 ? "Tốt" : "Chưa tốt";
+
+
+          const percent1 = ((totalHours1/totalHours)*100).toFixed(0);
+          const percent2 = ((totalHours2/totalHours)*100).toFixed(0);
+          const percent3 = ((totalHours3/totalHours)*100).toFixed(0);
 
           const assessment1 = percent1 > 65 ? "Tốt" : "Chưa tốt";
           const assessment2 = percent2 < 30 ? "Tốt" : "Chưa tốt";
           const assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
 
 
-          that.setData({
+          this.setData({
             spec2,
             spec3,
             spec4,
@@ -238,7 +275,7 @@ Page({
             percent3,
             assessment1,
             assessment2,
-            assessment3,
+            assessment3
           });
 
         });

@@ -94,6 +94,15 @@
                 </view>
               </view>
             </view>
+
+              <view class="row align-items-start" style="display:flex; align-items: center;">
+                <view class="col-6">
+                  <text style="font-size: 15px;">Số giờ thực tế trong tuần: </text>
+                </view>
+                <view class="col-6">
+                  <input type="text" bindinput="onChangeHoursWeek" value="{{totalHoursInWeek}}" placeholder="Nhập số giờ thực tế" style="margin-bottom:5px;">
+                </view>
+              </view>
           </view>
         </view>
       </view>
@@ -108,13 +117,13 @@
   <view class="row">
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ cấp bách</text>
+        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">% Số giờ độ cấp bách</text>
         <chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" />
       </view>
     </view>
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">Độ quan trọng</text>
+        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold;">% Số giờ độ quan trọng</text>
         <chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
       </view>
     </view>
@@ -122,11 +131,3 @@
 </view>
 
 
-
-<!-- <chart canvas-id="chart" spec="{{ spec }}" styles="{{ styles }}" />
-
-
-<chart canvas-id="iiii" spec="{{ spec2 }}" styles="{{ styles }}" />
-
-
-<chart canvas-id="asdasdasd" spec="{{ spec3 }}" styles="{{ styles }}" /> -->
