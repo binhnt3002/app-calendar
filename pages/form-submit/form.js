@@ -96,18 +96,25 @@ Page({
   },
   onSelectedHours: function (e) {
     this.setData({
-      selectedHours: parseInt(this.data.hours[e.detail.value]),
+      selectedHours: this.data.hours[e.detail.value],
     });
   },
   inputTittle: function (e) {
+    console.log(this.data.inputValue);
+
     this.setData({
       inputValue: e.detail.value,
     });
+    console.log(this.data.inputValue);
   },
   inputNote: function (e) {
+    console.log(this.data.inputNote);
+
+
     this.setData({
       inputNote: e.detail.value,
     });
+    console.log(this.data.inputNote);
   },
 
 
@@ -132,7 +139,7 @@ Page({
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
     data[0][this.data.selectedDay].endTime = this.data.endTime;
-    data[0][this.data.selectedDay].isLoop = e.detail.value;
+    data[0][this.data.selectedDay].isLoop =!e.currentTarget.dataset.checked;
     this.setData({
       dailyData: data,
     });
@@ -292,7 +299,7 @@ Page({
       key: "user_access_token",
       success: (res) => {
         if (
-          that.data.inputTittle != "" &&
+          that.data.inputValue != "" &&
           that.data.startDate != "" &&
           that.data.endDate != "" &&
           that.data.startTime != "" &&
@@ -326,6 +333,8 @@ Page({
             );
 
             console.log(body);
+            console.log(dataDay);
+            console.log(dataDay.isLoop);
             createEvent(
               res.data.access_token,
               that.data.calendarID,
@@ -339,7 +348,7 @@ Page({
                   "Thể loại": that.data.selectedCategory,
                   "Quan trọng": that.data.selectedImportant,
                   "Cấp bách": that.data.selectedurgent,
-                  "Số giờ cần có": that.data.selectedHours,
+                  "Số giờ cần có": parseInt(that.data.selectedHours),
                   Person: [
                     {
                       id: res.data.open_id,
@@ -361,14 +370,7 @@ Page({
                   title: "Tạo xong công việc",
                   icon: "success",
                 });
-                this.setData({
-                  inputTittle: "",
-                  selectedCategory: "Việc chính",
-                  selectedurgent: "1",
-                  selectedImportant: "A",
-                  selectedHours: "1",
-                })
-
+                
               });
             })
             
@@ -381,6 +383,21 @@ Page({
         }
       },
     });
+  },
+
+  clearText() {
+    this.setData({
+      inputValue: "",
+      inputNote: "",
+      selectedCategory: "Việc chính",
+      selectedurgent: "1",
+      selectedImportant: "A",
+      selectedHours: "1",
+      startDate: "Chọn ngày",
+      endDate: "",
+      startTime: "",
+      endTime: "",
+    })
   },
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);

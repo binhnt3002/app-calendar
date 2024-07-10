@@ -121,6 +121,7 @@
           <view class="d-flex justify-content-end">
             <!-- <button class="btn btn-primary" >Add event</button> -->
             <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Tạo công việc</button>
+            <button class="btn btn-primary m-2" bindtap="clearText" style="border-radius: none !important;">xoa</button>
           </view>
         </block> 
     </view>
