@@ -3,7 +3,8 @@
     <view class="col-6">
       <view class="dash-board">
         <view class="text-list">
-          <text class="d-flex justify-content-center" style=" font-weight: bold; text-align: center; font-size: 14px;">TIÊU CHUẨN KIẾN NGHỊ</text>
+          <text class="d-flex justify-content-center"
+            style=" font-weight: bold; text-align: center; font-size: 14px;">TIÊU CHUẨN KIẾN NGHỊ</text>
           <view class="container text-center" style="height: auto !important; margin-top: 15px;">
             <view class="row align-items-start" style="border-bottom: 1px solid rgb(248, 223, 223);">
               <view class="col" style="border-right: 1px solid rgb(248, 223, 223)">
@@ -95,21 +96,30 @@
               </view>
             </view>
 
-              <view class="row align-items-start" style="display:flex; align-items: center;">
-                <view class="col-6">
-                  <text style="font-size: 15px;">Số giờ thực tế trong tuần: </text>
-                </view>
-                <view class="col-6">
-                  <input type="text" bindinput="onChangeHoursWeek" value="{{totalHoursInWeek}}" placeholder="Nhập số giờ thực tế" style="margin-bottom:5px;">
-                </view>
+            <view class="row align-items-start" style=" display:flex; align-items: center;">
+              <view class="col-6" style="padding-top: 5px;" >
+                <text style="font-size: 15px;">Số giờ thực tế trong tuần: </text>
               </view>
+              <view class="col-6">
+                <input type="number" bindinput="onChangeHoursWeek" value="{{totalHoursInWeek}}"
+                  placeholder="Nhập số giờ thực tế" style="margin-bottom:5px;">
+              </view>
+            </view>
+            <view class="row align-items-start" style="border-top: 1px solid rgb(248, 223, 223); display:flex; align-items: center;">
+              <view class="col-6" style="padding-top: 5px;">
+                <text style="font-size: 15px;">Giờ thực tế đã sử dụng: </text>
+              </view>
+              <view class="col-6" style="padding-top: 5px;">
+                <text style="font-size: 15px;">{{totalHours}} - Nhận định : {{percentdistance}}</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
     </view>
     <view class="col-6">
       <view class="dash-board">
-        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold; ">Các loại công việc</text>       
+        <text style="padding-top: 8px; font-size: 15px; display:flex; justify-content: center; font-weight: bold; ">Các loại công việc</text>
         <chart canvas-id="bar" spec="{{ spec4 }}" styles="{{ styles }}" />
       </view>
     </view>
@@ -129,5 +139,3 @@
     </view>
   </view>
 </view>
-
-
