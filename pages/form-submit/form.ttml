@@ -68,9 +68,18 @@
 
 
       <view class="row"  style="margin-top: 10px;">
-        <view class="col-12">
+        <view class="col-6">
           <text class="title1" >Chọn thời gian làm việc</text>
-        </view>      
+        </view> 
+        <view class="col-2">
+          <text class="title1">Chọn giờ</text>
+        </view>  
+        <view class="col-2">
+          <text class="title1">Chọn giờ</text>
+        </view>   
+        <view class="col-2">
+          <text class="title1">Lặp lại</text>
+        </view>
       </view>
       <view class="row">
         <view class="col-2">
@@ -104,9 +113,8 @@
         </view> 
         <view class="col-2">
           <block class="select-time">
-            <label> 
-            Lặp lại
-              <checkbox bindtap="checkboxChange" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
+            <label style="margin-left:15px;"> 
+              <checkbox bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
             </label>
           </block>               
         </view> 
