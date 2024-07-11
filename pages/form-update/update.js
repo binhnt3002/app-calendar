@@ -1,6 +1,7 @@
 import { searchRecord } from "../form-submit/function/apiFunction";
 Page({
   data: {
+
     tittle: ["Tiêu đề","Tiêu đề","Tiêu đề","Tiêu đề","Tiêu đề","Tiêu đề"],
     tableData: [],
     vieccanlam: [],
@@ -107,6 +108,14 @@ Page({
     const formattedDate = `${day}/${month}/${year}`;
   
     return formattedDate;
-  }
+  },
   
+
+  edit() {
+    this.setData({ turnPopup: true })
+  },
+  update() {
+    this.setData({ turnPopup: false })
+  }
+
 });
