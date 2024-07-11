@@ -7,6 +7,7 @@ Page({
     theloai: [],
     quantrong: [],
     capbach: [],
+    thu:[],
     ghichu: [],
     ngaygiobatdau: [],
     ngaygioketthuc: [],
@@ -20,6 +21,7 @@ Page({
     let theloai = that.data.theloai;
     let quantrong = that.data.quantrong;
     let capbach = that.data.capbach;
+    let thu = that.data.thu;
     let ghichu = that.data.ghichu;
     let ngaygiobatdau = that.data.ngaygiobatdau;
     let ngaygioketthuc = that.data.ngaygioketthuc;
@@ -34,6 +36,7 @@ Page({
               "Thể loại",
               "Quan trọng",
               "Cấp bách",
+              "Thứ",
               "Ngày - Giờ bắt đầu",
               "Ngày - Giờ kết thúc",
               "Ghi chú"
@@ -58,11 +61,11 @@ Page({
             vieccanlam.push({"col1":item.fields["Việc cần làm"][0].text}),
             theloai.push({"col2":item.fields["Thể loại"]}),
             quantrong.push({"col3":item.fields["Quan trọng"]}),
-            capbach.push({"col4":item.fields["Cấp bách"]}), 
-            ngaygiobatdau.push({"col5":item.fields["Ngày - Giờ bắt đầu"]}),
-            ngaygioketthuc.push({"col6":item.fields["Ngày - Giờ kết thúc"]}),
-            ghichu.push({"col7":item.fields["Ghi chú"][0].text})
-            
+            capbach.push({"col4":item.fields["Cấp bách"]}),
+            thu.push({"col5":item.fields["Thứ"].value[0].text})
+            ngaygiobatdau.push({"col6":(item.fields["Ngày - Giờ bắt đầu"])}),
+            ngaygioketthuc.push({"col7":item.fields["Ngày - Giờ kết thúc"]}),
+            ghichu.push({"col8":item.fields["Ghi chú"][0].text})
           })
           tableData = vieccanlam.map((item, index) =>{
             return {
@@ -70,6 +73,7 @@ Page({
               ...theloai[index],
               ...quantrong[index],
               ...capbach[index],
+              ...thu[index],
               ...ngaygiobatdau[index],
               ...ngaygioketthuc[index],
               ...ghichu[index]
@@ -83,10 +87,17 @@ Page({
             ngaygioketthuc,
             ghichu,
             vieccanlam,
-            tableData
+            tableData,
+            thu
           })
         })
       }
     })
+  },
+  convertTimestampToDate(timestamp) {
+    const date = new Date(timestamp);
+    // Option 1: Get date in a short format (e.g., "2024-07-11")
+    const formattedDate = date.toDateString();
+    return formattedDate; // Or formattedDateWithLocale depending on your preference
   }
 });

@@ -12,6 +12,7 @@
             <view class="col">Thể loại</view>
             <view class="col">Quan trọng</view>
             <view class="col">Cấp bách</view>
+            <view class="col">Thứ</view>
             <view class="col">Ngày - Giờ bắt đầu</view>
             <view class="col">Ngày - Giờ kết thúc</view>
             <view class="col">Ghi chú</view>
@@ -26,6 +27,7 @@
               <view class="col">{{item.col5}}</view>
               <view class="col">{{item.col6}}</view>
               <view class="col">{{item.col7}}</view>
+              <view class="col">{{item.col8}}</view>
             </view>
           </block>
         </view>
