@@ -130,7 +130,7 @@ Page({
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
     data[0][this.data.selectedDay].endTime = this.data.endTime;
-    data[0][this.data.selectedDay].isLoop =!e.currentTarget.dataset.checked;
+    data[0][this.data.selectedDay].isLoop = !e.currentTarget.dataset.checked;
     this.setData({
       dailyData: data,
     });
@@ -199,45 +199,63 @@ Page({
     });
 
 
-    let now = new Date(e.detail.value)
+    let now = new Date(e.detail.value);
+    let dayOfWeek = now.getDay();
 
-    let data = this.data.dailyData[0]["Thứ " + (now.getDay() + 1)];
+    let dayNames = ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+    let dayKey = dayNames[dayOfWeek];
+
+    let data = this.data.dailyData[0][dayKey];
     this.setData({
       startTime: data.startTime,
       endTime: data.endTime,
       isLoop: data.isLoop
-    })
+    });
 
-    let currentDate = new Date(e.detail.value);
-    if (currentDate.getDay() === 1) {
-      this.setData({
-        selectedDay: "Thứ 2",
-      });
-    } else if (currentDate.getDay() === 2) {
-      this.setData({
-        selectedDay: "Thứ 3",
-      });
-    } else if (currentDate.getDay() === 3) {
-      this.setData({
-        selectedDay: "Thứ 4",
-      });
-    } else if (currentDate.getDay() === 4) {
-      this.setData({
-        selectedDay: "Thứ 5",
-      });
-    } else if (currentDate.getDay() === 5) {
-      this.setData({
-        selectedDay: "Thứ 6",
-      });
-    } else if (currentDate.getDay() === 6) {
-      this.setData({
-        selectedDay: "Thứ 7",
-      });
-    } else {
-      this.setData({
-        selectedDay: "Chủ nhật",
-      });
-    }
+    this.setData({
+      selectedDay: dayKey,
+    });
+
+    // let now = new Date(e.detail.value)
+
+    // let data = this.data.dailyData[0]["Thứ " + ((now.getDay() + 6) % 7 + 1)];
+    // this.setData({
+    //   startTime: data.startTime,
+    //   endTime: data.endTime,
+    //   isLoop: data.isLoop
+    // })
+
+    // let currentDate = new Date(e.detail.value);
+    // if (currentDate.getDay() === 1) {
+    //   this.setData({
+    //     selectedDay: "Thứ 2",
+    //   });
+    // } else if (currentDate.getDay() === 2) {
+    //   this.setData({
+    //     selectedDay: "Thứ 3",
+    //   });
+    // } else if (currentDate.getDay() === 3) {
+    //   this.setData({
+    //     selectedDay: "Thứ 4",
+    //   });
+    // } else if (currentDate.getDay() === 4) {
+    //   this.setData({
+    //     selectedDay: "Thứ 5",
+    //   });
+    // } else if (currentDate.getDay() === 5) {
+    //   this.setData({
+    //     selectedDay: "Thứ 6",
+    //   });
+    // } else if (currentDate.getDay() === 6) {
+    //   this.setData({
+    //     selectedDay: "Thứ 7",
+    //   });
+    // }
+    // else if (currentDate.getDay() === 0) {
+    //   this.setData({
+    //     selectedDay: "Chủ nhật",
+    //   });
+    // }
   },
 
   onDateChange2: function (e) {
@@ -397,7 +415,7 @@ Page({
                 })
               });
             })
-            
+
           }
         } else {
           tt.showToast({
