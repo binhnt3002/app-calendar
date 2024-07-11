@@ -50,21 +50,22 @@
           <block class="select-time"> 
             <text class="title1" >Ngày bắt đầu</text>
             <picker  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
-              {{selectedDate1}}
+              {{startDate}}
             </picker>
           </block>
         </view>
         <view class="col-4">
           <block class="select-time"> 
             <text class="title1" >Ngày kết thúc</text>
-            <picker class="picker-date" mode="date" id="datePicker" start="{{selectedDate1}}" bindchange="onDateChange2">
-              {{selectedDate2}}
+            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
+              {{endDate}}
             </picker>
           </block>
         </view>
       </view>
 
       <!-- Seclected time -->
+
 
       <view class="row"  style="margin-top: 10px;">
         <view class="col-6">
@@ -83,36 +84,38 @@
       <view class="row">
         <view class="col-2">
           <block class="select-time"> 
-            <picker class="picker-text" mode="selector" id="week" range="{{weekOptions}}" bindchange="onWeekChange">
-              {{selectedWeek}}
+            <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;" range="{{dayOptions}}" bindchange="onWeekChange">
+              {{selectedDay}}
             </picker>
           </block>
+
         </view>
         <view class="col-4">
           <block class="select-time">
-            <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange3" placeholder="yyyy-mm-dd">
-              {{selectedDate3}}
+            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+              {{selectedDayWork}}
             </picker>
           </block>
         </view>
         <view class="col-2">
           <block class="select-time">
             <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-              {{selectedTime1}}
+              {{startTime}}
             </picker>
           </block>
         </view>
         <view class="col-2">
           <block class="select-time">
             <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-              {{selectedTime2}}
+              {{endTime}}
             </picker>
           </block>               
         </view> 
         <view class="col-2">
           <block class="select-time">
-            <label style="margin-left:15px;"> 
-              <checkbox bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
+            <label> 
+            Lặp lại
+              <checkbox bindtap="checkboxChange" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
             </label>
           </block>               
         </view> 
@@ -127,6 +130,7 @@
           <view class="d-flex justify-content-end">
             <!-- <button class="btn btn-primary" >Add event</button> -->
             <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Tạo công việc</button>
+            <button class="btn btn-primary m-2" bindtap="clearText" style="border-radius: none !important;">xoa</button>
           </view>
         </block> 
     </view>
