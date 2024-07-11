@@ -1,17 +1,17 @@
 
 //phần body của tạo event lấy từ base
-const bodyCreateTask = (eventTitle, eventDescription, dateStart, dateEnd, timeStart, timeEnd, isLoop) => {
+const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, isLoop) => {
   const body =
   {
     "summary": eventTitle,
     "description": eventDescription,
     "need_notification": true,
     "start_time": {
-      "date": dateStart,
+      // "date": dateStart,
       "timestamp": timeStart,
     },
     "end_time": {
-      "date": dateEnd,
+      // "date": dateEnd,
       "timestamp": timeEnd,
     },
     "visibility": "default",
@@ -82,7 +82,7 @@ const bodyScheduleParticipantsGroup = (type, id, res) => {
   }
   return body;
 }
-const bodyCreateRecord = (vieccanlam, theloai, quantrong, capbach, sogio, nguoi, batdau, ketthuc, ghichu, evId, caId) => {
+const bodyCreateRecord = (vieccanlam, theloai, quantrong, capbach, sogio, nguoi, batdau, ketthuc,ngaylam, ghichu, evId, caId) => {
   const body =
   {
     "fields": {
@@ -96,6 +96,7 @@ const bodyCreateRecord = (vieccanlam, theloai, quantrong, capbach, sogio, nguoi,
       }],
       "Ngày - Giờ bắt đầu": batdau,
       "Ngày - Giờ kết thúc": ketthuc,
+      "ngày làm":ngaylam,
       "Ghi chú": ghichu,
       "EventID": evId,
       "CalendarID": caId,

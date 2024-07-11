@@ -53,9 +53,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
-  height: 50px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
-  max-width: 120px; /* Điều chỉnh chiều rộng theo yêu cầu của bạn */
-  min-width: 103px;
+  max-height: auto;
+  /*height: 50px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
+  max-width: 107px; /* Điều chỉnh chiều rộng theo yêu cầu của bạn */
+  min-width: 107px;
 }
 
 .header-row {

@@ -81,7 +81,8 @@ Page({
     urgentOptions: ["1", "2", "3"],
     selectedurgent: "1",
 
-    startDate: "Chọn ngày", // Thêm selectedDate để lưu ngày và giờ được chọn
+    mindate: new Date(),
+    startDate: new Date().toISOString().substring(0, 10), // Thêm selectedDate để lưu ngày và giờ được chọn
     endDate: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     startTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     endTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
@@ -100,21 +101,14 @@ Page({
     });
   },
   inputTittle: function (e) {
-    console.log(this.data.inputValue);
-
     this.setData({
       inputValue: e.detail.value,
     });
-    console.log(this.data.inputValue);
   },
   inputNote: function (e) {
-    console.log(this.data.inputNote);
-
-
     this.setData({
       inputNote: e.detail.value,
     });
-    console.log(this.data.inputNote);
   },
 
 
@@ -132,9 +126,6 @@ Page({
     this.setData({
       isLoop: !e.currentTarget.dataset.checked,
     });
-    console.log(this.data.isLoop);
-
-
     let data = this.data.dailyData;
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
@@ -182,20 +173,31 @@ Page({
     if (this.data.startDate > this.data.endDate) {
       this.setData({
         endDate: this.data.startDate,
+        selectedDayWork: this.data.startDate,
       });
     }
+
+    console.log(this.data.startDate);
   },
 
   onTimeChange1: function (e) {
     this.setData({
       startTime: e.detail.value,
     });
+
+    if (this.data.startTime > this.data.endTime) {
+      this.setData({
+        endTime: this.data.startTime,
+      })
+    }
+
   },
 
   onDateChange3: function (e) {
     this.setData({
-      selectedDayWork: e.detail.value,
+      selectedDayWork : e.detail.value,
     });
+
 
     let now = new Date(e.detail.value);
     let dayOfWeek = now.getDay();
@@ -280,11 +282,22 @@ Page({
     this.setData({
       dailyData: data,
     });
+
+    if (this.data.startTime > this.data.endTime) {
+      this.setData({
+        endTime: this.data.startTime,
+      })
+    }
   },
+
+
 
   onShow() {
     this.setCalendarData();
+
   },
+
+
 
   setCalendarData() {
     let that = this;
@@ -337,8 +350,6 @@ Page({
             const body = bodyCreateTask(
               that.data.inputValue,
               that.data.inputNote,
-              that.data.startDate,
-              that.data.endDate,
               this.dateTimeToTimestamp(
                 dataDay.date,
                 dataDay.startTime
@@ -347,6 +358,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
+              
               dataDay.isLoop
             );
 
@@ -377,6 +389,7 @@ Page({
                   "Ngày - Giờ kết thúc":
                     this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
                   "Ghi chú": that.data.inputNote,
+                  "ngày làm":this.dateTimeToTimestamp(dataDay.date,"") * 1000,
                   EventID: rs.data.event.event_id,
                   CalendarID: that.data.calendarID,
                 },
@@ -388,7 +401,18 @@ Page({
                   title: "Tạo xong công việc",
                   icon: "success",
                 });
-
+                this.setData({
+                  inputValue: "",
+                  inputNote: "",
+                  selectedCategory: "Việc chính",
+                  selectedurgent: "1",
+                  selectedImportant: "A",
+                  selectedHours: "1",
+                  startDate: "Chọn ngày",
+                  endDate: "",
+                  startTime: "",
+                  endTime: "",
+                })
               });
             })
 
@@ -403,20 +427,6 @@ Page({
     });
   },
 
-  clearText() {
-    this.setData({
-      inputValue: "",
-      inputNote: "",
-      selectedCategory: "Việc chính",
-      selectedurgent: "1",
-      selectedImportant: "A",
-      selectedHours: "1",
-      startDate: "Chọn ngày",
-      endDate: "",
-      startTime: "",
-      endTime: "",
-    })
-  },
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();

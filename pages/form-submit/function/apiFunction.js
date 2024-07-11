@@ -11,6 +11,15 @@ const getCalendarList = (access_token) => {
     return sendRequest(url, 'GET', headers, {})
 }
 
+const getCalendar = (access_token,calendar_id) => {
+  const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${calendar_id}`;
+  const headers = {
+      'Authorization': `Bearer ${access_token}`
+  }
+
+  return sendRequest(url, 'GET', headers, {})
+}
+
 const getEvent = (access_token,calendar_id,event_id) => {
   const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${calendar_id}/events/${event_id}`;
   const headers = {
@@ -36,7 +45,6 @@ const getGroupId = (access_token) => {
     }
 
     return sendRequest(url, 'GET', headers, {});
-
 }
 
 
@@ -78,7 +86,17 @@ const createRecord = (access_token,data) => {
     return sendRequest(url, 'POST', headers, body);
 }
 
+const searchRecord = (access_token,data) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+  const headers = {
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'application/json'
+  }
+
+  const body = data;
+  
+  return sendRequest(url, 'POST', headers, body);
+}
 
 
-
-export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent }
+export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent, searchRecord, getCalendar }
