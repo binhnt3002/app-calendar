@@ -72,10 +72,10 @@
           <text class="title1" >Chọn thời gian làm việc</text>
         </view> 
         <view class="col-2">
-          <text class="title1">Chọn giờ</text>
+          <text class="title1">Giờ bắt đầu</text>
         </view>  
         <view class="col-2">
-          <text class="title1">Chọn giờ</text>
+          <text class="title1">Giờ kết thúc</text>
         </view>   
         <view class="col-2">
           <text class="title1">Lặp lại</text>
@@ -111,10 +111,10 @@
             </picker>
           </block>               
         </view> 
-        <view class="col-2">
+        <view  class="col-2">
           <block class="select-time">
             <label style="margin-left:15px;"> 
-              <checkbox bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
+              <checkbox style="height: 15px; width: 15px; transform: scale(1.3);" bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
             </label>
           </block>               
         </view> 

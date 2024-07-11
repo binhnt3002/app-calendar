@@ -1,44 +1,171 @@
-<view class="container">
+<view tt:if={{turnPopup===false}} class="container">
   <view class="header">
-    <text>Kiểm tra công việc</text>
+    <text style="font-size: 15;">Kiểm tra công việc</text>
   </view>
   <view class="body">
     <view class="box">
-      <scroll-view scroll-y="true" scroll-x="true" class="table-container">
+      <scroll-view scroll-y="true" class="table-container">
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
-          <view class="row header-row">
-            <view class="col">Tiêu đề 1</view>
-            <view class="col">Tiêu đề 2</view>
-            <view class="col">Tiêu đề 3</view>
-            <view class="col">Tiêu đề 4</view>
-            <view class="col">Tiêu đề 5</view>
-            <view class="col">Tiêu đề 6</view>
-            <view class="col">Tiêu đề 7</view>
-            <view class="col">Tiêu đề 8</view>
-            <view class="col">Tiêu đề 9</view>
-            <view class="col">Tiêu đề 10</view>
+          <view class="title-row header-row">
+            <view class="title-collumn">Tiêu đề 1</view>
+            <view class="title-collumn">Tiêu đề 2</view>
+            <view class="title-collumn">Tiêu đề 3</view>
+            <view class="title-collumn">Tiêu đề 4</view>
+            <view class="title-collumn">Tiêu đề 5</view>
+            <view class="title-collumn">Tiêu đề 6</view>
+            <view class="title-collumn">Tiêu đề 7</view>
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{tableData}}" wx:key="index">
-            <view class="row">
-              <view class="col">{{item.col1}}</view>
-              <view class="col">{{item.col2}}</view>
-              <view class="col">{{item.col3}}</view>
-              <view class="col">{{item.col4}}</view>
-              <view class="col">{{item.col5}}</view>
-              <view class="col">{{item.col6}}</view>
-              <view class="col">{{item.col7}}</view>
-              <view class="col">{{item.col8}}</view>
-              <view class="col">{{item.col9}}</view>
-              <view class="col">{{item.col10}}</view>
+            <view class="title-row">
+              <view class="title-collumn">{{item.col1}}</view>
+              <view class="title-collumn">{{item.col2}}</view>
+              <view class="title-collumn">{{item.col3}}</view>
+              <view class="title-collumn">{{item.col4}}</view>
+              <view class="title-collumn">{{item.col5}}</view>
+              <view class="title-collumn">{{item.col6}}</view>
+              <view class="title-collumn">{{item.col7}}</view>
+              <view class="title-collumn content-icon">
+                <image bindtap="edit" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <image class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
+              </view>
             </view>
           </block>
         </view>
-      </scroll-view>
+      </scroll-view>  
     </view>
   </view>
-  <view class="footer" style="display:flex; justify-content:end;">
-    <button>check var</button>
-  </view>
 </view>
+
+
+
+<div tt:if={{turnPopup===true}} class="page-task-form">
+  <view class="form-1" style="background:#c9d9e5 ;">
+    <view class="header">
+      <text>Chỉnh sửa công việc</text>
+    </view>
+    <view class="form">
+      <block class="task-name">
+        <text class="title1">Việc cần làm</text>
+        <textarea class="input-text" type="text" id="task" placeholder="Nhập chi tiết công việc..."
+          style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
+      </block>
+      <view class="row">
+        <view class="col-12 col-sm-3">
+          <text class="title1">Chọn lịch</text>
+          <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+            {{chonlich}}
+          </picker>
+        </view>
+        <view class="col-12 col-sm-3">
+          <text class="title1">Thể loại</text>
+          <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+            {{selectedCategory}}
+          </picker>
+        </view>
+        <view class="col-12 col-sm-3">
+          <text class="title1">Cấp bách</text>
+          <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
+            {{selectedurgent}}
+          </picker>
+        </view>
+        <view class="col-12 col-sm-3">
+          <text class="title1">Độ quan trọng</text>
+          <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+            {{selectedImportant}}
+          </picker>
+        </view>
+      </view>
+      <!-- Seclected time -->
+      <view class="row" style="margin-top: 10px;">
+        <view class="col-4">
+          <block class="select-time">
+            <text class="title1">Số giờ cần có</text>
+            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
+              {{selectedHours}}
+            </picker>
+          </block>  
+        </view>
+        <view class="col-4">
+          <block class="select-time"> 
+            <text class="title1" >Ngày bắt đầu</text>
+            <picker  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
+              {{startDate}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-4">
+          <block class="select-time"> 
+            <text class="title1" >Ngày kết thúc</text>
+            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
+              {{endDate}}
+            </picker>
+          </block>
+        </view>
+      </view>
+
+      <!-- Seclected time -->
+      <view class="row"  style="margin-top: 10px;">
+        <view class="col-6">
+          <text class="title1" >Chọn thời gian làm việc</text>
+        </view> 
+        <view class="col-2">
+          <text class="title1">Giờ bắt đầu</text>
+        </view>  
+        <view class="col-2">
+          <text class="title1">Giờ kết thúc</text>
+        </view>   
+        <view class="col-2">
+          <text class="title1">Lặp lại</text>
+        </view>
+      </view>
+      <view class="row">
+        <view class="col-2">
+          <block class="select-time"> 
+            <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;" range="{{dayOptions}}" bindchange="onWeekChange">
+              {{selectedDay}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-4">
+          <block class="select-time">
+            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+              {{selectedDayWork}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-2">
+          <block class="select-time">
+            <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+              {{startTime}}
+            </picker>
+          </block>
+        </view>
+        <view class="col-2">
+          <block class="select-time">
+            <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+              {{endTime}}
+            </picker>
+          </block>               
+        </view> 
+        <view  class="col-2">
+          <block class="select-time">
+            <label style="margin-left:15px;"> 
+              <checkbox style="height: 15px; width: 15px; transform: scale(1.3);" bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
+            </label>
+          </block>               
+        </view> 
+      </view>      
+        <view class="note-info" style="margin-top: 1px;">
+          <text class="title1">Ghi chú</text>
+          <textarea class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote">
+        </view>
+        <block >
+          <view class="d-flex justify-content-end">
+            <button bindtap="update" class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Cập nhật công việc</button>
+          </view>
+        </block> 
+    </view>
+  </view>
+</div>

@@ -189,5 +189,12 @@ Page({
         col9: "Giá trị 17.9",
       },
     ],
+    turnPopup: false,
   },
+  edit() {
+    this.setData({ turnPopup: true })
+  },
+  update() {
+    this.setData({ turnPopup: false })
+  }
 });
