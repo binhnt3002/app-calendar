@@ -36,7 +36,6 @@ const getGroupId = (access_token) => {
     }
 
     return sendRequest(url, 'GET', headers, {});
-
 }
 
 
@@ -78,7 +77,17 @@ const createRecord = (access_token,data) => {
     return sendRequest(url, 'POST', headers, body);
 }
 
+const searchRecord = (access_token,data) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+  const headers = {
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'application/json'
+  }
+
+  const body = data;
+  
+  return sendRequest(url, 'POST', headers, body);
+}
 
 
-
-export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent }
+export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent, searchRecord }

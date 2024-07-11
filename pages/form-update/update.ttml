@@ -8,15 +8,13 @@
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
           <view class="row header-row">
-            <view class="col">Tiêu đề 1</view>
-            <view class="col">Tiêu đề 2</view>
-            <view class="col">Tiêu đề 3</view>
-            <view class="col">Tiêu đề 4</view>
-            <view class="col">Tiêu đề 5</view>
-            <view class="col">Tiêu đề 6</view>
-            <view class="col">Tiêu đề 7</view>
-            <view class="col">Tiêu đề 8</view>
-            <view class="col">Tiêu đề 9</view>
+            <view class="col">Việc cần làm</view>
+            <view class="col">Thể loại</view>
+            <view class="col">Quan trọng</view>
+            <view class="col">Cấp bách</view>
+            <view class="col">Ngày - Giờ bắt đầu</view>
+            <view class="col">Ngày - Giờ kết thúc</view>
+            <view class="col">Ghi chú</view>
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{tableData}}" wx:key="index">
@@ -28,8 +26,6 @@
               <view class="col">{{item.col5}}</view>
               <view class="col">{{item.col6}}</view>
               <view class="col">{{item.col7}}</view>
-              <view class="col">{{item.col8}}</view>
-              <view class="col">{{item.col9}}</view>
             </view>
           </block>
         </view>
