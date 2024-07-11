@@ -1,6 +1,6 @@
 <view tt:if={{turnPopup===false}} class="container">
   <view class="header">
-    <text style="font-size: 15;">Kiểm tra công việc</text>
+    <text style="font-size: 15; flex: 1;">Kiểm tra công việc</text>
   </view>
   <view class="body">
     <view class="box">
@@ -43,7 +43,8 @@
 <div tt:if={{turnPopup===true}} class="page-task-form">
   <view class="form-1" style="background:#c9d9e5 ;">
     <view class="header">
-      <text>Chỉnh sửa công việc</text>
+      <text style="flex: 1;">Chỉnh sửa công việc</text>
+      <image class="del-x" bindtap="exit"   src="/images/times-solid.svg"></image>
     </view>
     <view class="form">
       <block class="task-name">

@@ -196,5 +196,8 @@ Page({
   },
   update() {
     this.setData({ turnPopup: false })
+  },
+  exit(){
+    this.setData({turnPopup: false })
   }
 });
