@@ -117,6 +117,12 @@ Page({
         }
       });
     } else {
+      that.setData({
+        chat: [],
+        chatId: [],
+        chatAvatar: [],
+        chatData: [],
+      })
       tt.getStorage({
         key: 'user_access_token',
         success: (res) => {

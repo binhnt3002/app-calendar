@@ -1,4 +1,4 @@
-import { searchRecord } from "../form-submit/function/apiFunction";
+import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
 Page({
   data: {
 
@@ -12,6 +12,11 @@ Page({
     ghichu: [],
     ngaygiobatdau: [],
     ngaygioketthuc: [],
+    eventid: [],
+    calendarid:[],
+    edit: [],
+    turnPopup: false,
+    calendarname: '',
   },
   onShow(){
     let that = this;
@@ -27,6 +32,8 @@ Page({
     let ghichu = that.data.ghichu;
     let ngaygiobatdau = that.data.ngaygiobatdau;
     let ngaygioketthuc = that.data.ngaygioketthuc;
+    let eventid = that.data.eventid;
+    let calendarid = that.data.calendarid;
     let tableData = that.data.tableData;
     tt.getStorage({
       key: 'user_access_token',
@@ -41,7 +48,9 @@ Page({
               "Thứ",
               "Ngày - Giờ bắt đầu",
               "Ngày - Giờ kết thúc",
-              "Ghi chú"
+              "Ghi chú",
+              "EventID",
+              "CalendarID"
           ],
           "filter": {
               "conjunction": "and",
@@ -60,14 +69,16 @@ Page({
         searchRecord(access_token,body).then((result)=>{
           console.log(result);
           result.data.items.map(item => {
-            vieccanlam.push({"col1":item.fields["Việc cần làm"][0].text}),
-            theloai.push({"col2":item.fields["Thể loại"]}),
-            quantrong.push({"col3":item.fields["Quan trọng"]}),
-            capbach.push({"col4":item.fields["Cấp bách"]}),
-            thu.push({"col5":item.fields["Thứ"].value[0].text})
-            ngaygiobatdau.push({"col6":that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"])}),
-            ngaygioketthuc.push({"col7":that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"])}),
-            ghichu.push({"col8":item.fields["Ghi chú"][0].text})
+            vieccanlam.push({"vieccanlam":item.fields["Việc cần làm"][0].text}),
+            theloai.push({"theloai":item.fields["Thể loại"]}),
+            quantrong.push({"quantrong":item.fields["Quan trọng"]}),
+            capbach.push({"capbach":item.fields["Cấp bách"]}),
+            thu.push({"thu":item.fields["Thứ"].value[0].text})
+            ngaygiobatdau.push({"ngaygiobatdau":that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"])}),
+            ngaygioketthuc.push({"ngaygioketthuc":that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"])}),
+            ghichu.push({"ghichu":item.fields["Ghi chú"][0].text}),
+            eventid.push({"eventid": item.fields["EventID"][0].text}),
+            calendarid.push({"calendarid": item.fields["CalendarID"][0].text})
           })
           tableData = vieccanlam.map((item, index) =>{
             return {
@@ -78,7 +89,9 @@ Page({
               ...thu[index],
               ...ngaygiobatdau[index],
               ...ngaygioketthuc[index],
-              ...ghichu[index]
+              ...ghichu[index],
+              ...eventid[index],
+              ...calendarid[index]
             }
           })
           that.setData({
@@ -90,7 +103,9 @@ Page({
             ghichu,
             vieccanlam,
             tableData,
-            thu
+            thu,
+            eventid,
+            calendarid
           })
         })
       }
@@ -105,14 +120,30 @@ Page({
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const year = date.getFullYear();
     // Format the date as dd/mm/yyyy
-    const formattedDate = `${day}/${month}/${year}`;
+    const formattedDate = `${year}-${month}-${day}`;
   
     return formattedDate;
   },
   
 
-  edit() {
-    this.setData({ turnPopup: true })
+  edit(e) {
+    let that = this;
+    let edit = that.data.edit;
+    console.log(e);
+    const currentTarget = e.currentTarget.id
+    edit = that.data.tableData.find(obj => obj.eventid===currentTarget)
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        getCalendar(res.data.access_token,edit.calendarid).then((rs)=>{
+          that.setData({calendarname: rs.data.summary})
+        })
+      }
+    })
+    that.setData({ 
+      turnPopup: true,
+      edit
+    })
   },
   update() {
     this.setData({ turnPopup: false })

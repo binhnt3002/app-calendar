@@ -7,30 +7,30 @@
       <scroll-view scroll-y="true" class="table-container">
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
-          <view class="row header-row">
-            <view class="col">Việc cần làm</view>
-            <view class="col">Thể loại</view>
-            <view class="col">Quan trọng</view>
-            <view class="col">Cấp bách</view>
-            <view class="col">Thứ</view>
-            <view class="col">Ngày - Giờ bắt đầu</view>
-            <view class="col">Ngày - Giờ kết thúc</view>
-            <view class="col">Ghi chú</view>
+          <view class="title-row header-row">
+            <view class="title-collumn">Việc cần làm</view>
+            <view class="title-collumn">Thể loại</view>
+            <view class="title-collumn">Quan trọng</view>
+            <view class="title-collumn">Cấp bách</view>
+            <view class="title-collumn">Thứ</view>
+            <view class="title-collumn">Ngày - Giờ bắt đầu</view>
+            <view class="title-collumn">Ngày - Giờ kết thúc</view>
+            <view class="title-collumn">Ghi chú</view>
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{tableData}}" wx:key="index">
-            <view class="row">
-              <view class="col">{{item.col1}}</view>
-              <view class="col">{{item.col2}}</view>
-              <view class="col">{{item.col3}}</view>
-              <view class="col">{{item.col4}}</view>
-              <view class="col">{{item.col5}}</view>
-              <view class="col">{{item.col6}}</view>
-              <view class="col">{{item.col7}}</view>
-              <view class="col">{{item.col8}}</view>
+            <view class="title-row">
+              <view class="title-collumn">{{item.vieccanlam}}</view>
+              <view class="title-collumn">{{item.theloai}}</view>
+              <view class="title-collumn">{{item.quantrong}}</view>
+              <view class="title-collumn">{{item.capbach}}</view>
+              <view class="title-collumn">{{item.thu}}</view>
+              <view class="title-collumn">{{item.ngaygiobatdau}}</view>
+              <view class="title-collumn">{{item.ngaygioketthuc}}</view>
+              <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon">
-                <image bindtap="edit" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
-                <image class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
+                <image id="{{item.eventid}}" bindtap="edit" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <image id="{{item.eventid}}"  class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
               </view>
             </view>
           </block>
@@ -50,32 +50,32 @@
     <view class="form">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
-        <textarea class="input-text" type="text" id="task" placeholder="Nhập chi tiết công việc..."
+        <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
           style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
           <text class="title1">Chọn lịch</text>
           <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
-            {{chonlich}}
+            {{calendarname}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
           <text class="title1">Thể loại</text>
           <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
-            {{selectedCategory}}
+            {{edit.theloai}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
           <text class="title1">Cấp bách</text>
           <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
-            {{selectedurgent}}
+            {{edit.capbach}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
           <text class="title1">Độ quan trọng</text>
           <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
-            {{selectedImportant}}
+            {{edit.quantrong}}
           </picker>
         </view>
       </view>
@@ -93,7 +93,7 @@
           <block class="select-time"> 
             <text class="title1" >Ngày bắt đầu</text>
             <picker  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
-              {{startDate}}
+              {{edit.ngaygiobatdau}}
             </picker>
           </block>
         </view>
@@ -101,7 +101,7 @@
           <block class="select-time"> 
             <text class="title1" >Ngày kết thúc</text>
             <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
-              {{endDate}}
+              {{edit.ngaygioketthuc}}
             </picker>
           </block>
         </view>
@@ -161,7 +161,7 @@
       </view>      
         <view class="note-info" style="margin-top: 1px;">
           <text class="title1">Ghi chú</text>
-          <textarea class="input-text" placeholder="Ghi chú ở đâyy......" bindinput="inputNote">
+          <textarea class="input-text" value="{{edit.ghichu}}" bindinput="inputNote">
         </view>
         <block >
           <view class="d-flex justify-content-end">
