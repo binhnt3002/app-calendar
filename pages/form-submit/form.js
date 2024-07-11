@@ -246,6 +246,7 @@ Page({
   },
 
   onShow() {
+    this.setCalendarData()
   },
 
   setCalendarData() {

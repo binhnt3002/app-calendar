@@ -2,11 +2,11 @@
   <view class="header">
     <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
-  <view class="body" style="background:rgb(196, 211, 226);">
+  <view class="body" style="background: rgb(196, 211, 226);">
     <view class="box">
       <view class="row">
         <view class="col-7">
-          <text class="block">Danh sách công việc</text>
+          <text class="block" style="margin-bottom: 13px; margin-top:7px">Danh sách công việc</text>
           <scroll-view class="event-box" scroll-y="true">
             <block wx:for="{{events}}" wx:key="*this.value">
               <view class="event-item">
@@ -14,19 +14,16 @@
                   <text class="block">{{item.name}}</text>
                 </view>
                 <view class="event-checkbox">
-                  <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}"
-                    data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>
+                  <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>
                 </view>
               </view>
             </block>
           </scroll-view>
         </view>
         <view class="col-3">
-          <view class="row">
+          <view class="row" style="align-items: center;">
             <text class="block">Danh sách mời</text>
-            <picker class="picker-text"
-              style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector"
-              id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
+            <picker class="picker-text" style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector" id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
               {{selectedInvitePerson}}
             </picker>
           </view>
@@ -36,10 +33,11 @@
                 <block wx:for="{{inviteData}}" wx:key="*this.value">
                   <view class="event-item">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
-                    <view class="event-details" style="margin-left:5px;">
+                    <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
                     </view>
-                    <button bindtap="removeElement" id="{{item.id}}">x</button>
+                    <!-- <button class="button-del" bindtap="removeElement" id="{{item.id}}"></button> -->
+                    <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg"></image>
                   </view>
                 </block>
               </block>
@@ -47,15 +45,14 @@
                 <block wx:for="{{chatData}}" wx:key="*this.value">
                   <view class="event-item">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
-                    <view class="event-details" style="margin-left:5px;">
+                    <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
                     </view>
                     <view class="event-checkbox">
-                      <checkbox bindtap="checkGroupChange"  data-chat="{{item.id}}" 
-                                                          data-checked="{{item.checked}}" 
-                                                          checked="{{item.checked}}"></checkbox>
+                      <checkbox bindtap="checkGroupChange" data-chat="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>
                     </view>
-                    <button bindtap="removeElement2" id="{{item.id}}">x</button>
+                    <image style="height: 20px; width: 20px; font-weight: 100; padding-top: 2px;" bindtap="removeElement2" id="{{item.id}}" src="/images/close-outline.svg"></image>
+                    <!-- <button class="button-del" >x</button> -->
                   </view>
                 </block>
               </block>
@@ -91,11 +88,11 @@
           
         </view> -->
         <view class="col-3">
-          <view style="display:flex; justify-content: flex-end;">
-              <view class="form-buttons">
-                <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
-              </view>
-            <view class="form-buttons" style="margin-left:10px;">
+          <view style="display: flex; justify-content: flex-end;">
+            <view class="form-buttons">
+              <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
+            </view>
+            <view class="form-buttons" style="margin-left: 10px;">
               <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn" bindtap="listUser">Thêm người</button>
               <button wx:else class="btn" bindtap="listUser">Xem nhóm</button>
             </view>
@@ -103,7 +100,6 @@
         </view>
       </view>
     </view>
-
   </view>
   <!-- <view class="footer">
     Nội dung của footer
