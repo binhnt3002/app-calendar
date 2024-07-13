@@ -35,6 +35,7 @@ Page({
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
 
@@ -42,36 +43,42 @@ Page({
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
         "Thứ 4": {
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
         "Thứ 5": {
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
         "Thứ 6": {
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
         "Thứ 7": {
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
         "Chủ nhật": {
           date: "",
           startTime: "",
           endTime: "",
+          inputNote:"",
           isLoop: false,
         },
       },
@@ -109,9 +116,14 @@ Page({
     this.setData({
       inputNote: e.detail.value,
     });
+    let data = this.data.dailyData;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
+    this.setData({
+      dailyData: data,
+    });
   },
 
-
+  
 
   onCalendarChage: function (e) {
     this.setData({
@@ -123,6 +135,7 @@ Page({
   },
 
   checkboxChange: function (e) {
+    console.log(e.currentTarget.dataset.checked);
     this.setData({
       isLoop: !e.currentTarget.dataset.checked,
     });
@@ -130,6 +143,7 @@ Page({
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
     data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
     data[0][this.data.selectedDay].isLoop = !e.currentTarget.dataset.checked;
     this.setData({
       dailyData: data,
@@ -209,7 +223,8 @@ Page({
     this.setData({
       startTime: data.startTime,
       endTime: data.endTime,
-      isLoop: data.isLoop
+      isLoop: data.isLoop,
+      inputNote: data.inputNote,
     });
 
     this.setData({
@@ -277,6 +292,7 @@ Page({
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
     data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
     data[0][this.data.selectedDay].isLoop = this.data.isLoop;
 
     this.setData({
@@ -294,7 +310,6 @@ Page({
 
   onShow() {
     this.setCalendarData();
-
   },
 
 
@@ -349,7 +364,7 @@ Page({
 
             const body = bodyCreateTask(
               that.data.inputValue,
-              that.data.inputNote,
+              dataDay.inputNote,
               this.dateTimeToTimestamp(
                 dataDay.date,
                 dataDay.startTime
@@ -358,7 +373,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              
+              that.formatDateToUTC(that.data.endDate),                            
               dataDay.isLoop
             );
 
@@ -389,7 +404,7 @@ Page({
                   "Ngày - Giờ kết thúc":
                     this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
                   "Ghi chú": that.data.inputNote,
-                  "ngày làm":this.dateTimeToTimestamp(dataDay.date,"") * 1000,
+                  "Ngày làm":this.dateTimeToTimestamp(dataDay.date,"") * 1000,
                   EventID: rs.data.event.event_id,
                   CalendarID: that.data.calendarID,
                 },
@@ -432,4 +447,8 @@ Page({
     let timestamp = datetime.getTime();
     return Math.floor(timestamp / 1000);
   },
+
+  formatDateToUTC(dateString) {
+    return dateString.replace(/-/g, '')+"T000000Z"
+  }
 });

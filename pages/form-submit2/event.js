@@ -117,42 +117,40 @@ Page({
         }
       });
     } else {
-      that.setData({
-        chat: [],
-        chatId: [],
-        chatAvatar: [],
-        chatData: [],
-      })
-      tt.getStorage({
-        key: 'user_access_token',
-        success: (res) => {
-          const access_token = res.data.access_token;
-          const headers = {
-            'Authorization': `Bearer ${res.data.access_token}`,
-            'Content-Type': 'application/json'
+      chat = [],
+        chatId = [],
+        chatAvatar = [],
+        chatData = [],
+        tt.getStorage({
+          key: 'user_access_token',
+          success: (res) => {
+            const access_token = res.data.access_token;
+            const headers = {
+              'Authorization': `Bearer ${res.data.access_token}`,
+              'Content-Type': 'application/json'
+            }
+            getGroupId(access_token).then((rs) => {
+              console.log(rs);
+              rs.data.items.map(i => {
+                chat.push(i.name),
+                  chatAvatar.push(i.avatar),
+                  chatId.push(i.chat_id)
+              })
+              chatData = chat.map((item, index) => ({
+                id: chatId[index],
+                name: item,
+                url: chatAvatar[index],
+                checked: false
+              }));
+              that.setData({
+                chat,
+                chatId,
+                chatAvatar,
+                chatData,
+              })
+            })
           }
-          getGroupId(access_token).then((rs) => {
-            console.log(rs);
-            rs.data.items.map(i => {
-              chat.push(i.name),
-                chatAvatar.push(i.avatar),
-                chatId.push(i.chat_id)
-            })
-            chatData = chat.map((item, index) => ({
-              id: chatId[index],
-              name: item,
-              url: chatAvatar[index],
-              checked: false
-            }));
-            that.setData({
-              chat,
-              chatId,
-              chatAvatar,
-              chatData,
-            })
-          })
-        }
-      })
+        })
     }
   },
 
@@ -211,7 +209,7 @@ Page({
             icon: 'success',
           })
           console.log(resp);
-          events = [],
+            events = [],
             eventsID = [],
             arCalendarId = [],
             resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));

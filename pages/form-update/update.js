@@ -1,8 +1,6 @@
 import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
 Page({
   data: {
-
-    tittle: ["Tiêu đề","Tiêu đề","Tiêu đề","Tiêu đề","Tiêu đề","Tiêu đề"],
     tableData: [],
     vieccanlam: [],
     theloai: [],
@@ -15,9 +13,112 @@ Page({
     eventid: [],
     calendarid:[],
     edit: [],
+    ngaylam:[],
+    sogiocanco:[],
     turnPopup: false,
     calendarname: '',
+    hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    selectedDayWork:'',
+    mindate: new Date(),
+    startDate: new Date().toISOString().substring(0, 10),
+    endDate: '',
+    selectedHours:'',
   },
+  onSelectedHours: function (e) {
+    this.setData({
+      selectedHours: this.data.hours[e.detail.value],
+    });
+  },
+
+  onDateChange1: function (e) {
+    this.setData({
+      startDate: e.detail.value,
+    });
+    if (this.data.startDate > this.data.endDate) {
+      this.setData({
+        endDate: this.data.startDate,
+        selectedDayWork: this.data.startDate,
+      });
+    }
+
+    console.log(this.data.startDate);
+  },
+
+  onDateChange2: function (e) {
+    this.setData({
+      endDate: e.detail.value,
+    });
+    if (this.data.startDate > this.data.endDate) {
+      this.setData({
+        endDate: this.data.startDate,
+      });
+    }
+  },
+
+  onDateChange3: function (e) {
+    this.setData({
+      selectedDayWork : e.detail.value,
+    });
+
+
+    let now = new Date(e.detail.value);
+    let dayOfWeek = now.getDay();
+
+    let dayNames = ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+    let dayKey = dayNames[dayOfWeek];
+
+    let data = this.data.dailyData[0][dayKey];
+    this.setData({
+      startTime: data.startTime,
+      endTime: data.endTime,
+      isLoop: data.isLoop
+    });
+
+    this.setData({
+      selectedDay: dayKey,
+    });
+
+    // let now = new Date(e.detail.value)
+
+    // let data = this.data.dailyData[0]["Thứ " + ((now.getDay() + 6) % 7 + 1)];
+    // this.setData({
+    //   startTime: data.startTime,
+    //   endTime: data.endTime,
+    //   isLoop: data.isLoop
+    // })
+
+    // let currentDate = new Date(e.detail.value);
+    // if (currentDate.getDay() === 1) {
+    //   this.setData({
+    //     selectedDay: "Thứ 2",
+    //   });
+    // } else if (currentDate.getDay() === 2) {
+    //   this.setData({
+    //     selectedDay: "Thứ 3",
+    //   });
+    // } else if (currentDate.getDay() === 3) {
+    //   this.setData({
+    //     selectedDay: "Thứ 4",
+    //   });
+    // } else if (currentDate.getDay() === 4) {
+    //   this.setData({
+    //     selectedDay: "Thứ 5",
+    //   });
+    // } else if (currentDate.getDay() === 5) {
+    //   this.setData({
+    //     selectedDay: "Thứ 6",
+    //   });
+    // } else if (currentDate.getDay() === 6) {
+    //   this.setData({
+    //     selectedDay: "Thứ 7",
+    //   });
+    // }
+    // else if (currentDate.getDay() === 0) {
+    //   this.setData({
+    //     selectedDay: "Chủ nhật",
+    //   });
+    },
+
   onShow(){
     let that = this;
     that.listTask()
@@ -35,6 +136,21 @@ Page({
     let eventid = that.data.eventid;
     let calendarid = that.data.calendarid;
     let tableData = that.data.tableData;
+    let ngaylam = that.data.ngaylam;
+    let sogiocanco = that.data.sogiocanco;
+    vieccanlam = [];
+    theloai = [];
+    capbach = [];
+    quantrong = [];
+    thu = [];
+    ngaygiobatdau = [];
+    ngaygioketthuc = [];
+    ghichu = [];
+    eventid = [];
+    calendarid = [];
+    ngaylam = [];
+    tableData = [];
+    sogiocanco = [];
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
@@ -45,9 +161,11 @@ Page({
               "Thể loại",
               "Quan trọng",
               "Cấp bách",
+              "Số giờ cần có",
               "Thứ",
               "Ngày - Giờ bắt đầu",
               "Ngày - Giờ kết thúc",
+              "Ngày làm",
               "Ghi chú",
               "EventID",
               "CalendarID"
@@ -79,38 +197,45 @@ Page({
             ghichu.push({"ghichu":item.fields["Ghi chú"][0].text}),
             eventid.push({"eventid": item.fields["EventID"][0].text}),
             calendarid.push({"calendarid": item.fields["CalendarID"][0].text})
-          })
-          tableData = vieccanlam.map((item, index) =>{
-            return {
-              ...item,
-              ...theloai[index],
-              ...quantrong[index],
-              ...capbach[index],
-              ...thu[index],
-              ...ngaygiobatdau[index],
-              ...ngaygioketthuc[index],
-              ...ghichu[index],
-              ...eventid[index],
-              ...calendarid[index]
-            }
-          })
-          that.setData({
-            capbach,
-            quantrong,
-            theloai,
-            ngaygiobatdau,
-            ngaygioketthuc,
-            ghichu,
-            vieccanlam,
-            tableData,
-            thu,
-            eventid,
-            calendarid
+            ngaylam.push({"ngaylam":that.convertTimestampToDate(item.fields["Ngày làm"])})
+            sogiocanco.push({"sogiocanco": item.fields["Số giờ cần có"]})
+            tableData = vieccanlam.map((item, index) =>{
+              return {
+                ...item,
+                ...theloai[index],
+                ...quantrong[index],
+                ...capbach[index],
+                ...thu[index],
+                ...ngaygiobatdau[index],
+                ...ngaygioketthuc[index],
+                ...ngaylam[index],
+                ...ghichu[index],
+                ...eventid[index],
+                ...calendarid[index],
+                ...sogiocanco[index]
+              }
+            })
+            that.setData({
+              capbach,
+              quantrong,
+              theloai,
+              ngaygiobatdau,
+              ngaygioketthuc,
+              ghichu,
+              vieccanlam,
+              tableData,
+              thu,
+              eventid,
+              calendarid,
+              ngaylam,
+              sogiocanco,
+            })
           })
         })
       }
     })
   },
+
   convertTimestampToDate(timestamp) {
     // Create a new Date object with the given timestamp
     const date = new Date(timestamp);
@@ -142,7 +267,8 @@ Page({
     })
     that.setData({ 
       turnPopup: true,
-      edit
+      edit,
+      selectedHours: edit.sogiocanco
     })
   },
   update() {

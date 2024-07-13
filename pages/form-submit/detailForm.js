@@ -1,6 +1,6 @@
 
 //phần body của tạo event lấy từ base
-const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, isLoop) => {
+const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEndLoop, isLoop) => {
   const body =
   {
     "summary": eventTitle,
@@ -26,7 +26,7 @@ const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, isLoop
     "recurrence": ""
   }
   if (isLoop) {
-    body.recurrence = `FREQ=WEEKLY`
+    body.recurrence = `FREQ=WEEKLY;UNTIL=${dateEndLoop}`
     return body;
   }
   return body;

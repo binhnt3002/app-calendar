@@ -50,31 +50,31 @@
     <view class="form">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
-        <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+        <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
           style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
-          <text class="title1">Chọn lịch</text>
-          <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+          <text class="title1">Lịch</text>
+          <picker disabled={true} class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
             {{calendarname}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
           <text class="title1">Thể loại</text>
-          <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+          <picker disabled={true} class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
             {{edit.theloai}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
           <text class="title1">Cấp bách</text>
-          <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
+          <picker disabled={true} class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
             {{edit.capbach}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
           <text class="title1">Độ quan trọng</text>
-          <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+          <picker disabled={true} class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
             {{edit.quantrong}}
           </picker>
         </view>
@@ -92,7 +92,7 @@
         <view class="col-4">
           <block class="select-time"> 
             <text class="title1" >Ngày bắt đầu</text>
-            <picker  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1">
+            <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
               {{edit.ngaygiobatdau}}
             </picker>
           </block>
@@ -100,7 +100,7 @@
         <view class="col-4">
           <block class="select-time"> 
             <text class="title1" >Ngày kết thúc</text>
-            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
+            <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
               {{edit.ngaygioketthuc}}
             </picker>
           </block>
@@ -132,8 +132,8 @@
         </view>
         <view class="col-4">
           <block class="select-time">
-            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
-              {{selectedDayWork}}
+            <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+              {{edit.ngaylam}}
             </picker>
           </block>
         </view>
@@ -154,7 +154,7 @@
         <view  class="col-2">
           <block class="select-time">
             <label style="margin-left:15px;"> 
-              <checkbox style="height: 15px; width: 15px; transform: scale(1.3);" bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
+              <checkbox disabled={true} style="height: 15px; width: 15px; transform: scale(1.3);" bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
             </label>
           </block>               
         </view> 
