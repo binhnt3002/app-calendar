@@ -1,6 +1,7 @@
 <view tt:if={{turnPopup===false}} class="container">
-  <view class="header">
-    <text style="font-size: 15; flex: 1;">Kiểm tra công việc</text>
+  <view class="header-update">
+    <image src="/images/logoBg.jpg" class="logo" style="z-index: 1000;"></image>
+    <text style="font-size: 20px; flex: 1; text-transform: uppercase;">Kiểm tra công việc</text>
   </view>
   <view class="body">
     <view class="box">
@@ -16,6 +17,9 @@
             <view class="title-collumn">Ngày - Giờ bắt đầu</view>
             <view class="title-collumn">Ngày - Giờ kết thúc</view>
             <view class="title-collumn">Ghi chú</view>
+            <view class="title-collumn">
+                Cập nhật
+            </view>
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{tableData}}" wx:key="index">
