@@ -1,4 +1,6 @@
 import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
+import { updateEvent, updateRecord } from "./function/apiFunction";
+import { bodyUpdateEvent } from "./detailForm";
 Page({
   data: {
     tableData: [],
@@ -23,12 +25,46 @@ Page({
     startDate: new Date().toISOString().substring(0, 10),
     endDate: '',
     selectedHours:'',
+    recordId:[],
+    endTime: '',
+    startTime: '',
+    inputNote:'',
+  },
+  inputNote: function (e) {
+    this.setData({
+      inputNote: e.detail.value,
+    });
   },
   onSelectedHours: function (e) {
     this.setData({
       selectedHours: this.data.hours[e.detail.value],
     });
   },
+
+  onTimeChange1: function (e) {
+    this.setData({
+      startTime: e.detail.value,
+    });
+
+    if (this.data.startTime > this.data.endTime) {
+      this.setData({
+        endTime: this.data.startTime,
+      })
+    }
+
+  },
+
+  onTimeChange2: function (e) {
+    this.setData({
+      endTime: e.detail.value,
+    });
+    if (this.data.startTime > this.data.endTime) {
+      this.setData({
+        endTime: this.data.startTime,
+      })
+    }
+  },
+
 
   onDateChange1: function (e) {
     this.setData({
@@ -138,6 +174,7 @@ Page({
     let tableData = that.data.tableData;
     let ngaylam = that.data.ngaylam;
     let sogiocanco = that.data.sogiocanco;
+    let recordId = that.data.recordId;
     vieccanlam = [];
     theloai = [];
     capbach = [];
@@ -151,6 +188,7 @@ Page({
     ngaylam = [];
     tableData = [];
     sogiocanco = [];
+    recordId = [];
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
@@ -199,6 +237,7 @@ Page({
             calendarid.push({"calendarid": item.fields["CalendarID"][0].text})
             ngaylam.push({"ngaylam":that.convertTimestampToDate(item.fields["Ngày làm"])})
             sogiocanco.push({"sogiocanco": item.fields["Số giờ cần có"]})
+            recordId.push({"recordId":item.record_id})
             tableData = vieccanlam.map((item, index) =>{
               return {
                 ...item,
@@ -212,7 +251,8 @@ Page({
                 ...ghichu[index],
                 ...eventid[index],
                 ...calendarid[index],
-                ...sogiocanco[index]
+                ...sogiocanco[index],
+                ...recordId[index]
               }
             })
             that.setData({
@@ -229,6 +269,7 @@ Page({
               calendarid,
               ngaylam,
               sogiocanco,
+              recordId,
             })
           })
         })
@@ -239,7 +280,6 @@ Page({
   convertTimestampToDate(timestamp) {
     // Create a new Date object with the given timestamp
     const date = new Date(timestamp);
-  
     // Get the day, month, and year from the Date object
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -248,6 +288,12 @@ Page({
     const formattedDate = `${year}-${month}-${day}`;
   
     return formattedDate;
+  },
+
+  dateTimeToTimestamp: function (date, time) {
+    let datetime = new Date(`${date} ${time}`);
+    let timestamp = datetime.getTime();
+    return Math.floor(timestamp / 1000);
   },
   
 
@@ -268,11 +314,23 @@ Page({
     that.setData({ 
       turnPopup: true,
       edit,
-      selectedHours: edit.sogiocanco
+      selectedHours: edit.sogiocanco,
+      inputNote: edit.ghichu
     })
   },
+
   update() {
-    this.setData({ turnPopup: false })
+    let that = this;
+    that.setData({ turnPopup: false })
+    tt.getStorage({
+      key: 'user_access_token',
+      success: (res) => {
+        const body = bodyUpdateEvent(that.data.startTime, that.data.endTime);
+        updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid,body).then ((rs)=>{
+          console.log(rs);
+        })
+      }
+    })
   }
 
 });

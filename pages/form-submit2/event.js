@@ -26,6 +26,7 @@ Page({
     idCongViec: '',
     idGroup: '',
     attendees: [],
+    thu: []
   },
 
   onLoad() {
@@ -168,6 +169,7 @@ Page({
     let events = that.data.events;
     let eventsID = that.data.eventsID;
     let arCalendarId = that.data.arCalendarId;
+    let thu = that.data.thu;
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
@@ -181,7 +183,8 @@ Page({
           "field_names": [
             "Việc cần làm",
             "EventID",
-            "CalendarID"
+            "CalendarID",
+            "Thứ"
           ],
           "sort": [
             {
@@ -215,7 +218,7 @@ Page({
             resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));
           resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
           resp.data.items.map(i => i.fields["CalendarID"].map(item => arCalendarId.push(item.text)[0]));
-
+          resp.data.items.map(i => i.fields["Thứ"].value.map(item => thu.push(item.text)))
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
             if (index < eventsID.length) {
@@ -224,6 +227,7 @@ Page({
                 value: eventsID[index],
                 id: arCalendarId[index],
                 checked: false,
+                thu: thu[index]
               };
             } else {
               // Return the original event if no corresponding ID is found
@@ -232,7 +236,7 @@ Page({
           });
 
           events = updatedEvents;
-          that.setData({ eventsID, events, arCalendarId })
+          that.setData({ eventsID, events, arCalendarId, thu })
           console.log(that.data.events);
         })
       }

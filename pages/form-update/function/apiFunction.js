@@ -23,7 +23,8 @@ const getEvent = (access_token,calendar_id,event_id) => {
 const updateEvent = (access_token,calendar_id,event_id,data) => {
   const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${calendar_id}/events/${event_id}`;
   const headers = {
-      'Authorization': `Bearer ${access_token}`
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'application/json'  
   }
 
   return sendRequest(url, 'PATCH', headers, data)
@@ -78,7 +79,17 @@ const createRecord = (access_token,data) => {
     return sendRequest(url, 'POST', headers, body);
 }
 
+const updateRecord = (access_token,data) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/batch_update`;
+  const headers = {
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'application/json'
+  }
+
+  const body = data;
+  
+  return sendRequest(url, 'POST', headers, body);
+}
 
 
-
-export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent }
+export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent, updateRecord }

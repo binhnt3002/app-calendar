@@ -11,7 +11,7 @@
             <block wx:for="{{events}}" wx:key="*this.value">
               <view class="event-item">
                 <view class="event-details">
-                  <text class="block">{{item.name}}</text>
+                  <text class="block">{{item.name}} - {{item.thu}}</text>
                 </view>
                 <view class="event-checkbox">
                   <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>

@@ -79,31 +79,85 @@ const bodyCreateRecord = (vieccanlam, theloai, quantrong, capbach, sogio, nguoi,
   }
   return body
 }
-const bodyUpdateEvent = () => {
+const bodyUpdateEvent = (startTime, endTime, description) => {
   const body =
   {
-    "summary": "Event title",
-    "description": "Event description",
-    "need_notification": true,
+    // "summary": "Event title",
+    "description": description,
+    // "need_notification": true,
     "start_time": {
-      "date": "2018-09-01",
-      "timestamp": "1602504000",
-      "timezone": "Asia/Shanghai"
+      // "date": "2018-09-01",
+      "timestamp": startTime,
+      // "timezone": "Asia/Shanghai"
     },
     "end_time": {
-      "date": "2018-09-01",
-      "timestamp": "1602504000",
-      "timezone": "Asia/Shanghai"
+      // "date": "2018-09-01",
+      "timestamp": endTime,
+      // "timezone": "Asia/Shanghai"
     },
-    "visibility": "default", // default, public, private
-    "attendee_ability": "can_see_others", //none, can_see_others, can_invite_others, can_modify_event
-    "free_busy_status": "busy",
-    "reminders": [
+    // "visibility": "default", // default, public, private
+    // "attendee_ability": "can_see_others", //none, can_see_others, can_invite_others, can_modify_event
+    // "free_busy_status": "busy",
+    // "reminders": [
+    //   {
+    //     "minutes": 5
+    //   }
+    // ],
+  }
+  return body
+}
+
+const bodyUpdateRecord = () => {
+  const body =
+  {
+    "records": [
       {
-        "minutes": 5
+        "record_id": "recgVdQ7o7",
+        "fields": {
+          "manpower": 2,
+          "performer": [
+            {
+              "id": "ou_debc524b2d8cb187704df652b43d29de"
+            }
+          ],
+          "description": "collect user feedbacks",
+          "corresponding OKR": [
+            "recqwIwhc6",
+            "recOuEJMvN"
+          ],
+          "deadline": 1609516800000,
+          "completed": true,
+          "status": "complete",
+          "department": [
+            "Sale",
+            "Customer service"
+          ]
+        }
+      },
+      {
+        "record_id": "recAu2ReK0",
+        "fields": {
+          "manpower": 2,
+          "performer": [
+            {
+              "id": "ou_debc524b2d8cb187704df652b43d29de"
+            }
+          ],
+          "description": "collect user feedbacks",
+          "corresponding OKR": [
+            "recqwIwhc6",
+            "recOuEJMvN"
+          ],
+          "deadline": 1609516800000,
+          "completed": true,
+          "status": "complete",
+          "department": [
+            "Sale",
+            "Customer service"
+          ]
+        }
       }
-    ],
-    "recurrence": `FREQ=DAILY;INTERVAL=1`,
+    ]
   }
   return body
 }
