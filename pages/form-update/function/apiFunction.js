@@ -26,8 +26,9 @@ const updateEvent = (access_token,calendar_id,event_id,data) => {
       'Authorization': `Bearer ${access_token}`,
       'Content-Type': 'application/json'  
   }
+  const body = data;
 
-  return sendRequest(url, 'PATCH', headers, data)
+  return sendRequest(url, 'PUT', headers, data)
 }
 
 const getGroupId = (access_token) => {

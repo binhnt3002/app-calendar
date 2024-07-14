@@ -325,7 +325,8 @@ Page({
     tt.getStorage({
       key: 'user_access_token',
       success: (res) => {
-        const body = bodyUpdateEvent(that.data.startTime, that.data.endTime);
+        const body = bodyUpdateEvent(that.dateTimeToTimestamp(that.data.edit.ngaylam,that.data.startTime), that.dateTimeToTimestamp(that.data.edit.ngaylam,that.data.endTime), that.data.inputNote);
+        console.log(body);
         updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid,body).then ((rs)=>{
           console.log(rs);
         })

@@ -126,7 +126,7 @@
         <view class="col-2">
           <block class="select-time"> 
             <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;" range="{{dayOptions}}" bindchange="onWeekChange">
-              {{selectedDay}}
+              {{edit.thu}}
             </picker>
           </block>
         </view>
