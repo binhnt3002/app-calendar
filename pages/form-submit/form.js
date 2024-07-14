@@ -322,6 +322,7 @@ Page({
         tt.showToast({
           title: "Đang lấy dữ liệu",
           icon: "loading",
+          duration: 5000,
         });
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
@@ -330,6 +331,11 @@ Page({
             dataLich: result.data.calendar_list,
             lich: result.data.calendar_list.map((item) => item.summary),
           });
+        });
+        tt.showToast({
+          title: "lấy dữ liệu thành công",
+          icon: "loading",
+          duration: 0,
         });
       },
     });
