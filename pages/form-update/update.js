@@ -128,45 +128,7 @@ Page({
       selectedDay: dayKey,
     });
 
-    // let now = new Date(e.detail.value)
 
-    // let data = this.data.dailyData[0]["Thứ " + ((now.getDay() + 6) % 7 + 1)];
-    // this.setData({
-    //   startTime: data.startTime,
-    //   endTime: data.endTime,
-    //   isLoop: data.isLoop
-    // })
-
-    // let currentDate = new Date(e.detail.value);
-    // if (currentDate.getDay() === 1) {
-    //   this.setData({
-    //     selectedDay: "Thứ 2",
-    //   });
-    // } else if (currentDate.getDay() === 2) {
-    //   this.setData({
-    //     selectedDay: "Thứ 3",
-    //   });
-    // } else if (currentDate.getDay() === 3) {
-    //   this.setData({
-    //     selectedDay: "Thứ 4",
-    //   });
-    // } else if (currentDate.getDay() === 4) {
-    //   this.setData({
-    //     selectedDay: "Thứ 5",
-    //   });
-    // } else if (currentDate.getDay() === 5) {
-    //   this.setData({
-    //     selectedDay: "Thứ 6",
-    //   });
-    // } else if (currentDate.getDay() === 6) {
-    //   this.setData({
-    //     selectedDay: "Thứ 7",
-    //   });
-    // }
-    // else if (currentDate.getDay() === 0) {
-    //   this.setData({
-    //     selectedDay: "Chủ nhật",
-    //   });
   },
 
   onShow() {
@@ -345,6 +307,29 @@ Page({
     console.log(that.data.edit);
   },
 
+  confirmUpdate(e) {
+    const eventId = e.currentTarget.id;
+    const that = this;
+
+    tt.showModal({
+      title: "Xác nhận cập nhật công việc",
+      content: "Bạn có muốn cập nhật công việc này?",
+      confirmText: "Cập nhật",
+      cancelText: "Hủy",
+      showCancel: true,
+      success(res) {
+        if (res.confirm) {
+          that.update(eventId);
+        } else if (res.cancel) {
+          console.log("User canceled update");
+        }
+      },
+      fail(res) {
+        console.log(`showModal fail: ${JSON.stringify(res)}`);
+      }
+    });
+  },
+
   update() {
     let that = this;
     that.setData({ turnPopup: false });
@@ -382,14 +367,44 @@ Page({
         };
 
         console.log(body);
-        updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid,body).then ((rs)=>{
+        updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid, body).then((rs) => {
           console.log(rs);
         })
       }
     })
+
   },
-  exit(){
-    this.setData({turnPopup: false })
+  exit() {
+    this.setData({ turnPopup: false })
+  },
+
+  confirmDelete(e) {
+    const eventId = e.currentTarget.id;
+    const that = this;
+
+    tt.showModal({
+      title: "Xác nhận xóa task",
+      content: "Bạn có muốn xóa task này ?",
+      confirmText: "Delete",
+      cancelText: "Hủy",
+      showCancel: true,
+      success(res) {
+        if (res.confirm) {
+          that.deleteItem(eventId);
+        } else if (res.cancel) {
+          console.log("User canceled deletion");
+        }
+      },
+      fail(res) {
+        console.log(`showModal fail: ${JSON.stringify(res)}`);
+      }
+    });
+  },
+
+  deleteItem(eventId) {
+    // Thực hiện hành động xóa item với eventId
+    // console.log(`Deleting item with ID: ${eventId}`);
+    // Thêm logic xóa item tại đây
   }
 
 });
