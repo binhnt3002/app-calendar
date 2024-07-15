@@ -3,7 +3,8 @@
     <view class="col-6">
       <view class="dash-board">
         <view class="text-list">
-          <text class="d-flex justify-content-center" style="font-weight: bold; text-align: center; font-size: 14px;">TIÊU CHUẨN KIẾN NGHỊ</text>
+          <text class="d-flex justify-content-center"
+            style="font-weight: bold; text-align: center; font-size: 14px;">TIÊU CHUẨN KIẾN NGHỊ</text>
           <view class="container text-center" style="height: auto !important; margin-top: 15px;">
             <view class="row align-items-start" style="border-bottom: 1px solid rgb(248, 223, 223);">
               <view class="col" style="border-right: 1px solid rgb(248, 223, 223);">
@@ -100,15 +101,18 @@
                 <text style="font-size: 15px;">Số giờ thực tế trong tuần: </text>
               </view>
               <view class="col-6">
-                <input type="number" bindinput="onChangeHoursWeek" value="{{totalHoursInWeek}}" placeholder="Nhập số giờ thực tế" style="margin-bottom: 5px;" />
+                <input type="number" bindinput="onChangeHoursWeek" value="{{totalHoursInWeek}}"
+                  placeholder="Nhập số giờ thực tế" style="margin-bottom: 5px;" />
               </view>
             </view>
-            <view class="row align-items-start" style="border-top: 1px solid rgb(248, 223, 223); display:flex; align-items: center;">
+            <view class="row align-items-start"
+              style="border-top: 1px solid rgb(248, 223, 223); display:flex; align-items: center;">
               <view class="col-6" style="padding-top: 4px;">
-                <text style="font-size: 15px;">Giờ thực tế đã sử dụng: </text>
+                <text style="font-size: 15px;">Giờ thực tế đã sử dụng: {{totalHours}}</text>
               </view>
               <view class="col-6" style="padding-top: 5px;">
-                <text style="font-size: 15px;">{{totalHours}} - Nhận định : {{percentdistance}}</text>
+                <text style="font-size: 15px; display: block; color:red;">Nhận định : {{percentdistance}}</text>
+                <text style="font-size: 15px; display: block;" decode>(&lt; 10%)</text>
               </view>
             </view>
           </view>

@@ -385,9 +385,10 @@ Page({
             assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
             distance1 = ((distance / totalHours) * 100).toFixed(0);
             percentdistance =
-              ((distance / totalHours) * 100).toFixed(0) < 10
-                ? "Tốt"
-                : "Chưa tốt";
+            (this.data.totalHoursInWeek > totalHours) && 
+            (((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10)
+              ? "Tốt"
+              : "Chưa tốt";
           } else {
             percentA = (
               (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
@@ -426,9 +427,10 @@ Page({
               100
             ).toFixed(0);
             percentdistance =
-              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
-                ? "Tốt"
-                : "Chưa tốt";
+            (this.data.totalHoursInWeek > totalHours) && 
+            (((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10)
+              ? "Tốt"
+              : "Chưa tốt";
           }
           this.setData({
             spec2,
