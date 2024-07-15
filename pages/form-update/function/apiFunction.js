@@ -55,6 +55,16 @@ const createEvent = (access_token,calendarId,data) => {
     return sendRequest(url, 'POST', headers, body);
 }
 
+const deleteEvent = (access_token,calendarId,eventId) => {
+  const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${calendarId}/events/${eventId}?need_notification=true`;
+  const headers = {
+      'Authorization': `Bearer ${access_token}`
+  }
+
+  return sendRequest(url, 'DELETE', headers, {});
+
+}
+
 
 const createInvitation = (access_token,calendarId,eventID,data) => {
     const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${calendarId}/events/${eventID}/attendees`;
@@ -104,4 +114,4 @@ const deleteRecord = (access_token,data) => {
   return sendRequest(url, 'POST', headers, body);
 }
 
-export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent, updateRecord, deleteRecord }
+export { getCalendarList , createEvent, createInvitation, getGroupId, createRecord, getEvent, updateEvent, updateRecord, deleteRecord, deleteEvent }

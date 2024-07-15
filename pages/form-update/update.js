@@ -1,5 +1,5 @@
 import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
-import { updateRecord, deleteRecord } from "./function/apiFunction";
+import { updateRecord, deleteRecord, deleteEvent } from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 Page({
@@ -27,7 +27,8 @@ Page({
     endDate: "",
     selectedHours: "",
     recordId: [],
-    dataRemove: [],
+    dataRemoveAll: [],
+    dataRemove:[],
     endTime: "",
     startTime: "",
     inputNote: "",
@@ -190,8 +191,10 @@ Page({
     let ngaylam = that.data.ngaylam;
     let sogiocanco = that.data.sogiocanco;
     let recordId = that.data.recordId;
-    let dataRemove =that.data.dataRemove;
-    dataRemove = []
+    let dataRemoveAll = that.data.dataRemoveAll;
+    let dataRemove = that.data.dataRemove;
+    dataRemove = [];
+    dataRemoveAll = [];
     vieccanlam = [];
     theloai = [];
     capbach = [];
@@ -479,22 +482,52 @@ Page({
 
   deleteItem(e) {
     let that = this;
-    let index = e.dataset.id
+    let index = e.id
+    let dataset = e.dataset.id
+    let dataRemoveAll = that.data.dataRemoveAll
     let dataRemove = that.data.dataRemove
     const newTabbleData = [...that.data.tableData]
-    const dataAfterRemove = newTabbleData.filter(function(phanTu) {
-      return phanTu.vieccanlam !== index;
+    
+    //dữ liệu sau khi bị xóa
+    const dataAfterRemove = newTabbleData.filter(function (phanTu) {
+      return phanTu.eventid !== index;
     });
-    const tempRemove = newTabbleData.filter(function(phanTu) {
-      return phanTu.vieccanlam === index;
+    //dữ liệu từng phần tử bị xóa - cộng dồn
+    const tempRemove = newTabbleData.filter(function (phanTu) {
+      return phanTu.eventid === index;
     });
-    tempRemove.map(i => dataRemove.push(i))
+    tempRemove.map(i => dataRemove.push(i.recordId))
+    //toàn bộ dữ liệu (có trùng) để xóa - cộng dồn
+    const tempRemoveAll = newTabbleData.filter(function (phanTu) {
+      return phanTu.vieccanlam === dataset;
+    });
+    tempRemoveAll.map(i => dataRemoveAll.push(i.recordId))
+    
     console.log(dataRemove);
+    console.log(dataRemoveAll);
     console.log(dataAfterRemove);
     that.setData({
-        tableData: dataAfterRemove,
-        dataRemove
+      tableData: dataAfterRemove,
+      dataRemoveAll,
+      dataRemove
     })
+    //xóa event
+
+    //xóa record
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const body = {
+          "records": [
+            e.dataset.recordId
+          ]
+        }
+        deleteEvent(res.data.access_token,a,index)
+        deleteRecord(res.data.access_token, body).then((rs) => {
+          console.log(rs);
+        });
+      },
+    });
   },
 
   confirmDelete(e) {

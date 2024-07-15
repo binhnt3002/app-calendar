@@ -34,7 +34,7 @@
               <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon">
                 <image id="{{item.eventid}}" bindtap="edit" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
-                <image data-id="{{item.vieccanlam}}" bindtap="confirmDelete" class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
+                <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="confirmDelete" class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
               </view>
             </view>
           </block>
