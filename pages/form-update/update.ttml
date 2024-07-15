@@ -34,7 +34,7 @@
               <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon">
                 <image id="{{item.eventid}}" bindtap="edit" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
-                <image id="{{item.eventid}}"  class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
+                <image data-id="{{item.vieccanlam}}" bindtap="confirmDelete" class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
               </view>
             </view>
           </block>
@@ -55,7 +55,7 @@
     <view class="form">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
-        <textarea  class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+        <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
           style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
       </block>
       <view class="row">
@@ -170,7 +170,7 @@
         </view>
         <block >
           <view class="d-flex justify-content-end">
-            <button bindtap="update" class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Cập nhật công việc</button>
+            <button bindtap="confirmUpdate" class="btn btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
           </view>
         </block> 
     </view>
