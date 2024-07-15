@@ -55,7 +55,7 @@
     <view class="form">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
-        <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+        <textarea  class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
           style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
       </block>
       <view class="row">

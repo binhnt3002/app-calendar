@@ -26,8 +26,9 @@ Page({
   onShow() {
     let that = this;
     tt.showToast({
-      title: "đợi khoảng 3 - 5s",
+      title: "Vui lòng đợi !",
       icon: "loading",
+      duration: 7000,
     });
     setTimeout(() => {
       that.reloadDashboard();
@@ -95,12 +96,42 @@ Page({
           console.log(result.data);
           let listItems = result.data?.items || 0;
           let listItemsLength = result.data.total;
-          let totalHours1 = this.calculateTotal(listItems, "Cấp bách", "1",listItemsLength);
-          let totalHours2 = this.calculateTotal(listItems, "Cấp bách", "2",listItemsLength);
-          let totalHours3 = this.calculateTotal(listItems, "Cấp bách", "3",listItemsLength);
-          let totalHoursQuanTrongA = this.calculateTotal(listItems, "Quan trọng","A",listItemsLength);
-          let totalHoursQuanTrongB = this.calculateTotal(listItems,"Quan trọng","B",listItemsLength);
-          let totalHoursQuanTrongC = this.calculateTotal(listItems,"Quan trọng","C",listItemsLength);
+          let totalHours1 = this.calculateTotal(
+            listItems,
+            "Cấp bách",
+            "1",
+            listItemsLength
+          );
+          let totalHours2 = this.calculateTotal(
+            listItems,
+            "Cấp bách",
+            "2",
+            listItemsLength
+          );
+          let totalHours3 = this.calculateTotal(
+            listItems,
+            "Cấp bách",
+            "3",
+            listItemsLength
+          );
+          let totalHoursQuanTrongA = this.calculateTotal(
+            listItems,
+            "Quan trọng",
+            "A",
+            listItemsLength
+          );
+          let totalHoursQuanTrongB = this.calculateTotal(
+            listItems,
+            "Quan trọng",
+            "B",
+            listItemsLength
+          );
+          let totalHoursQuanTrongC = this.calculateTotal(
+            listItems,
+            "Quan trọng",
+            "C",
+            listItemsLength
+          );
 
           let totalHours = totalHours1 + totalHours2 + totalHours3;
           let distance = totalHours - this.data.totalHoursInWeek;
@@ -331,8 +362,6 @@ Page({
             return item;
           });
 
-          
-
           let percentA, percentB, percentC;
           let assessmentA, assessmentB, assessmentC;
           let percent1, percent2, percent3;
@@ -420,6 +449,11 @@ Page({
             distance1,
             percentdistance,
             totalHours,
+          });
+
+          tt.showToast({
+            title: "tải thành công !",
+            icon: "success",
           });
         });
       },
