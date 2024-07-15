@@ -332,6 +332,9 @@ Page({
         })
       }
     })
+  },
+  exit(){
+    this.setData({turnPopup: false })
   }
 
 });

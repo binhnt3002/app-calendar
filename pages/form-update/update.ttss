@@ -5,7 +5,14 @@
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  margin-bottom: 100px;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+}
+.logo{
+  height: fit-content;
+  width: fit-content;
+  z-index: 1000;
 }
 
 .box {
@@ -13,12 +20,20 @@
   box-sizing: border-box;
 }
 
-.header {
+.header-update{
   padding: 10px;
   background-color: #045A97;
   width: 100%;
   text-align: center;
   color: white;
+  display: flex;
+  color: white;
+  text-align: center;
+  padding: 0.5rem 0.5rem;
+  font-size: 20px; 
+  background: #045A97 !important;
+  font-weight: bolder;
+  border-radius: 10px 10px 0 0;
 }
 
 .body {
@@ -29,7 +44,7 @@
 .table-container {
   width: 100%;
   max-width: fit-content;
-  height: 400px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
+  height: 500px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
   overflow: auto;
 }
 
@@ -54,13 +69,9 @@
   text-overflow: ellipsis;
   white-space: normal;
   max-height: auto;
-  /*height: 50px; /* Điều chỉnh chiều cao theo yêu cầu của bạn */
-  max-width: 107px; /* Điều chỉnh chiều rộng theo yêu cầu của bạn */
-  min-width: 107px;
 }
 
 .header-row {
-  /* background-color: #f2f2f2; */
   font-weight: bold;
 }
 .content-icon{
@@ -117,6 +128,14 @@ height: 1000px;
 
 }
 
+.del-x{
+  height: 20px; 
+  width:20px;
+}
+.del-x:hover{
+  opacity: 0.7 !important;
+}
+
 
 .main{
   padding:0 10px;
@@ -125,11 +144,13 @@ height: 1000px;
   width: 100%;
 }
 .header {
-  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  height: auto;
   margin-bottom: 10px;
   color: white;
   text-align: center;
-  padding: 0.5rem 0;
+  padding: 0.5rem 0.5rem;
   font-size: 20px; 
   background: #045A97 !important;
   font-weight: bolder;
@@ -175,7 +196,6 @@ height: 1000px;
   justify-content: space-between;
   display: block !important;
   flex-direction: column;
-  /* margin: 50px; */
 }
 
 .input-text{
@@ -199,7 +219,6 @@ textarea {
 .picker-text{
   height: 30px;
   line-height: 30px;
-  /* padding-left: 5px; */
   background-color: rgb(255, 255, 255,0.8);
   border-radius: 5px;
   padding: 0;
@@ -251,7 +270,6 @@ button{
 }
 
 .note-info{
-  /* background-color: ; */
   display: block;
 }
 
@@ -261,7 +279,6 @@ button{
   margin-top: 7px;
 }
 .content-pick{
-  /* display: flex; */
   gap: 15px;
   flex-wrap: wrap;
   width: 100%;
@@ -277,26 +294,6 @@ button{
   flex: 1;
 }
 
-/* .btn:before,.btn:after{
-  content:'';
-  position:absolute;
-  top:0;
-  right:0;
-  height:2px;
-  width:0;
-  background: #007bff;
-  transition:500ms ease all;
-}
-.btn:after{
-  right:inherit;
-  top:inherit;
-  left:0;
-  bottom:0;
-}
-.btn:hover:before,.btn:hover:after{
-  width:70%;
-  transition:800ms ease all;
-} */
 .page-body-info {
   padding-bottom: 0;
   height: 260px;
@@ -312,7 +309,4 @@ button{
   font-size: 20px;
 }
 
-.btn {
-  
-}
 
