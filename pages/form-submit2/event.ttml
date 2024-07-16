@@ -42,6 +42,16 @@
                     <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg"></image>
                   </view>
                 </block>
+                <block wx:for="{{inviteData}}" wx:key="*this.value">
+                  <view class="event-item">
+                    <image class="userinfo-avatar" src="{{item.url}}"></image>
+                    <view class="event-details" style="margin-left: 5px;">
+                      <text class="block">{{item.name}}</text>
+                    </view>
+                    <!-- <button class="button-del" bindtap="removeElement" id="{{item.id}}"></button> -->
+                    <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg"></image>
+                  </view>
+                </block>
               </block>
               <block wx:else>
                 <block wx:for="{{chatData}}" wx:key="*this.value">
