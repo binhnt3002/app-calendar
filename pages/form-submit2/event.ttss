@@ -76,8 +76,25 @@
   text-align: center;
   padding: 10px;
 }
+.block2{
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #045A97 !important;
+  width:15%;
+}
+
+.block3{
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #045A97 !important;
+  width:25%;
+}
 
 .block {
+  
+  width: 60%;
   display: block;
   font-weight: bold;
   font-size: 16px;
@@ -109,7 +126,13 @@
   word-wrap: break-word;
 }
 
-.event-item, .event-details {
+.event-item {
+  flex: 1;
+  min-width: 0;
+}
+.event-details {
+  display: flex;
+  width: 100%;
   flex: 1;
   min-width: 0;
 }

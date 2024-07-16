@@ -6,12 +6,14 @@
     <view class="box">
       <view class="row">
         <view class="col-7">
-          <text class="block" style="margin-bottom: 13px; margin-top:7px">Danh sách công việc</text>
+          <text class="block" style="margin-bottom: 13px; margin-top: 7px;">Danh sách công việc</text>
           <scroll-view class="event-box" scroll-y="true">
             <block wx:for="{{events}}" wx:key="*this.value">
               <view class="event-item">
                 <view class="event-details">
-                  <text class="block">{{item.name}} - {{item.thu}}</text>
+                  <text class="block">{{item.name}}</text>
+                  <text class="block2">{{item.thu}}</text>
+                  <text class="block3">{{item.thu}}</text>
                 </view>
                 <view class="event-checkbox">
                   <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>
