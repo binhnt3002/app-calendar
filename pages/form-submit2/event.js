@@ -19,7 +19,7 @@ Page({
     inviteOpenId: [],
     avatarUrl: [],
     inviteData: [],
-    
+
     checkStatue: [],
 
     chat: [],
@@ -261,6 +261,7 @@ Page({
 
   checkboxChange: function (e) {
     let that = this;
+    that.setData({ invite: [], inviteOpenId: [], inviteData: [] })
     let currentValue = e.currentTarget.dataset;
     console.log(currentValue);
     tt.getStorage({
@@ -300,15 +301,22 @@ Page({
               calendarID: currentValue.calendar,
             });
 
-            const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/feishu.cn_TsyhUKTHj8mwCqwMQsGiRa@group.calendar.feishu.cn/events/ca12a407-6cc1-4155-8312-cb78fbf5aa1c_0/attendees`;
+            const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.calendarID}/events/${that.data.idCongViec}/attendees`;
             const headers = {
               Authorization: `Bearer ${res.data.access_token}`,
             };
             sendRequest(url, "GET", headers, {}).then((resp) => {
               console.log(resp);
-              let lengthItems = resp.data.items.length;
+              let lengthItems = resp.data?.items.length || 0;
+              let dataPush = resp.data.items.map((item) => item.user_id);
               if (lengthItems != 0) {
-                that.setData({ checkStatue: resp.data.items.map((name) => ({"name":name.display_name,"status":name.rsvp_status}))});
+                that.setData({
+                  // checkStatue: resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
+                  invite: resp.data.items.map((item) => ({ name: item.display_name, id: item.user_id })),
+                  inviteOpenId: resp.data.items.map((item) => (item.user_id)),
+                  // inviteData: resp.data.items.map((item) => ({ "name": item.display_name, "id": item.user_id }))
+                });
+                return;
               }
             });
           }
