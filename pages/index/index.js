@@ -25,14 +25,18 @@ Page({
 
   onShow() {
     let that = this;
-    tt.showToast({
-      title: "Vui lòng đợi !",
-      icon: "loading",
-      duration: 7000,
-    });
-    setTimeout(() => {
-      that.reloadDashboard();
-    }, 3000);
+    this.auth = setInterval(() => {
+      let isComplete = tt.getStorageSync("isComplete");
+      tt.showToast({
+        title: "Vui lòng đợi !",
+        icon: "loading",
+        duration: 7000,
+      });
+      if (isComplete) {
+        clearInterval(this.auth);
+        that.reloadDashboard();
+      }
+    }, 1000);
   },
   calculateTotal(listItems, key, condition, totalItems) {
     if (totalItems == 0) {
@@ -385,10 +389,10 @@ Page({
             assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
             distance1 = ((distance / totalHours) * 100).toFixed(0);
             percentdistance =
-            (this.data.totalHoursInWeek > totalHours) && 
-            (((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10)
-              ? "Tốt"
-              : "Chưa tốt";
+              this.data.totalHoursInWeek > totalHours &&
+              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+                ? "Tốt"
+                : "Chưa tốt";
           } else {
             percentA = (
               (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
@@ -427,10 +431,10 @@ Page({
               100
             ).toFixed(0);
             percentdistance =
-            (this.data.totalHoursInWeek > totalHours) && 
-            (((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10)
-              ? "Tốt"
-              : "Chưa tốt";
+              this.data.totalHoursInWeek > totalHours &&
+              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+                ? "Tốt"
+                : "Chưa tốt";
           }
           this.setData({
             spec2,
