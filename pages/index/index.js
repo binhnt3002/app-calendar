@@ -99,7 +99,7 @@ Page({
         sendRequest(url, "POST", headers, body).then((result) => {
           console.log(result.data);
           let listItems = result.data?.items || 0;
-          let listItemsLength = result.data.total;
+          let listItemsLength = result.data?.total || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
             "Cấp bách",
@@ -314,13 +314,13 @@ Page({
           }
 
           // Calculate total values for percentage calculation
-          const totalTheLoai = result.data.items?.length || 0;
+          const totalTheLoai = result.data?.items?.length || 0;
 
           let spec4 = this.data.spec4;
           spec4.data[0].values = [
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc chính"
                 )?.length || 0,
               type: "Việc chính",
@@ -328,7 +328,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc phát sinh"
                 )?.length || 0,
               type: "Việc phát sinh",
@@ -336,7 +336,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc cần đôn đốc"
                 )?.length || 0,
               type: "Việc cần đàn đốc",
@@ -344,7 +344,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Đọc & học"
                 )?.length || 0,
               type: "Đọc & học",
@@ -352,7 +352,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Dự án"
                 )?.length || 0,
               type: "Dự án",
