@@ -33,6 +33,9 @@ Page({
     startTime: "",
     inputNote: "",
     inputValue: "",
+    showFilterPicker: false, // Trạng thái hiển thị combobox
+    filterOptions: ['Option 1', 'Option 2', 'Option 3'], // Các giá trị trong combobox
+    selectedFilter: 'Option 1' // Giá trị mặc định khi combobox mở ra
   },
   inputNote: function (e) {
     this.setData({
@@ -130,45 +133,7 @@ Page({
       selectedDay: dayKey,
     });
 
-    // let now = new Date(e.detail.value)
 
-    // let data = this.data.dailyData[0]["Thứ " + ((now.getDay() + 6) % 7 + 1)];
-    // this.setData({
-    //   startTime: data.startTime,
-    //   endTime: data.endTime,
-    //   isLoop: data.isLoop
-    // })
-
-    // let currentDate = new Date(e.detail.value);
-    // if (currentDate.getDay() === 1) {
-    //   this.setData({
-    //     selectedDay: "Thứ 2",
-    //   });
-    // } else if (currentDate.getDay() === 2) {
-    //   this.setData({
-    //     selectedDay: "Thứ 3",
-    //   });
-    // } else if (currentDate.getDay() === 3) {
-    //   this.setData({
-    //     selectedDay: "Thứ 4",
-    //   });
-    // } else if (currentDate.getDay() === 4) {
-    //   this.setData({
-    //     selectedDay: "Thứ 5",
-    //   });
-    // } else if (currentDate.getDay() === 5) {
-    //   this.setData({
-    //     selectedDay: "Thứ 6",
-    //   });
-    // } else if (currentDate.getDay() === 6) {
-    //   this.setData({
-    //     selectedDay: "Thứ 7",
-    //   });
-    // }
-    // else if (currentDate.getDay() === 0) {
-    //   this.setData({
-    //     selectedDay: "Chủ nhật",
-    //   });
   },
 
   onShow() {
@@ -360,6 +325,29 @@ Page({
       inputValue: edit.vieccanlam,
     });
     console.log(that.data.edit);
+  },
+
+  confirmUpdate(e) {
+    const eventId = e.currentTarget.id;
+    const that = this;
+
+    tt.showModal({
+      title: "Xác nhận cập nhật công việc",
+      content: "Bạn có muốn cập nhật công việc này?",
+      confirmText: "Cập nhật",
+      cancelText: "Hủy",
+      showCancel: true,
+      success(res) {
+        if (res.confirm) {
+          that.update(eventId);
+        } else if (res.cancel) {
+          console.log("User canceled update");
+        }
+      },
+      fail(res) {
+        console.log(`showModal fail: ${JSON.stringify(res)}`);
+      }
+    });
   },
 
   update() {
@@ -570,4 +558,19 @@ Page({
   exit() {
     this.setData({ turnPopup: false })
   },
+
+  toggleFilter() {
+    this.setData({
+      showFilterPicker: !this.data.showFilterPicker // Đảo ngược trạng thái hiển thị
+    });
+  },
+  onFilterChange(e) {
+    const index = e.detail.value;
+    const selectedOption = this.data.filterOptions[index];
+    this.setData({
+      selectedFilter: selectedOption, // Cập nhật giá trị đã chọn
+      showFilterPicker: false // Đóng combobox sau khi chọn
+    });
+    // Thực hiện các hành động khác khi thay đổi giá trị
+  }
 });
