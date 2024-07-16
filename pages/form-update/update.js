@@ -192,6 +192,16 @@ Page({
             "EventID",
             "CalendarID",
           ],
+          "sort": [
+            {
+                "field_name": "Thể loại",
+                "asc": true
+            },
+            {
+              "field_name": "Việc cần làm",
+              "asc": true
+            }
+          ],
           filter: {
             conjunction: "and",
             conditions: [
@@ -446,12 +456,13 @@ Page({
 
   deleteItem(e) {
     let that = this;
-    let index = e.id;
-    let dataset = e.dataset.id;
-    let dataRemoveAll = that.data.dataRemoveAll;
-    let dataRemove = that.data.dataRemove;
-    const newTabbleData = [...that.data.tableData];
-
+    let index = e.id
+    let dataset = e.dataset.id
+    let dataRemoveAll = that.data.dataRemoveAll
+    let dataRemove = that.data.dataRemove
+    dataRemove = []
+    const newTabbleData = [...that.data.tableData]
+    
     //dữ liệu sau khi bị xóa
     const dataAfterRemove = newTabbleData.filter(function (phanTu) {
       return phanTu.eventid !== index;
@@ -460,7 +471,8 @@ Page({
     const tempRemove = newTabbleData.filter(function (phanTu) {
       return phanTu.eventid === index;
     });
-    tempRemove.map((i) => dataRemove.push(i.recordId));
+
+    tempRemove.map(i => dataRemove.push({"recordid": i.recordId, "calendarid": i.calendarid}))
     //toàn bộ dữ liệu (có trùng) để xóa - cộng dồn
     const tempRemoveAll = newTabbleData.filter(function (phanTu) {
       return phanTu.vieccanlam === dataset;
@@ -473,18 +485,21 @@ Page({
     that.setData({
       tableData: dataAfterRemove,
       dataRemoveAll,
-      dataRemove,
-    });
-    //xóa event
+      dataRemove
+    })
 
-    //xóa record
+    // xóa record
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
         const body = {
-          records: [e.dataset.recordId],
-        };
-        deleteEvent(res.data.access_token, a, index);
+          "records": [
+            e.dataset.record
+          ]
+        }
+        deleteEvent(res.data.access_token,that.data.dataRemove[0].calendarid,index).then((result) => {
+          console.log(result);
+        });
         deleteRecord(res.data.access_token, body).then((rs) => {
           console.log(rs);
         });
