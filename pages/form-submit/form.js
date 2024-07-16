@@ -409,7 +409,7 @@ Page({
                     this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
                   "Ngày - Giờ kết thúc":
                     this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
-                  "Ghi chú": that.data.inputNote,
+                  "Ghi chú": dataDay.inputNote,
                   "Ngày làm":this.dateTimeToTimestamp(dataDay.date,"") * 1000,
                   EventID: rs.data.event.event_id,
                   CalendarID: that.data.calendarID,

@@ -1,5 +1,5 @@
 import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
-import { updateEvent, updateRecord } from "./function/apiFunction";
+import { updateRecord, deleteRecord, deleteEvent } from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 Page({
@@ -27,6 +27,8 @@ Page({
     endDate: "",
     selectedHours: "",
     recordId: [],
+    dataRemoveAll: [],
+    dataRemove: [],
     endTime: "",
     startTime: "",
     inputNote: "",
@@ -151,6 +153,10 @@ Page({
     let ngaylam = that.data.ngaylam;
     let sogiocanco = that.data.sogiocanco;
     let recordId = that.data.recordId;
+    let dataRemoveAll = that.data.dataRemoveAll;
+    let dataRemove = that.data.dataRemove;
+    dataRemove = [];
+    dataRemoveAll = [];
     vieccanlam = [];
     theloai = [];
     capbach = [];
@@ -303,6 +309,7 @@ Page({
       edit,
       selectedHours: edit.sogiocanco,
       inputNote: edit.ghichu,
+      inputValue: edit.vieccanlam,
     });
     console.log(that.data.edit);
   },
@@ -338,7 +345,7 @@ Page({
       success: (res) => {
         const user_access_token = res.data.access_token;
         let dataForCalendarUpdate = bodyUpdateEvent(
-          that.data.inputTittle,
+          that.data.inputValue,
           that.dateTimeToTimestamp(that.data.edit.ngaylam, that.data.startTime),
           that.dateTimeToTimestamp(that.data.edit.ngaylam, that.data.endTime),
           that.data.inputNote
@@ -359,7 +366,7 @@ Page({
 
         const body = {
           action: "updateCalendarOrEvent",
-          url: `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.tableData.calendarid}/events/${that.data.tableData.eventid}`,
+          url: `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.edit.calendarid}/events/${that.data.edit.eventid}`,
           user_access_token: user_access_token,
           body: {
             ...dataForCalendarUpdate,
@@ -367,25 +374,156 @@ Page({
         };
 
         console.log(body);
-        updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid, body).then((rs) => {
-          console.log(rs);
-        })
-      }
-    })
+        let findRecordId = that.data.tableData.find(
+          (obj) => obj.vieccanlam === that.data.edit.vieccanlam
+        ).recordId;
+        console.log(findRecordId);
 
-  },
-  exit() {
-    this.setData({ turnPopup: false })
+        let dataForRecordUpdate = {
+          records: [
+            {
+              record_id: that.data.edit.recordId,
+              fields: {
+                "Việc cần làm": that.data.inputValue,
+                "Ghi chú": that.data.inputNote,
+              },
+            },
+          ],
+        };
+        console.log(dataForRecordUpdate);
+        let toastId = tt.showToast({
+          title: "Đang cập nhật",
+          icon: "loading",
+          duration: 10000, // Set duration to 0 to make the toast stay indefinitely
+        });
+        sendRequest(url, "POST", header, body)
+          .then((rs) => {
+            console.log(rs);
+            updateRecord(user_access_token, dataForRecordUpdate)
+              .then((rs) => {
+                console.log(rs);
+                that.listTask();
+                tt.hideToast({
+                  toastId: toastId, // Use the toastId from the initial showToast call to hide it
+                });
+                // After all operations are done, show the success toast
+                tt.showToast({
+                  title: "Cập nhật công việc thành công",
+                  icon: "success",
+                  duration: 3000, // Show the success message for 3 seconds
+                });
+              })
+              .catch((error) => {
+                console.error("Update failed:", error);
+                tt.hideToast({
+                  toastId: toastId, // Ensure the loading toast is hidden even if there's an error
+                });
+                // Optionally, show an error toast to the user
+                tt.showToast({
+                  title: "Cập nhật thất bại",
+                  icon: "fail",
+                  duration: 3000,
+                });
+              });
+          })
+          .catch((error) => {
+            console.error("Request failed:", error);
+            tt.hideToast({
+              toastId: toastId, // Ensure the loading toast is hidden even if the request fails
+            });
+            // Optionally, show an error toast to the user
+            tt.showToast({
+              title: "Gửi yêu cầu thất bại",
+              icon: "fail",
+              duration: 3000,
+            });
+          });
+      },
+    });
   },
 
-  confirmDelete(e) {
+  confirmUpdate(e) {
     const eventId = e.currentTarget.id;
     const that = this;
 
     tt.showModal({
-      title: "Xác nhận xóa task",
-      content: "Bạn có muốn xóa task này ?",
-      confirmText: "Delete",
+      title: "Xác nhận cập nhật công việc",
+      content: "Bạn có muốn cập nhật công việc này?",
+      confirmText: "Cập nhật",
+      cancelText: "Hủy",
+      showCancel: true,
+      success(res) {
+        if (res.confirm) {
+          that.update();
+        } else if (res.cancel) {
+          console.log("User canceled update");
+        }
+      },
+      fail(res) {
+        console.log(`showModal fail: ${JSON.stringify(res)}`);
+      }
+    });
+  },
+
+  deleteItem(e) {
+    let that = this;
+    let index = e.id
+    let dataset = e.dataset.id
+    let dataRemoveAll = that.data.dataRemoveAll
+    let dataRemove = that.data.dataRemove
+    const newTabbleData = [...that.data.tableData]
+
+    //dữ liệu sau khi bị xóa
+    const dataAfterRemove = newTabbleData.filter(function (phanTu) {
+      return phanTu.eventid !== index;
+    });
+    //dữ liệu từng phần tử bị xóa - cộng dồn
+    const tempRemove = newTabbleData.filter(function (phanTu) {
+      return phanTu.eventid === index;
+    });
+    tempRemove.map(i => dataRemove.push(i.recordId))
+    //toàn bộ dữ liệu (có trùng) để xóa - cộng dồn
+    const tempRemoveAll = newTabbleData.filter(function (phanTu) {
+      return phanTu.vieccanlam === dataset;
+    });
+    tempRemoveAll.map(i => dataRemoveAll.push(i.recordId))
+
+    console.log(dataRemove);
+    console.log(dataRemoveAll);
+    console.log(dataAfterRemove);
+    that.setData({
+      tableData: dataAfterRemove,
+      dataRemoveAll,
+      dataRemove
+    })
+    //xóa event
+
+    //xóa record
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const body = {
+          "records": [
+            e.dataset.recordId
+          ]
+        }
+        deleteEvent(res.data.access_token, a, index)
+        deleteRecord(res.data.access_token, body).then((rs) => {
+          console.log(rs);
+        });
+      },
+    });
+  },
+
+  confirmDelete(e) {
+    const eventId = e.currentTarget;
+    console.log(e);
+    const that = this;
+
+    tt.showModal({
+      title: "Xác nhận xóa công việc",
+      content: "Bạn có muốn xóa công việc này ?",
+      confirmText: "Xóa",
       cancelText: "Hủy",
       showCancel: true,
       success(res) {
@@ -401,10 +539,7 @@ Page({
     });
   },
 
-  deleteItem(eventId) {
-    // Thực hiện hành động xóa item với eventId
-    // console.log(`Deleting item with ID: ${eventId}`);
-    // Thêm logic xóa item tại đây
-  }
-
+  exit() {
+    this.setData({ turnPopup: false })
+  },
 });
