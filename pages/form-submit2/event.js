@@ -19,6 +19,8 @@ Page({
     inviteOpenId: [],
     avatarUrl: [],
     inviteData: [],
+    
+    checkStatue: [],
 
     chat: [],
     chatId: [],
@@ -296,6 +298,18 @@ Page({
             that.setData({
               idCongViec: currentValue.eventid,
               calendarID: currentValue.calendar,
+            });
+
+            const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/feishu.cn_TsyhUKTHj8mwCqwMQsGiRa@group.calendar.feishu.cn/events/ca12a407-6cc1-4155-8312-cb78fbf5aa1c_0/attendees`;
+            const headers = {
+              Authorization: `Bearer ${res.data.access_token}`,
+            };
+            sendRequest(url, "GET", headers, {}).then((resp) => {
+              console.log(resp);
+              let lengthItems = resp.data.items.length;
+              if (lengthItems != 0) {
+                that.setData({ checkStatue: resp.data.items.map((name) => ({"name":name.display_name,"status":name.rsvp_status}))});
+              }
             });
           }
           console.log(that.data.events);
