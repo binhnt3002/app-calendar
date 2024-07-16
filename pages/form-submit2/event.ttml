@@ -13,7 +13,7 @@
                 <view class="event-details">
                   <text class="block">{{item.name}}</text>
                   <text class="block2">{{item.thu}}</text>
-                  <text class="block3">{{item.thu}}</text>
+                  <text class="block3">{{item.theloai}}</text>
                 </view>
                 <view class="event-checkbox">
                   <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>

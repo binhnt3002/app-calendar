@@ -39,6 +39,7 @@ Page({
     idGroup: "",
     attendees: [],
     thu: [],
+    theloai: [],
   },
 
   onLoad() {
@@ -180,6 +181,7 @@ Page({
     let eventsID = that.data.eventsID;
     let arCalendarId = that.data.arCalendarId;
     let thu = that.data.thu;
+    let theloai = that.data.theloai;
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -191,7 +193,7 @@ Page({
           "Content-Type": "application/json",
         };
         const body = {
-          field_names: ["Việc cần làm", "EventID", "CalendarID", "Thứ"],
+          field_names: ["Việc cần làm", "EventID", "CalendarID", "Thứ", "Thể loại"],
           sort: [
             {
               field_name: "Thể loại",
@@ -235,6 +237,10 @@ Page({
           resp.data.items.map((i) =>
             i.fields["Thứ"].value.map((item) => thu.push(item.text))
           );
+          resp.data.items.map((i) =>
+            theloai.push(i.fields["Thể loại"])
+          )
+
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
             if (index < eventsID.length) {
@@ -244,6 +250,7 @@ Page({
                 id: arCalendarId[index],
                 checked: false,
                 thu: thu[index],
+                theloai: theloai[index]
               };
             } else {
               // Return the original event if no corresponding ID is found
