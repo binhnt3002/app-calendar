@@ -28,14 +28,15 @@ Page({
     selectedHours: "",
     recordId: [],
     dataRemoveAll: [],
-    dataRemove:[],
+    dataRemove: [],
     endTime: "",
     startTime: "",
     inputNote: "",
     inputValue: "",
-    showFilterPicker: false, // Trạng thái hiển thị combobox
-    filterOptions: ['Option 1', 'Option 2', 'Option 3'], // Các giá trị trong combobox
-    selectedFilter: 'Option 1' // Giá trị mặc định khi combobox mở ra
+    showFilterPicker: false,
+    filterOptions: ['Tất cả','Việc chính', 'Dự án', 'Việc phát sinh', 'Việc cần đôn đốc', 'Đọc & học'], // Các giá trị trong combobox
+    selectedFilter: 'Tất cả', // Giá trị mặc định khi combobox mở ra
+    filterTheloai: [],
   },
   inputNote: function (e) {
     this.setData({
@@ -195,8 +196,8 @@ Page({
           ],
           "sort": [
             {
-                "field_name": "Thể loại",
-                "asc": true
+              "field_name": "Thể loại",
+              "asc": true
             },
             {
               "field_name": "Việc cần làm",
@@ -262,7 +263,19 @@ Page({
                 ...recordId[index],
               };
             });
+            if(that.data.selectedFilter!=='Tất cả'){
+              const filterTheloai = tableData.filter(item => item.theloai === that.data.selectedFilter)
+              that.setData({
+                tableData: filterTheloai
+              })
+            } else {
+              that.setData({
+                tableData
+              })
+            }
             that.setData({
+              tableData,
+              filterTheloai: tableData,
               capbach,
               quantrong,
               theloai,
@@ -270,7 +283,6 @@ Page({
               ngaygioketthuc,
               ghichu,
               vieccanlam,
-              tableData,
               thu,
               eventid,
               calendarid,
@@ -325,29 +337,6 @@ Page({
       inputValue: edit.vieccanlam,
     });
     console.log(that.data.edit);
-  },
-
-  confirmUpdate(e) {
-    const eventId = e.currentTarget.id;
-    const that = this;
-
-    tt.showModal({
-      title: "Xác nhận cập nhật công việc",
-      content: "Bạn có muốn cập nhật công việc này?",
-      confirmText: "Cập nhật",
-      cancelText: "Hủy",
-      showCancel: true,
-      success(res) {
-        if (res.confirm) {
-          that.update(eventId);
-        } else if (res.cancel) {
-          console.log("User canceled update");
-        }
-      },
-      fail(res) {
-        console.log(`showModal fail: ${JSON.stringify(res)}`);
-      }
-    });
   },
 
   update() {
@@ -486,7 +475,7 @@ Page({
     let dataRemove = that.data.dataRemove
     dataRemove = []
     const newTabbleData = [...that.data.tableData]
-    
+
     //dữ liệu sau khi bị xóa
     const dataAfterRemove = newTabbleData.filter(function (phanTu) {
       return phanTu.eventid !== index;
@@ -496,13 +485,13 @@ Page({
       return phanTu.eventid === index;
     });
 
-    tempRemove.map(i => dataRemove.push({"recordid": i.recordId, "calendarid": i.calendarid}))
+    tempRemove.map(i => dataRemove.push({ "recordid": i.recordId, "calendarid": i.calendarid }))
     //toàn bộ dữ liệu (có trùng) để xóa - cộng dồn
     const tempRemoveAll = newTabbleData.filter(function (phanTu) {
       return phanTu.vieccanlam === dataset;
     });
     tempRemoveAll.map(i => dataRemoveAll.push(i.recordId))
-    
+
     console.log(dataRemove);
     console.log(dataRemoveAll);
     console.log(dataAfterRemove);
@@ -521,7 +510,7 @@ Page({
             e.dataset.record
           ]
         }
-        deleteEvent(res.data.access_token,that.data.dataRemove[0].calendarid,index).then((result) => {
+        deleteEvent(res.data.access_token, that.data.dataRemove[0].calendarid, index).then((result) => {
           console.log(result);
         });
         deleteRecord(res.data.access_token, body).then((rs) => {
@@ -564,13 +553,29 @@ Page({
       showFilterPicker: !this.data.showFilterPicker // Đảo ngược trạng thái hiển thị
     });
   },
+
   onFilterChange(e) {
+    let that = this
+    let tableData = that.data.tableData
+    let filterTheloai = that.data.filterTheloai
     const index = e.detail.value;
-    const selectedOption = this.data.filterOptions[index];
-    this.setData({
+    const selectedOption = that.data.filterOptions[index];
+    // this.listTask()
+    that.setData({
       selectedFilter: selectedOption, // Cập nhật giá trị đã chọn
-      showFilterPicker: false // Đóng combobox sau khi chọn
+      // showFilterPicker: false // Đóng combobox sau khi chọn
     });
+    if(that.data.selectedFilter!=='Tất cả'){
+      filterTheloai = tableData.filter(item => item.theloai === that.data.selectedFilter)
+      that.setData({
+        filterTheloai
+      })
+    } else {
+      filterTheloai = tableData
+      that.setData({
+        filterTheloai
+      })
+    }
     // Thực hiện các hành động khác khi thay đổi giá trị
-  }
+  },
 });

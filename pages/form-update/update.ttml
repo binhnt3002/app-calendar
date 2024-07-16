@@ -9,10 +9,13 @@
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
           <view class="title-row header-row">
-            <view class="title-collumn">Việc cần làm <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"></image><picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+            <view class="title-collumn">Việc cần làm </view>
+            <view class="title-collumn">
+              <p style="margin-right: 20px; margin-left:13px;">Thể loại</p>
+              <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
               <text class="filter-text">{{selectedFilter}}</text>
             </picker></view>
-            <view class="title-collumn">Thể loại</view>
             <view class="title-collumn">Quan trọng</view>
             <view class="title-collumn">Cấp bách</view>
             <view class="title-collumn">Thứ</view>
@@ -22,7 +25,7 @@
             <view class="title-collumn">Cập nhật</view>
           </view>
           <!-- Các dòng dữ liệu -->
-          <block wx:for="{{tableData}}" wx:key="index">
+          <block wx:for="{{filterTheloai}}" wx:key="index">
             <view class="title-row">
               <view class="title-collumn">{{item.vieccanlam}}</view>
               <view class="title-collumn">{{item.theloai}}</view>
