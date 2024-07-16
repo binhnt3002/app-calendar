@@ -9,7 +9,9 @@
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
           <view class="title-row header-row">
-            <view class="title-collumn">Việc cần làm</view>
+            <view class="title-collumn">Việc cần làm <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"></image><picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <text class="filter-text">{{selectedFilter}}</text>
+            </picker></view>
             <view class="title-collumn">Thể loại</view>
             <view class="title-collumn">Quan trọng</view>
             <view class="title-collumn">Cấp bách</view>
@@ -17,9 +19,7 @@
             <view class="title-collumn">Ngày - Giờ bắt đầu</view>
             <view class="title-collumn">Ngày - Giờ kết thúc</view>
             <view class="title-collumn">Ghi chú</view>
-            <view class="title-collumn">
-                Cập nhật
-            </view>
+            <view class="title-collumn">Cập nhật</view>
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{tableData}}" wx:key="index">

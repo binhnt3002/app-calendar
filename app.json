@@ -18,12 +18,6 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "iconPath": "images/chart-line-solid.png",
-        "selectedIconPath": "images/chart.svg",
-        "text": "\t   Thống kê hằng tuần"
-      },
-      {
         "pagePath": "pages/form-submit/form",
         "iconPath": "images/task-black.svg",
         "selectedIconPath": "images/tasks-blue.svg",
@@ -37,9 +31,15 @@
       },
       {
         "pagePath": "pages/form-update/update",
-        "iconPath": "images/event-black.svg",
-        "selectedIconPath": "images/event-blue.svg",
+        "iconPath": "images/user-edit-black.svg",
+        "selectedIconPath": "images/user-edit-solid.svg",
         "text": "\t   Cập nhật công việc"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/chart-line-solid.png",
+        "selectedIconPath": "images/chart.svg",
+        "text": "\t   Thống kê hằng tuần"
       }
     ]
   },

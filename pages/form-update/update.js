@@ -33,6 +33,9 @@ Page({
     startTime: "",
     inputNote: "",
     inputValue: "",
+    showFilterPicker: false, // Trạng thái hiển thị combobox
+    filterOptions: ['Option 1', 'Option 2', 'Option 3'], // Các giá trị trong combobox
+    selectedFilter: 'Option 1' // Giá trị mặc định khi combobox mở ra
   },
   inputNote: function (e) {
     this.setData({
@@ -542,4 +545,19 @@ Page({
   exit() {
     this.setData({ turnPopup: false })
   },
+
+  toggleFilter() {
+    this.setData({
+      showFilterPicker: !this.data.showFilterPicker // Đảo ngược trạng thái hiển thị
+    });
+  },
+  onFilterChange(e) {
+    const index = e.detail.value;
+    const selectedOption = this.data.filterOptions[index];
+    this.setData({
+      selectedFilter: selectedOption, // Cập nhật giá trị đã chọn
+      showFilterPicker: false // Đóng combobox sau khi chọn
+    });
+    // Thực hiện các hành động khác khi thay đổi giá trị
+  }
 });
