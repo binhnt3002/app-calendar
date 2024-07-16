@@ -1,5 +1,9 @@
 import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
-import { updateRecord, deleteRecord, deleteEvent } from "./function/apiFunction";
+import {
+  updateRecord,
+  deleteRecord,
+  deleteEvent,
+} from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 Page({
@@ -28,7 +32,7 @@ Page({
     selectedHours: "",
     recordId: [],
     dataRemoveAll: [],
-    dataRemove:[],
+    dataRemove: [],
     endTime: "",
     startTime: "",
     inputNote: "",
@@ -129,46 +133,6 @@ Page({
     this.setData({
       selectedDay: dayKey,
     });
-
-    // let now = new Date(e.detail.value)
-
-    // let data = this.data.dailyData[0]["Thứ " + ((now.getDay() + 6) % 7 + 1)];
-    // this.setData({
-    //   startTime: data.startTime,
-    //   endTime: data.endTime,
-    //   isLoop: data.isLoop
-    // })
-
-    // let currentDate = new Date(e.detail.value);
-    // if (currentDate.getDay() === 1) {
-    //   this.setData({
-    //     selectedDay: "Thứ 2",
-    //   });
-    // } else if (currentDate.getDay() === 2) {
-    //   this.setData({
-    //     selectedDay: "Thứ 3",
-    //   });
-    // } else if (currentDate.getDay() === 3) {
-    //   this.setData({
-    //     selectedDay: "Thứ 4",
-    //   });
-    // } else if (currentDate.getDay() === 4) {
-    //   this.setData({
-    //     selectedDay: "Thứ 5",
-    //   });
-    // } else if (currentDate.getDay() === 5) {
-    //   this.setData({
-    //     selectedDay: "Thứ 6",
-    //   });
-    // } else if (currentDate.getDay() === 6) {
-    //   this.setData({
-    //     selectedDay: "Thứ 7",
-    //   });
-    // }
-    // else if (currentDate.getDay() === 0) {
-    //   this.setData({
-    //     selectedDay: "Chủ nhật",
-    //   });
   },
 
   onShow() {
@@ -476,18 +440,18 @@ Page({
       },
       fail(res) {
         console.log(`showModal fail: ${JSON.stringify(res)}`);
-      }
+      },
     });
   },
 
   deleteItem(e) {
     let that = this;
-    let index = e.id
-    let dataset = e.dataset.id
-    let dataRemoveAll = that.data.dataRemoveAll
-    let dataRemove = that.data.dataRemove
-    const newTabbleData = [...that.data.tableData]
-    
+    let index = e.id;
+    let dataset = e.dataset.id;
+    let dataRemoveAll = that.data.dataRemoveAll;
+    let dataRemove = that.data.dataRemove;
+    const newTabbleData = [...that.data.tableData];
+
     //dữ liệu sau khi bị xóa
     const dataAfterRemove = newTabbleData.filter(function (phanTu) {
       return phanTu.eventid !== index;
@@ -496,21 +460,21 @@ Page({
     const tempRemove = newTabbleData.filter(function (phanTu) {
       return phanTu.eventid === index;
     });
-    tempRemove.map(i => dataRemove.push(i.recordId))
+    tempRemove.map((i) => dataRemove.push(i.recordId));
     //toàn bộ dữ liệu (có trùng) để xóa - cộng dồn
     const tempRemoveAll = newTabbleData.filter(function (phanTu) {
       return phanTu.vieccanlam === dataset;
     });
-    tempRemoveAll.map(i => dataRemoveAll.push(i.recordId))
-    
+    tempRemoveAll.map((i) => dataRemoveAll.push(i.recordId));
+
     console.log(dataRemove);
     console.log(dataRemoveAll);
     console.log(dataAfterRemove);
     that.setData({
       tableData: dataAfterRemove,
       dataRemoveAll,
-      dataRemove
-    })
+      dataRemove,
+    });
     //xóa event
 
     //xóa record
@@ -518,14 +482,24 @@ Page({
       key: "user_access_token",
       success: (res) => {
         const body = {
-          "records": [
-            e.dataset.recordId
-          ]
-        }
-        deleteEvent(res.data.access_token,a,index)
+          records: [e.dataset.recordId],
+        };
+        deleteEvent(res.data.access_token, a, index);
         deleteRecord(res.data.access_token, body).then((rs) => {
           console.log(rs);
         });
+
+        const client = new lark.Client({
+          appId: "cli_a6f1c211d239d010",
+          appSecret: "Xo29OAjgiiE5ANYCIWRR5etAwqGP08dN",
+        });
+
+        client.bitable.appTableRecord.delete(
+          {},
+          lark.withUserAccessToken(res.data.access_token).then((res) => {
+            console.log(res);
+          })
+        );
       },
     });
   },
@@ -550,11 +524,11 @@ Page({
       },
       fail(res) {
         console.log(`showModal fail: ${JSON.stringify(res)}`);
-      }
+      },
     });
   },
 
   exit() {
-    this.setData({ turnPopup: false })
+    this.setData({ turnPopup: false });
   },
 });
