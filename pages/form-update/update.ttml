@@ -9,11 +9,16 @@
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
           <view class="title-row header-row">
-            <view class="title-collumn">Việc cần làm <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"></image><picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+            <view class="title-collumn">Việc cần làm</view>
+            <view class="title-collumn">
+              <p style="margin-right: 20px; margin-left:13px;">Thể loại</p>
+              <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
               <text class="filter-text">{{selectedFilter}}</text>
             </picker></view>
-            <view class="title-collumn">Thể loại</view>
-            <view class="title-collumn">Quan trọng</view>
+            <view class="title-collumn">Quan trọng <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"></image><picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <text class="filter-text">{{selectedFilter}}</text>
+            </picker></view>
             <view class="title-collumn">Cấp bách</view>
             <view class="title-collumn">Thứ</view>
             <view class="title-collumn">Ngày - Giờ bắt đầu</view>
@@ -50,13 +55,13 @@
   <view class="form-1" style="background:#c9d9e5 ;">
     <view class="header">
       <text style="flex: 1;">Chỉnh sửa công việc</text>
-      <image class="del-x" bindtap="exit"   src="/images/times-solid.svg"></image>
+      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
     </view>
     <view class="form">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
         <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-          style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
+          style="margin-top: 5px;margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
@@ -89,7 +94,7 @@
         <view class="col-4">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
+            <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
               {{selectedHours}}
             </picker>
           </block>  
