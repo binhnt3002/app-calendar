@@ -341,7 +341,7 @@ Page({
 
   update() {
     let that = this;
-    that.setData({ turnPopup: false });
+    that.setData({ turnPopup: false, selectedFilter: 'Tất cả' });
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -451,7 +451,7 @@ Page({
     tt.showModal({
       title: "Xác nhận cập nhật công việc",
       content: "Bạn có muốn cập nhật công việc này?",
-      confirmText: "Cập nhật",
+      confirmText: "Ok",
       cancelText: "Hủy",
       showCancel: true,
       success(res) {
@@ -492,13 +492,15 @@ Page({
     });
     tempRemoveAll.map(i => dataRemoveAll.push(i.recordId))
 
-    console.log(dataRemove);
-    console.log(dataRemoveAll);
-    console.log(dataAfterRemove);
+    // console.log(dataRemove);
+    // console.log(dataRemoveAll);
+    // console.log(dataAfterRemove);
     that.setData({
       tableData: dataAfterRemove,
       dataRemoveAll,
-      dataRemove
+      dataRemove,
+      selectedFilter: 'Tất cả',
+      filterTheloai: dataAfterRemove
     })
 
     // xóa record
