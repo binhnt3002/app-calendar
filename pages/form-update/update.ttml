@@ -53,13 +53,13 @@
   <view class="form-1" style="background:#c9d9e5 ;">
     <view class="header">
       <text style="flex: 1;">Chỉnh sửa công việc</text>
-      <image class="del-x" bindtap="exit"   src="/images/times-solid.svg"></image>
+      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
     </view>
     <view class="form">
       <block class="task-name">
         <text class="title1">Việc cần làm</text>
         <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-          style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
+          style="margin-top: 5px;margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
@@ -92,7 +92,7 @@
         <view class="col-4">
           <block class="select-time">
             <text class="title1">Số giờ cần có</text>
-            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
+            <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
               {{selectedHours}}
             </picker>
           </block>  

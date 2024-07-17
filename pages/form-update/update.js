@@ -1,5 +1,9 @@
 import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
-import { updateRecord, deleteRecord, deleteEvent } from "./function/apiFunction";
+import {
+  updateRecord,
+  deleteRecord,
+  deleteEvent,
+} from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 Page({
@@ -34,7 +38,7 @@ Page({
     inputNote: "",
     inputValue: "",
     showFilterPicker: false,
-    filterOptions: ['Tất cả','Việc chính', 'Dự án', 'Việc phát sinh', 'Việc cần đôn đốc', 'Đọc & học'], // Các giá trị trong combobox
+    filterOptions: ['Tất cả', 'Việc chính', 'Dự án', 'Việc phát sinh', 'Việc cần đôn đốc', 'Đọc & học'], // Các giá trị trong combobox
     selectedFilter: 'Tất cả', // Giá trị mặc định khi combobox mở ra
     filterTheloai: [],
   },
@@ -133,8 +137,6 @@ Page({
     this.setData({
       selectedDay: dayKey,
     });
-
-
   },
 
   onShow() {
@@ -263,7 +265,7 @@ Page({
                 ...recordId[index],
               };
             });
-            if(that.data.selectedFilter!=='Tất cả'){
+            if (that.data.selectedFilter !== 'Tất cả') {
               const filterTheloai = tableData.filter(item => item.theloai === that.data.selectedFilter)
               that.setData({
                 tableData: filterTheloai
@@ -463,7 +465,7 @@ Page({
       },
       fail(res) {
         console.log(`showModal fail: ${JSON.stringify(res)}`);
-      }
+      },
     });
   },
 
@@ -518,6 +520,18 @@ Page({
         deleteRecord(res.data.access_token, body).then((rs) => {
           console.log(rs);
         });
+
+        const client = new lark.Client({
+          appId: "cli_a6f1c211d239d010",
+          appSecret: "Xo29OAjgiiE5ANYCIWRR5etAwqGP08dN",
+        });
+
+        client.bitable.appTableRecord.delete(
+          {},
+          lark.withUserAccessToken(res.data.access_token).then((res) => {
+            console.log(res);
+          })
+        );
       },
     });
   },
@@ -542,12 +556,12 @@ Page({
       },
       fail(res) {
         console.log(`showModal fail: ${JSON.stringify(res)}`);
-      }
+      },
     });
   },
 
   exit() {
-    this.setData({ turnPopup: false })
+    this.setData({ turnPopup: false });
   },
 
   toggleFilter() {
@@ -567,7 +581,7 @@ Page({
       selectedFilter: selectedOption, // Cập nhật giá trị đã chọn
       // showFilterPicker: false // Đóng combobox sau khi chọn
     });
-    if(that.data.selectedFilter!=='Tất cả'){
+    if (that.data.selectedFilter !== 'Tất cả') {
       filterTheloai = tableData.filter(item => item.theloai === that.data.selectedFilter)
       that.setData({
         filterTheloai

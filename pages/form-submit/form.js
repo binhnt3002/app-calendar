@@ -309,7 +309,19 @@ Page({
 
 
   onShow() {
-    this.setCalendarData();
+    let that = this;
+    this.auth = setInterval(() => {
+      let isComplete = tt.getStorageSync("isComplete");
+      tt.showToast({
+        title: "Đang lấy dữ liệu",
+        icon: "loading",
+        duration: 5000,
+      });
+      if (isComplete) {
+        clearInterval(this.auth);
+        that.setCalendarData();
+      }
+    }, 1000);
   },
 
 
@@ -319,11 +331,6 @@ Page({
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
-        tt.showToast({
-          title: "Đang lấy dữ liệu",
-          icon: "loading",
-          duration: 5000,
-        });
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
           console.log(result.data.calendar_list);
@@ -334,8 +341,7 @@ Page({
         });
         tt.showToast({
           title: "lấy dữ liệu thành công",
-          icon: "loading",
-          duration: 0,
+          icon: "success",
         });
       },
     });

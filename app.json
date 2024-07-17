@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/form-submit/form",
-    "pages/form-submit2/event",
     "pages/form-update/update"
   ],
   "window": {
@@ -24,12 +23,6 @@
         "text": "\t   Tạo công việc"
       },
       {
-        "pagePath": "pages/form-submit2/event",
-        "iconPath": "images/event-black.svg",
-        "selectedIconPath": "images/event-blue.svg",
-        "text": "\t   Tạo sự kiện"
-      },
-      {
         "pagePath": "pages/form-update/update",
         "iconPath": "images/user-edit-black.svg",
         "selectedIconPath": "images/user-edit-solid.svg",
@@ -46,7 +39,7 @@
   "ext": {
     "defaultPages": {
       "sidebarMode": "pages/index/index",
-      "PCMode": "pages/index/index"
+      "PCMode": "pages/form-submit/form"
     }
   }
 }

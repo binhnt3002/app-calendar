@@ -25,14 +25,18 @@ Page({
 
   onShow() {
     let that = this;
-    tt.showToast({
-      title: "Vui lòng đợi !",
-      icon: "loading",
-      duration: 7000,
-    });
-    setTimeout(() => {
-      that.reloadDashboard();
-    }, 3000);
+    this.auth = setInterval(() => {
+      let isComplete = tt.getStorageSync("isComplete");
+      tt.showToast({
+        title: "Vui lòng đợi !",
+        icon: "loading",
+        duration: 7000,
+      });
+      if (isComplete) {
+        clearInterval(this.auth);
+        that.reloadDashboard();
+      }
+    }, 1000);
   },
   calculateTotal(listItems, key, condition, totalItems) {
     if (totalItems == 0) {
@@ -95,7 +99,7 @@ Page({
         sendRequest(url, "POST", headers, body).then((result) => {
           console.log(result.data);
           let listItems = result.data?.items || 0;
-          let listItemsLength = result.data.total;
+          let listItemsLength = result.data?.total || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
             "Cấp bách",
@@ -310,13 +314,13 @@ Page({
           }
 
           // Calculate total values for percentage calculation
-          const totalTheLoai = result.data.items?.length || 0;
+          const totalTheLoai = result.data?.items?.length || 0;
 
           let spec4 = this.data.spec4;
           spec4.data[0].values = [
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc chính"
                 )?.length || 0,
               type: "Việc chính",
@@ -324,7 +328,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc phát sinh"
                 )?.length || 0,
               type: "Việc phát sinh",
@@ -332,7 +336,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc cần đôn đốc"
                 )?.length || 0,
               type: "Việc cần đàn đốc",
@@ -340,7 +344,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Đọc & học"
                 )?.length || 0,
               type: "Đọc & học",
@@ -348,7 +352,7 @@ Page({
 
             {
               value:
-                result.data.items?.filter(
+                result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Dự án"
                 )?.length || 0,
               type: "Dự án",
@@ -385,10 +389,10 @@ Page({
             assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
             distance1 = ((distance / totalHours) * 100).toFixed(0);
             percentdistance =
-            (this.data.totalHoursInWeek > totalHours) && 
-            (((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10)
-              ? "Tốt"
-              : "Chưa tốt";
+              this.data.totalHoursInWeek > totalHours &&
+              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+                ? "Tốt"
+                : "Chưa tốt";
           } else {
             percentA = (
               (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
@@ -427,10 +431,10 @@ Page({
               100
             ).toFixed(0);
             percentdistance =
-            (this.data.totalHoursInWeek > totalHours) && 
-            (((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10)
-              ? "Tốt"
-              : "Chưa tốt";
+              this.data.totalHoursInWeek > totalHours &&
+              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+                ? "Tốt"
+                : "Chưa tốt";
           }
           this.setData({
             spec2,

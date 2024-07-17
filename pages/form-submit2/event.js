@@ -1,6 +1,16 @@
 import { sendRequest } from "../../utils/sendRequest";
-import { getCalendarList, createInvitation, getGroupId, getEvent, updateEvent } from "../form-submit/function/apiFunction";
-import { bodyScheduleParticipants, bodyUpdateEvent, bodyScheduleParticipantsGroup } from "../form-submit/detailForm";
+import {
+  getCalendarList,
+  createInvitation,
+  getGroupId,
+  getEvent,
+  updateEvent,
+} from "../form-submit/function/apiFunction";
+import {
+  bodyScheduleParticipants,
+  bodyUpdateEvent,
+  bodyScheduleParticipantsGroup,
+} from "../form-submit/detailForm";
 Page({
   data: {
     events: [],
@@ -10,23 +20,26 @@ Page({
     avatarUrl: [],
     inviteData: [],
 
+    checkStatue: [],
+
     chat: [],
     chatId: [],
     chatAvatar: [],
     chatData: [],
 
-    frequencyOptions: ['Hàng ngày', 'Hàng tuần', 'Hàng tháng '],
-    selectedFrequency: 'Hàng ngày',
-    permissionOptions: ['Chỉ xem', 'Được mời', 'Được sửa', 'Không'],
-    selectedPermission: 'Không',
-    invitePersonOptions: ['Cá nhân', 'Nhóm'],
-    selectedInvitePerson: 'Cá nhân',
-    calendarID: '',
+    frequencyOptions: ["Hàng ngày", "Hàng tuần", "Hàng tháng "],
+    selectedFrequency: "Hàng ngày",
+    permissionOptions: ["Chỉ xem", "Được mời", "Được sửa", "Không"],
+    selectedPermission: "Không",
+    invitePersonOptions: ["Cá nhân", "Nhóm"],
+    selectedInvitePerson: "Cá nhân",
+    calendarID: "",
     arCalendarId: [],
-    idCongViec: '',
-    idGroup: '',
+    idCongViec: "",
+    idGroup: "",
     attendees: [],
-    thu: []
+    thu: [],
+    theloai: [],
   },
 
   onLoad() {
@@ -36,7 +49,7 @@ Page({
   setEvents() {
     const events = this.data.events;
     this.setData({
-      events: events
+      events: events,
     });
   },
 
@@ -47,25 +60,25 @@ Page({
   setInvites() {
     const invite = this.data.invite;
     this.setData({
-      invite: invite
+      invite: invite,
     });
   },
 
   onInvitePerson: function (e) {
     this.setData({
-      selectedInvitePerson: this.data.invitePersonOptions[e.detail.value]
-    })
+      selectedInvitePerson: this.data.invitePersonOptions[e.detail.value],
+    });
   },
 
   onFrequencyChange: function (e) {
     this.setData({
-      selectedFrequency: this.data.frequencyOptions[e.detail.value]
+      selectedFrequency: this.data.frequencyOptions[e.detail.value],
     });
   },
 
   onPermissionChange: function (e) {
     this.setData({
-      selectedPermission: this.data.permissionOptions[e.detail.value]
+      selectedPermission: this.data.permissionOptions[e.detail.value],
     });
   },
 
@@ -87,21 +100,19 @@ Page({
         limitTips: 10,
         externalContact: true,
         enableChooseDepartment: true,
-        disableChosenIds: [
-          ...that.data.inviteOpenId
-        ],
+        disableChosenIds: [...that.data.inviteOpenId],
         success(res) {
           console.log(res);
-          res.data.map(item => {
+          res.data.map((item) => {
             invite.push({ name: item.name }),
               inviteOpenId.push(item.openId),
-              avatarUrl.push({ url: item.avatarUrls[0] })
-          })
+              avatarUrl.push({ url: item.avatarUrls[0] });
+          });
 
           inviteData = invite.map((item, index) => ({
             id: inviteOpenId[index],
             name: item.name,
-            url: avatarUrl[index] ? avatarUrl[index].url : undefined // Handle potential mismatched lengths
+            url: avatarUrl[index] ? avatarUrl[index].url : undefined, // Handle potential mismatched lengths
           }));
 
           that.setData({
@@ -109,49 +120,49 @@ Page({
             inviteOpenId,
             avatarUrl,
             inviteData,
-          })
+          });
 
           console.log(that.data.inviteData);
         },
         fail(res) {
           console.log(`chooseContact fail: ${JSON.stringify(res)}`);
-        }
+        },
       });
     } else {
-      chat = [],
-        chatId = [],
-        chatAvatar = [],
-        chatData = [],
+      (chat = []),
+        (chatId = []),
+        (chatAvatar = []),
+        (chatData = []),
         tt.getStorage({
-          key: 'user_access_token',
+          key: "user_access_token",
           success: (res) => {
             const access_token = res.data.access_token;
             const headers = {
-              'Authorization': `Bearer ${res.data.access_token}`,
-              'Content-Type': 'application/json'
-            }
+              Authorization: `Bearer ${res.data.access_token}`,
+              "Content-Type": "application/json",
+            };
             getGroupId(access_token).then((rs) => {
               console.log(rs);
-              rs.data.items.map(i => {
+              rs.data.items.map((i) => {
                 chat.push(i.name),
                   chatAvatar.push(i.avatar),
-                  chatId.push(i.chat_id)
-              })
+                  chatId.push(i.chat_id);
+              });
               chatData = chat.map((item, index) => ({
                 id: chatId[index],
                 name: item,
                 url: chatAvatar[index],
-                checked: false
+                checked: false,
               }));
               that.setData({
                 chat,
                 chatId,
                 chatAvatar,
                 chatData,
-              })
-            })
-          }
-        })
+              });
+            });
+          },
+        });
     }
   },
 
@@ -162,63 +173,74 @@ Page({
 
   listTask() {
     tt.showToast({
-      title: 'Đang lấy dữ liệu',
-      icon: 'loading',
-    })
+      title: "Đang lấy dữ liệu",
+      icon: "loading",
+    });
     let that = this;
     let events = that.data.events;
     let eventsID = that.data.eventsID;
     let arCalendarId = that.data.arCalendarId;
     let thu = that.data.thu;
+    let theloai = that.data.theloai;
     tt.getStorage({
-      key: 'user_access_token',
+      key: "user_access_token",
       success: (res) => {
-        const url = 'https://open.larksuite.com/open-apis/bitable/v1/apps/FeaubtGlja6dtds66P7l6iYbgwd/tables/tblPjWdyJh5OdMZe/records/search';
+        const url =
+          "https://open.larksuite.com/open-apis/bitable/v1/apps/FeaubtGlja6dtds66P7l6iYbgwd/tables/tblPjWdyJh5OdMZe/records/search";
 
         const headers = {
-          'Authorization': `Bearer ${res.data.access_token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${res.data.access_token}`,
+          "Content-Type": "application/json",
+        };
         const body = {
-          "field_names": [
-            "Việc cần làm",
-            "EventID",
-            "CalendarID",
-            "Thứ"
-          ],
-          "sort": [
+          field_names: ["Việc cần làm", "EventID", "CalendarID", "Thứ", "Thể loại"],
+          sort: [
             {
-              "field_name": "Thể loại",
-              "desc": false
-            }
+              field_name: "Thể loại",
+              desc: false,
+            },
           ],
-          "filter": {
-            "conjunction": "and",
-            "conditions": [
+          filter: {
+            conjunction: "and",
+            conditions: [
               {
-                "field_name": "Person",
-                "operator": "is",
-                "value": [
-                  res.data.open_id
-                ]
-              }
-            ]
+                field_name: "Person",
+                operator: "is",
+                value: [res.data.open_id],
+              },
+            ],
           },
-          "automatic_fields": false
-        }
-        sendRequest(url, 'POST', headers, body).then((resp) => {
+          automatic_fields: false,
+        };
+        sendRequest(url, "POST", headers, body).then((resp) => {
           tt.showToast({
-            title: 'Hoàn tất dữ liệu',
-            icon: 'success',
-          })
+            title: "Hoàn tất dữ liệu",
+            icon: "success",
+          });
           console.log(resp);
-            events = [],
-            eventsID = [],
-            arCalendarId = [],
-            resp.data.items.map(i => i.fields["Việc cần làm"].map(item => events.push({ name: item.text })[0]));
-          resp.data.items.map(i => i.fields["EventID"].map(item => eventsID.push(item.text)[0]));
-          resp.data.items.map(i => i.fields["CalendarID"].map(item => arCalendarId.push(item.text)[0]));
-          resp.data.items.map(i => i.fields["Thứ"].value.map(item => thu.push(item.text)))
+          (events = []),
+            (eventsID = []),
+            (arCalendarId = []),
+            resp.data.items.map((i) =>
+              i.fields["Việc cần làm"].map(
+                (item) => events.push({ name: item.text })[0]
+              )
+            );
+          resp.data.items.map((i) =>
+            i.fields["EventID"].map((item) => eventsID.push(item.text)[0])
+          );
+          resp.data.items.map((i) =>
+            i.fields["CalendarID"].map(
+              (item) => arCalendarId.push(item.text)[0]
+            )
+          );
+          resp.data.items.map((i) =>
+            i.fields["Thứ"].value.map((item) => thu.push(item.text))
+          );
+          resp.data.items.map((i) =>
+            theloai.push(i.fields["Thể loại"])
+          )
+
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
             if (index < eventsID.length) {
@@ -227,7 +249,8 @@ Page({
                 value: eventsID[index],
                 id: arCalendarId[index],
                 checked: false,
-                thu: thu[index]
+                thu: thu[index],
+                theloai: theloai[index]
               };
             } else {
               // Return the original event if no corresponding ID is found
@@ -236,54 +259,78 @@ Page({
           });
 
           events = updatedEvents;
-          that.setData({ eventsID, events, arCalendarId, thu })
+          that.setData({ eventsID, events, arCalendarId, thu });
           console.log(that.data.events);
-        })
-      }
-    })
+        });
+      },
+    });
   },
 
   checkboxChange: function (e) {
     let that = this;
+    that.setData({ invite: [], inviteOpenId: [], inviteData: [] })
     let currentValue = e.currentTarget.dataset;
     console.log(currentValue);
     tt.getStorage({
-      key: 'user_access_token',
+      key: "user_access_token",
       success: (res) => {
-        getEvent(res.data.access_token, currentValue.calendar, currentValue.eventid).then((rs) => {
+        getEvent(
+          res.data.access_token,
+          currentValue.calendar,
+          currentValue.eventid
+        ).then((rs) => {
           // console.log(rs);
           that.setData({
-            events: that.data.events.map(i => {
+            events: that.data.events.map((i) => {
               if (i.value == currentValue.eventid && i.checked == false) {
                 i.checked = !currentValue.checked;
-              }
-              else {
+              } else {
                 i.checked = false;
               }
-              return i
-            })
-          })
-          if (rs.data.event.status !== "confirmed" || currentValue.checked == true) {
+              return i;
+            }),
+          });
+          if (
+            rs.data.event.status !== "confirmed" ||
+            currentValue.checked == true
+          ) {
             tt.showToast({
-              title: 'Chưa chọn hoặc công việc không tồn tại',
-              icon: 'error',
+              title: "Chưa chọn hoặc công việc không tồn tại",
+              icon: "error",
             });
             that.setData({
-              idCongViec: '',
-              calendarID: ''
-            })
-          }
-          else {
+              idCongViec: "",
+              calendarID: "",
+            });
+          } else {
             that.setData({
               idCongViec: currentValue.eventid,
-              calendarID: currentValue.calendar
-            })
+              calendarID: currentValue.calendar,
+            });
 
+            const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.calendarID}/events/${that.data.idCongViec}/attendees`;
+            const headers = {
+              Authorization: `Bearer ${res.data.access_token}`,
+            };
+            sendRequest(url, "GET", headers, {}).then((resp) => {
+              console.log(resp);
+              let lengthItems = resp.data?.items.length || 0;
+              let dataPush = resp.data.items.map((item) => item.user_id);
+              if (lengthItems != 0) {
+                that.setData({
+                  // checkStatue: resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
+                  invite: resp.data.items.map((item) => ({ name: item.display_name, id: item.user_id })),
+                  inviteOpenId: resp.data.items.map((item) => (item.user_id)),
+                  // inviteData: resp.data.items.map((item) => ({ "name": item.display_name, "id": item.user_id }))
+                });
+                return;
+              }
+            });
           }
           console.log(that.data.events);
-        })
-      }
-    })
+        });
+      },
+    });
   },
 
   checkGroupChange: function (e) {
@@ -291,20 +338,19 @@ Page({
     let currentValue = e.currentTarget.dataset;
     console.log(currentValue);
     that.setData({
-      chatData: that.data.chatData.map(i => {
+      chatData: that.data.chatData.map((i) => {
         if (i.id == currentValue.chat && i.checked == false) {
           i.checked = !currentValue.checked;
-        }
-        else {
+        } else {
           i.checked = false;
         }
-        return i
+        return i;
       }),
-    })
+    });
     if (currentValue.checked != false) {
-      that.setData({ idGroup: '' })
+      that.setData({ idGroup: "" });
     } else {
-      that.setData({ idGroup: currentValue.chat })
+      that.setData({ idGroup: currentValue.chat });
     }
 
     console.log(that.data.chatData);
@@ -316,63 +362,87 @@ Page({
     let idGroup = that.data.idGroup;
     let attendees = that.data.attendees;
     if (that.data.selectedInvitePerson === "Cá nhân") {
-      if (that.data.idCongViec != '' && that.data.calendarID != '' && inviteOpenId.length > 0) {
+      if (
+        that.data.idCongViec != "" &&
+        that.data.calendarID != "" &&
+        inviteOpenId.length > 0
+      ) {
         tt.getStorage({
-          key: 'user_access_token',
+          key: "user_access_token",
           success: (res) => {
             const access_token = res.data.access_token;
             inviteOpenId.forEach((id, index) => {
               const body = bodyScheduleParticipants("user", id, res);
-              createInvitation(access_token,
+              createInvitation(
+                access_token,
                 that.data.calendarID,
-                that.data.idCongViec, body)
+                that.data.idCongViec,
+                body
+              )
                 .then((result) => {
                   console.log(result);
                   // that.setData({attendees})
                   tt.showToast({
-                    title: 'Đã mời',
-                    icon: 'success',
+                    title: "Đã mời",
+                    icon: "success",
                   });
                   that.setData({
-                    events: that.data.events.map(i => { i.checked = false; return i }),
+                    events: that.data.events.map((i) => {
+                      i.checked = false;
+                      return i;
+                    }),
                     inviteOpenId: [],
                     invite: [],
                     inviteData: [],
-                    avatarUrl: []
-                  })
+                    avatarUrl: [],
+                  });
                 })
                 .catch((error) => {
                   console.error("Error sending invitation:", error);
                   // Handle invitation sending errors gracefully (optional)
                 });
             });
-          }
-        })
+          },
+        });
       } else {
         tt.showToast({
-          title: 'Vui lòng đủ thông tin',
-          icon: 'error',
+          title: "Vui lòng đủ thông tin",
+          icon: "error",
         });
       }
     } else {
-      if (that.data.idCongViec != '' && that.data.calendarID != '' && idGroup != '') {
+      if (
+        that.data.idCongViec != "" &&
+        that.data.calendarID != "" &&
+        idGroup != ""
+      ) {
         tt.getStorage({
-          key: 'user_access_token',
+          key: "user_access_token",
           success: (res) => {
             const access_token = res.data.access_token;
-            const bodyGroup = bodyScheduleParticipantsGroup("chat", idGroup, res);
-            createInvitation(access_token,
+            const bodyGroup = bodyScheduleParticipantsGroup(
+              "chat",
+              idGroup,
+              res
+            );
+            createInvitation(
+              access_token,
               that.data.calendarID,
-              that.data.idCongViec, bodyGroup)
+              that.data.idCongViec,
+              bodyGroup
+            )
               .then((result) => {
                 console.log(result);
                 // that.setData({attendees})
                 tt.showToast({
-                  title: 'Đã mời',
-                  icon: 'success',
+                  title: "Đã mời",
+                  icon: "success",
                 });
                 that.setData({
-                  events: that.data.events.map(i => { i.checked = false; return i }),
+                  events: that.data.events.map((i) => {
+                    i.checked = false;
+                    return i;
+                  }),
 
                   inviteOpenId: [],
                   invite: [],
@@ -382,30 +452,27 @@ Page({
                   chatData: [],
                   chat: [],
                   chatId: [],
-                  chatAvatar: []
-                })
+                  chatAvatar: [],
+                });
               })
               .catch((error) => {
                 console.error("Error sending invitation:", error);
                 // Handle invitation sending errors gracefully (optional)
               });
-
-          }
-        })
-      }
-      else {
+          },
+        });
+      } else {
         tt.showToast({
-          title: 'Vui lòng đủ thông tin',
-          icon: 'error',
+          title: "Vui lòng đủ thông tin",
+          icon: "error",
         });
       }
     }
-
   },
 
   removeElement: function (e) {
     console.log(e);
-    let that = this
+    let that = this;
     let index = e.currentTarget.id;
 
     const iO = [...that.data.inviteOpenId];
@@ -413,7 +480,7 @@ Page({
     const newAvartarUrl = [...that.data.avatarUrl];
     const newInvite = [...that.data.invite];
 
-    const indexToRemove = newData.findIndex(item => item.id === index); // Find element index
+    const indexToRemove = newData.findIndex((item) => item.id === index); // Find element index
 
     if (indexToRemove !== -1) {
       newData.splice(indexToRemove, 1);
@@ -424,16 +491,15 @@ Page({
         inviteData: newData,
         inviteOpenId: iO,
         avatarUrl: newAvartarUrl,
-        invite: newInvite
+        invite: newInvite,
       }); // Update the data in the component
-
     } else {
       console.error("Element with ID", index, "not found in chatData"); // Handle potential errors
     }
   },
   removeElement2: function (e) {
     console.log(e);
-    let that = this
+    let that = this;
     let index = e.currentTarget.id;
 
     const newChatId = [...that.data.chatId];
@@ -441,7 +507,7 @@ Page({
     const newChatAvatar = [...that.data.chatAvatar];
     const newChat = [...that.data.chat];
 
-    const indexToRemove = newChatData.findIndex(item => item.id === index); // Find element index
+    const indexToRemove = newChatData.findIndex((item) => item.id === index); // Find element index
 
     if (indexToRemove !== -1) {
       newChatData.splice(indexToRemove, 1);
@@ -452,9 +518,8 @@ Page({
         chatData: newChatData,
         chatId: newChatId,
         chatAvatar: newChatAvatar,
-        chat: newChat
+        chat: newChat,
       }); // Update the data in the component
-
     } else {
       console.error("Element with ID", index, "not found in chatData"); // Handle potential errors
     }
