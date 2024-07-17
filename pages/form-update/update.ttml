@@ -19,8 +19,8 @@
             <view class="title-collumn">Quan trọng</view>
             <view class="title-collumn">Cấp bách</view>
             <view class="title-collumn">Thứ</view>
-            <view class="title-collumn">Ngày - Giờ bắt đầu</view>
-            <view class="title-collumn">Ngày - Giờ kết thúc</view>
+            <view class="title-collumn">Ngày</view>
+            <view class="title-collumn">Ngày</view>
             <view class="title-collumn">Ghi chú</view>
             <view class="title-collumn">Cập nhật</view>
           </view>
