@@ -37,18 +37,18 @@
               </view>
               <view class="col">
                 <view class="row-detail">
-                  <text class="row-title">Nhận định</text>
+                    <text class="row-title">Nhận định</text>
                 </view>
                 <view class="row-detail">
-                  <text style="font-size: 15px;">{{assessmentA}}</text>
+                    <text class="{{assessmentA === 'Tốt' ? 'tot' : 'chuatot'}}" style="font-size: 15px;">{{assessmentA}}</text>
                 </view>
                 <view class="row-detail">
-                  <text style="font-size: 15px;">{{assessmentB}}</text>
+                    <text class="{{assessmentB === 'Tốt' ? 'tot' : 'chuatot'}}" style="font-size: 15px;">{{assessmentB}}</text>
                 </view>
                 <view style="padding-bottom: 5px; padding-top: 5px;">
-                  <text style="font-size: 15px;">{{assessmentC}}</text>
+                    <text class="{{assessmentC === 'Tốt' ? 'tot' : 'chuatot'}}" style="font-size: 15px;">{{assessmentC}}</text>
                 </view>
-              </view>
+            </view>
             </view>
 
             <view class="row align-items-start" style="border-bottom: 1px solid rgb(248, 223, 223);">
@@ -82,18 +82,18 @@
               </view>
               <view class="col">
                 <view class="row-detail">
-                  <text class="row-title">Nhận định</text>
+                    <text class="row-title">Nhận định</text>
                 </view>
                 <view class="row-detail">
-                  <text style="font-size: 15px;">{{assessment1}}</text>
+                    <text class="{{assessment1 === 'Tốt' ? 'tot' : 'chuatot'}}" style="font-size: 15px;">{{assessment1}}</text>
                 </view>
                 <view class="row-detail">
-                  <text style="font-size: 15px;">{{assessment2}}</text>
+                    <text class="{{assessment2 === 'Tốt' ? 'tot' : 'chuatot'}}" style="font-size: 15px;">{{assessment2}}</text>
                 </view>
                 <view style="padding-bottom: 5px; padding-top: 5px;">
-                  <text style="font-size: 15px;">{{assessment3}}</text>
+                    <text class="{{assessment3 === 'Tốt' ? 'tot' : 'chuatot'}}" style="font-size: 15px;">{{assessment3}}</text>
                 </view>
-              </view>
+            </view>
             </view>
 
             <view class="row align-items-start" style="display: flex; align-items: center;">
@@ -111,9 +111,9 @@
                 <text style="font-size: 15px;">Giờ thực tế đã sử dụng: {{totalHours}}</text>
               </view>
               <view class="col-6" style="padding-top: 5px;">
-                <text style="font-size: 15px; display: block; color:red;">Nhận định : {{percentdistance}}</text>
+                <p>Nhận định: </p><text class="{{percentdistanceClass}}" style="font-size: 15px;">{{percentdistance}}</text>
                 <text style="font-size: 15px; display: block;" decode>(&lt; 10%)</text>
-              </view>
+            </view>
             </view>
           </view>
         </view>

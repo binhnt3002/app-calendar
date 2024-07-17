@@ -149,7 +149,7 @@ Page({
                 type:
                   "1: " +
                   ((totalHours1 / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHours1 +
                   " giờ",
               },
@@ -158,7 +158,7 @@ Page({
                 type:
                   "2: " +
                   ((totalHours2 / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHours2 +
                   " giờ",
               },
@@ -167,7 +167,7 @@ Page({
                 type:
                   "3: " +
                   ((totalHours3 / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHours3 +
                   " giờ",
               },
@@ -176,7 +176,7 @@ Page({
                 type:
                   "Thiếu: " +
                   ((distance / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   distance +
                   " giờ",
               },
@@ -187,7 +187,7 @@ Page({
                 type:
                   "A: " +
                   ((totalHoursQuanTrongA / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHoursQuanTrongA +
                   " giờ",
               },
@@ -196,7 +196,7 @@ Page({
                 type:
                   "B: " +
                   ((totalHoursQuanTrongB / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHoursQuanTrongB +
                   " giờ",
               },
@@ -205,7 +205,7 @@ Page({
                 type:
                   "C: " +
                   ((totalHoursQuanTrongC / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHoursQuanTrongC +
                   " giờ",
               },
@@ -214,7 +214,7 @@ Page({
                 type:
                   "Thiếu: " +
                   ((distance / totalHours) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   distance +
                   " giờ",
               },
@@ -224,33 +224,33 @@ Page({
               {
                 value: totalHours1,
                 type:
-                  "1: " +
+                  "Độ cấp bách 1: " +
                   ((totalHours1 / this.data.totalHoursInWeek) * 100).toFixed(
                     0
                   ) +
-                  " % - " +
+                  "% - " +
                   totalHours1 +
                   " giờ",
               },
               {
                 value: totalHours2,
                 type:
-                  "2: " +
+                  "Độ cấp bách 2: " +
                   ((totalHours2 / this.data.totalHoursInWeek) * 100).toFixed(
                     0
                   ) +
-                  " % - " +
+                  "% - " +
                   totalHours2 +
                   " giờ",
               },
               {
                 value: totalHours3,
                 type:
-                  "3: " +
+                  "Độ cấp bách 3: " +
                   ((totalHours3 / this.data.totalHoursInWeek) * 100).toFixed(
                     0
                   ) +
-                  " % - " +
+                  "% - " +
                   totalHours3 +
                   " giờ",
               },
@@ -259,7 +259,7 @@ Page({
                 type:
                   "Dư: " +
                   ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   -distance +
                   " giờ",
               },
@@ -268,36 +268,36 @@ Page({
               {
                 value: totalHoursQuanTrongA,
                 type:
-                  "A: " +
+                  "Độ quan trọng A: " +
                   (
                     (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
                     100
                   ).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHoursQuanTrongA +
                   " giờ",
               },
               {
                 value: totalHoursQuanTrongB,
                 type:
-                  "B: " +
+                  "Độ quan trọng B: " +
                   (
                     (totalHoursQuanTrongB / this.data.totalHoursInWeek) *
                     100
                   ).toFixed(0) +
-                  " % - " +
+                  "% - \n" +
                   totalHoursQuanTrongB +
                   " giờ",
               },
               {
                 value: totalHoursQuanTrongC,
                 type:
-                  "C: " +
+                  "Độ quan trọng C: " +
                   (
                     (totalHoursQuanTrongC / this.data.totalHoursInWeek) *
                     100
                   ).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   totalHoursQuanTrongC +
                   " giờ",
               },
@@ -306,7 +306,7 @@ Page({
                 type:
                   "Dư: " +
                   ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) +
-                  " % - " +
+                  "% - " +
                   -distance +
                   " giờ",
               },
@@ -339,7 +339,7 @@ Page({
                 result.data?.items?.filter(
                   (item) => item.fields["Thể loại"] == "Việc cần đôn đốc"
                 )?.length || 0,
-              type: "Việc cần đàn đốc",
+              type: "Việc cần đôn đốc",
             },
 
             {
@@ -389,8 +389,8 @@ Page({
             assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
             distance1 = ((distance / totalHours) * 100).toFixed(0);
             percentdistance =
-              this.data.totalHoursInWeek > totalHours &&
-              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+              this.data.totalHoursInWeek >= totalHours &&
+                ((distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";
           } else {
@@ -431,11 +431,13 @@ Page({
               100
             ).toFixed(0);
             percentdistance =
-              this.data.totalHoursInWeek > totalHours &&
-              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+              this.data.totalHoursInWeek >= totalHours &&
+                ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";
           }
+          let percentdistanceClass = percentdistance === "Tốt" ? "tot" : "chuatot";
+          // Gán kết quả vào HTML với màu sắc
           this.setData({
             spec2,
             spec3,
@@ -455,6 +457,7 @@ Page({
             distance1,
             percentdistance,
             totalHours,
+            percentdistanceClass
           });
 
           tt.showToast({
