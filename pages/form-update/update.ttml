@@ -13,18 +13,33 @@
             <view class="title-collumn">Việc cần làm </view>
             <view class="title-collumn">
               <p>Thể loại</p>
-              <image src="/images/filter.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
               <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
-              <text class="filter-text">{{selectedFilter}}</text>
-            </picker></view>
+                <text class="filter-text">{{selectedFilter}}</text>
+              </picker>
+            </view>
             <view class="title-collumn">
               <p>Quan trọng</p>
-              <image src="/images/filter.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
               <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
-              <text class="filter-text">{{selectedFilter}}</text>
-            </picker></view>
-            <view class="title-collumn">Cấp bách</view>
-            <view class="title-collumn">Thứ</view>
+                <text class="filter-text">{{selectedFilter}}</text>
+              </picker>
+            </view>
+            <view class="title-collumn">
+              <p>Cấp bách</p>
+              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter">
+                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+                  {{selectedFilter}}
+                </picker>
+              </image>
+            </view>
+            <view class="title-collumn">
+              <p>Thứ</p>
+              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+                <text class="filter-text">{{selectedFilter}}</text>
+              </picker>
+            </view>
             <view class="title-collumn">Ngày - Giờ bắt đầu</view>
             <view class="title-collumn">Ngày - Giờ kết thúc</view>
             <view class="title-collumn">Ghi chú</view>

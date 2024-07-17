@@ -147,7 +147,7 @@ Page({
               {
                 value: totalHours1,
                 type:
-                  "1: " +
+                  "Độ cấp bách 1: " +
                   ((totalHours1 / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHours1 +
@@ -156,7 +156,7 @@ Page({
               {
                 value: totalHours2,
                 type:
-                  "2: " +
+                  "Độ cấp bách 2: " +
                   ((totalHours2 / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHours2 +
@@ -165,7 +165,7 @@ Page({
               {
                 value: totalHours3,
                 type:
-                  "3: " +
+                  "Độ cấp bách 3: " +
                   ((totalHours3 / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHours3 +
@@ -185,7 +185,7 @@ Page({
               {
                 value: totalHoursQuanTrongA,
                 type:
-                  "A: " +
+                  "Độ quan trọng A: " +
                   ((totalHoursQuanTrongA / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHoursQuanTrongA +
@@ -194,7 +194,7 @@ Page({
               {
                 value: totalHoursQuanTrongB,
                 type:
-                  "B: " +
+                  "Độ quan trọng B: " +
                   ((totalHoursQuanTrongB / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHoursQuanTrongB +
@@ -203,7 +203,7 @@ Page({
               {
                 value: totalHoursQuanTrongC,
                 type:
-                  "C: " +
+                  "Độ quan trọng C: " +
                   ((totalHoursQuanTrongC / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHoursQuanTrongC +
@@ -285,7 +285,7 @@ Page({
                     (totalHoursQuanTrongB / this.data.totalHoursInWeek) *
                     100
                   ).toFixed(0) +
-                  "% - \n" +
+                  "% - " +
                   totalHoursQuanTrongB +
                   " giờ",
               },

@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,7 +38,7 @@
 
 .body {
   width: 100%;
-  max-width: fit-content;
+  max-width: 1100px;
 }
 
 .table-container {
@@ -51,7 +51,7 @@
 .table {
   display: flex;
   flex-direction: column;
-  width: 1000px; /* Đặt chiều rộng bằng với chiều rộng của container */
+  width: 1100px; /* Đặt chiều rộng bằng với chiều rộng của container */
 }
 
 .title-row{
