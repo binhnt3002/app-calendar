@@ -147,7 +147,7 @@ Page({
               {
                 value: totalHours1,
                 type:
-                  "1: " +
+                  "Cấp bách 1: " +
                   ((totalHours1 / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHours1 +
@@ -156,7 +156,7 @@ Page({
               {
                 value: totalHours2,
                 type:
-                  "2: " +
+                  "Cấp bách 2: " +
                   ((totalHours2 / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHours2 +
@@ -165,7 +165,7 @@ Page({
               {
                 value: totalHours3,
                 type:
-                  "3: " +
+                  "Cấp bách 3: " +
                   ((totalHours3 / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHours3 +
@@ -185,7 +185,7 @@ Page({
               {
                 value: totalHoursQuanTrongA,
                 type:
-                  "A: " +
+                  "Quan trọng A: " +
                   ((totalHoursQuanTrongA / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHoursQuanTrongA +
@@ -194,7 +194,7 @@ Page({
               {
                 value: totalHoursQuanTrongB,
                 type:
-                  "B: " +
+                  "Quan trọng B: " +
                   ((totalHoursQuanTrongB / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHoursQuanTrongB +
@@ -203,7 +203,7 @@ Page({
               {
                 value: totalHoursQuanTrongC,
                 type:
-                  "C: " +
+                  "Quan trọng C: " +
                   ((totalHoursQuanTrongC / totalHours) * 100).toFixed(0) +
                   "% - " +
                   totalHoursQuanTrongC +
@@ -224,7 +224,7 @@ Page({
               {
                 value: totalHours1,
                 type:
-                  "Độ cấp bách 1: " +
+                  "Cấp bách 1: " +
                   ((totalHours1 / this.data.totalHoursInWeek) * 100).toFixed(
                     0
                   ) +
@@ -235,7 +235,7 @@ Page({
               {
                 value: totalHours2,
                 type:
-                  "Độ cấp bách 2: " +
+                  "Cấp bách 2: " +
                   ((totalHours2 / this.data.totalHoursInWeek) * 100).toFixed(
                     0
                   ) +
@@ -246,7 +246,7 @@ Page({
               {
                 value: totalHours3,
                 type:
-                  "Độ cấp bách 3: " +
+                  "Cấp bách 3: " +
                   ((totalHours3 / this.data.totalHoursInWeek) * 100).toFixed(
                     0
                   ) +
@@ -268,7 +268,7 @@ Page({
               {
                 value: totalHoursQuanTrongA,
                 type:
-                  "Độ quan trọng A: " +
+                  "Quan trọng A: " +
                   (
                     (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
                     100
@@ -280,19 +280,19 @@ Page({
               {
                 value: totalHoursQuanTrongB,
                 type:
-                  "Độ quan trọng B: " +
+                  "Quan trọng B: " +
                   (
                     (totalHoursQuanTrongB / this.data.totalHoursInWeek) *
                     100
                   ).toFixed(0) +
-                  "% - \n" +
+                  "% - " +
                   totalHoursQuanTrongB +
                   " giờ",
               },
               {
                 value: totalHoursQuanTrongC,
                 type:
-                  "Độ quan trọng C: " +
+                  "Quan trọng C: " +
                   (
                     (totalHoursQuanTrongC / this.data.totalHoursInWeek) *
                     100

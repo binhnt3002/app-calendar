@@ -119,16 +119,24 @@
           </block>               
         </view> 
       </view>      
-        <view class="note-info" style="margin-top: 1px;">
-          <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
-          <textarea class="input-text" value="{{inputNote}}" placeholder="Điền ghi chú " bindinput="inputNote">
-        </view>
-        <block >
-          <view class="d-flex justify-content-end">
-            <!-- <button class="btn btn-primary" >Add event</button> -->
-            <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Tạo công việc</button>
+      <view class="note-info" style="margin-top: 1px;">
+        <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+        <textarea class="input-text" value="{{inputNote}}" placeholder="Điền ghi chú " bindinput="inputNote">
+      </view>
+      <view class="row notes">
+        <view class="col-8">
+          <view class="notes">
+            <view>Chú Thích:</view>
+            <view>* Chọn lịch: chọn lịch của mỗi cá nhân.</view>
+            <view>* Thể loại: có 5 thể loại tùy theo mục đích của công việc.</view>
+            <view>* Cấp bách: có 3 mức độ cao nhất là 1, thấp nhất là 3.</view>
+            <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
           </view>
-        </block> 
+        </view>
+        <view class=" col-4">
+          <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Tạo công việc</button>
+        </view>
+      </view> 
     </view>
   </view>
 </div>
