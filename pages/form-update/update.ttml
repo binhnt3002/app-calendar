@@ -21,14 +21,14 @@
             <view class="title-collumn">
               <p>Quan trọng</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
                 <text class="filter-text">{{selectedFilter}}</text>
               </picker>
             </view>
             <view class="title-collumn">
               <p>Cấp bách</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter">
-                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
                   {{selectedFilter}}
                 </picker>
               </image>
@@ -36,7 +36,7 @@
             <view class="title-collumn">
               <p>Thứ</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
                 <text class="filter-text">{{selectedFilter}}</text>
               </picker>
             </view>
