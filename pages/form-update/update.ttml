@@ -20,13 +20,13 @@
             <view class="title-collumn">
               <p>Quan trọng</p>
               <image src="/images/filter.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
-              <text class="filter-text">{{selectedFilter}}</text>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterQuantrong}}" bindchange="filterDoQuanTrong">
+              <text class="filter-text">{{selFilterQuantrong}}</text>
             </picker></view>
-            <view class="title-collumn">Cấp bách</view>
+            <view class="title-collumn">Cấp bách</view> 
             <view class="title-collumn">Thứ</view>
-            <view class="title-collumn">Ngày</view>
-            <view class="title-collumn">Ngày</view>
+            <view class="title-collumn">Ngày bắt đầu</view>
+            <view class="title-collumn">Ngày kết người</view>
             <view class="title-collumn">Ghi chú</view>
             <view class="title-collumn">Cập nhật</view>
           </view>

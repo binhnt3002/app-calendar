@@ -390,7 +390,7 @@ Page({
             distance1 = ((distance / totalHours) * 100).toFixed(0);
             percentdistance =
               this.data.totalHoursInWeek >= totalHours &&
-                ((distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+              ((distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";
           } else {
@@ -432,11 +432,12 @@ Page({
             ).toFixed(0);
             percentdistance =
               this.data.totalHoursInWeek >= totalHours &&
-                ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";
           }
-          let percentdistanceClass = percentdistance === "Tốt" ? "tot" : "chuatot";
+          let percentdistanceClass =
+            percentdistance === "Tốt" ? "tot" : "chuatot";
           // Gán kết quả vào HTML với màu sắc
           this.setData({
             spec2,
@@ -457,7 +458,7 @@ Page({
             distance1,
             percentdistance,
             totalHours,
-            percentdistanceClass
+            percentdistanceClass,
           });
 
           tt.showToast({

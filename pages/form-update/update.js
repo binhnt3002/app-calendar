@@ -49,6 +49,9 @@ Page({
     ], // Các giá trị trong combobox
     selectedFilter: "Tất cả", // Giá trị mặc định khi combobox mở ra
     filterTheloai: [],
+    filterQuantrong: ["A", "B", "C"],
+    selFilterQuantrong: "A",
+    filter1: [],
   },
   inputNote: function (e) {
     this.setData({
