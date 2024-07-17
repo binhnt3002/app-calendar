@@ -14,30 +14,29 @@
             <view class="title-collumn">
               <p>Thể loại</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{theloaiOptions}}" bindchange="onFilterChange">
                 <text class="filter-text">{{selectedFilter}}</text>
               </picker>
             </view>
             <view class="title-collumn">
               <p>Quan trọng</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
-                <text class="filter-text">{{selectedFilter}}</text>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{quantrongOptions}}" bindchange="onQuanTrongChange">
+                <text class="filter-text">{{selectedQuanTrong}}</text>
               </picker>
             </view>
             <view class="title-collumn">
               <p>Cấp bách</p>
-              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter">
-                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
-                  {{selectedFilter}}
+              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
+                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{capbachOptions}}" bindchange="onCapBachChange">
+                  <text class="filter-text">{{selectedCapBach}}</text>
                 </picker>
-              </image>
             </view>
             <view class="title-collumn">
               <p>Thứ</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
-                <text class="filter-text">{{selectedFilter}}</text>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{thuOptions}}" bindchange="onThuChange">
+                <text class="filter-text">{{selectedThu}}</text>
               </picker>
             </view>
             <view class="title-collumn">Ngày bắt đầu</view>
@@ -46,7 +45,7 @@
             <view class="title-collumn">Cập nhật</view>
           </view>
           <!-- Các dòng dữ liệu -->
-          <block wx:for="{{filterTheloai}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+          <block wx:for="{{filterData}}" wx:key="index" wx:for-item="item" wx:for-index="index">
             <view class="title-row">
               <view class="title-collumn-stt">{{index + 1}}</view>
               <view class="title-collumn">{{item.vieccanlam}}</view>
