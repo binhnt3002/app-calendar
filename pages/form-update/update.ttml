@@ -40,8 +40,8 @@
                 <text class="filter-text">{{selectedFilter}}</text>
               </picker>
             </view>
-            <view class="title-collumn">Ngày - Giờ bắt đầu</view>
-            <view class="title-collumn">Ngày - Giờ kết thúc</view>
+            <view class="title-collumn">Ngày bắt đầu</view>
+            <view class="title-collumn">Ngày kết thúc</view>
             <view class="title-collumn">Ghi chú</view>
             <view class="title-collumn">Cập nhật</view>
           </view>
