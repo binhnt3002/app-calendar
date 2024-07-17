@@ -9,14 +9,20 @@
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
           <view class="title-row header-row">
+            <view class="title-collumn-stt">STT</view>
             <view class="title-collumn">Việc cần làm </view>
             <view class="title-collumn">
-              <p style="margin-right: 20px; margin-left:13px;">Thể loại</p>
-              <image src="/images/filter-solid.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <p>Thể loại</p>
+              <image src="/images/filter.svg" class="sort-icon" bindtap="toggleFilter"/>
               <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
               <text class="filter-text">{{selectedFilter}}</text>
             </picker></view>
-            <view class="title-collumn">Quan trọng</view>
+            <view class="title-collumn">
+              <p>Quan trọng</p>
+              <image src="/images/filter.svg" class="sort-icon" bindtap="toggleFilter"/>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <text class="filter-text">{{selectedFilter}}</text>
+            </picker></view>
             <view class="title-collumn">Cấp bách</view>
             <view class="title-collumn">Thứ</view>
             <view class="title-collumn">Ngày</view>
@@ -25,8 +31,9 @@
             <view class="title-collumn">Cập nhật</view>
           </view>
           <!-- Các dòng dữ liệu -->
-          <block wx:for="{{filterTheloai}}" wx:key="index">
+          <block wx:for="{{filterTheloai}}" wx:key="index" wx:for-item="item" wx:for-index="index">
             <view class="title-row">
+              <view class="title-collumn-stt">{{index + 1}}</view>
               <view class="title-collumn">{{item.vieccanlam}}</view>
               <view class="title-collumn">{{item.theloai}}</view>
               <view class="title-collumn">{{item.quantrong}}</view>

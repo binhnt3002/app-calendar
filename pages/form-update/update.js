@@ -8,6 +8,7 @@ import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 Page({
   data: {
+    stt: [],
     tableData: [],
     vieccanlam: [],
     theloai: [],

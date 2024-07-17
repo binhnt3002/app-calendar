@@ -61,6 +61,17 @@
 
 .title-collumn {
   flex: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  text-align: center;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: auto;
+}
+.title-collumn-stt{
+  flex: 1;
   padding: 10px;
   border: 1px solid #ddd;
   text-align: center;
@@ -69,6 +80,7 @@
   text-overflow: ellipsis;
   white-space: normal;
   max-height: auto;
+  max-width: 60px;
 }
 
 .header-row {
@@ -123,7 +135,6 @@ height: 1000px;
   margin: 0 auto;
   overflow: hidden;
   font-size: 14px; 
-  font-family: Arial, sans-serif;
   background-size: cover;
 
 }
