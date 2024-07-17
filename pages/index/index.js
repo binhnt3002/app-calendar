@@ -138,7 +138,7 @@ Page({
           );
 
           let totalHours = totalHours1 + totalHours2 + totalHours3;
-          let distance = totalHours - this.data.totalHoursInWeek;
+          let distance = this.data.totalHoursInWeek - totalHours;
           let spec3 = this.data.spec3;
           let spec2 = this.data.spec2;
           // Add percentage to each value
