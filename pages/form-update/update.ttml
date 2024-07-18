@@ -167,7 +167,7 @@
           </block>               
         </view> 
       </view>      
-        <view class="note-info" style="margin-top: 1px;">
+        <view class="note-info" style="margin-top: 1px;">   
           <text class="title1">Ghi chú</text>
           <textarea class="input-text" value="{{edit.ghichu}}" bindinput="inputNote">
         </view>

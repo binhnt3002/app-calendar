@@ -19,7 +19,9 @@ Page({
     inviteOpenId: [],
     avatarUrl: [],
     inviteData: [],
-
+    inviteData2: [],
+    checkId:[],
+    checkInvite: [],
     checkStatue: [],
 
     chat: [],
@@ -100,11 +102,11 @@ Page({
         limitTips: 10,
         externalContact: true,
         enableChooseDepartment: true,
-        disableChosenIds: [...that.data.inviteOpenId],
+        disableChosenIds: [...that.data.inviteOpenId,...that.data.checkId],
         success(res) {
           console.log(res);
           res.data.map((item) => {
-            invite.push({ name: item.name }),
+              invite.push({ name: item.name }),
               inviteOpenId.push(item.openId),
               avatarUrl.push({ url: item.avatarUrls[0] });
           });
@@ -120,6 +122,7 @@ Page({
             inviteOpenId,
             avatarUrl,
             inviteData,
+            inviteData2: inviteData
           });
 
           console.log(that.data.inviteData);
@@ -129,7 +132,7 @@ Page({
         },
       });
     } else {
-      (chat = []),
+        (chat = []),
         (chatId = []),
         (chatAvatar = []),
         (chatData = []),
@@ -268,8 +271,10 @@ Page({
 
   checkboxChange: function (e) {
     let that = this;
-    that.setData({ invite: [], inviteOpenId: [], inviteData: [] })
+    that.setData({ invite: [], inviteOpenId: [], inviteData: [], checkInvite: [], checkStatue: [] })
     let currentValue = e.currentTarget.dataset;
+    let checkStatue = that.data.checkStatue
+    let checkInvite =that.data.checkInvite
     console.log(currentValue);
     tt.getStorage({
       key: "user_access_token",
@@ -317,10 +322,14 @@ Page({
               let lengthItems = resp.data?.items.length || 0;
               let dataPush = resp.data.items.map((item) => item.user_id);
               if (lengthItems != 0) {
+                checkStatue = resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
+                checkInvite = that.addCtoB(that.data.inviteData2,checkStatue)
                 that.setData({
-                  // checkStatue: resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
-                  invite: resp.data.items.map((item) => ({ name: item.display_name, id: item.user_id })),
-                  inviteOpenId: resp.data.items.map((item) => (item.user_id)),
+                  checkStatue,
+                  checkInvite,
+                  checkId: resp.data.items.map((item) => item.user_id)
+                  // invite: resp.data.items.map((item) => ({ name: item.display_name, id: item.user_id })),
+                  // inviteOpenId: resp.data.items.map((item) => (item.user_id)),
                   // inviteData: resp.data.items.map((item) => ({ "name": item.display_name, "id": item.user_id }))
                 });
                 return;
@@ -331,6 +340,25 @@ Page({
         });
       },
     });
+  },
+  addCtoB(a, b) {
+    // Create a copy of b to avoid modifying the original array
+    const updatedB = b.slice();
+  
+    // Loop through each object in b
+    for (let i = 0; i < updatedB.length; i++) {
+      const currentB = updatedB[i];
+  
+      // Find the matching object in a
+      const matchingA = a.find(objA => objA.a === currentB.a && objA.b === currentB.b);
+  
+      // If a matching object is found, add the c property from a
+      if (matchingA) {
+        updatedB[i].c = matchingA.c;
+      }
+    }
+  
+    return updatedB;
   },
 
   checkGroupChange: function (e) {
@@ -395,6 +423,8 @@ Page({
                     invite: [],
                     inviteData: [],
                     avatarUrl: [],
+                    checkInvite: [],
+                    checkStatue: [],
                   });
                 })
                 .catch((error) => {
