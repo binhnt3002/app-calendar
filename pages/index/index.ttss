@@ -51,3 +51,11 @@ text{
   font-size: 15px; 
   font-weight: bold;
 }
+
+.tot {
+  color: rgb(0, 180, 0);
+}
+
+.chuatot {
+  color: rgb(255, 0, 0);
+}

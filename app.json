@@ -8,7 +8,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Lịch",
+    "navigationBarTitleText": "Time Management ToolKit",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

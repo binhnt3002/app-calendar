@@ -7,6 +7,13 @@ import {
 
 Page({
   data: {
+    time1: 0,
+    time2: 0,
+    time3: 0,
+    time4: 0,
+    time5: 0,
+    time6: 0,
+    time7: 0,
     dayOptions: [
       "Thứ 2",
       "Thứ 3",
@@ -35,7 +42,7 @@ Page({
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
 
@@ -43,42 +50,42 @@ Page({
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
         "Thứ 4": {
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
         "Thứ 5": {
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
         "Thứ 6": {
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
         "Thứ 7": {
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
         "Chủ nhật": {
           date: "",
           startTime: "",
           endTime: "",
-          inputNote:"",
+          inputNote: "",
           isLoop: false,
         },
       },
@@ -122,8 +129,6 @@ Page({
       dailyData: data,
     });
   },
-
-  
 
   onCalendarChage: function (e) {
     this.setData({
@@ -202,21 +207,27 @@ Page({
     if (this.data.startTime > this.data.endTime) {
       this.setData({
         endTime: this.data.startTime,
-      })
+      });
     }
-
   },
 
   onDateChange3: function (e) {
     this.setData({
-      selectedDayWork : e.detail.value,
+      selectedDayWork: e.detail.value,
     });
-
 
     let now = new Date(e.detail.value);
     let dayOfWeek = now.getDay();
 
-    let dayNames = ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+    let dayNames = [
+      "Chủ nhật",
+      "Thứ 2",
+      "Thứ 3",
+      "Thứ 4",
+      "Thứ 5",
+      "Thứ 6",
+      "Thứ 7",
+    ];
     let dayKey = dayNames[dayOfWeek];
 
     let data = this.data.dailyData[0][dayKey];
@@ -230,47 +241,6 @@ Page({
     this.setData({
       selectedDay: dayKey,
     });
-
-    // let now = new Date(e.detail.value)
-
-    // let data = this.data.dailyData[0]["Thứ " + ((now.getDay() + 6) % 7 + 1)];
-    // this.setData({
-    //   startTime: data.startTime,
-    //   endTime: data.endTime,
-    //   isLoop: data.isLoop
-    // })
-
-    // let currentDate = new Date(e.detail.value);
-    // if (currentDate.getDay() === 1) {
-    //   this.setData({
-    //     selectedDay: "Thứ 2",
-    //   });
-    // } else if (currentDate.getDay() === 2) {
-    //   this.setData({
-    //     selectedDay: "Thứ 3",
-    //   });
-    // } else if (currentDate.getDay() === 3) {
-    //   this.setData({
-    //     selectedDay: "Thứ 4",
-    //   });
-    // } else if (currentDate.getDay() === 4) {
-    //   this.setData({
-    //     selectedDay: "Thứ 5",
-    //   });
-    // } else if (currentDate.getDay() === 5) {
-    //   this.setData({
-    //     selectedDay: "Thứ 6",
-    //   });
-    // } else if (currentDate.getDay() === 6) {
-    //   this.setData({
-    //     selectedDay: "Thứ 7",
-    //   });
-    // }
-    // else if (currentDate.getDay() === 0) {
-    //   this.setData({
-    //     selectedDay: "Chủ nhật",
-    //   });
-    // }
   },
 
   onDateChange2: function (e) {
@@ -302,11 +272,9 @@ Page({
     if (this.data.startTime > this.data.endTime) {
       this.setData({
         endTime: this.data.startTime,
-      })
+      });
     }
   },
-
-
 
   onShow() {
     let that = this;
@@ -319,12 +287,10 @@ Page({
       });
       if (isComplete) {
         clearInterval(this.auth);
-        that.setCalendarData();
+        setTimeout(() => that.setCalendarData(), 3000);
       }
     }, 1000);
   },
-
-
 
   setCalendarData() {
     let that = this;
@@ -333,7 +299,7 @@ Page({
       success: (res) => {
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
-          console.log(result.data.calendar_list);
+          console.log(result.data);
           that.setData({
             dataLich: result.data.calendar_list,
             lich: result.data.calendar_list.map((item) => item.summary),
@@ -347,12 +313,128 @@ Page({
     });
   },
 
+  calculateTime() {
+    let totalHours = 0;
+    this.data.dailyData.forEach((item) => {
+      if (item[this.data.selectedDay]) {
+        totalHours +=
+          parseInt(item[this.data.selectedDay].endTime.split(":")[0]) -
+          parseInt(item[this.data.selectedDay].startTime.split(":")[0]);
+      }
+    });
+    return totalHours;
+  },
+
+  // createTask() {
+  //   const that = this;
+  //   const { inputValue, startDate, endDate, startTime, endTime } = that.data;
+  //   if (that.calculateTime() > parseInt(that.data.selectedHours)) {
+  //     tt.showToast({
+  //       title: "Vượt quá số giờ cần có",
+  //       icon: "error",
+  //       duration: 2000,
+  //     });
+  //     return;
+  //   }
+  //   tt.getStorage({
+  //     key: "user_access_token",
+  //     success: ({ data }) => {
+  //       if (inputValue && startDate && endDate && startTime && endTime) {
+  //         const promises = Object.entries(that.data.dailyData[0])
+  //           .filter(
+  //             ([key, value]) => value.date && value.startTime && value.endTime
+  //           )
+  //           .map(([dayName, dataDay]) => {
+  //             const body = bodyCreateTask(
+  //               inputValue,
+  //               dataDay.inputNote,
+  //               that
+  //                 .dateTimeToTimestamp(dataDay.date, dataDay.startTime)
+  //                 .toString(),
+  //               that
+  //                 .dateTimeToTimestamp(dataDay.date, dataDay.endTime)
+  //                 .toString(),
+  //               that.formatDateToUTC(endDate),
+  //               dataDay.isLoop
+  //             );
+
+  //             return createEvent(data.access_token, that.data.calendarID, body);
+  //           });
+
+  //         Promise.all(promises).then((results) => {
+  //           const body2 = {
+  //             fields: {
+  //               "Việc cần làm": inputValue,
+  //               "Thể loại": that.data.selectedCategory,
+  //               "Quan trọng": that.data.selectedImportant,
+  //               "Cấp bách": that.data.selectedurgent,
+  //               "Số giờ cần có": parseInt(that.data.selectedHours),
+  //               Person: [
+  //                 {
+  //                   id: data.open_id,
+  //                 },
+  //               ],
+  //               "Ngày - Giờ bắt đầu":
+  //                 that.dateTimeToTimestamp(startDate, "") * 1000,
+  //               "Ngày - Giờ kết thúc":
+  //                 that.dateTimeToTimestamp(endDate, "") * 1000,
+  //               "Ghi chú": "",
+  //               "Ngày làm": "",
+  //               EventID: "",
+  //               CalendarID: that.data.calendarID,
+  //             },
+  //           };
+
+  //           results.forEach((result) => {
+  //             body2.fields.EventID = result.data.event.event_id;
+  //             body2.fields["Ngày làm"] =
+  //               that.dateTimeToTimestamp(
+  //                 result.data.event.start_time.date,
+  //                 ""
+  //               ) * 1000;
+  //             createRecord(data.access_token, body2).then((rs) => {
+  //               console.log(rs);
+  //             });
+  //           });
+
+  //           tt.showToast({
+  //             title: "Tạo xong công việc",
+  //             icon: "success",
+  //           });
+
+  //           that.setData({
+  //             inputValue: "",
+  //             inputNote: "",
+  //             selectedCategory: "Việc chính",
+  //             selectedurgent: "1",
+  //             selectedImportant: "A",
+  //             selectedHours: "1",
+  //             startDate: "Chọn ngày",
+  //             endDate: "",
+  //             startTime: "",
+  //             endTime: "",
+  //           });
+  //         });
+  //       } else {
+  //         tt.showToast({
+  //           title: "Vui lòng nhập đầy đủ dữ liệu",
+  //           icon: "error",
+  //         });
+  //       }
+  //     },
+  //   });
+  // },
+
   createTask() {
     let that = this;
-    tt.showToast({
-      title: "Vui lòng chờ...",
-      icon: "info",
-    });
+    if (that.calculateTime() > parseInt(that.data.selectedHours)) {
+      tt.showToast({
+        title: "Vượt quá số giờ cần có",
+        icon: "error",
+        duration: 2000,
+      });
+      return;
+    }
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -385,64 +467,67 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate),                            
+              that.formatDateToUTC(that.data.endDate),
               dataDay.isLoop
             );
 
             console.log(body);
             console.log(dataDay);
             console.log(dataDay.isLoop);
-            createEvent(
-              res.data.access_token,
-              that.data.calendarID,
-              body
-            ).then((rs) => {
-              console.log(rs.data);
+            createEvent(res.data.access_token, that.data.calendarID, body).then(
+              (rs) => {
+                console.log(rs.data);
 
-              const body2 = {
-                fields: {
-                  "Việc cần làm": that.data.inputValue,
-                  "Thể loại": that.data.selectedCategory,
-                  "Quan trọng": that.data.selectedImportant,
-                  "Cấp bách": that.data.selectedurgent,
-                  "Số giờ cần có": parseInt(that.data.selectedHours),
-                  Person: [
-                    {
-                      id: res.data.open_id,
-                    },
-                  ],
-                  "Ngày - Giờ bắt đầu":
-                    this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
-                  "Ngày - Giờ kết thúc":
-                    this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
-                  "Ghi chú": dataDay.inputNote,
-                  "Ngày làm":this.dateTimeToTimestamp(dataDay.date,"") * 1000,
-                  EventID: rs.data.event.event_id,
-                  CalendarID: that.data.calendarID,
-                },
-              };
-              console.log(body2);
-              createRecord(res.data.access_token, body2).then((rs) => {
-                console.log(rs);
-                tt.showToast({
-                  title: "Tạo xong công việc",
-                  icon: "success",
+                const body2 = {
+                  fields: {
+                    "Việc cần làm": that.data.inputValue,
+                    "Thể loại": that.data.selectedCategory,
+                    "Quan trọng": that.data.selectedImportant,
+                    "Cấp bách": that.data.selectedurgent,
+                    "Số giờ cần có": parseInt(that.data.selectedHours),
+                    Person: [
+                      {
+                        id: res.data.open_id,
+                      },
+                    ],
+                    "Ngày - Giờ bắt đầu":
+                      this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
+                    "Ngày - Giờ kết thúc":
+                      this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
+                    "Ghi chú": dataDay.inputNote,
+                    "Ngày làm":
+                      this.dateTimeToTimestamp(dataDay.date, "") * 1000,
+                    EventID: rs.data.event.event_id,
+                    CalendarID: that.data.calendarID,
+                    "Số giờ của 1 ngày": Math.abs(
+                      (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
+                        this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
+                        (60 * 60 * 1000)
+                    ) * 1000,
+                  },
+                };
+                console.log(body2);
+                createRecord(res.data.access_token, body2).then((rs) => {
+                  console.log(rs);
+                  tt.showToast({
+                    title: "Tạo xong công việc",
+                    icon: "success",
+                  });
+                  this.setData({
+                    inputValue: "",
+                    inputNote: "",
+                    selectedCategory: "Việc chính",
+                    selectedurgent: "1",
+                    selectedImportant: "A",
+                    selectedHours: "1",
+                    startDate: "Chọn ngày",
+                    endDate: "",
+                    startTime: "",
+                    endTime: "",
+                  });
                 });
-                this.setData({
-                  inputValue: "",
-                  inputNote: "",
-                  selectedCategory: "Việc chính",
-                  selectedurgent: "1",
-                  selectedImportant: "A",
-                  selectedHours: "1",
-                  startDate: "Chọn ngày",
-                  endDate: "",
-                  startTime: "",
-                  endTime: "",
-                })
-              });
-            })
-
+              }
+            );
           }
         } else {
           tt.showToast({
@@ -461,6 +546,6 @@ Page({
   },
 
   formatDateToUTC(dateString) {
-    return dateString.replace(/-/g, '')+"T000000Z"
-  }
+    return dateString.replace(/-/g, "") + "T000000Z";
+  },
 });
