@@ -32,13 +32,13 @@
           <scroll-view class="event-list" scroll-y="true">
             <view class="list-item" style="padding: 10px;">
               <block wx:if="{{selectedInvitePerson==='Cá nhân'}}">
-                <block wx:for="{{invite}}" wx:key="*this.value">
+                <block wx:for="{{checkInvite}}" wx:key="*this.value">
                   <view class="event-item">
-                    <image class="userinfo-avatar"></image>
+                    <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
                     </view>
-                    <!-- <button class="button-del" bindtap="removeElement" id="{{item.id}}"></button> -->
+                    <!-- <button class="button-del" bindtap="remov src="{{item.url}}eElement" id="{{item.id}}"></button> -->
                     <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg"></image>
                   </view>
                 </block>
