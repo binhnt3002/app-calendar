@@ -37,7 +37,7 @@ App({
     return getAppAccessToken();
   },
   GlobalConfig: {
-    baseId: "FeaubtGlja6dtds66P7l6iYbgwd",
-    tableId: "tblPjWdyJh5OdMZe",
+    baseId: "VUzZbHZIzaP0tKsL4GilYHmBg2c",
+    tableId: "tblgmj7nv8cZHI5b",
   },
 });
