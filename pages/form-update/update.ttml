@@ -14,30 +14,29 @@
             <view class="title-collumn">
               <p>Thể loại</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="onFilterChange">
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{theloaiOptions}}" bindchange="onFilterChange">
                 <text class="filter-text">{{selectedFilter}}</text>
               </picker>
             </view>
             <view class="title-collumn">
               <p>Quan trọng</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
-                <text class="filter-text">{{selectedFilter}}</text>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{quantrongOptions}}" bindchange="onQuanTrongChange">
+                <text class="filter-text">{{selectedQuanTrong}}</text>
               </picker>
             </view>
             <view class="title-collumn">
               <p>Cấp bách</p>
-              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter">
-                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
-                  {{selectedFilter}}
+              <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
+                <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{capbachOptions}}" bindchange="onCapBachChange">
+                  <text class="filter-text">{{selectedCapBach}}</text>
                 </picker>
-              </image>
             </view>
             <view class="title-collumn">
               <p>Thứ</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{filterOptions}}" bindchange="">
-                <text class="filter-text">{{selectedFilter}}</text>
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{thuOptions}}" bindchange="onThuChange">
+                <text class="filter-text">{{selectedThu}}</text>
               </picker>
             </view>
             <view class="title-collumn">Ngày bắt đầu</view>
@@ -46,7 +45,7 @@
             <view class="title-collumn">Cập nhật</view>
           </view>
           <!-- Các dòng dữ liệu -->
-          <block wx:for="{{filterTheloai}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+          <block wx:for="{{filterData}}" wx:key="index" wx:for-item="item" wx:for-index="index">
             <view class="title-row">
               <view class="title-collumn-stt">{{index + 1}}</view>
               <view class="title-collumn">{{item.vieccanlam}}</view>
@@ -79,31 +78,31 @@
     </view>
     <view class="form">
       <block class="task-name">
-        <text class="title1">Việc cần làm</text>
+        <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
         <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
           style="margin-top: 5px;margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
       </block>
       <view class="row">
         <view class="col-12 col-sm-3">
-          <text class="title1">Lịch</text>
+          <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
           <picker disabled={true} class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
             {{calendarname}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
-          <text class="title1">Thể loại</text>
+          <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
           <picker disabled={true} class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
             {{edit.theloai}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
-          <text class="title1">Cấp bách</text>
+          <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
           <picker disabled={true} class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
             {{edit.capbach}}
           </picker>
         </view>
         <view class="col-12 col-sm-3">
-          <text class="title1">Độ quan trọng</text>
+          <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
           <picker disabled={true} class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
             {{edit.quantrong}}
           </picker>
@@ -113,7 +112,7 @@
       <view class="row" style="margin-top: 10px;">
         <view class="col-4">
           <block class="select-time">
-            <text class="title1">Số giờ cần có</text>
+            <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Số giờ cần có</div >
             <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
               {{selectedHours}}
             </picker>
@@ -121,7 +120,7 @@
         </view>
         <view class="col-4">
           <block class="select-time"> 
-            <text class="title1" >Ngày bắt đầu</text>
+            <div  class="title1"> <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày bắt đầu</div >
             <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
               {{edit.ngaygiobatdau}}
             </picker>
@@ -129,7 +128,7 @@
         </view>
         <view class="col-4">
           <block class="select-time"> 
-            <text class="title1" >Ngày kết thúc</text>
+            <div text class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày kết thúc</div >
             <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
               {{edit.ngaygioketthuc}}
             </picker>
@@ -140,14 +139,14 @@
       <!-- Seclected time -->
       <view class="row"  style="margin-top: 10px;">
         <view class="col-6">
-          <text class="title1" >Chọn thời gian làm việc</text>
+          <div  class="title1"><image class="f-icon" src="/images/clock-solid.svg" mode=""/>Chọn thời gian làm việc</div >
         </view> 
         <view class="col-2">
-          <text class="title1">Giờ bắt đầu</text>
+          <div  class="title1"><image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu</div >
         </view>  
         <view class="col-2">
-          <text class="title1">Giờ kết thúc</text>
-        </view>   
+          <div  class="title1"><image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc</div >
+        </view>     
         <view class="col-2">
           <text class="title1">Lặp lại</text>
         </view>
@@ -189,8 +188,10 @@
           </block>               
         </view> 
       </view>      
-        <view class="note-info" style="margin-top: 1px;">   
-          <text class="title1">Ghi chú</text>
+
+        <view class="note-info" style="margin-top: 1px;">
+          <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+
           <textarea class="input-text" value="{{edit.ghichu}}" bindinput="inputNote">
         </view>
         <block >

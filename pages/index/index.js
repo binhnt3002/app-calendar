@@ -370,7 +370,7 @@ Page({
           // Add percentage to each value
           spec4.data[0].values = spec4.data[0].values.map((item) => {
             const percentage = ((item.value / totalTheLoai) * 100).toFixed(0);
-            item.type = `${item.type}: ${percentage}%`;
+            item.type = `${item.type}: ${percentage}% - ${item.value}`;
             return item;
           });
 

@@ -40,20 +40,38 @@ Page({
     inputNote: "",
     inputValue: "",
     showFilterPicker: false,
-    filterOptions: [
+    theloaiOptions: [
       "Tất cả",
       "Việc chính",
       "Dự án",
       "Việc phát sinh",
       "Việc cần đôn đốc",
-      "Đọc & học",
-    ], // Các giá trị trong combobox
+      "Đọc & học"
+    ],
+    quantrongOptions: ["Tất cả", "A", "B", "C"],
+    capbachOptions: ["Tất cả", "1", "2", "3"],
+    thuOptions: [
+      "Tất cả",
+      "Thứ 2",
+      "Thứ 3",
+      "Thứ 4",
+      "Thứ 5",
+      "Thứ 6",
+      "Thứ 7",
+      "Chủ nhật"],// Các giá trị trong combobox
     selectedFilter: "Tất cả", // Giá trị mặc định khi combobox mở ra
+
     filterTheloai: [],
     filterQuantrong: ["A", "B", "C"],
     selFilterQuantrong: "A",
 
     tableName: [],
+
+    selectedQuanTrong: "Tất cả",
+    selectedCapBach: "Tất cả",
+    selectedThu: "Tất cả",
+    filterData: [],
+
   },
   inputNote: function (e) {
     this.setData({
@@ -302,11 +320,11 @@ Page({
               icon: "success",
             })
             if (that.data.selectedFilter !== "Tất cả") {
-              const filterTheloai = tableData.filter(
+              const filterData = tableData.filter(
                 (item) => item.theloai === that.data.selectedFilter
               );
               that.setData({
-                tableData: filterTheloai,
+                tableData: filterData,
               });
             } else {
               that.setData({
@@ -315,7 +333,7 @@ Page({
             }
             that.setData({
               tableData,
-              filterTheloai: tableData,
+              filterData: tableData,
               capbach,
               quantrong,
               theloai,
@@ -542,7 +560,7 @@ Page({
       dataRemoveAll,
       dataRemove,
       selectedFilter: "Tất cả",
-      filterTheloai: dataAfterRemove,
+      filterData: dataAfterRemove,
     });
 
     // xóa record
@@ -603,27 +621,89 @@ Page({
   onFilterChange(e) {
     let that = this;
     let tableData = that.data.tableData;
-    let filterTheloai = that.data.filterTheloai;
+    let filterData = that.data.filterData;
     const index = e.detail.value;
-    const selectedOption = that.data.filterOptions[index];
+    const selectedOption = that.data.theloaiOptions[index];
     // this.listTask()
     that.setData({
       selectedFilter: selectedOption, // Cập nhật giá trị đã chọn
       // showFilterPicker: false // Đóng combobox sau khi chọn
     });
-    if (that.data.selectedFilter !== "Tất cả") {
-      filterTheloai = tableData.filter(
-        (item) => item.theloai === that.data.selectedFilter
-      );
-      that.setData({
-        filterTheloai,
-      });
-    } else {
-      filterTheloai = tableData;
-      that.setData({
-        filterTheloai,
-      });
-    }
+    that.setData({
+      filterData: tableData.filter(item => {
+        return (that.data.selectedFilter === "Tất cả" || item.theloai === that.data.selectedFilter) &&
+               (that.data.selectedQuanTrong === "Tất cả" || item.quantrong === that.data.selectedQuanTrong) &&
+               (that.data.selectedCapBach === "Tất cả" || item.capbach === that.data.selectedCapBach) &&
+               (that.data.selectedThu === "Tất cả" || item.thu === that.data.selectedThu)
+               // ... similar conditions for other options
+      })
+    });
+    
     // Thực hiện các hành động khác khi thay đổi giá trị
+
   },
+  onQuanTrongChange(e) {
+    let that = this;
+    let tableData = that.data.tableData;
+    let filterData = that.data.filterData;
+    const index = e.detail.value;
+    const selectedOption = that.data.quantrongOptions[index];
+    // this.listTask()
+    that.setData({
+      selectedQuanTrong: selectedOption, // Cập nhật giá trị đã chọn
+      // showFilterPicker: false // Đóng combobox sau khi chọn
+    });
+    that.setData({
+      filterData: tableData.filter(item => {
+        return (that.data.selectedFilter === "Tất cả" || item.theloai === that.data.selectedFilter) &&
+               (that.data.selectedQuanTrong === "Tất cả" || item.quantrong === that.data.selectedQuanTrong) &&
+               (that.data.selectedCapBach === "Tất cả" || item.capbach === that.data.selectedCapBach) &&
+               (that.data.selectedThu === "Tất cả" || item.thu === that.data.selectedThu)
+               // ... similar conditions for other options
+      })
+    });
+  },
+  onCapBachChange(e) {
+    let that = this;
+    let tableData = that.data.tableData;
+    let filterData = that.data.filterData;
+    const index = e.detail.value;
+    const selectedOption = that.data.capbachOptions[index];
+    // this.listTask()
+    that.setData({
+      selectedCapBach: selectedOption, // Cập nhật giá trị đã chọn
+      // showFilterPicker: false // Đóng combobox sau khi chọn
+    });
+    that.setData({
+      filterData: tableData.filter(item => {
+        return (that.data.selectedFilter === "Tất cả" || item.theloai === that.data.selectedFilter) &&
+               (that.data.selectedQuanTrong === "Tất cả" || item.quantrong === that.data.selectedQuanTrong) &&
+               (that.data.selectedCapBach === "Tất cả" || item.capbach === that.data.selectedCapBach) &&
+               (that.data.selectedThu === "Tất cả" || item.thu === that.data.selectedThu)
+               // ... similar conditions for other options
+      })
+    });
+  },
+  onThuChange(e) {
+    let that = this;
+    let tableData = that.data.tableData;
+    let filterData = that.data.filterData;
+    const index = e.detail.value;
+    const selectedOption = that.data.thuOptions[index];
+    // this.listTask()
+    that.setData({
+      selectedThu: selectedOption, // Cập nhật giá trị đã chọn
+      // showFilterPicker: false // Đóng combobox sau khi chọn
+    });
+    that.setData({
+      filterData: tableData.filter(item => {
+        return (that.data.selectedFilter === "Tất cả" || item.theloai === that.data.selectedFilter) &&
+               (that.data.selectedQuanTrong === "Tất cả" || item.quantrong === that.data.selectedQuanTrong) &&
+               (that.data.selectedCapBach === "Tất cả" || item.capbach === that.data.selectedCapBach) &&
+               (that.data.selectedThu === "Tất cả" || item.thu === that.data.selectedThu)
+               // ... similar conditions for other options
+      })
+    });
+  }
+
 });
