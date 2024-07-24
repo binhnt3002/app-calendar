@@ -1,5 +1,6 @@
 import { sendRequest } from "../../utils/sendRequest";
 import { createSpec } from "./spec/getSpec";
+import {getAllTableName} from "../function/apiFunction";
 
 const appVar = getApp();
 
@@ -21,6 +22,13 @@ Page({
 
     spec4: createSpec("bar", "data4", 30, 0),
     totalHoursInWeek: 48,
+
+    tableName: [],
+  },
+  onLoad(){
+    getAllTableName(tt.getStorageSync("user_access_token").access_token).then((rs) => {
+      this.setData({ tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})) });
+    })
   },
 
   onShow() {
@@ -68,7 +76,7 @@ Page({
       key: "user_access_token",
       success: (res) => {
         const access_token = res.data.access_token;
-        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${this.data.tableName[0].table}/records/search`;
         const headers = {
           Authorization: `Bearer ${access_token}`,
           "Content-Type": "application/json",
@@ -76,10 +84,10 @@ Page({
 
         const body = {
           field_names: [
-            "Việc cần làm",
+            "Tên Task *",
             "Thể loại",
-            "Quan trọng",
-            "Cấp bách",
+            "Quan Trọng",
+            "Cấp Bách",
             "Số giờ cần có",
           ],
 
@@ -87,7 +95,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Person",
+                field_name: "Người giao việc *",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -102,37 +110,37 @@ Page({
           let listItemsLength = result.data?.total || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
-            "Cấp bách",
+            "Cấp Bách",
             "1",
             listItemsLength
           );
           let totalHours2 = this.calculateTotal(
             listItems,
-            "Cấp bách",
+            "Cấp Bách",
             "2",
             listItemsLength
           );
           let totalHours3 = this.calculateTotal(
             listItems,
-            "Cấp bách",
+            "Cấp Bách",
             "3",
             listItemsLength
           );
           let totalHoursQuanTrongA = this.calculateTotal(
             listItems,
-            "Quan trọng",
+            "Quan Trọng",
             "A",
             listItemsLength
           );
           let totalHoursQuanTrongB = this.calculateTotal(
             listItems,
-            "Quan trọng",
+            "Quan Trọng",
             "B",
             listItemsLength
           );
           let totalHoursQuanTrongC = this.calculateTotal(
             listItems,
-            "Quan trọng",
+            "Quan Trọng",
             "C",
             listItemsLength
           );

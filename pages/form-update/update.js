@@ -1,8 +1,9 @@
-import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
+import { searchRecord, getCalendar,getAllTableName } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
   deleteEvent,
+
 } from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
@@ -51,7 +52,8 @@ Page({
     filterTheloai: [],
     filterQuantrong: ["A", "B", "C"],
     selFilterQuantrong: "A",
-    filter1: [],
+
+    tableName: [],
   },
   inputNote: function (e) {
     this.setData({
@@ -149,12 +151,26 @@ Page({
       selectedDay: dayKey,
     });
   },
+  
+  onLoad() {
+    
+  },
 
   onShow() {
     let that = this;
-    that.listTask();
+    getAllTableName(tt.getStorageSync("user_access_token").access_token).then(
+      (rs) => {
+        that.setData({ tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})) });
+        that.listTask(that.data.tableName[0].table);
+      }
+    )
   },
-  listTask() {
+  listTask(table_id) {
+    tt.showToast({
+      title: "Đang tải dữ liệu",
+      icon: "loading",
+      duration: 5000,
+    })
     let that = this;
     let vieccanlam = that.data.vieccanlam;
     let theloai = that.data.theloai;
@@ -194,14 +210,14 @@ Page({
         const access_token = res.data.access_token;
         const body = {
           field_names: [
-            "Việc cần làm",
+            "Tên Task *",
             "Thể loại",
-            "Quan trọng",
-            "Cấp bách",
+            "Quan Trọng",
+            "Cấp Bách",
             "Số giờ cần có",
             "Thứ",
-            "Ngày - Giờ bắt đầu",
-            "Ngày - Giờ kết thúc",
+            "Thời gian bắt đầu *",
+            "Thời gian kết thúc *",
             "Ngày làm",
             "Ghi chú",
             "EventID",
@@ -213,7 +229,7 @@ Page({
               asc: true,
             },
             {
-              field_name: "Việc cần làm",
+              field_name: "Tên Task *",
               asc: true,
             },
           ],
@@ -221,7 +237,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Person",
+                field_name: "Người giao việc *",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -229,24 +245,24 @@ Page({
           },
           automatic_fields: false,
         };
-        searchRecord(access_token, body).then((result) => {
+        searchRecord(access_token, body,table_id).then((result) => {
           console.log(result);
           result.data.items.map((item) => {
             vieccanlam.push({
-              vieccanlam: item.fields["Việc cần làm"][0].text,
+              vieccanlam: item.fields["Tên Task *"][0].text,
             }),
               theloai.push({ theloai: item.fields["Thể loại"] }),
-              quantrong.push({ quantrong: item.fields["Quan trọng"] }),
-              capbach.push({ capbach: item.fields["Cấp bách"] }),
+              quantrong.push({ quantrong: item.fields["Quan Trọng"] }),
+              capbach.push({ capbach: item.fields["Cấp Bách"] }),
               thu.push({ thu: item.fields["Thứ"].value[0].text });
             ngaygiobatdau.push({
               ngaygiobatdau: that.convertTimestampToDate(
-                item.fields["Ngày - Giờ bắt đầu"]
+                item.fields["Thời gian bắt đầu *"]
               ),
             }),
               ngaygioketthuc.push({
                 ngaygioketthuc: that.convertTimestampToDate(
-                  item.fields["Ngày - Giờ kết thúc"]
+                  item.fields["Thời gian kết thúc *"]
                 ),
               }),
               ghichu.push({
@@ -281,6 +297,10 @@ Page({
                 ...recordId[index],
               };
             });
+            tt.showToast({
+              title: "Tải dữ liệu thành công",
+              icon: "success",
+            })
             if (that.data.selectedFilter !== "Tất cả") {
               const filterTheloai = tableData.filter(
                 (item) => item.theloai === that.data.selectedFilter
@@ -406,7 +426,7 @@ Page({
             {
               record_id: that.data.edit.recordId,
               fields: {
-                "Việc cần làm": that.data.inputValue,
+                "Tên Task *": that.data.inputValue,
                 "Ghi chú": that.data.inputNote,
               },
             },

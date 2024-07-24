@@ -5,7 +5,7 @@ import {
   getGroupId,
   getEvent,
   updateEvent,
-} from "../form-submit/function/apiFunction";
+} from "../function/apiFunction";
 import {
   bodyScheduleParticipants,
   bodyUpdateEvent,
