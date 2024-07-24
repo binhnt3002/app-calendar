@@ -16,7 +16,7 @@
                   <text class="block3">{{item.theloai}}</text>
                 </view>
                 <view class="event-checkbox">
-                  <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>
+                  <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" data-recordid="{{item.recordid}}" checked="{{item.checked}}"></checkbox>
                 </view>
               </view>
             </block>
@@ -33,13 +33,15 @@
             <view class="list-item" style="padding: 10px;">
               <block wx:if="{{selectedInvitePerson==='Cá nhân'}}">
                 <block wx:for="{{checkInvite}}" wx:key="*this.value">
-                  <view class="event-item">
+                  <view class="event-item" style="background-color:rgb(250, 212, 245)">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
                     </view>
                     <!-- <button class="button-del" bindtap="remov src="{{item.url}}eElement" id="{{item.id}}"></button> -->
-                    <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg"></image>
+                    <image wx:if="{{item.status === 'accept'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-check-solid.svg"></image>
+                    <image wx:if="{{item.status === 'decline'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-minus-solid.svg"></image>
+                    <image wx:if="{{item.status === 'needs_action'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/clock-rotate-left-solid.svg"></image>
                   </view>
                 </block>
                 <block wx:for="{{inviteData}}" wx:key="*this.value">
@@ -54,6 +56,18 @@
                 </block>
               </block>
               <block wx:else>
+                <block wx:for="{{checkChatInvite}}" wx:key="*this.value">
+                  <view class="event-item">
+                    <image class="userinfo-avatar" src="{{item.url}}"></image>
+                    <view class="event-details" style="margin-left: 5px;">
+                      <text class="block">{{item.name}}</text>
+                    </view>
+                    <!-- <button class="button-del" bindtap="remov src="{{item.url}}eElement" id="{{item.id}}"></button> -->
+                    <image wx:if="{{item.status === 'accept'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-check-solid.svg"></image>
+                    <image wx:if="{{item.status === 'decline'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-minus-solid.svg"></image>
+                    <image wx:if="{{item.status === 'needs_action'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/clock-rotate-left-solid.svg"></image>
+                  </view>
+                </block>
                 <block wx:for="{{chatData}}" wx:key="*this.value">
                   <view class="event-item">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>

@@ -22,6 +22,9 @@ Page({
     checkId: [],
     checkInvite: [],
     checkStatue: [],
+    checkChatId: [],
+    checkChatInvite: [],
+    checkChatStatue: [],
 
     chat: [],
     chatId: [],
@@ -68,9 +71,16 @@ Page({
   },
 
   onInvitePerson: function (e) {
+    let events = this.data.events
     this.setData({
       selectedInvitePerson: this.data.invitePersonOptions[e.detail.value],
     });
+    for (let i = 0; i < this.data.events.length; i++) {
+      events[i].checked = false; // Change to your desired name
+    }
+    this.setData({
+      events
+    })
   },
 
   onFrequencyChange: function (e) {
@@ -84,7 +94,7 @@ Page({
       selectedPermission: this.data.permissionOptions[e.detail.value],
     });
   },
-
+  
   listUser() {
     let that = this;
     let invite = that.data.invite;
@@ -243,33 +253,6 @@ Page({
               theloai.push(item.fields["Thể loại"]);
               recordid.push(item.record_id);
             });
-          //     resp.data.items.map((i) => {
-          //       // Kiểm tra i.fields["Việc cần làm"] có null hay không
-          //       if (i.fields["Việc cần làm"] !== null) {
-          //         // Nếu không null, map qua từng item và push vào events
-          //         i.fields["Việc cần làm"].map((item) => events.push({ name: item.text }));
-          //       } else {
-          //         // Nếu null, gán giá trị mặc định "" cho events
-          //         events.push({ name: "" });
-          //       }
-          //     });
-          //   resp.data.items.map((i) =>
-          //     i.fields["EventID"].map((item) => eventsID.push(item.text)[0])
-          //   );
-          //   resp.data.items.map((i) =>
-          //     i.fields["CalendarID"].map(
-          //       (item) => arCalendarId.push(item.text)[0]
-          //     )
-          //   );
-          //   resp.data.items.map((i) =>
-          //     i.fields["Thứ"].value.map((item) => thu.push(item.text))
-          //   );
-          //   resp.data.items.map((i) =>
-          //     theloai.push(i.fields["Thể loại"])
-          //   )
-          //   resp.data.items.map((i) =>
-          //   recordid.push(i.record_id)
-          // )
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
             if (index < eventsID.length) {
@@ -290,7 +273,6 @@ Page({
 
           events = updatedEvents;
           that.setData({ eventsID, events, arCalendarId, thu, recordid });
-          console.log(that.data.events);
         });
       },
     });
@@ -303,6 +285,11 @@ Page({
     let checkStatue = that.data.checkStatue
     let checkInvite = that.data.checkInvite
     let checkId = that.data.checkId
+    let checkChatStatue = that.data.checkChatStatue
+    let checkChatInvite = that.data.checkChatInvite
+    let checkChatId = that.data.checkChatId
+    
+    Id = that.data.checkId
     console.log(currentValue);
     tt.getStorage({
       key: "user_access_token",
@@ -340,7 +327,7 @@ Page({
             that.setData({
               idCongViec: currentValue.eventid,
               calendarID: currentValue.calendar,
-              getRecord: currentValue.recordid
+              getRecord: currentValue.recordid,
             });
 
             const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.calendarID}/events/${that.data.idCongViec}/attendees`;
@@ -348,31 +335,40 @@ Page({
               Authorization: `Bearer ${res.data.access_token}`,
             };
             sendRequest(url, "GET", headers, {}).then((resp) => {
-              console.log(resp);
               let lengthItems = resp.data?.items.length || 0;
-              let dataPush = resp.data.items.map((item) => item.user_id);
+              let data = resp.data.items
+              // let dataPush = resp.data.items.map((item) => item.user_id);
+              
               if (lengthItems != 0) {
-                checkStatue = resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
+                if(that.data.selectedInvitePerson == "Cá nhân"){
+                  checkStatue = data.filter(i => i.attendee_id.startsWith("user_")).map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id }))
+                // checkStatue = resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
                 checkId = resp.data.items.map((item) => item.user_id)
                 const url2 = "https://open.larksuite.com/open-apis/contact/v3/users/batch?user_ids=" + checkId.join("&user_ids=")
                 const headers2 = {
                   Authorization: `Bearer ${res.data.access_token}`,
                 };
+                that.setData({
+                  checkStatue,
+                  checkId,
+                  checkInvite:checkStatue
+                });
                 sendRequest(url2, 'GET', headers2, {}).then((rss) => {
                   checkInvite = checkStatue.map((obj, index) => {
                     return { ...obj, url: rss.data.items.map (i =>({url: i.avatar.avatar_72}))[index]?.url || null };
                   });
                   that.setData({checkInvite})
                 })
-                
-                that.setData({
-                  checkStatue,
-                  checkId
-                  // invite: resp.data.items.map((item) => ({ name: item.display_name, id: item.user_id })),
-                  // inviteOpenId: resp.data.items.map((item) => (item.user_id)),
-                  // inviteData: resp.data.items.map((item) => ({ "name": item.display_name, "id": item.user_id }))
-                });
-                
+                } else {
+                  checkChatStatue = data.filter(i => i.attendee_id.startsWith("chat_")).map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id }))
+                  checkChatId = data.filter(i => i.attendee_id.startsWith("chat_")).map((item) => item.chat_id)
+                  checkChatInvite = checkChatStatue
+                  that.setData({
+                    checkChatStatue,
+                    checkChatId,
+                    checkChatInvite
+                  });
+                }
                 return;
               }
             });
