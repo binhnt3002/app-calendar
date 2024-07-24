@@ -136,18 +136,26 @@ Page({
   },
 
   checkboxChange: function (e) {
-    console.log(e.currentTarget.dataset.checked);
+    const selectedDay = this.data.selectedDay;
+    const selectedDayWork = this.data.selectedDayWork;
+    const startTime = this.data.startTime;
+    const endTime = this.data.endTime;
+    const inputNote = this.data.inputNote;
+
+    const dailyData = this.data.dailyData;
+    const isLoop = !e.currentTarget.dataset.checked;
+
+    dailyData[0][selectedDay] = {
+      date: selectedDayWork,
+      startTime,
+      endTime,
+      inputNote,
+      isLoop,
+    };
+
     this.setData({
-      isLoop: !e.currentTarget.dataset.checked,
-    });
-    let data = this.data.dailyData;
-    data[0][this.data.selectedDay].date = this.data.selectedDayWork;
-    data[0][this.data.selectedDay].startTime = this.data.startTime;
-    data[0][this.data.selectedDay].endTime = this.data.endTime;
-    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
-    data[0][this.data.selectedDay].isLoop = !e.currentTarget.dataset.checked;
-    this.setData({
-      dailyData: data,
+      isLoop,
+      dailyData,
     });
   },
 
@@ -191,8 +199,6 @@ Page({
         selectedDayWork: this.data.startDate,
       });
     }
-
-    console.log(this.data.startDate);
   },
 
   onTimeChange1: function (e) {
@@ -297,6 +303,7 @@ Page({
         getCalendarList(access_token).then((result) => {
           console.log(result.data);
           getAllTableName(access_token).then((rs) => {
+            console.log(rs.data);
             that.setData({
               dataLich: result.data.calendar_list,
               lich: result.data.calendar_list.map((item) => item.summary),
@@ -379,6 +386,7 @@ Page({
               that.formatDateToUTC(that.data.endDate),
               dataDay.isLoop
             );
+            console.log(body);
 
             createEvent(res.data.access_token, that.data.calendarID, body).then(
               (rs) => {
