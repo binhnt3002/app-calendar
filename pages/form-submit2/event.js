@@ -5,11 +5,14 @@ import {
   getGroupId,
   getEvent,
   updateRecord,
-} from "../form-submit/function/apiFunction";
+  getAllTableName,
+} from "../function/apiFunction";
 import {
   bodyScheduleParticipants,
   bodyScheduleParticipantsGroup,
 } from "../form-submit/detailForm";
+
+const appVar = getApp();
 Page({
   data: {
     events: [],
@@ -45,7 +48,9 @@ Page({
     thu: [],
     theloai: [],
     recordid: [],
-    getRecord: ""
+    getRecord: "",
+
+    tableName:[],
   },
 
   onLoad() {
@@ -61,6 +66,7 @@ Page({
 
   onLoad() {
     this.setInvites();
+    
   },
 
   setInvites() {
@@ -183,7 +189,10 @@ Page({
 
   onShow() {
     let that = this;
-    that.listTask();
+    getAllTableName(tt.getStorageSync("user_access_token").access_token).then((rs) => {
+      that.setData({ tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})) })
+      setTimeout(() => that.listTask(), 2000);
+    })    
   },
 
   listTask() {
@@ -202,14 +211,14 @@ Page({
       key: "user_access_token",
       success: (res) => {
         const url =
-          "https://open.larksuite.com/open-apis/bitable/v1/apps/VUzZbHZIzaP0tKsL4GilYHmBg2c/tables/tblgmj7nv8cZHI5b/records/search";
+          `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${that.data.tableName[0].table}/records/search`;
 
         const headers = {
           Authorization: `Bearer ${res.data.access_token}`,
           "Content-Type": "application/json",
         };
         const body = {
-          field_names: ["Việc cần làm", "EventID", "CalendarID", "Thứ", "Thể loại"],
+          field_names: ["Tên Task *", "EventID", "CalendarID", "Thứ", "Thể loại"],
           sort: [
             {
               field_name: "Thể loại",
@@ -220,7 +229,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Person",
+                field_name: "Người giao việc *",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -240,8 +249,8 @@ Page({
 
             resp.data.items.forEach(item => {
               // Check if "Việc cần làm" exists and has text
-              if (item.fields["Việc cần làm"][0] && item.fields["Việc cần làm"][0].text) {
-                events.push({ name: item.fields["Việc cần làm"][0].text });
+              if (item.fields["Tên Task *"][0] && item.fields["Tên Task *"][0].text) {
+                events.push({ name: item.fields["Tên Task *"][0].text });
               } else {
                 events.push({ name: "" });
               }

@@ -1,8 +1,5 @@
 import {
   getAppAccessToken,
-  getAuthorizationCode,
-  getUserInfo,
-  refeshTOken,
 } from "./utils/autherization";
 
 App({

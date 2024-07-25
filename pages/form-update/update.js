@@ -172,130 +172,182 @@ Page({
   
 
   onShow() {
-    const { accessToken } = tt.getStorageSync("user_access_token").access_token;
+    const  accessToken  = tt.getStorageSync("user_access_token").access_token;
     const tableName = this.data.tableName.filter(({ name }) =>
       name.includes("Bảng Phân Công")
     );
     const tableId = tableName[0]?.table;
 
     getAllTableName(accessToken).then((response) => {
+      console.log(response);
       const filteredTableName = response.data.items
         .filter(({ name }) => name.includes("Bảng Phân Công"))
         .map(({ name, table_id }) => ({ name, table: table_id }));
 
       this.setData({ tableName: filteredTableName });
-      this.listTask(tableId);
+      this.listTask(this.data.tableName[0].table);
     });
   },
   listTask(table_id) {
-    tt.showToast({
-      title: "Đang tải dữ liệu",
-      icon: "loading",
-      duration: 5000,
-    });
-
-    try {
-      const that = this;
-      const { dailyData } = this.data;
-
-      tt.getStorage({
-        key: "user_access_token",
-        success: (res) => {
-          const access_token = res.data.access_token;
-          const body = {
-            field_names: [
-              "Tên Task *",
-              "Thể loại",
-              "Quan Trọng",
-              "Cấp Bách",
-              "Số giờ cần có",
-              "Thứ",
-              "Thời gian bắt đầu *",
-              "Thời gian kết thúc *",
-              "Ngày làm",
-              "Ghi chú",
-              "EventID",
-              "CalendarID",
-            ],
-            sort: [
-              {
-                field_name: "Thể loại",
-                asc: true,
-              },
-              {
-                field_name: "Tên Task *",
-                asc: true,
-              },
-            ],
-            filter: {
-              conjunction: "and",
-              conditions: [
-                {
-                  field_name: "Người giao việc *",
-                  operator: "is",
-                  value: [res.data.open_id],
-                },
-              ],
+    let that = this;
+    let vieccanlam = that.data.vieccanlam;
+    let theloai = that.data.theloai;
+    let quantrong = that.data.quantrong;
+    let capbach = that.data.capbach;
+    let thu = that.data.thu;
+    let ghichu = that.data.ghichu;
+    let ngaygiobatdau = that.data.ngaygiobatdau;
+    let ngaygioketthuc = that.data.ngaygioketthuc;
+    let eventid = that.data.eventid;
+    let calendarid = that.data.calendarid;
+    let tableData = that.data.tableData;
+    let ngaylam = that.data.ngaylam;
+    let sogiocanco = that.data.sogiocanco;
+    let recordId = that.data.recordId;
+    let dataRemoveAll = that.data.dataRemoveAll;
+    let dataRemove = that.data.dataRemove;
+    dataRemove = [];
+    dataRemoveAll = [];
+    vieccanlam = [];
+    theloai = [];
+    capbach = [];
+    quantrong = [];
+    thu = [];
+    ngaygiobatdau = [];
+    ngaygioketthuc = [];
+    ghichu = [];
+    eventid = [];
+    calendarid = [];
+    ngaylam = [];
+    tableData = [];
+    sogiocanco = [];
+    recordId = [];
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const access_token = res.data.access_token;
+        const body = {
+          field_names: [
+            "Tên Task *",
+            "Thể loại",
+            "Quan Trọng",
+            "Cấp Bách",
+            "Số giờ cần có",
+            "Thứ",
+            "Thời gian bắt đầu *",
+            "Thời gian kết thúc *",
+            "Ngày làm",
+            "Ghi chú",
+            "EventID",
+            "CalendarID",
+          ],
+          sort: [
+            {
+              field_name: "Thể loại",
+              asc: true,
             },
-            automatic_fields: false,
-          };
-
-          searchRecord(access_token, body, table_id).then((result) => {
-            const { items } = result.data;
-            const tableData = items.map((item) => ({
+            {
+              field_name: "Tên Task *",
+              asc: true,
+            },
+          ],
+          filter: {
+            conjunction: "and",
+            conditions: [
+              {
+                field_name: "Người giao việc *",
+                operator: "is",
+                value: [res.data.open_id],
+              },
+            ],
+          },
+          automatic_fields: false,
+        };
+        searchRecord(access_token, body, table_id).then((result) => {
+          console.log(result);
+          result.data.items.map((item) => {
+            vieccanlam.push({
               vieccanlam: item.fields["Tên Task *"][0].text,
-              theloai: item.fields["Thể loại"],
-              quantrong: item.fields["Quan Trọng"],
-              capbach: item.fields["Cấp Bách"],
-              thu: item.fields["Thứ"].value[0].text,
+            }),
+              theloai.push({ theloai: item.fields["Thể loại"] }),
+              quantrong.push({ quantrong: item.fields["Quan Trọng"] }),
+              capbach.push({ capbach: item.fields["Cấp Bách"] }),
+              thu.push({ thu: item.fields["Thứ"].value[0].text });
+            ngaygiobatdau.push({
               ngaygiobatdau: that.convertTimestampToDate(
-                item.fields["Thời gian bắt đầu *"]
+                item.fields["Ngày - Giờ bắt đầu"]
               ),
-              ngaygioketthuc: that.convertTimestampToDate(
-                item.fields["Thời gian kết thúc *"]
-              ),
-              ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
-              ghichu:
-                item.fields["Ghi chú"] && item.fields["Ghi chú"][0].text
-                  ? item.fields["Ghi chú"][0].text
-                  : "",
-              eventid: item.fields["EventID"][0].text,
-              calendarid: item.fields["CalendarID"][0].text,
-              sogiocanco: item.fields["Số giờ cần có"],
-              recordId: item.record_id,
-            }));
-
-            const filterData = tableData.filter(
-              (item) => item.theloai === that.data.selectedFilter
-            );
-
-            that.setData({
-              tableData: that.data.selectedFilter !== "Tất cả"
-                ? filterData
-                : tableData,
-              filterData,
-              dailyData,
-              tableName: that.data.tableName.map((item) => {
-                if (item.table === table_id) {
-                  return { ...item, data: tableData };
-                }
-                return item;
+            }),
+              ngaygioketthuc.push({
+                ngaygioketthuc: that.convertTimestampToDate(
+                  item.fields["Ngày - Giờ kết thúc"]
+                ),
               }),
+              ghichu.push({
+                ghichu:
+                  item.fields["Ghi chú"] && item.fields["Ghi chú"][0].text
+                    ? item.fields["Ghi chú"][0].text
+                    : "",
+              }),
+              eventid.push({ eventid: item.fields["EventID"][0].text }),
+              calendarid.push({
+                calendarid: item.fields["CalendarID"][0].text,
+              });
+            ngaylam.push({
+              ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
             });
-
-            tt.showToast({
-              title: "Tải dữ liệu thành công",
-              icon: "success",
+            sogiocanco.push({ sogiocanco: item.fields["Số giờ cần có"] });
+            recordId.push({ recordId: item.record_id });
+            tableData = vieccanlam.map((item, index) => {
+              return {
+                ...item,
+                ...theloai[index],
+                ...quantrong[index],
+                ...capbach[index],
+                ...thu[index],
+                ...ngaygiobatdau[index],
+                ...ngaygioketthuc[index],
+                ...ngaylam[index],
+                ...ghichu[index],
+                ...eventid[index],
+                ...calendarid[index],
+                ...sogiocanco[index],
+                ...recordId[index],
+              };
+            });
+            if (that.data.selectedFilter !== "Tất cả") {
+              const filterData = tableData.filter(
+                (item) => item.theloai === that.data.selectedFilter
+              );
+              that.setData({
+                tableData: filterData,
+              });
+            } else {
+              that.setData({
+                tableData,
+              });
+            }
+            that.setData({
+              tableData,
+              filterData: tableData,
+              capbach,
+              quantrong,
+              theloai,
+              ngaygiobatdau,
+              ngaygioketthuc,
+              ghichu,
+              vieccanlam,
+              thu,
+              eventid,
+              calendarid,
+              ngaylam,
+              sogiocanco,
+              recordId,
             });
           });
-        },
-      });
-    } catch (error) {
-      tt.showToast({
-        title: "Xảy ra lỗi trong quá trình tải dữ liệu",
-        icon: "error",
-      });
-    }
+        });
+      },
+    });
   },
 
   convertTimestampToDate(timestamp) {
