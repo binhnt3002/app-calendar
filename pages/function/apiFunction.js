@@ -96,8 +96,8 @@ const searchRecord = (access_token, data,tableId) => {
   return sendRequest(url, "POST", headers, body);
 };
 
-const updateRecord = (access_token, data,tableId) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records/batch_update`;
+const updateRecord = (access_token, data,tableId,recordId) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records/${recordId}`;
   const headers = {
     Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
@@ -107,8 +107,7 @@ const updateRecord = (access_token, data,tableId) => {
     ...data,
   };
 
-  console.log(body);
-  return sendRequest(url, "POST", headers, body);
+  return sendRequest(url, "PUT", headers, body);
 };
 
 const getAllTableName = (access_token) => {

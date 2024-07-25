@@ -275,12 +275,12 @@ Page({
               thu.push({ thu: item.fields["Thứ"].value[0].text });
             ngaygiobatdau.push({
               ngaygiobatdau: that.convertTimestampToDate(
-                item.fields["Ngày - Giờ bắt đầu"]
+                item.fields["Thời gian bắt đầu *"]
               ),
             }),
               ngaygioketthuc.push({
                 ngaygioketthuc: that.convertTimestampToDate(
-                  item.fields["Ngày - Giờ kết thúc"]
+                  item.fields["Thời gian kết thúc *"]
                 ),
               }),
               ghichu.push({
