@@ -280,7 +280,7 @@ Page({
 
   checkboxChange: function (e) {
     let that = this;
-    that.setData({ invite: [], inviteOpenId: [], inviteData: [], checkInvite: [], checkStatue: [] })
+    that.setData({ invite: [], inviteOpenId: [], inviteData: [], checkInvite: [], checkStatue: [],checkId: []})
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue
     let checkInvite = that.data.checkInvite
@@ -293,7 +293,7 @@ Page({
     console.log(currentValue);
     tt.getStorage({
       key: "user_access_token",
-      success: (res) => {
+      success: (res) => { 
         getEvent(
           res.data.access_token,
           currentValue.calendar,
@@ -402,121 +402,191 @@ Page({
     console.log(that.data.chatData);
   },
 
+  // addEventParticipate() {
+  //   let that = this;
+  //   let inviteOpenId = that.data.inviteOpenId;
+  //   let idGroup = that.data.idGroup;
+  //   let attendees = that.data.attendees;
+  //   if (that.data.selectedInvitePerson === "Cá nhân") {
+  //     if (
+  //       that.data.idCongViec != "" &&
+  //       that.data.calendarID != "" &&
+  //       inviteOpenId.length > 0
+  //     ) {
+
+  //       tt.getStorage({
+  //         key: "user_access_token",
+  //         success: (res) => {
+  //           const access_token = res.data.access_token;
+  //           inviteOpenId.forEach((id, index) => {
+
+  //             const body = bodyScheduleParticipants("user", id, res);
+  //             createInvitation(
+  //               access_token,
+  //               that.data.calendarID,
+  //               that.data.idCongViec,
+  //               body
+  //             )
+  //               .then((result) => {
+  //                 console.log(result);
+  //                 // that.setData({attendees})
+  //                 tt.showToast({
+  //                   title: "Đã mời",
+  //                   icon: "success",
+  //                 });
+  //                 that.setData({
+  //                   events: that.data.events.map((i) => {
+  //                     i.checked = false;
+  //                     return i;
+  //                   }),
+  //                   inviteOpenId: [],
+  //                   invite: [],
+  //                   inviteData: [],
+  //                   avatarUrl: [],
+  //                   checkInvite: [],
+  //                   checkStatue: [],
+  //                 });
+  //               })
+  //               .catch((error) => {
+  //                 console.error("Error sending invitation:", error);
+  //                 // Handle invitation sending errors gracefully (optional)
+  //               });
+  //           });
+  //         },
+  //       });
+  //     } else {
+  //       tt.showToast({
+  //         title: "Vui lòng đủ thông tin",
+  //         icon: "error",
+  //       });
+  //     }
+  //   } else {
+  //     if (
+  //       that.data.idCongViec != "" &&
+  //       that.data.calendarID != "" &&
+  //       idGroup != ""
+  //     ) {
+  //       tt.getStorage({
+  //         key: "user_access_token",
+  //         success: (res) => {
+  //           const access_token = res.data.access_token;
+  //           const bodyGroup = bodyScheduleParticipantsGroup(
+  //             "chat",
+  //             idGroup,
+  //             res
+  //           );
+  //           createInvitation(
+  //             access_token,
+  //             that.data.calendarID,
+  //             that.data.idCongViec,
+  //             bodyGroup
+  //           )
+  //             .then((result) => {
+  //               console.log(result);
+  //               // that.setData({attendees})
+  //               tt.showToast({
+  //                 title: "Đã mời",
+  //                 icon: "success",
+  //               });
+  //               that.setData({
+  //                 events: that.data.events.map((i) => {
+  //                   i.checked = false;
+  //                   return i;
+  //                 }),
+
+  //                 inviteOpenId: [],
+  //                 invite: [],
+  //                 inviteData: [],
+  //                 avatarUrl: [],
+
+  //                 chatData: [],
+  //                 chat: [],
+  //                 chatId: [],
+  //                 chatAvatar: [],
+  //               });
+  //             })
+  //             .catch((error) => {
+  //               console.error("Error sending invitation:", error);
+  //               // Handle invitation sending errors gracefully (optional)
+  //             });
+  //         },
+  //       });
+  //     } else {
+  //       tt.showToast({
+  //         title: "Vui lòng đủ thông tin",
+  //         icon: "error",
+  //       });
+  //     }
+  //   }
+  // },
   addEventParticipate() {
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
     let idGroup = that.data.idGroup;
-    let attendees = that.data.attendees;
-    if (that.data.selectedInvitePerson === "Cá nhân") {
-      if (
-        that.data.idCongViec != "" &&
-        that.data.calendarID != "" &&
-        inviteOpenId.length > 0
-      ) {
-
-        tt.getStorage({
-          key: "user_access_token",
-          success: (res) => {
-            const access_token = res.data.access_token;
-            inviteOpenId.forEach((id, index) => {
-
-              const body = bodyScheduleParticipants("user", id, res);
-              createInvitation(
-                access_token,
-                that.data.calendarID,
-                that.data.idCongViec,
-                body
-              )
-                .then((result) => {
-                  console.log(result);
-                  // that.setData({attendees})
-                  tt.showToast({
-                    title: "Đã mời",
-                    icon: "success",
-                  });
-                  that.setData({
-                    events: that.data.events.map((i) => {
-                      i.checked = false;
-                      return i;
-                    }),
-                    inviteOpenId: [],
-                    invite: [],
-                    inviteData: [],
-                    avatarUrl: [],
-                    checkInvite: [],
-                    checkStatue: [],
-                  });
-                })
-                .catch((error) => {
-                  console.error("Error sending invitation:", error);
-                  // Handle invitation sending errors gracefully (optional)
-                });
-            });
-          },
-        });
-      } else {
-        tt.showToast({
-          title: "Vui lòng đủ thông tin",
-          icon: "error",
-        });
-      }
-    } else {
-      if (
-        that.data.idCongViec != "" &&
-        that.data.calendarID != "" &&
-        idGroup != ""
-      ) {
-        tt.getStorage({
-          key: "user_access_token",
-          success: (res) => {
-            const access_token = res.data.access_token;
-            const bodyGroup = bodyScheduleParticipantsGroup(
-              "chat",
-              idGroup,
-              res
-            );
+  
+    const isIndividual = that.data.selectedInvitePerson === "Cá nhân";
+    const idValid = that.data.idCongViec !== "" && that.data.calendarID !== "";
+    const inviteValid = isIndividual ? inviteOpenId.length > 0 : idGroup !== "";
+  
+    if (idValid && inviteValid) {
+      tt.getStorage({
+        key: "user_access_token",
+        success: (res) => {
+          const access_token = res.data.access_token;
+  
+          const createInvitations = (body) => {
             createInvitation(
               access_token,
               that.data.calendarID,
               that.data.idCongViec,
-              bodyGroup
+              body
             )
-              .then((result) => {
-                console.log(result);
-                // that.setData({attendees})
-                tt.showToast({
-                  title: "Đã mời",
-                  icon: "success",
-                });
-                that.setData({
-                  events: that.data.events.map((i) => {
-                    i.checked = false;
-                    return i;
-                  }),
-
-                  inviteOpenId: [],
-                  invite: [],
-                  inviteData: [],
-                  avatarUrl: [],
-
-                  chatData: [],
-                  chat: [],
-                  chatId: [],
-                  chatAvatar: [],
-                });
-              })
-              .catch((error) => {
-                console.error("Error sending invitation:", error);
-                // Handle invitation sending errors gracefully (optional)
+            .then((result) => {
+              console.log(result);
+              tt.showToast({
+                title: "Đã mời",
+                icon: "success",
               });
-          },
-        });
-      } else {
-        tt.showToast({
-          title: "Vui lòng đủ thông tin",
-          icon: "error",
-        });
-      }
+              that.setData({
+                events: that.data.events.map((i) => {
+                  i.checked = false;
+                  return i;
+                }),
+                inviteOpenId: [],
+                invite: [],
+                inviteData: [],
+                avatarUrl: [],
+                checkInvite: [],
+                checkStatue: [],
+                checkId:[],
+                chatData: [],
+                chat: [],
+                chatId: [],
+                chatAvatar: [],
+              });
+            })
+            .catch((error) => {
+              console.error("Error sending invitation:", error);
+              // Handle invitation sending errors gracefully (optional)
+            });
+          };
+  
+          if (isIndividual) {
+            inviteOpenId.forEach((id) => {
+              const body = bodyScheduleParticipants("user", id, res);
+              createInvitations(body);
+            });
+          } else {
+            const bodyGroup = bodyScheduleParticipantsGroup("chat", idGroup, res);
+            createInvitations(bodyGroup);
+          }
+        },
+      });
+    } else {
+      tt.showToast({
+        title: "Vui lòng đủ thông tin",
+        icon: "error",
+      });
     }
   },
 
