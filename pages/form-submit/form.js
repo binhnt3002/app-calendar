@@ -383,7 +383,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate),
+              that.formatDateToUTC(that.data.endDate,7),
               dataDay.isLoop
             );
             console.log(body);
@@ -409,8 +409,8 @@ Page({
                     "Ghi chú": dataDay.inputNote,
                     "Ngày làm":
                       this.dateTimeToTimestamp(dataDay.date, "") * 1000 ,
-                    EventID: rs.data.event.event_id,
-                    CalendarID: that.data.calendarID,
+                    "EventID": rs.data.event.event_id,
+                    "CalendarID": that.data.calendarID,
                     "Số giờ của 1 ngày": Math.abs(
                       (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
@@ -457,7 +457,10 @@ Page({
     return Math.floor(timestamp / 1000);
   },
 
-  formatDateToUTC(dateString) {
-    return dateString.replace(/-/g, "") + "T000000Z";
+  formatDateToUTC(dateString,days) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    const newDate = date.toISOString().split('T')[0]
+    return newDate.replace(/-/g, "") + "T000000Z";
   },
 });

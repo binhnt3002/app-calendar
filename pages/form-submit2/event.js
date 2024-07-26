@@ -178,11 +178,23 @@ Page({
                 url: chatAvatar[index],
                 checked: false,
               }));
+              if(that.data.checkChatStatue.length===0){
+                console.log(1);
+                that.setData({
+                  chatData
+                })
+              } else {
+                chatData = chatData.filter(obj => !that.data.checkChatInvite.map(i =>i.name).includes(obj.name));
+                console.log(chatData);
+                that.setData({
+                  chatData
+                })
+              }
+              
               that.setData({
                 chat,
                 chatId,
                 chatAvatar,
-                chatData,
               });
             });
           },
@@ -312,6 +324,13 @@ Page({
       checkInvite: [],
       checkStatue: [],
       checkId: [],
+      chat:[],
+      chatAvatar: [],
+      chatData: [],
+      chatId: [],
+      checkChatStatue: [],
+      checkChatId: [],
+      checkChatInvite: []
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
@@ -617,6 +636,9 @@ Page({
                   chat: [],
                   chatId: [],
                   chatAvatar: [],
+                  checkChatInvite: [],
+                  checkChatStatue: [],
+                  checkChatId: [],
                 });
               })
               .catch((error) => {
@@ -628,8 +650,8 @@ Page({
           if (isIndividual) {
             const body2 = {
               "fields": {
-                "Người làm *" : [{"id" : that.data.inviteData2[0].id}],
-                "Mời": this.data.inviteData2.map((i) => ({"id" : i.id})),
+                "Người làm *" : [{"id" : that.data.inviteData[0].id}],
+                "Mời": this.data.inviteData.map((i) => ({"id" : i.id})),
               },
             };
             updateRecord(access_token, body2, that.data.tableName[0].table,that.data.getRecord).then(

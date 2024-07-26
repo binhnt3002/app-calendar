@@ -57,7 +57,7 @@
               </block>
               <block wx:else>
                 <block wx:for="{{checkChatInvite}}" wx:key="*this.value">
-                  <view class="event-item">
+                  <view class="event-item" style="background-color:rgb(250, 212, 245)">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
