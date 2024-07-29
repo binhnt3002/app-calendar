@@ -58,7 +58,7 @@ Page({
       "Thứ 5",
       "Thứ 6",
       "Thứ 7",
-      "Chủ nhật"],// Các giá trị trong combobox
+      "Chủ Nhật"],// Các giá trị trong combobox
     selectedFilter: "Tất cả", // Giá trị mặc định khi combobox mở ra
 
     filterTheloai: [],
