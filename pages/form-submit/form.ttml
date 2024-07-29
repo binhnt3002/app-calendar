@@ -1,142 +1,185 @@
-<div class="page-task-form">
-
+<view class="page-task-form">
   <view class="form-1" style="background:#c9d9e5 ;">
     <view class="header">
-      <text>TẠO CÔNG VIỆC</text>
+      Tạo công việc mới
     </view>
     <view class="body">
-      <block class="task-name">
-        <div class="title1"><image class="f-icon" src="/images/tasks.svg" style="color:#045A97;"/>Việc cần làm</div>
-        <textarea class="input-text" type="text" value="{{inputValue}}" id="task" placeholder="Nhập chi tiết công việc..."
-          style="margin-top: 5px;margin-right: 10px;"bindinput="inputTittle">
-      </block>
-      <view class="row">
-        <view class="col-12 col-sm-3">
-          <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
-          <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
-            {{chonlich}}
-          </picker>
-        </view>
-        <view class="col-12 col-sm-3">
-          <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
-          <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
-            {{selectedCategory}}
-          </picker>
-        </view>
-        <view class="col-12 col-sm-3">
-          <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
-          <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
-            {{selectedurgent}}
-          </picker>
-        </view>
-        <view class="col-12 col-sm-3">
-          <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
-          <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
-            {{selectedImportant}}
-          </picker>
-        </view>
-      </view>
-      <!-- Seclected time -->
-      <view class="row" style="margin-top: 10px;">
-        <view class="col-4">
-          <block class="select-time">
-            <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Số giờ cần có</div >
-            <picker class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
-              {{selectedHours}}
-            </picker>
-          </block>  
-        </view>
-        <view class="col-4">
-          <block class="select-time"> 
-            <div  class="title1"> <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày bắt đầu</div >
-            <picker  class="picker-date" mode="date" id="datePicker"  start="{{mindate}}" bindchange="onDateChange1">
-              {{startDate}}
-            </picker>
-          </block>
-        </view>
-        <view class="col-4">
-          <block class="select-time"> 
-            <div text class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày kết thúc</div >
-            <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
-              {{endDate}}
-            </picker>
-          </block>
-        </view>
-      </view>
-
-      <!-- Seclected time -->
-
-
-      <view class="row"  style="margin-top: 10px;">
-        <view class="col-6">
-          <div  class="title1"><image class="f-icon" src="/images/clock-solid.svg" mode=""/>Chọn thời gian làm việc</div >
+      <view class="box">
+        <view class="section-1">
+          <view class="row align-items-start">
+            <view class="col-8">
+              <block class="task-name">
+                <div class="title1">
+                  <image class="f-icon" src="/images/tasks.svg" style="color:#ff92a4;" />Việc cần làm
+                </div>
+                <textarea class="input-text" type="text" value="{{inputValue}}" id="task"
+                  placeholder="Nhập chi tiết công việc..." style="margin-top: 5px;margin-right: 10px;"
+                  bindinput="inputTittle">
+              </block>
+            </view>
+            <view class="col-4 ml-auto">
+              <view class="row" style="display:block;">
+                <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
+                <picker style="margin-top:5px;"class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+                  {{selectedCategory}}
+                </picker>
+              </view>
+              <view class="row" style="display:block;" >
+                <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
+                <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
+                {{selectedurgent}}
+                </picker>
+              </view>
+            </view>
+          </view>
+          <view class="row">
+            <view class="col-8">
+              <block class="task-name">
+                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
+                <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+                  {{chonlich}}
+                </picker>
+              </block>
+            </view>
+            <view class="col-4 ml-auto">
+              <view class="row" style="display:block;">
+                <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
+                 <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+                {{selectedImportant}}
+                </picker>
+              </view>
+            </view>
+          </view>
         </view> 
-        <view class="col-2">
-          <div  class="title1"><image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu</div >
-        </view>  
-        <view class="col-2">
-          <div  class="title1"><image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc</div >
-        </view>   
-        <view class="col-2">
-          <div  class="title1">Lặp lại</div >
-        </view>
-      </view>
-      <view class="row">
-        <view class="col-2">
-          <block class="select-time"> 
-            <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;"  range="{{dayOptions}}" bindchange="onWeekChange">
-              {{selectedDay}}
-            </picker>
-          </block>
-
-        </view>
-        <view class="col-4">
-          <block class="select-time">
-            <picker class="picker-date" mode="date" id="datePicker"   start="{{startDate}}" end="{{endDate}}" bindchange="onDateChange3" placeholder="yyyy-mm-dd">
-              {{selectedDayWork}}
-            </picker>
-          </block>
-        </view>
-        <view class="col-2">
-          <block class="select-time">
-            <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-              {{startTime}}
-            </picker>
-          </block>
-        </view>
-        <view class="col-2">
-          <block class="select-time">
-            <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-              {{endTime}}
-            </picker>
-          </block>               
-        </view> 
-        <view  class="col-2">
-          <block class="select-time">
-            <label style="margin-left:15px;"> 
-              <checkbox style="height: 15px; width: 15px; transform: scale(1.3);" bindtap="checkboxChange" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
-            </label>
-          </block>               
-        </view> 
-      </view>      
-      <view class="note-info" style="margin-top: 1px;">
-        <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
-        <textarea class="input-text" value="{{inputNote}}" placeholder="Điền ghi chú " bindinput="inputNote">
-      </view>
-      <view class="row notes">
-        <view class="col-8">
-          <view class="notes">
-            <view>Chú Thích:</view>
-            <view>* Chọn lịch: chọn lịch của mỗi cá nhân.</view>
-            <view>* Thể loại: có 5 thể loại tùy theo mục đích của công việc.</view>
-            <view>* Cấp bách: có 3 mức độ cao nhất là 1, thấp nhất là 3.</view>
-            <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
+        <view class="section-2">
+          <view class="row" style="margin-left:2px;">
+            <view class="note-info">
+              <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+            </view>
+          </view>
+          <view class="row" style="margin-left:2px;">
+            <textarea style="height:120px;" class="input-text1" value="{{inputNote}}" placeholder="Điền ghi chú " bindinput="inputNote">
+            </textarea>
+            </view>
+          </view>
+          <view class="section-3">
+            <div class="row align-items-start" style="margin-top: 5px;">
+              <div class="col" style="padding-right:0px !important;">
+                <block class="select-time">
+                  <div class="title1">
+                    <image class="f-icon" src="/images/warning.svg" mode="" />Số giờ cần có
+                  </div>
+                  <picker class="picker-text" mode="selector" id="important" range="{{hours}}"
+                    bindchange="onSelectedHours">
+                    {{selectedHours}}
+                  </picker>
+                </block>
+              </div>
+              <div class="col" style="padding-right:0px !important;">
+                <block class="select-time">
+                  <div class="title1">
+                    <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày bắt đầu
+                  </div>
+                  <picker class="picker-date" mode="date" id="datePicker" start="{{mindate}}"
+                    bindchange="onDateChange1">
+                    {{startDate}}
+                  </picker>
+                </block>
+              </div>
+              <div class="col" style="padding-right:0px !important;">
+                <block class="select-time">
+                  <div text class="title1">
+                    <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc
+                  </div>
+                  <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}"
+                    bindchange="onDateChange2">
+                    {{endDate}}
+                  </picker>
+                </block>
+              </div>
+            </div>
+            <view class="row" style="margin-left:2px;">
+              <view class="note-info">
+                <div class="title1">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" />Chọn thời gian làm việc
+                </div>
+              </view>
+            </view>
+            <view class="row">
+              <view class="col-8">
+                <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"
+                  bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+                  {{selectedDayWork}}
+                </picker>
+              </view>
+              <view class="col-4 ml-auto">
+                <view class="row" style="display:block;">
+                  <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;"
+                    range="{{dayOptions}}" bindchange="onWeekChange">
+                    {{selectedDay}}
+                  </picker>
+                </view>
+              </view>
+            </view>
+            <div class="row align-items-start" style="margin-top: 5px;">
+              <div class="col" style="padding-right:0px !important;">
+                <block class="select-time">
+                  <div class="title1">
+                    <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu
+                  </div>
+                  <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+                    {{startTime}}
+                  </picker>
+                </block>
+              </div>
+              <div class="col" style="padding-right:0px !important;">
+                <block class="select-time">
+                  <div class="title1">
+                    <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc
+                  </div>
+                  <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+                    {{endTime}}
+                  </picker>
+                </block>
+              </div>
+              <div class="col" style="padding-right:0px !important;">
+                <div class="title1">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại
+                </div>
+                <block class="select-time">
+                  <label style="justify-content: center; display: flex;">
+                    <checkbox style="height: 15px; width: 15px; transform: scale(1.3); margin-bottom: 5px;"
+                      bindtap="checkboxChange" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
+                  </label>
+                </block>
+              </div>
+            </div>
           </view>
         </view>
-        <view class=" col-4">
-          <button class="btn btn-primary m-2" bindtap="createTask" style="border-radius: none !important;">Tạo công việc</button>
+        <view class="row" style="padding-bottom: 20px; padding-top: 10px;">
+          <view class="col-6">
+            <view class="notes">
+              <view>Chú Thích:</view>
+              <view>* Chọn lịch: chọn lịch của mỗi cá nhân.</view>
+              <view>* Thể loại: có 5 thể loại tùy theo mục đích của công việc.</view>
+              <view>* Cấp bách: có 3 mức độ cao nhất là 1, thấp nhất là 3.</view>
+              <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
+            </view>
+          </view>
+          <view class="col-6" style="display: flex; justify-content: flex-end; align-items: center;">
+            <button class="btn btn-primary m-2" bindtap="createTask"
+              style="border-radius: none !important; margin-left: auto;">Tạo công việc</button>
+          </view>
         </view>
-      </view> 
+
+      </view>
     </view>
   </view>
-</div>
+
+
+  <view class="footer">
+
+
+  </view>
+</view>
+</view>

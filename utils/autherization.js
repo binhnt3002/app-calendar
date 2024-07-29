@@ -9,6 +9,10 @@ async function getAuthorizationCode(app_access_token) {
 
         tt.setStorageSync("user_access_token", result.data);
 
+        // refeshTOken(app_access_token, result.data.refresh_token).then((result) => {
+        //   console.log(result.data);
+        // });
+
         getUserInfo(result.data.access_token);
       });
     },
@@ -69,19 +73,17 @@ async function getUserInfo(user_token) {
 }
 
 async function refeshTOken(app_token, refres_tok) {
-  const url = "https://open.larksuite.com/open-apis/authen/v1/refresh_token";
+  const url = "https://open.larksuite.com/open-apis/authen/v1/refresh_access_token";
   const headers = {
-    "content-type": "application/json; charset=utf-8",
-    Authorization: "Bearer " + app_token,
+    Authorization: `Bearer ${app_token}`,
+    "Content-Type": "application/json",
   };
   const body = {
     grant_type: "refresh_token",
     refresh_token: refres_tok,
   };
 
-  sendRequest(url, "POST", headers, body).then((result) => {
-    console.log(result);
-  });
+  return sendRequest(url, "POST", headers, body);
 }
 
 export { getAppAccessToken, getUserInfo, getAuthorizationCode, refeshTOken };

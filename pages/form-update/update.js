@@ -57,7 +57,7 @@ Page({
       "Thứ 5",
       "Thứ 6",
       "Thứ 7",
-      "Chủ nhật"],// Các giá trị trong combobox
+      "Chủ Nhật"],// Các giá trị trong combobox
     selectedFilter: "Tất cả", // Giá trị mặc định khi combobox mở ra
     selectedQuanTrong: "Tất cả",
     selectedCapBach: "Tất cả",
@@ -116,7 +116,6 @@ Page({
       });
     }
 
-    console.log(this.data.startDate);
   },
 
   onDateChange2: function (e) {
@@ -163,9 +162,14 @@ Page({
 
   onShow() {
     let that = this;
-    that.listTask();
+
+    that.listTask(); 
   },
   listTask() {
+    tt.showToast({
+      title: "Đang tải dữ liệu",
+      icon : "loading",
+    })
     let that = this;
     let vieccanlam = that.data.vieccanlam;
     let theloai = that.data.theloai;
@@ -321,6 +325,12 @@ Page({
               sogiocanco,
               recordId,
             });
+
+            tt.showToast({
+              title: "tải thành công",
+              icon : "success",
+            })
+
           });
         });
       },
@@ -383,7 +393,7 @@ Page({
           that.dateTimeToTimestamp(that.data.edit.ngaylam, that.data.endTime),
           that.data.inputNote
         );
-
+        
         // console.log(body);
         // updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid,body).then ((rs)=>{
         //   console.log(rs);
@@ -478,6 +488,9 @@ Page({
   confirmUpdate(e) {
     const eventId = e.currentTarget.id;
     const that = this;
+    if (that.data.startTime == "" && that.data.endTime == "") {
+      return tt.showToast({ title: "Vui lòng nhập thời gian !", icon: "warning" });
+    }
 
     tt.showModal({
       title: "Xác nhận cập nhật công việc",

@@ -168,14 +168,14 @@
         </view>
         <view class="col-2">
           <block class="select-time">
-            <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+            <picker  class="picker-time" mode="time" id="datePicker" required bindchange="onTimeChange1">
               {{startTime}}
             </picker>
           </block>
         </view>
         <view class="col-2">
           <block class="select-time">
-            <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+            <picker class="picker-time" mode="time" id="datePicker" required bindchange="onTimeChange2">
               {{endTime}}
             </picker>
           </block>               
