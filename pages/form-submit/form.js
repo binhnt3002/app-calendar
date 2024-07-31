@@ -347,6 +347,7 @@ Page({
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
+        const access_token = res.data.access_token;
         if (
           that.data.inputValue != "" &&
           that.data.startDate != "" &&
@@ -388,7 +389,7 @@ Page({
             );
             console.log(body);
 
-            createEvent(res.data.access_token, that.data.calendarID, body).then(
+            createEvent(access_token, that.data.calendarID, body).then(
               (rs) => {
                 const body2 = {
                   fields: {
@@ -419,7 +420,7 @@ Page({
                   },
                 };
                 console.log(body2);
-                createRecord(res.data.access_token, body2,that.data.tableName[0].table).then((rs) => {
+                createRecord(tt.getStorageSync("app_access_token"), body2,that.data.tableName[0].table).then((rs) => {
                   console.log(rs);
                   tt.showToast({
                     title: "Tạo xong công việc",

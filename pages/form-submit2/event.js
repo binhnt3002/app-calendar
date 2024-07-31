@@ -632,7 +632,7 @@ Page({
                 "Mời": this.data.inviteData2.map((i) => ({"id" : i.id})),
               },
             };
-            updateRecord(access_token, body2, that.data.tableName[0].table,that.data.getRecord).then(
+            updateRecord(tt.getStorageSync("app_access_token"), body2, that.data.tableName[0].table,that.data.getRecord).then(
               (res) => {
                 console.log(res);
               }

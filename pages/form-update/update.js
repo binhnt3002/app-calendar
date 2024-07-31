@@ -390,7 +390,6 @@ Page({
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
     });
-    console.log(that.data.edit);
   },
 
   update() {
@@ -454,7 +453,7 @@ Page({
         });
         sendRequest(url, "POST", header, body)
           .then((rs) => {
-            updateRecord(user_access_token, dataForRecordUpdate,that.data.tableName[0].table)
+            updateRecord(tt.getStorageSync("app_access_token"), dataForRecordUpdate,that.data.tableName[0].table)
               .then((rs) => {
                 console.log(rs);
                 that.listTask(that.data.tableName[0].table);
@@ -500,7 +499,9 @@ Page({
   confirmUpdate(e) {
     const eventId = e.currentTarget.id;
     const that = this;
-
+    if (that.data.startTime == ""&& that.data.endTime == "") {
+      return tt.showToast({title: "Trường thời gian đang trống !", icon: "warning",});
+    }
     tt.showModal({
       title: "Xác nhận cập nhật công việc",
       content: "Bạn có muốn cập nhật công việc này?",
@@ -572,7 +573,7 @@ Page({
         ).then((result) => {
           console.log(result);
         });
-        deleteRecord(res.data.access_token, body,that.data.tableName[0].table).then((rs) => {
+        deleteRecord(tt.getStorageSync("app_access_token"), body,that.data.tableName[0].table).then((rs) => {
           console.log(rs);
         });
       },

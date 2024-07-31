@@ -14,7 +14,7 @@ App({
   GlobalConfig: {
     // baseId: "FeaubtGlja6dtds66P7l6iYbgwd",
     // tableId: "tblPjWdyJh5OdMZe",
-    baseId: "VdYQbYrvjaElwystb6LljoGxgHd"
+    baseId: "E3Ryby8bWawtp2sGBPQluCvLgUg"
 
   },
 });
