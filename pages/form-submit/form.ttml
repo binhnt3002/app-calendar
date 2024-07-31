@@ -156,7 +156,7 @@
             </div>
           </view>
         </view>
-        <view class="row" style="padding-bottom: 20px; padding-top: 10px;">
+        <view class="row" style="padding-bottom: 20px; padding-top: 30px;">
           <view class="col-6">
             <view class="notes">
               <view>Chú Thích:</view>

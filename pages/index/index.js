@@ -1,5 +1,6 @@
 import { sendRequest } from "../../utils/sendRequest";
 import { createSpec } from "./spec/getSpec";
+import {getAllTableName} from "../function/apiFunction";
 
 const appVar = getApp();
 
@@ -21,6 +22,15 @@ Page({
 
     spec4: createSpec("bar", "data4", 30, 0),
     totalHoursInWeek: 48,
+
+    tableName: [],
+
+    allData: [],
+  },
+  onLoad(){
+    getAllTableName(tt.getStorageSync("user_access_token").access_token).then((rs) => {
+      this.setData({ tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})) });
+    })
   },
 
   onShow() {
@@ -49,12 +59,16 @@ Page({
       return total;
     }, 0);
   },
+
+  
+
   onChangeHoursWeek(e) {
     this.setData({
       totalHoursInWeek: e.detail.value,
     });
     this.reloadDashboard();
   },
+
 
   getValueRecord() {
     const addInfor = {
@@ -63,23 +77,22 @@ Page({
       seriesField: "type",
     };
     Object.assign(this.data.spec4, addInfor);
-
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
         const access_token = res.data.access_token;
-        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${this.data.tableName[0].table}/records/search`;
         const headers = {
           Authorization: `Bearer ${access_token}`,
           "Content-Type": "application/json",
         };
 
-        const body = {
+        const body2 = {
           field_names: [
-            "Việc cần làm",
+            "Tên Task *",
             "Thể loại",
-            "Quan trọng",
-            "Cấp bách",
+            "Quan Trọng",
+            "Cấp Bách",
             "Số giờ cần có",
           ],
 
@@ -87,7 +100,29 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Person",
+                field_name: "Mời",
+                operator: "contains",
+                value: [res.data.open_id],
+              },
+            ],
+          },
+          automatic_fields: false,
+        };
+
+        const body = {
+          field_names: [
+            "Tên Task *",
+            "Thể loại",
+            "Quan Trọng",
+            "Cấp Bách",
+            "Số giờ cần có",
+          ],
+
+          filter: {
+            conjunction: "and",
+            conditions: [
+              {
+                field_name: "Người giao việc *",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -96,43 +131,50 @@ Page({
           automatic_fields: false,
         };
 
+        sendRequest(url, "POST", headers, body2).then((rs) => {
+          this.setData({
+            allData: rs.data.items,
+        });
+      });
+
         sendRequest(url, "POST", headers, body).then((result) => {
           console.log(result.data);
-          let listItems = result.data?.items || 0;
-          let listItemsLength = result.data?.total || 0;
+          let data = [...this.data.allData, ...result.data.items];
+          let listItems = data || 0;
+          let listItemsLength = data.length || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
-            "Cấp bách",
+            "Cấp Bách",
             "1",
             listItemsLength
           );
           let totalHours2 = this.calculateTotal(
             listItems,
-            "Cấp bách",
+            "Cấp Bách",
             "2",
             listItemsLength
           );
           let totalHours3 = this.calculateTotal(
             listItems,
-            "Cấp bách",
+            "Cấp Bách",
             "3",
             listItemsLength
           );
           let totalHoursQuanTrongA = this.calculateTotal(
             listItems,
-            "Quan trọng",
+            "Quan Trọng",
             "A",
             listItemsLength
           );
           let totalHoursQuanTrongB = this.calculateTotal(
             listItems,
-            "Quan trọng",
+            "Quan Trọng",
             "B",
             listItemsLength
           );
           let totalHoursQuanTrongC = this.calculateTotal(
             listItems,
-            "Quan trọng",
+            "Quan Trọng",
             "C",
             listItemsLength
           );
@@ -142,185 +184,94 @@ Page({
           let spec3 = this.data.spec3;
           let spec2 = this.data.spec2;
           // Add percentage to each value
+          function calculatePercentage(value, total) {
+            return ((value / total) * 100).toFixed(0);
+          };
           if (distance >= 0) {
+            // Trường hợp thiếu giờ
             spec3.data[0].values = [
               {
                 value: totalHours1,
-                type:
-                  "Cấp bách 1: " +
-                  ((totalHours1 / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHours1 +
-                  " giờ",
+                type: "Cấp bách 1: " + calculatePercentage(totalHours1, this.data.totalHoursInWeek) + "% - " + totalHours1 + " giờ",
               },
               {
                 value: totalHours2,
-                type:
-                  "Cấp bách 2: " +
-                  ((totalHours2 / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHours2 +
-                  " giờ",
+                type: "Cấp bách 2: " + calculatePercentage(totalHours2, this.data.totalHoursInWeek) + "% - " + totalHours2 + " giờ",
               },
               {
                 value: totalHours3,
-                type:
-                  "Cấp bách 3: " +
-                  ((totalHours3 / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHours3 +
-                  " giờ",
+                type: "Cấp bách 3: " + calculatePercentage(totalHours3, this.data.totalHoursInWeek) + "% - " + totalHours3 + " giờ",
               },
               {
                 value: distance,
-                type:
-                  "Thiếu: " +
-                  ((distance / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  distance +
-                  " giờ",
+                type: "Thiếu: " + calculatePercentage(distance, this.data.totalHoursInWeek) + "% - " + distance + " giờ",
               },
             ];
             spec2.data[0].values = [
               {
                 value: totalHoursQuanTrongA,
-                type:
-                  "Quan trọng A: " +
-                  ((totalHoursQuanTrongA / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongA +
-                  " giờ",
+                type: "Quan trọng A: " + calculatePercentage(totalHoursQuanTrongA, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongA + " giờ",
               },
               {
                 value: totalHoursQuanTrongB,
-                type:
-                  "Quan trọng B: " +
-                  ((totalHoursQuanTrongB / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongB +
-                  " giờ",
+                type: "Quan trọng B: " + calculatePercentage(totalHoursQuanTrongB, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongB + " giờ",
               },
               {
                 value: totalHoursQuanTrongC,
-                type:
-                  "Quan trọng C: " +
-                  ((totalHoursQuanTrongC / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongC +
-                  " giờ",
+                type: "Quan trọng C: " + calculatePercentage(totalHoursQuanTrongC, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongC + " giờ",
               },
               {
                 value: distance,
-                type:
-                  "Thiếu: " +
-                  ((distance / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  distance +
-                  " giờ",
+                type: "Thiếu: " + calculatePercentage(distance, this.data.totalHoursInWeek) + "% - " + distance + " giờ",
               },
             ];
           } else {
+            // Trường hợp dư giờ
             spec3.data[0].values = [
               {
                 value: totalHours1,
-                type:
-                  "Cấp bách 1: " +
-                  ((totalHours1 / this.data.totalHoursInWeek) * 100).toFixed(
-                    0
-                  ) +
-                  "% - " +
-                  totalHours1 +
-                  " giờ",
+                type: "Cấp bách 1: " + calculatePercentage(totalHours1, this.data.totalHoursInWeek) + "% - " + totalHours1 + " giờ",
               },
               {
                 value: totalHours2,
-                type:
-                  "Cấp bách 2: " +
-                  ((totalHours2 / this.data.totalHoursInWeek) * 100).toFixed(
-                    0
-                  ) +
-                  "% - " +
-                  totalHours2 +
-                  " giờ",
+                type: "Cấp bách 2: " + calculatePercentage(totalHours2, this.data.totalHoursInWeek) + "% - " + totalHours2 + " giờ",
               },
               {
                 value: totalHours3,
-                type:
-                  "Cấp bách 3: " +
-                  ((totalHours3 / this.data.totalHoursInWeek) * 100).toFixed(
-                    0
-                  ) +
-                  "% - " +
-                  totalHours3 +
-                  " giờ",
+                type: "Cấp bách 3: " + calculatePercentage(totalHours3, this.data.totalHoursInWeek) + "% - " + totalHours3 + " giờ",
               },
               {
                 value: -distance,
-                type:
-                  "Dư: " +
-                  ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) +
-                  "% - " +
-                  -distance +
-                  " giờ",
+                type: "Dư: " + calculatePercentage(-distance, this.data.totalHoursInWeek) + "% - " + -distance + " giờ",
               },
             ];
             spec2.data[0].values = [
               {
                 value: totalHoursQuanTrongA,
-                type:
-                  "Quan trọng A: " +
-                  (
-                    (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
-                    100
-                  ).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongA +
-                  " giờ",
+                type: "Quan trọng A: " + calculatePercentage(totalHoursQuanTrongA, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongA + " giờ",
               },
               {
                 value: totalHoursQuanTrongB,
-                type:
-                  "Quan trọng B: " +
-                  (
-                    (totalHoursQuanTrongB / this.data.totalHoursInWeek) *
-                    100
-                  ).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongB +
-                  " giờ",
+                type: "Quan trọng B: " + calculatePercentage(totalHoursQuanTrongB, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongB + " giờ",
               },
               {
                 value: totalHoursQuanTrongC,
-                type:
-                  "Quan trọng C: " +
-                  (
-                    (totalHoursQuanTrongC / this.data.totalHoursInWeek) *
-                    100
-                  ).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongC +
-                  " giờ",
+                type: "Quan trọng C: " + calculatePercentage(totalHoursQuanTrongC, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongC + " giờ",
               },
               {
                 value: -distance,
-                type:
-                  "Dư: " +
-                  ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) +
-                  "% - " +
-                  -distance +
-                  " giờ",
+                type: "Dư: " + calculatePercentage(-distance, this.data.totalHoursInWeek) + "% - " + -distance + " giờ",
               },
             ];
           }
-
           // Calculate total values for percentage calculation
-          const totalTheLoai = result.data?.items?.length || 0;
+          const totalTheLoai = data?.length || 0;
 
           let spec4 = this.data.spec4;
           spec4.data[0].values = [
             {
               value:
-                result.data?.items?.filter(
+               data.filter(
                   (item) => item.fields["Thể loại"] == "Việc chính"
                 )?.length || 0,
               type: "Việc chính",
@@ -328,7 +279,7 @@ Page({
 
             {
               value:
-                result.data?.items?.filter(
+               data.filter(
                   (item) => item.fields["Thể loại"] == "Việc phát sinh"
                 )?.length || 0,
               type: "Việc phát sinh",
@@ -336,7 +287,7 @@ Page({
 
             {
               value:
-                result.data?.items?.filter(
+               data.filter(
                   (item) => item.fields["Thể loại"] == "Việc cần đôn đốc"
                 )?.length || 0,
               type: "Việc cần đôn đốc",
@@ -344,7 +295,7 @@ Page({
 
             {
               value:
-                result.data?.items?.filter(
+               data.filter(
                   (item) => item.fields["Thể loại"] == "Đọc & học"
                 )?.length || 0,
               type: "Đọc & học",
@@ -352,7 +303,7 @@ Page({
 
             {
               value:
-                result.data?.items?.filter(
+               data.filter(
                   (item) => item.fields["Thể loại"] == "Dự án"
                 )?.length || 0,
               type: "Dự án",
@@ -460,21 +411,25 @@ Page({
             totalHours,
             percentdistanceClass,
           });
+          // this.updateValueRecord();
 
           tt.showToast({
             title: "tải thành công !",
             icon: "success",
           });
         });
+        
+
+        
       },
     });
   },
 
   reloadDashboard: function () {
     // this.data.spec.data[0].values = [];
-    this.data.spec2.data[0].values = [];
-    this.data.spec3.data[0].values = [];
-    this.data.spec4.data[0].values = [];
+    // this.data.spec2.data[0].values = [];
+    // this.data.spec3.data[0].values = [];
+    // this.data.spec4.data[0].values = [];
     this.getValueRecord();
   },
 });

@@ -6,14 +6,14 @@ async function getAuthorizationCode(app_access_token) {
       const code = res.code;
       return getUserToken(app_access_token, code).then((result) => {
         tt.setStorageSync("isComplete", true);
-
         tt.setStorageSync("user_access_token", result.data);
 
-        // refeshTOken(app_access_token, result.data.refresh_token).then((result) => {
-        //   console.log(result.data);
+        // refeshTOken(app_access_token, result.data.refresh_token).then((rs) => {
+        //   console.log(rs);
+        //   tt.setStorageSync("user_access_token", rs.data);
         // });
-
         getUserInfo(result.data.access_token);
+
       });
     },
     fail: function (res) {
@@ -22,8 +22,7 @@ async function getAuthorizationCode(app_access_token) {
   });
 }
 async function getAppAccessToken() {
-  const url =
-    "https://open.larksuite.com/open-apis/auth/v3/app_access_token/internal";
+  const url = "https://open.larksuite.com/open-apis/auth/v3/app_access_token/internal";
   const headers = {
     "content-type": "application/json",
   };
@@ -32,14 +31,9 @@ async function getAppAccessToken() {
     app_secret: "Xo29OAjgiiE5ANYCIWRR5etAwqGP08dN",
   };
 
-  sendRequest(url, "POST", headers, body).then((result) => {
-    console.log(result);
-    tt.setStorage({
-      key: "app_access_token",
-      data: result.app_access_token,
-    });
-    return getAuthorizationCode(result.app_access_token);
-  });
+  const result = await sendRequest(url, "POST", headers, body);
+  tt.setStorageSync("app_access_token", result.app_access_token);
+  await getAuthorizationCode(result.app_access_token);
 }
 
 async function getUserToken(app_token, code) {
@@ -64,12 +58,8 @@ async function getUserInfo(user_token) {
     "content-type": "application/json",
     Authorization: "Bearer " + access_token,
   };
-  sendRequest(url, "GET", headers).then((result) => {
-    tt.setStorage({
-      key: "user_info",
-      data: result.data,
-    });
-  });
+  const result = await sendRequest(url, "GET", headers);
+  tt.setStorageSync("user_info", result.data);
 }
 
 async function refeshTOken(app_token, refres_tok) {

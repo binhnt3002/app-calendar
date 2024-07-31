@@ -1,8 +1,9 @@
-import { searchRecord, getCalendar } from "../form-submit/function/apiFunction";
+import { searchRecord, getCalendar,getAllTableName } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
   deleteEvent,
+
 } from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
@@ -59,10 +60,18 @@ Page({
       "Thứ 7",
       "Chủ Nhật"],// Các giá trị trong combobox
     selectedFilter: "Tất cả", // Giá trị mặc định khi combobox mở ra
+
+    filterTheloai: [],
+    filterQuantrong: ["A", "B", "C"],
+    selFilterQuantrong: "A",
+
+    tableName: [],
+
     selectedQuanTrong: "Tất cả",
     selectedCapBach: "Tất cả",
     selectedThu: "Tất cả",
     filterData: [],
+
   },
   inputNote: function (e) {
     this.setData({
@@ -159,17 +168,26 @@ Page({
       selectedDay: dayKey,
     });
   },
+  
 
   onShow() {
-    let that = this;
+    const  accessToken  = tt.getStorageSync("user_access_token").access_token;
+    const tableName = this.data.tableName.filter(({ name }) =>
+      name.includes("Bảng Phân Công")
+    );
+    const tableId = tableName[0]?.table;
 
-    that.listTask(); 
+    getAllTableName(accessToken).then((response) => {
+      console.log(response);
+      const filteredTableName = response.data.items
+        .filter(({ name }) => name.includes("Bảng Phân Công"))
+        .map(({ name, table_id }) => ({ name, table: table_id }));
+
+      this.setData({ tableName: filteredTableName });
+      this.listTask(this.data.tableName[0].table);
+    });
   },
-  listTask() {
-    tt.showToast({
-      title: "Đang tải dữ liệu",
-      icon : "loading",
-    })
+  listTask(table_id) {
     let that = this;
     let vieccanlam = that.data.vieccanlam;
     let theloai = that.data.theloai;
@@ -209,14 +227,14 @@ Page({
         const access_token = res.data.access_token;
         const body = {
           field_names: [
-            "Việc cần làm",
+            "Tên Task *",
             "Thể loại",
-            "Quan trọng",
-            "Cấp bách",
+            "Quan Trọng",
+            "Cấp Bách",
             "Số giờ cần có",
             "Thứ",
-            "Ngày - Giờ bắt đầu",
-            "Ngày - Giờ kết thúc",
+            "Thời gian bắt đầu *",
+            "Thời gian kết thúc *",
             "Ngày làm",
             "Ghi chú",
             "EventID",
@@ -228,7 +246,7 @@ Page({
               asc: true,
             },
             {
-              field_name: "Việc cần làm",
+              field_name: "Tên Task *",
               asc: true,
             },
           ],
@@ -236,7 +254,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Person",
+                field_name: "Người giao việc *",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -244,24 +262,24 @@ Page({
           },
           automatic_fields: false,
         };
-        searchRecord(access_token, body).then((result) => {
+        searchRecord(access_token, body, table_id).then((result) => {
           console.log(result);
           result.data.items.map((item) => {
             vieccanlam.push({
-              vieccanlam: item.fields["Việc cần làm"][0].text,
+              vieccanlam: item.fields["Tên Task *"][0].text,
             }),
               theloai.push({ theloai: item.fields["Thể loại"] }),
-              quantrong.push({ quantrong: item.fields["Quan trọng"] }),
-              capbach.push({ capbach: item.fields["Cấp bách"] }),
+              quantrong.push({ quantrong: item.fields["Quan Trọng"] }),
+              capbach.push({ capbach: item.fields["Cấp Bách"] }),
               thu.push({ thu: item.fields["Thứ"].value[0].text });
             ngaygiobatdau.push({
               ngaygiobatdau: that.convertTimestampToDate(
-                item.fields["Ngày - Giờ bắt đầu"]
+                item.fields["Thời gian bắt đầu *"]
               ),
             }),
               ngaygioketthuc.push({
                 ngaygioketthuc: that.convertTimestampToDate(
-                  item.fields["Ngày - Giờ kết thúc"]
+                  item.fields["Thời gian kết thúc *"]
                 ),
               }),
               ghichu.push({
@@ -377,7 +395,6 @@ Page({
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
     });
-    console.log(that.data.edit);
   },
 
   update() {
@@ -427,7 +444,7 @@ Page({
             {
               record_id: that.data.edit.recordId,
               fields: {
-                "Việc cần làm": that.data.inputValue,
+                "Tên Task *": that.data.inputValue,
                 "Ghi chú": that.data.inputNote,
               },
             },
@@ -441,11 +458,10 @@ Page({
         });
         sendRequest(url, "POST", header, body)
           .then((rs) => {
-            console.log(rs);
-            updateRecord(user_access_token, dataForRecordUpdate)
+            updateRecord(tt.getStorageSync("app_access_token"), dataForRecordUpdate,that.data.tableName[0].table)
               .then((rs) => {
                 console.log(rs);
-                that.listTask();
+                that.listTask(that.data.tableName[0].table);
                 tt.hideToast({
                   toastId: toastId, // Use the toastId from the initial showToast call to hide it
                 });
@@ -464,7 +480,7 @@ Page({
                 // Optionally, show an error toast to the user
                 tt.showToast({
                   title: "Cập nhật thất bại",
-                  icon: "fail",
+                  icon: "error",
                   duration: 3000,
                 });
               });
@@ -477,7 +493,7 @@ Page({
             // Optionally, show an error toast to the user
             tt.showToast({
               title: "Gửi yêu cầu thất bại",
-              icon: "fail",
+              icon: "error",
               duration: 3000,
             });
           });
@@ -488,10 +504,9 @@ Page({
   confirmUpdate(e) {
     const eventId = e.currentTarget.id;
     const that = this;
-    if (that.data.startTime == "" && that.data.endTime == "") {
-      return tt.showToast({ title: "Vui lòng nhập thời gian !", icon: "warning" });
+    if (that.data.startTime == ""&& that.data.endTime == "") {
+      return tt.showToast({title: "Trường thời gian đang trống !", icon: "warning",});
     }
-
     tt.showModal({
       title: "Xác nhận cập nhật công việc",
       content: "Bạn có muốn cập nhật công việc này?",
@@ -563,7 +578,7 @@ Page({
         ).then((result) => {
           console.log(result);
         });
-        deleteRecord(res.data.access_token, body).then((rs) => {
+        deleteRecord(tt.getStorageSync("app_access_token"), body,that.data.tableName[0].table).then((rs) => {
           console.log(rs);
         });
       },
@@ -615,90 +630,6 @@ Page({
       selectedFilter: selectedOption, // Cập nhật giá trị đã chọn
       // showFilterPicker: false // Đóng combobox sau khi chọn
     });
-    // if (that.data.selectedFilter !== "Tất cả" &&
-    //   that.data.selectedQuanTrong === "Tất cả" &&
-    //   that.data.selectedCapBach === "Tất cả" &&
-    //   that.data.selectedThu === "Tất cả") {
-    //   // filterData = tableData.filter(
-    //   //   (item) => item.theloai === that.data.selectedFilter
-    //   // )
-    //   that.setData({
-    //     filterData: tableData.filter(
-    //       (item) => item.theloai === that.data.selectedFilter)
-    //   });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    //   that.data.selectedQuanTrong !== "Tất cả" &&
-    //   that.data.selectedCapBach === "Tất cả" &&
-    //   that.data.selectedThu === "Tất cả") {
-    //   that.setData({
-    //     filterData: tableData.filter(
-    //       (item) => item.theloai === that.data.selectedFilter && 
-    //                 item.quantrong === that.data.selectedQuanTrong)
-    //   });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    // that.data.selectedQuanTrong === "Tất cả" &&
-    // that.data.selectedCapBach !== "Tất cả" &&
-    // that.data.selectedThu === "Tất cả") {
-    // that.setData({
-    //   filterData: tableData.filter(
-    //     (item) => item.theloai === that.data.selectedFilter && 
-    //               item.capbach === that.data.selectedCapBach)
-    // });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    // that.data.selectedQuanTrong === "Tất cả" &&
-    // that.data.selectedCapBach === "Tất cả" &&
-    // that.data.selectedThu !== "Tất cả") {
-    // that.setData({
-    //   filterData: tableData.filter(
-    //     (item) => item.theloai === that.data.selectedFilter && 
-    //               item.thu === that.data.selectedThu)
-    // });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    // that.data.selectedQuanTrong !== "Tất cả" &&
-    // that.data.selectedCapBach !== "Tất cả" &&
-    // that.data.selectedThu === "Tất cả") {
-    // that.setData({
-    //   filterData: tableData.filter(
-    //     (item) => item.theloai === that.data.selectedFilter && 
-    //               item.capbach === that.data.selectedCapBach &&
-    //               item.quantrong === that.data.selectedQuanTrong)
-    // });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    // that.data.selectedQuanTrong === "Tất cả" &&
-    // that.data.selectedCapBach !== "Tất cả" &&
-    // that.data.selectedThu !== "Tất cả") {
-    // that.setData({
-    //   filterData: tableData.filter(
-    //     (item) => item.theloai === that.data.selectedFilter && 
-    //               item.capbach === that.data.selectedCapBach &&
-    //               item.thu === that.data.selectedThu)
-    // });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    // that.data.selectedQuanTrong !== "Tất cả" &&
-    // that.data.selectedCapBach === "Tất cả" &&
-    // that.data.selectedThu !== "Tất cả") {
-    // that.setData({
-    //   filterData: tableData.filter(
-    //     (item) => item.theloai === that.data.selectedFilter && 
-    //               item.quantrong === that.data.selectedQuanTrong &&
-    //               item.thu === that.data.selectedThu)
-    // });
-    // } else if (that.data.selectedFilter !== "Tất cả" &&
-    // that.data.selectedQuanTrong !== "Tất cả" &&
-    // that.data.selectedCapBach !== "Tất cả" &&
-    // that.data.selectedThu !== "Tất cả") {
-    // that.setData({
-    //   filterData: tableData.filter(
-    //     (item) => item.theloai === that.data.selectedFilter && 
-    //               item.capbach === that.data.selectedCapBach &&
-    //               item.quantrong === that.data.selectedQuanTrong &&
-    //               item.thu === that.data.selectedThu)
-    // });
-    // } else {
-    //   that.setData({
-    //     filterData: tableData
-    //   })
-    // }
     that.setData({
       filterData: tableData.filter(item => {
         return (that.data.selectedFilter === "Tất cả" || item.theloai === that.data.selectedFilter) &&
