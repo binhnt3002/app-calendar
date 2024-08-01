@@ -3,8 +3,9 @@ import {
   createEvent,
   createRecord,
   getCalendarList,
-  getAllTableName
 } from "../function/apiFunction";
+
+const appVar = getApp();
 
 Page({
   data: {
@@ -302,14 +303,11 @@ Page({
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
           console.log(result.data);
-          getAllTableName(access_token).then((rs) => {
-            console.log(rs.data);
-            that.setData({
-              dataLich: result.data.calendar_list,
-              lich: result.data.calendar_list.map((item) => item.summary),
-              tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})),
-            });
-          })
+          that.setData({
+            dataLich: result.data.calendar_list,
+            lich: result.data.calendar_list.map((item) => item.summary),
+            // tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})),
+          });
         });
         tt.showToast({
           title: "lấy dữ liệu thành công",
@@ -331,7 +329,6 @@ Page({
     return totalHours;
   },
 
- 
 
   createTask() {
     let that = this;
@@ -391,21 +388,22 @@ Page({
 
             createEvent(access_token, that.data.calendarID, body).then(
               (rs) => {
+                console.log(rs);
                 const body2 = {
                   fields: {
-                    "Tên Task *": that.data.inputValue,
+                    "Việc cần làm": that.data.inputValue,
                     "Thể loại": that.data.selectedCategory,
-                    "Quan Trọng": that.data.selectedImportant,
-                    "Cấp Bách": that.data.selectedurgent,
+                    "Quan trọng": that.data.selectedImportant,
+                    "Cấp bách": that.data.selectedurgent,
                     "Số giờ cần có": parseInt(that.data.selectedHours),
-                    "Người giao việc *": [
+                    "Person": [
                       {
                         id: res.data.open_id,
                       },
                     ],
-                    "Thời gian bắt đầu *":
+                    "Ngày - Giờ bắt đầu":
                       this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
-                    "Thời gian kết thúc *":
+                    "Ngày - Giờ kết thúc":
                       this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
                     "Ghi chú": dataDay.inputNote,
                     "Ngày làm":
@@ -420,7 +418,7 @@ Page({
                   },
                 };
                 console.log(body2);
-                createRecord(tt.getStorageSync("app_access_token"), body2,that.data.tableName[0].table).then((rs) => {
+                createRecord(tt.getStorageSync("app_access_token"), body2,appVar.GlobalConfig.tableId).then((rs) => {
                   console.log(rs);
                   tt.showToast({
                     title: "Tạo xong công việc",

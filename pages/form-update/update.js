@@ -3,10 +3,12 @@ import {
   updateRecord,
   deleteRecord,
   deleteEvent,
-
 } from "./function/apiFunction";
 import { bodyUpdateEvent } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
+
+const appVar = getApp();
+
 Page({
   data: {
     stt: [],
@@ -188,7 +190,7 @@ Page({
       this.listTask(this.data.tableName[0].table);
     });
   },
-  listTask(table_id) {
+  listTask() {
     let that = this;
     let vieccanlam = that.data.vieccanlam;
     let theloai = that.data.theloai;
@@ -228,14 +230,14 @@ Page({
         const access_token = res.data.access_token;
         const body = {
           field_names: [
-            "Tên Task *",
+            "Việc cần làm",
             "Thể loại",
-            "Quan Trọng",
-            "Cấp Bách",
+            "Quan trọng",
+            "Cấp bách",
             "Số giờ cần có",
             "Thứ",
-            "Thời gian bắt đầu *",
-            "Thời gian kết thúc *",
+            "Ngày - Giờ bắt đầu",
+            "Ngày - Giờ kết thúc",
             "Ngày làm",
             "Ghi chú",
             "EventID",
@@ -247,7 +249,7 @@ Page({
               asc: true,
             },
             {
-              field_name: "Tên Task *",
+              field_name: "Việc cần làm",
               asc: true,
             },
           ],
@@ -255,7 +257,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Người giao việc *",
+                field_name: "Person",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -263,9 +265,53 @@ Page({
           },
           automatic_fields: false,
         };
-        searchRecord(access_token, body, table_id).then((result) => {
-          console.log(result);
-          result.data.items.map((item) => {
+
+        const body2 = {
+                  field_names: [
+                    "Tên Task *",
+                    "Thể loại",
+                    "Quan Trọng",
+                    "Cấp Bách",
+                    "Số giờ cần có",
+                    "Thứ",
+                    "Thời gian bắt đầu *",
+                    "Thời gian kết thúc *",
+                    "Ngày làm",
+                    "Ghi chú",
+                    "EventID",
+                    "CalendarID",
+                  ],
+                  sort: [
+                    {
+                      field_name: "Thể loại",
+                      asc: true,
+                    },
+                    {
+                      field_name: "Tên Task *",
+                      asc: true,
+                    },
+                  ],
+                  filter: {
+                    conjunction: "and",
+                    conditions: [
+                      {
+                        field_name: "Người giao việc *",
+                        operator: "is",
+                        value: [res.data.open_id],
+                      },
+                    ],
+                  },
+                  automatic_fields: false,
+        };
+
+        sendRequest(
+          `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables/${this.data.tableName[0].table}/records/search`,
+          "POST",
+          { Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json",},
+          body2
+        ).then((rs) => {
+          rs.data.items.map((item) => {
             vieccanlam.push({
               vieccanlam: item.fields["Tên Task *"][0].text,
             }),
@@ -345,7 +391,98 @@ Page({
               recordId,
             });
           });
+        })
+
+
+        //Lấy dữ liệu từ TMT
+        searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
+          console.log(result);
+          result.data.items.map((item) => {
+            vieccanlam.push({
+              vieccanlam: item.fields["Việc cần làm"][0].text,
+            }),
+              theloai.push({ theloai: item.fields["Thể loại"] }),
+              quantrong.push({ quantrong: item.fields["Quan trọng"] }),
+              capbach.push({ capbach: item.fields["Cấp bách"] }),
+              thu.push({ thu: item.fields["Thứ"].value[0].text });
+            ngaygiobatdau.push({
+              ngaygiobatdau: that.convertTimestampToDate(
+                item.fields["Ngày - Giờ bắt đầu"]
+              ),
+            }),
+              ngaygioketthuc.push({
+                ngaygioketthuc: that.convertTimestampToDate(
+                  item.fields["Ngày - Giờ kết thúc"]
+                ),
+              }),
+              ghichu.push({
+                ghichu:
+                  item.fields["Ghi chú"] && item.fields["Ghi chú"][0].text
+                    ? item.fields["Ghi chú"][0].text
+                    : "",
+              }),
+              eventid.push({ eventid: item.fields["EventID"][0].text }),
+              calendarid.push({
+                calendarid: item.fields["CalendarID"][0].text,
+              });
+            ngaylam.push({
+              ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
+            });
+            sogiocanco.push({ sogiocanco: item.fields["Số giờ cần có"] });
+            recordId.push({ recordId: item.record_id });
+            tableData = vieccanlam.map((item, index) => {
+              return {
+                ...item,
+                ...theloai[index],
+                ...quantrong[index],
+                ...capbach[index],
+                ...thu[index],
+                ...ngaygiobatdau[index],
+                ...ngaygioketthuc[index],
+                ...ngaylam[index],
+                ...ghichu[index],
+                ...eventid[index],
+                ...calendarid[index],
+                ...sogiocanco[index],
+                ...recordId[index],
+              };
+            });
+            if (that.data.selectedFilter !== "Tất cả") {
+              const filterData = tableData.filter(
+                (item) => item.theloai === that.data.selectedFilter
+              );
+              that.setData({
+                tableData: filterData,
+              });
+            } else {
+              that.setData({
+                tableData,
+              });
+            }
+            that.setData({
+              tableData,
+              filterData: tableData,
+              capbach,
+              quantrong,
+              theloai,
+              ngaygiobatdau,
+              ngaygioketthuc,
+              ghichu,
+              vieccanlam,
+              thu,
+              eventid,
+              calendarid,
+              ngaylam,
+              sogiocanco,
+              recordId,
+            });
+          });
         });
+
+        
+
+
+
       },
     });
   },
@@ -405,13 +542,7 @@ Page({
           that.dateTimeToTimestamp(that.data.edit.ngaylam, that.data.endTime),
           that.data.inputNote
         );
-
-        // console.log(body);
-        // updateEvent(res.data.access_token, that.data.edit.calendarid, that.data.eventid,body).then ((rs)=>{
-        //   console.log(rs);
-        // })
-
-        const url =
+        const   url =
           "https://script.google.com/macros/s/AKfycbxhfDmKiziX7qCouyECEUH2djZnFU9HcybnpgXhT7NJ6f2hXr-mbjUZ6YDwuXdTa967/exec";
         const header = {
           "Content-Type": "application/json",
@@ -439,7 +570,6 @@ Page({
             {
               record_id: that.data.edit.recordId,
               fields: {
-                "Tên Task *": that.data.inputValue,
                 "Ghi chú": that.data.inputNote,
               },
             },
@@ -453,10 +583,10 @@ Page({
         });
         sendRequest(url, "POST", header, body)
           .then((rs) => {
-            updateRecord(tt.getStorageSync("app_access_token"), dataForRecordUpdate,that.data.tableName[0].table)
+            updateRecord(tt.getStorageSync("user_access_token").access_token, dataForRecordUpdate,appVar.GlobalConfig.tableId)
               .then((rs) => {
                 console.log(rs);
-                that.listTask(that.data.tableName[0].table);
+                that.listTask();
                 tt.hideToast({
                   toastId: toastId, // Use the toastId from the initial showToast call to hide it
                 });
@@ -573,7 +703,7 @@ Page({
         ).then((result) => {
           console.log(result);
         });
-        deleteRecord(tt.getStorageSync("app_access_token"), body,that.data.tableName[0].table).then((rs) => {
+        deleteRecord(tt.getStorageSync("app_access_token"), body,appVar.GlobalConfig.tableId).then((rs) => {
           console.log(rs);
         });
       },
