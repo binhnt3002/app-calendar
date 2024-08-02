@@ -1,4 +1,4 @@
-import { searchRecord, getCalendar,getAllTableName } from "../function/apiFunction";
+import { searchRecord, getCalendar,getAllTableName, getCalendarList } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
@@ -77,7 +77,40 @@ Page({
     selectedCapBach: "Tất cả",
     selectedThu: "Tất cả",
     filterData: [],
+    lich: [],
+    chonlich: "",
+    dataLich: [],
+  },
 
+  onCalendarChage: function (e) {
+    this.setData({
+      chonlich: this.data.lich[e.detail.value],
+      calendarID: this.data.dataLich.find(
+        (item) => item.summary === this.data.lich[e.detail.value]
+      ).calendar_id,
+    });
+  },
+  
+  setCalendarData() {
+    let that = this;
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const access_token = res.data.access_token;
+        getCalendarList(access_token).then((result) => {
+          console.log(result.data);
+          that.setData({
+            dataLich: result.data.calendar_list,
+            lich: result.data.calendar_list.map((item) => item.summary),
+            // tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})),
+          });
+        });
+        tt.showToast({
+          title: "lấy dữ liệu thành công",
+          icon: "success",
+        });
+      },
+    });
   },
   inputNote: function (e) {
     this.setData({
@@ -319,7 +352,6 @@ Page({
             "Content-Type": "application/json",},
           body2
         ).then((rs) => {
-          console.log(rs);
           newData = rs.data.items.map((item) => {
             return {
               vieccanlam: item.fields["Tên Task *"][0].text,
@@ -372,7 +404,6 @@ Page({
 
         //Lấy dữ liệu từ TMT
         searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
-          console.log(result);
           const oldData = result.data.items.map((item) => {
             return {
               vieccanlam: item.fields["Việc cần làm"][0].text,
@@ -460,22 +491,18 @@ Page({
   edit2(e) {
     let that = this;
     let edit = that.data.edit;
+    that.setCalendarData();
     console.log(e);
     const currentTarget = e.currentTarget.id;
-    edit = that.data.tableData.find((obj) => obj.eventid === currentTarget);
-    tt.getStorage({
-      key: "user_access_token",
-      success: (res) => {
-        getCalendar(res.data.access_token, edit.calendarid).then((rs) => {
-          that.setData({ calendarname: rs.data.summary });
-        });
-      },
-    });
+    edit = that.data.tableData.find((obj) => obj.vieccanlam === currentTarget);
+    console.log( edit);
     that.setData({
       turnPopup2: true,
       turnMode:true,
       edit,
-      selectedHours: edit.sogiocanco,
+      selectedHours:"",
+      startDate: edit.ngaygiobatdau,
+      endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
     });
