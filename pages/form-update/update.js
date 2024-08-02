@@ -336,7 +336,17 @@ Page({
               type: 'new',
             };
           });
-            tableData = [...that.data.oldData,...newData]
+          
+          newData.sort((a, b) => {
+            // Convert date strings to Date objects for comparison
+            const dateA = new Date(a.ngaygiobatdau);
+            const dateB = new Date(b.ngaygiobatdau);
+          
+            // Compare dates in descending order
+            return dateB - dateA;
+          }); 
+          // console.log(hi);
+            tableData = [...newData,...that.data.oldData]
             that.setData({
               newData,
               tableData,

@@ -33,7 +33,7 @@
             <view class="list-item" style="padding: 10px;">
               <block wx:if="{{selectedInvitePerson==='Cá nhân'}}">
                 <block wx:for="{{checkInvite}}" wx:key="*this.value">
-                  <view class="event-item" style="background-color:rgb(250, 212, 245)">
+                  <view class="event-item" style="background-color:rgb(136, 207, 255)">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
