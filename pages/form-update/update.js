@@ -13,6 +13,8 @@ Page({
   data: {
     stt: [],
     tableData: [],
+    oldData:[],
+    newData: [],
     vieccanlam: [],
     theloai: [],
     quantrong: [],
@@ -208,6 +210,8 @@ Page({
     let recordId = that.data.recordId;
     let dataRemoveAll = that.data.dataRemoveAll;
     let dataRemove = that.data.dataRemove;
+    let newData = that.data.newData;
+    let oldData= that.data.oldData;
     dataRemove = [];
     dataRemoveAll = [];
     vieccanlam = [];
@@ -222,6 +226,8 @@ Page({
     calendarid = [];
     ngaylam = [];
     tableData = [];
+    newData =[];
+    oldData = [];
     sogiocanco = [];
     recordId = [];
     tt.getStorage({
@@ -295,7 +301,7 @@ Page({
                     conjunction: "and",
                     conditions: [
                       {
-                        field_name: "Người giao việc *",
+                        field_name: "Người làm *",
                         operator: "is",
                         value: [res.data.open_id],
                       },
@@ -311,69 +317,28 @@ Page({
             "Content-Type": "application/json",},
           body2
         ).then((rs) => {
-          rs.data.items.map((item) => {
-            vieccanlam.push({
+          console.log(rs);
+          newData = rs.data.items.map((item) => {
+            return {
               vieccanlam: item.fields["Tên Task *"][0].text,
-            }),
-              theloai.push({ theloai: item.fields["Thể loại"] }),
-              quantrong.push({ quantrong: item.fields["Quan Trọng"] }),
-              capbach.push({ capbach: item.fields["Cấp Bách"] }),
-              thu.push({ thu: item.fields["Thứ"].value[0].text });
-            ngaygiobatdau.push({
-              ngaygiobatdau: that.convertTimestampToDate(
-                item.fields["Thời gian bắt đầu *"]
-              ),
-            }),
-              ngaygioketthuc.push({
-                ngaygioketthuc: that.convertTimestampToDate(
-                  item.fields["Thời gian kết thúc *"]
-                ),
-              }),
-              ghichu.push({
-                ghichu:
-                  item.fields["Ghi chú"] && item.fields["Ghi chú"][0].text
-                    ? item.fields["Ghi chú"][0].text
-                    : "",
-              }),
-              eventid.push({ eventid: item.fields["EventID"][0].text }),
-              calendarid.push({
-                calendarid: item.fields["CalendarID"][0].text,
-              });
-            ngaylam.push({
+              theloai: item.fields["Thể loại"],
+              quantrong: item.fields["Quan Trọng"],
+              capbach: item.fields["Cấp Bách"],
+              thu: item.fields["Thứ"].value[0].text,
+              ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu *"]),
+              ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc *"]),
+              ghichu: item.fields["Ghi chú"]?.[0].text || "",
+              eventid: item.fields?.["EventID"]?.[0]?.text || "",
+              calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
               ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
-            });
-            sogiocanco.push({ sogiocanco: item.fields["Số giờ cần có"] });
-            recordId.push({ recordId: item.record_id });
-            tableData = vieccanlam.map((item, index) => {
-              return {
-                ...item,
-                ...theloai[index],
-                ...quantrong[index],
-                ...capbach[index],
-                ...thu[index],
-                ...ngaygiobatdau[index],
-                ...ngaygioketthuc[index],
-                ...ngaylam[index],
-                ...ghichu[index],
-                ...eventid[index],
-                ...calendarid[index],
-                ...sogiocanco[index],
-                ...recordId[index],
-              };
-            });
-            if (that.data.selectedFilter !== "Tất cả") {
-              const filterData = tableData.filter(
-                (item) => item.theloai === that.data.selectedFilter
-              );
-              that.setData({
-                tableData: filterData,
-              });
-            } else {
-              that.setData({
-                tableData,
-              });
-            }
+              sogiocanco: item.fields["Số giờ cần có"],
+              recordId: item.record_id,
+              type: 'new',
+            };
+          });
+            tableData = [...that.data.oldData,...newData]
             that.setData({
+              newData,
               tableData,
               filterData: tableData,
               capbach,
@@ -390,78 +355,33 @@ Page({
               sogiocanco,
               recordId,
             });
-          });
         })
 
 
         //Lấy dữ liệu từ TMT
         searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
           console.log(result);
-          result.data.items.map((item) => {
-            vieccanlam.push({
+          const oldData = result.data.items.map((item) => {
+            return {
               vieccanlam: item.fields["Việc cần làm"][0].text,
-            }),
-              theloai.push({ theloai: item.fields["Thể loại"] }),
-              quantrong.push({ quantrong: item.fields["Quan trọng"] }),
-              capbach.push({ capbach: item.fields["Cấp bách"] }),
-              thu.push({ thu: item.fields["Thứ"].value[0].text });
-            ngaygiobatdau.push({
-              ngaygiobatdau: that.convertTimestampToDate(
-                item.fields["Ngày - Giờ bắt đầu"]
-              ),
-            }),
-              ngaygioketthuc.push({
-                ngaygioketthuc: that.convertTimestampToDate(
-                  item.fields["Ngày - Giờ kết thúc"]
-                ),
-              }),
-              ghichu.push({
-                ghichu:
-                  item.fields["Ghi chú"] && item.fields["Ghi chú"][0].text
-                    ? item.fields["Ghi chú"][0].text
-                    : "",
-              }),
-              eventid.push({ eventid: item.fields["EventID"][0].text }),
-              calendarid.push({
-                calendarid: item.fields["CalendarID"][0].text,
-              });
-            ngaylam.push({
+              theloai: item.fields["Thể loại"],
+              quantrong: item.fields["Quan trọng"],
+              capbach: item.fields["Cấp bách"],
+              thu: item.fields["Thứ"].value[0].text,
+              ngaygiobatdau: that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"]),
+              ngaygioketthuc: that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"]),
+              ghichu: item.fields["Ghi chú"]?.[0].text || "",
+              eventid: item.fields["EventID"][0].text, // Assuming single event ID
+              calendarid: item.fields["CalendarID"][0].text, // Assuming single calendar ID
               ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
-            });
-            sogiocanco.push({ sogiocanco: item.fields["Số giờ cần có"] });
-            recordId.push({ recordId: item.record_id });
-            tableData = vieccanlam.map((item, index) => {
-              return {
-                ...item,
-                ...theloai[index],
-                ...quantrong[index],
-                ...capbach[index],
-                ...thu[index],
-                ...ngaygiobatdau[index],
-                ...ngaygioketthuc[index],
-                ...ngaylam[index],
-                ...ghichu[index],
-                ...eventid[index],
-                ...calendarid[index],
-                ...sogiocanco[index],
-                ...recordId[index],
-              };
-            });
-            if (that.data.selectedFilter !== "Tất cả") {
-              const filterData = tableData.filter(
-                (item) => item.theloai === that.data.selectedFilter
-              );
-              that.setData({
-                tableData: filterData,
-              });
-            } else {
-              that.setData({
-                tableData,
-              });
-            }
+              sogiocanco: item.fields["Số giờ cần có"],
+              recordId: item.record_id,
+            };
+          });
+          
             that.setData({
-              tableData,
-              filterData: tableData,
+              oldData,
+              filterData: oldData,
               capbach,
               quantrong,
               theloai,
@@ -476,13 +396,8 @@ Page({
               sogiocanco,
               recordId,
             });
-          });
+          
         });
-
-        
-
-
-
       },
     });
   },
