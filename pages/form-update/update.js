@@ -28,7 +28,9 @@ Page({
     edit: [],
     ngaylam: [],
     sogiocanco: [],
+    turnMode: false,
     turnPopup: false,
+    turnPopup2: false,
     calendarname: "",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     selectedDayWork: "",
@@ -447,6 +449,31 @@ Page({
     });
     that.setData({
       turnPopup: true,
+      turnMode:true,
+      edit,
+      selectedHours: edit.sogiocanco,
+      inputNote: edit.ghichu,
+      inputValue: edit.vieccanlam,
+    });
+  },
+
+  edit2(e) {
+    let that = this;
+    let edit = that.data.edit;
+    console.log(e);
+    const currentTarget = e.currentTarget.id;
+    edit = that.data.tableData.find((obj) => obj.eventid === currentTarget);
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        getCalendar(res.data.access_token, edit.calendarid).then((rs) => {
+          that.setData({ calendarname: rs.data.summary });
+        });
+      },
+    });
+    that.setData({
+      turnPopup2: true,
+      turnMode:true,
       edit,
       selectedHours: edit.sogiocanco,
       inputNote: edit.ghichu,
@@ -456,7 +483,7 @@ Page({
 
   update() {
     let that = this;
-    that.setData({ turnPopup: false, selectedFilter: "Tất cả" });
+    that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -660,7 +687,7 @@ Page({
   },
 
   exit() {
-    this.setData({ turnPopup: false });
+    this.setData({ turnPopup: false, turnPopup2: false, turnMode: false });
   },
 
   toggleFilter() {

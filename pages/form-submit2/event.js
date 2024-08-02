@@ -300,9 +300,16 @@ Page({
       invite: [],
       inviteOpenId: [],
       inviteData: [],
+      chat: [],
+      chatId: [],
+      chatAvatar: [],
+      chatData: [],
       checkInvite: [],
       checkStatue: [],
       checkId: [],
+      checkChatInvite: [],
+      checkChatStatue: [],
+      checkChatId: [],
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
