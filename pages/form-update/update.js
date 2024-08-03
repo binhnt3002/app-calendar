@@ -542,7 +542,7 @@ Page({
         searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
           const oldData = result.data.items.map((item) => {
             return {
-              vieccanlam: item.fields["Việc cần làm"][0].text,
+              vieccanlam: item.fields["Việc cần làm"]?.[0]?.text || "",
               theloai: item.fields["Thể loại"],
               quantrong: item.fields["Quan trọng"],
               capbach: item.fields["Cấp bách"],
@@ -868,7 +868,6 @@ Page({
   },
 
   createTask() {
-    th
     let that = this;
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       tt.showToast({
@@ -962,6 +961,7 @@ Page({
                     title: "Tạo xong công việc",
                     icon: "success",
                   });
+                  this.listTask()
                   this.setData({
                     inputValue: "",
                     inputNote: "",
@@ -973,12 +973,13 @@ Page({
                     endDate: "",
                     startTime: "",
                     endTime: "",
+                    turnMode: false,
+                    turnPopup2:false
                   });
                 });
               }
             );
           }
-          that.exit()
         } else {
           tt.showToast({
             title: "Vui lòng nhập đầy đủ dữ liệu",
