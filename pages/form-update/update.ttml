@@ -83,8 +83,6 @@
   </view>
 </view>
 
-
-
 <div tt:if={{turnPopup===true}} class="page-task-form">
   <view class="form-1" style="background:#c9d9e5 ;">
     <view class="header">
@@ -297,7 +295,7 @@
             </view>
           </view>
           <view class="row" style="margin-left:2px;">
-            <textarea style="height:120px;" class="input-text" value="{{edit.ghichu}}" bindinput="inputNote"></textarea>
+            <textarea style="height:120px;" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
           </view>
         </view>
         <view class="section-3">
@@ -339,13 +337,13 @@
           <view class="row">
             <view class="col-8">
               <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
-                {{edit.ngaylam}}
+                {{selectedDayWork}}
               </picker>
             </view>
             <view class="col-4 ml-auto">
               <view class="row" style="display:block;">
                 <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;" range="{{dayOptions}}" bindchange="onWeekChange">
-                  {{edit.thu}}
+                  {{selectedDay}}
                 </picker>
               </view>
             </view>
@@ -387,7 +385,7 @@
     </view>
     <block >
       <view class="d-flex justify-content-end">
-        <button bindtap="confirmUpdate" class="btn btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
+        <button bindtap="createTask" class="btn btn-primary m-2" style="border-radius: none !important;">Tạo công việc</button>
       </view>
     </block> 
   </view>

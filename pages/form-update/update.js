@@ -1,10 +1,10 @@
-import { searchRecord, getCalendar,getAllTableName, getCalendarList } from "../function/apiFunction";
+import { searchRecord, getCalendar,getAllTableName, getCalendarList, createEvent, createRecord } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
   deleteEvent,
 } from "./function/apiFunction";
-import { bodyUpdateEvent } from "./detailForm";
+import { bodyUpdateEvent, bodyCreateTask } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 
 const appVar = getApp();
@@ -38,6 +38,9 @@ Page({
     startDate: new Date().toISOString().substring(0, 10),
     endDate: "",
     selectedHours: "",
+    selectedCategory: "",
+    selectedurgent: "",
+    selectedImportant:"",
     recordId: [],
     dataRemoveAll: [],
     dataRemove: [],
@@ -72,7 +75,7 @@ Page({
     selFilterQuantrong: "A",
 
     tableName: [],
-
+    calendarID:"",
     selectedQuanTrong: "Tất cả",
     selectedCapBach: "Tất cả",
     selectedThu: "Tất cả",
@@ -80,6 +83,71 @@ Page({
     lich: [],
     chonlich: "",
     dataLich: [],
+    isLoop: false,
+    dailyData: [
+      {
+        "Thứ 2": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+
+        "Thứ 3": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+        "Thứ 4": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+        "Thứ 5": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+        "Thứ 6": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+        "Thứ 7": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+        "Chủ nhật": {
+          date: "",
+          startTime: "",
+          endTime: "",
+          inputNote: "",
+          isLoop: false,
+        },
+      },
+    ],
+    dayOptions: [
+      "Thứ 2",
+      "Thứ 3",
+      "Thứ 4",
+      "Thứ 5",
+      "Thứ 6",
+      "Thứ 7",
+      "Chủ Nhật",
+    ],
+    selectedDay: "Thứ 2"
   },
 
   onCalendarChage: function (e) {
@@ -112,9 +180,27 @@ Page({
       },
     });
   },
+
+  calculateTime() {
+    let totalHours = 0;
+    this.data.dailyData.forEach((item) => {
+      if (item[this.data.selectedDay]) {
+        totalHours +=
+          parseInt(item[this.data.selectedDay].endTime.split(":")[0]) -
+          parseInt(item[this.data.selectedDay].startTime.split(":")[0]);
+      }
+    });
+    return totalHours;
+  },
+
   inputNote: function (e) {
     this.setData({
       inputNote: e.detail.value,
+    });
+    let data = this.data.dailyData;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
+    this.setData({
+      dailyData: data,
     });
   },
 
@@ -146,6 +232,17 @@ Page({
     this.setData({
       endTime: e.detail.value,
     });
+    let data = this.data.dailyData;
+    data[0][this.data.selectedDay].date = this.data.selectedDayWork;
+    data[0][this.data.selectedDay].startTime = this.data.startTime;
+    data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
+    data[0][this.data.selectedDay].isLoop = this.data.isLoop;
+
+    this.setData({
+      dailyData: data,
+    });
+
     if (this.data.startTime > this.data.endTime) {
       this.setData({
         endTime: this.data.startTime,
@@ -202,13 +299,43 @@ Page({
       startTime: data.startTime,
       endTime: data.endTime,
       isLoop: data.isLoop,
+      inputNote: data.inputNote,
     });
 
     this.setData({
       selectedDay: dayKey,
     });
   },
-  
+
+  checkboxChange: function (e) {
+    const selectedDay = this.data.selectedDay;
+    const selectedDayWork = this.data.selectedDayWork;
+    const startTime = this.data.startTime;
+    const endTime = this.data.endTime;
+    const inputNote = this.data.inputNote;
+
+    const dailyData = this.data.dailyData;
+    const isLoop = !e.currentTarget.dataset.checked;
+
+    dailyData[0][selectedDay] = {
+      date: selectedDayWork,
+      startTime,
+      endTime,
+      inputNote,
+      isLoop,
+    };
+
+    this.setData({
+      isLoop,
+      dailyData,
+    });
+  },
+
+  onWeekChange: function (e) {
+    this.setData({
+      selectedDay: this.data.dayOptions[e.detail.value],
+    });
+  },
 
   onShow() {
     const  accessToken  = tt.getStorageSync("user_access_token").access_token;
@@ -381,6 +508,15 @@ Page({
           }); 
           // console.log(hi);
             tableData = [...newData,...that.data.oldData]
+            tableData.sort((a, b) => {
+              if (a.vieccanlam === b.vieccanlam) {
+                  // Nếu tên công việc giống nhau, có thể sắp xếp theo các tiêu chí khác
+            // Compare dates in descending order
+              return new Date(a.ngaygiobatdau) - new Date(b.ngaygiobatdau);
+                  // return a.quantrong - b.quantrong; // Sắp xếp theo độ quan trọng tăng dần
+              }
+              return a.vieccanlam.localeCompare(b.vieccanlam); // Sắp xếp theo tên công việc
+          });
             that.setData({
               newData,
               tableData,
@@ -464,6 +600,13 @@ Page({
     return Math.floor(timestamp / 1000);
   },
 
+  formatDateToUTC(dateString,days) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    const newDate = date.toISOString().split('T')[0]
+    return newDate.replace(/-/g, "") + "T000000Z";
+  },
+
   edit(e) {
     let that = this;
     let edit = that.data.edit;
@@ -483,8 +626,11 @@ Page({
       turnMode:true,
       edit,
       selectedHours: edit.sogiocanco,
+      startDate: edit.ngaygiobatdau,
+      endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
+      
     });
   },
 
@@ -500,7 +646,10 @@ Page({
       turnPopup2: true,
       turnMode:true,
       edit,
-      selectedHours:"",
+      // selectedHours:"",
+      selectedImportant: edit.quantrong,
+      selectedCategory: edit.theloai,
+      selectedurgent: edit.capbach,
       startDate: edit.ngaygiobatdau,
       endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
@@ -715,6 +864,129 @@ Page({
 
   exit() {
     this.setData({ turnPopup: false, turnPopup2: false, turnMode: false });
+    this.setData({endTime: "", startTime: "", startDate: new Date().toISOString().substring(0, 10), endDate: "", inputNote: "", inputValue: "", selectedHours: ""})
+  },
+
+  createTask() {
+    th
+    let that = this;
+    if (that.calculateTime() > parseInt(that.data.selectedHours)) {
+      tt.showToast({
+        title: "Vượt quá số giờ cần có",
+        icon: "error",
+        duration: 2000,
+      });
+      return;
+    }
+    
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const access_token = res.data.access_token;
+        if (
+          that.data.inputValue != "" &&
+          that.data.startDate != "" &&
+          that.data.endDate != "" &&
+          that.data.startTime != "" &&
+          that.data.endTime != ""
+        ) {
+
+          tt.showToast({
+            title: "Đang tạo",
+            icon: "loading",
+            duration: 5000,
+          })
+
+          for (const dayName in that.data.dailyData[0]) {
+            const dataDay = that.data.dailyData[0][dayName];
+
+            if (
+              dataDay.date === "" ||
+              dataDay.startTime === "" ||
+              dataDay.endTime === ""
+            ) {
+              continue;
+            }
+
+            const body = bodyCreateTask(
+              that.data.inputValue,
+              dataDay.inputNote,
+              this.dateTimeToTimestamp(
+                dataDay.date,
+                dataDay.startTime
+              ).toString(),
+              this.dateTimeToTimestamp(
+                dataDay.date,
+                dataDay.endTime
+              ).toString(),
+              that.formatDateToUTC(that.data.endDate,7),
+              dataDay.isLoop
+            );
+            console.log(body);
+
+            createEvent(access_token, that.data.calendarID, body).then(
+              (rs) => {
+                console.log(rs);
+                const body2 = {
+                  fields: {
+                    "Việc cần làm": that.data.inputValue,
+                    "Thể loại": that.data.selectedCategory,
+                    "Quan trọng": that.data.selectedImportant,
+                    "Cấp bách": that.data.selectedurgent,
+                    "Số giờ cần có": parseInt(that.data.selectedHours),
+                    "Person": [
+                      {
+                        id: res.data.open_id,
+                      },
+                    ],
+                    "Ngày - Giờ bắt đầu":
+                      this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
+                    "Ngày - Giờ kết thúc":
+                      this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
+                    "Ghi chú": dataDay.inputNote,
+                    "Ngày làm":
+                      this.dateTimeToTimestamp(dataDay.date, "") * 1000 ,
+                    "EventID": rs.data.event.event_id,
+                    "CalendarID": that.data.calendarID,
+                    "Số giờ của 1 ngày": Math.abs(
+                      (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
+                        this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
+                        (60 * 60 * 1000)
+                    ) * 1000,
+                  },
+                };
+                console.log(body2);
+                createRecord(tt.getStorageSync("app_access_token"), body2,appVar.GlobalConfig.tableId).then((rs) => {
+                  console.log(rs);
+                  tt.showToast({
+                    title: "Tạo xong công việc",
+                    icon: "success",
+                  });
+                  this.setData({
+                    inputValue: "",
+                    inputNote: "",
+                    selectedCategory: "Việc chính",
+                    selectedurgent: "1",
+                    selectedImportant: "A",
+                    selectedHours: "1",
+                    startDate: "Chọn ngày",
+                    endDate: "",
+                    startTime: "",
+                    endTime: "",
+                  });
+                });
+              }
+            );
+          }
+          that.exit()
+        } else {
+          tt.showToast({
+            title: "Vui lòng nhập đầy đủ dữ liệu",
+            icon: "error",
+          });
+        }
+      },
+    });
   },
 
   toggleFilter() {

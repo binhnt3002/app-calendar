@@ -16,7 +16,7 @@ Page({
       "Thứ 5",
       "Thứ 6",
       "Thứ 7",
-      "Chủ nhật",
+      "Chủ Nhật",
     ],
     selectedDay: "Thứ 2",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -381,7 +381,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate),
+              that.formatDateToUTC(that.data.endDate,7),
               dataDay.isLoop
             );
             console.log(body);
@@ -456,7 +456,10 @@ Page({
     return Math.floor(timestamp / 1000);
   },
 
-  formatDateToUTC(dateString) {
-    return dateString.replace(/-/g, "") + "T000000Z";
+  formatDateToUTC(dateString,days) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    const newDate = date.toISOString().split('T')[0]
+    return newDate.replace(/-/g, "") + "T000000Z";
   },
 });

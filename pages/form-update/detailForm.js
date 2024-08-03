@@ -1,35 +1,34 @@
-//phần body của tạo event lấy từ base
-const bodyCreateTask = (
-  eventTitle,
-  eventDescription,
-  timeStart,
-  timeEnd,
-  visibilityType
-) => {
-  const body = {
-    summary: eventTitle,
-    description: eventDescription,
-    need_notification: true,
-    start_time: {
+const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEndLoop, isLoop) => {
+  const body =
+  {
+    "summary": eventTitle,
+    "description": eventDescription,
+    "need_notification": true,
+    "start_time": {
       // "date": dateStart,
-      timestamp: timeStart,
+      "timestamp": timeStart,
     },
-    end_time: {
+    "end_time": {
       // "date": dateEnd,
-      timestamp: timeEnd,
+      "timestamp": timeEnd,
     },
-    visibility: visibilityType,
+    "visibility": "default",
     // "attendee_ability": "can_see_others",
-    free_busy_status: "free",
-    color: -1,
-    reminders: [
+    "free_busy_status": "free",
+    "color": -1,
+    "reminders": [
       {
-        minutes: 5,
-      },
+        "minutes": 5
+      }
     ],
-  };
+    "recurrence": ""
+  }
+  if (isLoop) {
+    body.recurrence = `FREQ=WEEKLY;UNTIL=${dateEndLoop}`
+    return body;
+  }
   return body;
-};
+}
 const bodyScheduleParticipants = (type, id, res) => {
   const body = {
     attendees: [
