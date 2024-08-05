@@ -162,7 +162,7 @@
               </div >
               <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
                 {{edit.ngaygiobatdau}}
-              </picker>
+              </picker> 
             </div>
             <div class="col" style="padding-right:0px !important;">
               <div text class="title1">
@@ -251,7 +251,7 @@
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
                 <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-                  style="margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
+                  style="margin-right: 10px; background-color: rgb(255, 255, 255,0.8)" bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
