@@ -346,6 +346,7 @@ Page({
       success: (res) => {
         const access_token = res.data.access_token;
         if (
+          that.data.CalendarID != "" &&
           that.data.inputValue != "" &&
           that.data.startDate != "" &&
           that.data.endDate != "" &&
@@ -381,7 +382,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate,7),
+              that.formatDateToUTC(that.data.endDate,0),
               dataDay.isLoop
             );
             console.log(body);
@@ -415,6 +416,7 @@ Page({
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
                         (60 * 60 * 1000)
                     ) * 1000,
+                    "id" : this.getRandomArbitrary(1000, 9999)
                   },
                 };
                 console.log(body2);
@@ -462,4 +464,10 @@ Page({
     const newDate = date.toISOString().split('T')[0]
     return newDate.replace(/-/g, "") + "T000000Z";
   },
+
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+  
+  
 });

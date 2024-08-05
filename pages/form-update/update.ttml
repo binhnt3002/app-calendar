@@ -72,7 +72,7 @@
               <view class="title-collumn">{{item.ngaygioketthuc}}</view>
               <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon" >
-                <image id="{{item.vieccanlam}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <image id="{{item.recordId}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
                 <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
               </view>
             </view>
@@ -250,7 +250,7 @@
             <view class="col-8">
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
-                <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+                <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
                   style="margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
               </block>
             </view>

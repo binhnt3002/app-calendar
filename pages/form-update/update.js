@@ -261,7 +261,6 @@ Page({
       });
     }
 
-    console.log(this.data.startDate);
   },
 
   onDateChange2: function (e) {
@@ -495,6 +494,7 @@ Page({
               sogiocanco: item.fields["Số giờ cần có"],
               recordId: item.record_id,
               type: 'new',
+
             };
           });
           
@@ -640,7 +640,7 @@ Page({
     that.setCalendarData();
     console.log(e);
     const currentTarget = e.currentTarget.id;
-    edit = that.data.tableData.find((obj) => obj.vieccanlam === currentTarget);
+    edit = that.data.tableData.find((obj) => obj.recordId === currentTarget);
     console.log( edit);
     that.setData({
       turnPopup2: true,
@@ -654,6 +654,7 @@ Page({
       endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
+      currentTarget
     });
   },
 
@@ -921,7 +922,6 @@ Page({
               that.formatDateToUTC(that.data.endDate,7),
               dataDay.isLoop
             );
-            console.log(body);
 
             createEvent(access_token, that.data.calendarID, body).then(
               (rs) => {
@@ -952,6 +952,7 @@ Page({
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
                         (60 * 60 * 1000)
                     ) * 1000,
+                    "id" : that.data.currentTarget
                   },
                 };
                 console.log(body2);
@@ -1082,6 +1083,5 @@ Page({
                // ... similar conditions for other options
       })
     });
-  }
-
+  },
 });
