@@ -495,6 +495,7 @@ Page({
               sogiocanco: item.fields["Số giờ cần có"],
               recordId: item.record_id,
               type: 'new',
+              id: item.record_id
             };
           });
           
@@ -506,16 +507,18 @@ Page({
             // Compare dates in descending order
             return dateB - dateA;
           }); 
+          console.log(newData);
+          
           // console.log(hi);
             tableData = [...newData,...that.data.oldData]
             tableData.sort((a, b) => {
-              if (a.vieccanlam === b.vieccanlam) {
+              if (a.id === b.id) {
                   // Nếu tên công việc giống nhau, có thể sắp xếp theo các tiêu chí khác
             // Compare dates in descending order
               return new Date(a.ngaygiobatdau) - new Date(b.ngaygiobatdau);
                   // return a.quantrong - b.quantrong; // Sắp xếp theo độ quan trọng tăng dần
               }
-              return a.vieccanlam.localeCompare(b.vieccanlam); // Sắp xếp theo tên công việc
+              return a.id.localeCompare(b.id); // Sắp xếp theo tên công việc
           });
             that.setData({
               newData,
@@ -536,8 +539,7 @@ Page({
               recordId,
             });
         })
-
-
+        
         //Lấy dữ liệu từ TMT
         searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
           const oldData = result.data.items.map((item) => {
@@ -555,8 +557,11 @@ Page({
               ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
               sogiocanco: item.fields["Số giờ cần có"],
               recordId: item.record_id,
+              id: item.fields["id"]
             };
           });
+          console.log(oldData);
+          
           
             that.setData({
               oldData,
@@ -640,7 +645,7 @@ Page({
     that.setCalendarData();
     console.log(e);
     const currentTarget = e.currentTarget.id;
-    edit = that.data.tableData.find((obj) => obj.vieccanlam === currentTarget);
+    edit = that.data.tableData.find((obj) => obj.recordId === currentTarget);
     console.log( edit);
     that.setData({
       turnPopup2: true,
@@ -654,6 +659,7 @@ Page({
       endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
+      currentTarget
     });
   },
 
@@ -952,6 +958,7 @@ Page({
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
                         (60 * 60 * 1000)
                     ) * 1000,
+                    "id": that.data.currentTarget
                   },
                 };
                 console.log(body2);

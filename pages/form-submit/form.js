@@ -415,6 +415,7 @@ Page({
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
                         (60 * 60 * 1000)
                     ) * 1000,
+                    "id": (Math.random()).toString()
                   },
                 };
                 console.log(body2);

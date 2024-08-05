@@ -72,7 +72,7 @@
               <view class="title-collumn">{{item.ngaygioketthuc}}</view>
               <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon" >
-                <image id="{{item.vieccanlam}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <image id="{{item.recordId}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
                 <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
               </view>
             </view>
@@ -162,7 +162,7 @@
               </div >
               <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
                 {{edit.ngaygiobatdau}}
-              </picker>
+              </picker> 
             </div>
             <div class="col" style="padding-right:0px !important;">
               <div text class="title1">
@@ -250,8 +250,8 @@
             <view class="col-8">
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
-                <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-                  style="margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
+                <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+                  style="margin-right: 10px; background-color: rgb(255, 255, 255,0.8)" bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
