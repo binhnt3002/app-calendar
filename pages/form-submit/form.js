@@ -3,8 +3,9 @@ import {
   createEvent,
   createRecord,
   getCalendarList,
-  getAllTableName
 } from "../function/apiFunction";
+
+const appVar = getApp();
 
 Page({
   data: {
@@ -15,7 +16,7 @@ Page({
       "Thứ 5",
       "Thứ 6",
       "Thứ 7",
-      "Chủ nhật",
+      "Chủ Nhật",
     ],
     selectedDay: "Thứ 2",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -302,14 +303,11 @@ Page({
         const access_token = res.data.access_token;
         getCalendarList(access_token).then((result) => {
           console.log(result.data);
-          getAllTableName(access_token).then((rs) => {
-            console.log(rs.data);
-            that.setData({
-              dataLich: result.data.calendar_list,
-              lich: result.data.calendar_list.map((item) => item.summary),
-              tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})),
-            });
-          })
+          that.setData({
+            dataLich: result.data.calendar_list,
+            lich: result.data.calendar_list.map((item) => item.summary),
+            // tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})),
+          });
         });
         tt.showToast({
           title: "lấy dữ liệu thành công",
@@ -331,7 +329,6 @@ Page({
     return totalHours;
   },
 
- 
 
   createTask() {
     let that = this;
@@ -347,7 +344,9 @@ Page({
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
+        const access_token = res.data.access_token;
         if (
+          that.data.CalendarID != "" &&
           that.data.inputValue != "" &&
           that.data.startDate != "" &&
           that.data.endDate != "" &&
@@ -383,28 +382,29 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate,7),
+              that.formatDateToUTC(that.data.endDate,0),
               dataDay.isLoop
             );
             console.log(body);
 
-            createEvent(res.data.access_token, that.data.calendarID, body).then(
+            createEvent(access_token, that.data.calendarID, body).then(
               (rs) => {
+                console.log(rs);
                 const body2 = {
                   fields: {
-                    "Tên Task *": that.data.inputValue,
+                    "Việc cần làm": that.data.inputValue,
                     "Thể loại": that.data.selectedCategory,
-                    "Quan Trọng": that.data.selectedImportant,
-                    "Cấp Bách": that.data.selectedurgent,
+                    "Quan trọng": that.data.selectedImportant,
+                    "Cấp bách": that.data.selectedurgent,
                     "Số giờ cần có": parseInt(that.data.selectedHours),
-                    "Người giao việc *": [
+                    "Person": [
                       {
                         id: res.data.open_id,
                       },
                     ],
-                    "Thời gian bắt đầu *":
+                    "Ngày - Giờ bắt đầu":
                       this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
-                    "Thời gian kết thúc *":
+                    "Ngày - Giờ kết thúc":
                       this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
                     "Ghi chú": dataDay.inputNote,
                     "Ngày làm":
@@ -416,10 +416,13 @@ Page({
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
                         (60 * 60 * 1000)
                     ) * 1000,
+
+                    "id" : this.getRandomArbitrary(1000, 9999)
+
                   },
                 };
                 console.log(body2);
-                createRecord(res.data.access_token, body2,that.data.tableName[0].table).then((rs) => {
+                createRecord(tt.getStorageSync("app_access_token"), body2,appVar.GlobalConfig.tableId).then((rs) => {
                   console.log(rs);
                   tt.showToast({
                     title: "Tạo xong công việc",
@@ -463,4 +466,10 @@ Page({
     const newDate = date.toISOString().split('T')[0]
     return newDate.replace(/-/g, "") + "T000000Z";
   },
+
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+  
+  
 });

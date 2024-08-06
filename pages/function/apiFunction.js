@@ -111,7 +111,7 @@ const updateRecord = (access_token, data,tableId,recordId) => {
 };
 
 const getAllTableName = (access_token) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables`;
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables`;
   const headers = {
     Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
