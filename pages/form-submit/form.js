@@ -3,6 +3,7 @@ import {
   createEvent,
   createRecord,
   getCalendarList,
+  getListBusy
 } from "../function/apiFunction";
 
 const appVar = getApp();
@@ -103,8 +104,9 @@ Page({
     dataLich: [],
     inputValue: "",
     inputNote: "",
-
+    listBusy: [],
     tableName: [],
+    checkBusy : []
   },
   onSelectedHours: function (e) {
     this.setData({
@@ -247,6 +249,8 @@ Page({
   },
 
   onDateChange2: function (e) {
+    let listBusy = this.data.listBusy
+    listBusy = []
     this.setData({
       endDate: e.detail.value,
     });
@@ -255,9 +259,35 @@ Page({
         endDate: this.data.startDate,
       });
     }
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const access_token = res.data.access_token;
+        const body = {
+          "time_min": this.data.startDate+"T00:00:00Z",
+          "time_max": this.data.endDate+"T23:59:59Z",
+          "user_id": res.data.open_id,
+        }
+        
+        getListBusy(access_token,body).then((rs) => {
+          console.log(rs);
+          rs.data.freebusy_list.map(i => listBusy.push({
+            start: this.convertUTCtoGMT7Timestamp(i.start_time),
+            end: this.convertUTCtoGMT7Timestamp(i.end_time)
+          }))
+          this.setData({
+            listBusy
+          })
+          
+        })
+      }
+    })
   },
 
   onTimeChange2: function (e) {
+    let that = this
+    let checkBusy = this.data.checkBusy
+    checkBusy = []
     this.setData({
       endTime: e.detail.value,
     });
@@ -277,6 +307,36 @@ Page({
         endTime: this.data.startTime,
       });
     }
+
+    checkBusy = {
+      start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
+      end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
+    }
+    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+      tt.showModal({
+        "title": "Cảnh báo",
+        "content": "Đã có lịch trùng",
+        "confirmText": "Tiếp",
+        "cancelText": "Hủy",
+        "showCancel": true,
+        success(res) {
+          console.log(JSON.stringify(res));
+          if (res.confirm===false) {
+            that.setData({
+              endTime: "",
+              startTime: ""
+            })
+          } 
+        },
+        fail(res) {
+          console.log(`showModal fail: ${JSON.stringify(res)}`);
+        }
+    });
+    }
+    this.setData({
+      checkBusy
+    })
+
   },
 
   onShow() {
@@ -340,7 +400,7 @@ Page({
       });
       return;
     }
-    
+
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -382,7 +442,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate,0),
+              that.formatDateToUTC(that.data.endDate, 0),
               dataDay.isLoop
             );
             console.log(body);
@@ -408,21 +468,21 @@ Page({
                       this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
                     "Ghi chú": dataDay.inputNote,
                     "Ngày làm":
-                      this.dateTimeToTimestamp(dataDay.date, "") * 1000 ,
+                      this.dateTimeToTimestamp(dataDay.date, "") * 1000,
                     "EventID": rs.data.event.event_id,
                     "CalendarID": that.data.calendarID,
                     "Số giờ của 1 ngày": Math.abs(
                       (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
-                        (60 * 60 * 1000)
+                      (60 * 60 * 1000)
                     ) * 1000,
 
-                    "id" : this.getRandomArbitrary(1000, 9999)
+                    "id": this.getRandomArbitrary(1000, 9999)
 
                   },
                 };
                 console.log(body2);
-                createRecord(tt.getStorageSync("app_access_token"), body2,appVar.GlobalConfig.tableId).then((rs) => {
+                createRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then((rs) => {
                   console.log(rs);
                   tt.showToast({
                     title: "Tạo xong công việc",
@@ -454,22 +514,43 @@ Page({
     });
   },
 
+  isDuringAnyBusyPeriod: (check, list) => {
+    for (const period of list) {      
+        if (
+          (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
+          (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+          (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
+      ) {  
+            return false; // Return false immediately if any condition is met
+        }
+    }
+    return true; // Return true if no overlap is found
+  },
+
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
     return Math.floor(timestamp / 1000);
   },
 
-  formatDateToUTC(dateString,days) {
+  formatDateToUTC(dateString, days) {
     const date = new Date(dateString);
     date.setDate(date.getDate() + days);
     const newDate = date.toISOString().split('T')[0]
     return newDate.replace(/-/g, "") + "T000000Z";
   },
 
+  convertUTCtoGMT7Timestamp: function (utcString) {
+    // Create a Date object from the UTC string
+    const utcDate = new Date(utcString);
+    // Add the offset to the UTC date to get GMT+7 date
+    const gmt7Date = new Date(utcDate.getTime() / 1000);
+    // Return the timestamp of the GMT+7 date
+    return gmt7Date.getTime();
+  },
   getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   }
-  
-  
+
+
 });

@@ -119,6 +119,18 @@ const getAllTableName = (access_token) => {
   return sendRequest(url, "GET", headers, {});
 };
 
+const getListBusy = (access_token,data) => {
+  const url = `https://open.larksuite.com/open-apis/calendar/v4/freebusy/list`;
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+    "Content-Type": "application/json",
+  };
+  const body = {
+    ...data,
+  };
+  return sendRequest(url, "POST", headers, body);
+};
+
 export {
   getCalendarList,
   createEvent,
@@ -130,5 +142,6 @@ export {
   searchRecord,
   getCalendar,
   updateRecord,
-  getAllTableName
+  getAllTableName,
+  getListBusy
 };
