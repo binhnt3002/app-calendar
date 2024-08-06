@@ -16,7 +16,7 @@ const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEnd
     },
     "visibility": "default",
     // "attendee_ability": "can_see_others",
-    "free_busy_status": "free",
+    "free_busy_status": "busy",
     "color": -1,
     "reminders": [
       {
