@@ -63,6 +63,19 @@ Page({
   
 
   onChangeHoursWeek(e) {
+    if (e.detail.value > 48 || e.detail.value < 1) {
+      return tt.showModal({
+        title: "Thông báo",
+        content: "thời gian trong tuần khoảng 1h - 48h.",
+        confirmText: "Đóng",
+        showCancel: false,
+        success: () => {
+          this.setData({
+            totalHoursInWeek : ""
+          })
+        },
+      })
+    }
     this.setData({
       totalHoursInWeek: e.detail.value,
     });
@@ -116,37 +129,37 @@ Page({
           let listItemsLength = data.length || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
-            "Cấp Bách",
+            "Cấp bách",
             "1",
             listItemsLength
           );
           let totalHours2 = this.calculateTotal(
             listItems,
-            "Cấp Bách",
+            "Cấp bách",
             "2",
             listItemsLength
           );
           let totalHours3 = this.calculateTotal(
             listItems,
-            "Cấp Bách",
+            "Cấp bách",
             "3",
             listItemsLength
           );
           let totalHoursQuanTrongA = this.calculateTotal(
             listItems,
-            "Quan Trọng",
+            "Quan trọng",
             "A",
             listItemsLength
           );
           let totalHoursQuanTrongB = this.calculateTotal(
             listItems,
-            "Quan Trọng",
+            "Quan trọng",
             "B",
             listItemsLength
           );
           let totalHoursQuanTrongC = this.calculateTotal(
             listItems,
-            "Quan Trọng",
+            "Quan trọng",
             "C",
             listItemsLength
           );

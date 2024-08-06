@@ -69,10 +69,14 @@
                   <div class="title1">
                     <image class="f-icon" src="/images/warning.svg" mode="" />Số giờ cần có
                   </div>
-                  <picker class="picker-text" mode="selector" id="important" range="{{hours}}"
+                  <picker tt:if="{{iSo}}" class="picker-text" mode="selector" id="important" range="{{hours}}"
                     bindchange="onSelectedHours">
                     {{selectedHours}}
                   </picker>
+                  <input tt:if="{{isSHow}}" type="number" class="picker-text" mode="selector" id="important" range="{{hours}}"
+                    bindinput="inputHours">
+                    {{selectedHours}}
+                  </input>
                 </block>
               </div>
               <div class="col" style="padding-right:0px !important;">
@@ -91,7 +95,7 @@
                   <div text class="title1">
                     <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc
                   </div>
-                  <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}"
+                  <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" 
                     bindchange="onDateChange2">
                     {{endDate}}
                   </picker>
@@ -107,7 +111,7 @@
             </view>
             <view class="row">
               <view class="col-8">
-                <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"
+                <picker disabled="{{disableDayWork}}" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"
                   bindchange="onDateChange3" placeholder="yyyy-mm-dd">
                   {{selectedDayWork}}
                 </picker>
@@ -142,16 +146,22 @@
                   </picker>
                 </block>
               </div>
+                      <p>{{totalHours}}</p>
+
               <div class="col" style="padding-right:0px !important;">
                 <div class="title1">
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại
                 </div>
                 <block class="select-time">
                   <label style="justify-content: center; display: flex;">
-                    <checkbox style="height: 15px; width: 15px; transform: scale(1.3); margin-bottom: 5px;"
-                      bindtap="checkboxChange" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
+                    <checkbox disabled="{{weekLoop}}" style="height: 15px; width: 15px; transform: scale(1.3); margin-bottom: 5px;"
+                      bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
+                    <checkbox disabled="{{dailyCheckBox}}" style="height: 15px; width: 15px; transform: scale(1.3);" 
+                    bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />
+
                   </label>
                 </block>
+                <!-- <p>{{totalHours}}</p> --> 
               </div>
             </div>
           </view>
@@ -167,7 +177,7 @@
             </view>
           </view>
           <view class="col-6" style="display: flex; justify-content: flex-end; align-items: center;">
-            <button class="btn btn-primary m-2" bindtap="createTask"
+            <button class="btn btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}"
               style="border-radius: none !important; margin-left: auto;">Tạo công việc</button>
           </view>
         </view>
@@ -183,3 +193,4 @@
   </view>
 </view>
 </view>
+

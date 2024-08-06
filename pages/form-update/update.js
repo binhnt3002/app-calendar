@@ -8,6 +8,15 @@ import { bodyUpdateEvent, bodyCreateTask } from "./detailForm";
 import { sendRequest } from "../../utils/sendRequest";
 
 const appVar = getApp();
+const dayOptions =  [
+      "Chủ Nhật",
+      "Thứ 2",
+      "Thứ 3",
+      "Thứ 4",
+      "Thứ 5",
+      "Thứ 6",
+      "Thứ 7",
+    ]
 
 Page({
   data: {
@@ -138,16 +147,12 @@ Page({
         },
       },
     ],
-    dayOptions: [
-      "Thứ 2",
-      "Thứ 3",
-      "Thứ 4",
-      "Thứ 5",
-      "Thứ 6",
-      "Thứ 7",
-      "Chủ Nhật",
-    ],
-    selectedDay: "Thứ 2"
+    
+    selectedDay: dayOptions[new Date().getDay()],
+
+    dailyLoop : false,
+
+
   },
 
   onCalendarChage: function (e) {
@@ -248,6 +253,7 @@ Page({
         endTime: this.data.startTime,
       });
     }
+    this.calculateTime();
   },
 
   onDateChange1: function (e) {
@@ -306,7 +312,26 @@ Page({
     });
   },
 
+  dailyLoopCheckBoxChange: function (e) {
+    
+    if (!e.currentTarget.dataset.check) {
+      this.setData({
+        dailyLoop:  !e.currentTarget.dataset.check,
+        weekLoop : true,
+        isLoop:false,
+      });
+    }else{
+      this.setData({
+        dailyLoop:  !e.currentTarget.dataset.check,
+        weekLoop : false,
+        isLoop: false,
+      });
+    }
+    
+  },
+
   checkboxChange: function (e) {
+
     const selectedDay = this.data.selectedDay;
     const selectedDayWork = this.data.selectedDayWork;
     const startTime = this.data.startTime;
@@ -316,6 +341,8 @@ Page({
     const dailyData = this.data.dailyData;
     const isLoop = !e.currentTarget.dataset.checked;
 
+    
+
     dailyData[0][selectedDay] = {
       date: selectedDayWork,
       startTime,
@@ -324,10 +351,21 @@ Page({
       isLoop,
     };
 
-    this.setData({
-      isLoop,
-      dailyData,
-    });
+    if (!e.currentTarget.dataset.checked) {
+      this.setData({
+        dailyLoop : false,
+        dailyCheckBox : true,
+        isLoop,
+        dailyData,
+      })
+    }else{
+      this.setData({
+        dailyLoop : false,
+        dailyCheckBox : false,
+        isLoop,
+        dailyData,
+      })
+    }
   },
 
   onWeekChange: function (e) {
@@ -391,6 +429,13 @@ Page({
     oldData = [];
     sogiocanco = [];
     recordId = [];
+
+    tt.showToast({
+      title: "Đang tải !",
+      icon: "loading",
+      duration: 5000,
+    });
+
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -524,6 +569,10 @@ Page({
             return new Date(a.ngaylam) - new Date(b.ngaylam);
           });
           console.log(tableData);
+          tt.showToast({
+            title: 'Đã cập nhật !',
+            icon: 'success',
+          })
           that.setData({
             newData,
             tableData,
@@ -561,7 +610,7 @@ Page({
               ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
               sogiocanco: item.fields["Số giờ cần có"],
               recordId: item.record_id,
-              id: item.fields["id"][0].text,
+              id: item?.fields?.["id"]?.[0]?.text,
             };
           });
           console.log(result);
@@ -585,7 +634,6 @@ Page({
             sogiocanco,
             recordId,
           });
-
         });
       },
     });
@@ -671,6 +719,7 @@ Page({
   update() {
     let that = this;
     that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
+    
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -768,9 +817,21 @@ Page({
   confirmUpdate(e) {
     const eventId = e.currentTarget.id;
     const that = this;
+    
     if (that.data.startTime == "" && that.data.endTime == "") {
       return tt.showToast({ title: "Trường thời gian đang trống !", icon: "warning", });
     }
+
+    if (that.data.totalHours > that.data.selectedHours) {
+      return tt.showModal({
+        title: "Cảnh báo",
+        content: `Thời gian 1 ngày là ${that.data.totalHours}h đã quá số giờ cần có. Vui lý thay đổi thời gian.`,
+        confirmText: "Đóng",
+        showCancel: false,
+      })
+    }
+
+
     tt.showModal({
       title: "Xác nhận cập nhật công việc",
       content: "Bạn có muốn cập nhật công việc này?",
@@ -881,12 +942,12 @@ Page({
   createTask() {
     let that = this;
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
-      tt.showToast({
-        title: "Vượt quá số giờ cần có",
-        icon: "error",
-        duration: 2000,
-      });
-      return;
+      return tt.showModal({
+        title: "Thông báo",
+        content: "Đã vượt quá giờ cho phép. Vui lòng chọn lại.",
+        confirmText: "Đóng",
+        showCancel: false,
+      })
     }
 
     tt.getStorage({
@@ -907,6 +968,86 @@ Page({
             duration: 5000,
           })
 
+          if (that.data.dailyLoop == true) {
+            for (const dataName  in that.data.dailyData[0]) {
+              const dataDay = that.data.dailyData[0][dataName];
+              if (
+                dataDay.date === "" ||
+                dataDay.startTime === "" ||
+                dataDay.endTime === ""
+              ) {
+                continue;
+              }
+
+              const body = bodyCreateTask(
+                that.data.inputValue,
+                dataDay.inputNote,
+                this.dateTimeToTimestamp(
+                  dataDay.date,
+                  dataDay.startTime
+                ).toString(),
+                this.dateTimeToTimestamp(
+                  dataDay.date,
+                  dataDay.endTime
+                ).toString(),
+                that.formatDateToUTC(that.data.endDate, 1),
+                false,
+                that.data.dailyLoop
+              );
+              
+              createEvent(access_token, that.data.calendarID, body).then(
+                (rs) => {
+                  console.log(rs);
+                  const body2 = {
+                    fields: {
+                      "Việc cần làm": that.data.inputValue,
+                      "Thể loại": that.data.selectedCategory,
+                      "Quan trọng": that.data.selectedImportant,
+                      "Cấp bách": that.data.selectedurgent,
+                      "Số giờ cần có": parseInt(that.data.selectedHours),
+                      "Person": [
+                        {
+                          id: res.data.open_id,
+                        },
+                      ],
+                      "Ngày - Giờ bắt đầu":
+                        this.dateTimeToTimestamp(that.data.startDate, "") * 1000,
+                      "Ngày - Giờ kết thúc":
+                        this.dateTimeToTimestamp(that.data.endDate, "") * 1000,
+                      "Ghi chú": dataDay.inputNote,
+                      "Ngày làm":
+                        this.dateTimeToTimestamp(dataDay.date, "") * 1000,
+                      "EventID": rs.data.event.event_id,
+                      "CalendarID": that.data.calendarID,
+                      "Số giờ của 1 ngày": Math.abs(
+                        (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
+                          this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
+                        (60 * 60 * 1000)
+                      ) * 1000,
+                      "id": that.data.currentTarget
+                    },
+                  };
+
+                  console.log(body2);
+                  
+                  createRecord(tt.getStorageSync("app_access_token"), that.data.calendarID, body2).then(
+                    (result) => {
+                      console.log(result);
+                      tt.showToast({
+                        title: "Đã tạo",
+                        icon: "success",
+                        duration: 2000,
+                      });
+                    }
+                  );
+                }
+              );
+            }
+            return;
+          }
+
+
+          //phân công task từng ngày (week loop)
           for (const dayName in that.data.dailyData[0]) {
             const dataDay = that.data.dailyData[0][dayName];
 
@@ -929,7 +1070,7 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate, 7),
+              that.formatDateToUTC(that.data.endDate, 1),
               dataDay.isLoop
             );
 
@@ -965,6 +1106,7 @@ Page({
                     "id": that.data.currentTarget
                   },
                 };
+
                 console.log(body2);
                 createRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then((rs) => {
                   console.log(rs);
@@ -1094,4 +1236,14 @@ Page({
       })
     });
   },
+
+  calculateTime() {
+    let totalHours = 0;
+    totalHours += parseInt(this.data.endTime.split(":")[0]) - parseInt(this.data.startTime.split(":")[0]);
+    this.setData({totalHours})
+    return totalHours;
+  },
+
+
+
 });
