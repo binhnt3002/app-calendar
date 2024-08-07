@@ -1,4 +1,4 @@
-import { searchRecord, getCalendar, getAllTableName, getCalendarList, createEvent, createRecord } from "../function/apiFunction";
+import { searchRecord, getCalendar, getAllTableName, getCalendarList, createEvent, createRecord, getListBusy } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
@@ -151,8 +151,8 @@ Page({
     selectedDay: dayOptions[new Date().getDay()],
 
     dailyLoop: false,
-
-
+    listBusy:[],
+    checkBusy: []
   },
 
   // Function triggered when the calendar selection changes
@@ -251,6 +251,9 @@ Page({
 
   // Function to handle changes in end time (onTimeChange2)
   onTimeChange2: function (e) {
+    let that = this
+    let checkBusy = this.data.checkBusy
+    checkBusy = []
     // Update end time state
     this.setData({
       endTime: e.detail.value,
@@ -275,6 +278,35 @@ Page({
         endTime: this.data.startTime,
       });
     }
+    checkBusy = {
+      start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
+      end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
+    }
+    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+      tt.showModal({
+        "title": "Cảnh báo",
+        "content": "Đã có lịch trùng",
+        "confirmText": "Tiếp",
+        "cancelText": "Hủy",
+        "showCancel": true,
+        success(res) {
+          console.log(JSON.stringify(res));
+          if (res.confirm===false) {
+            that.setData({
+              endTime: "",
+              startTime: "",
+              totalHours: ""
+            })
+          } 
+        },
+        fail(res) {
+          console.log(`showModal fail: ${JSON.stringify(res)}`);
+        }
+    });
+    }
+    this.setData({
+      checkBusy
+    })
 
     // Calculate total working hours (assuming relevant function exists)
     this.calculateTime();
@@ -776,6 +808,7 @@ Page({
     let that = this;
     // Access the current edit state from component data (assuming it's already set)
     let edit = that.data.edit;
+    let listBusy = that.data.listBusy;
     // Extract the event target ID (presumably the record ID of the task)
     const currentTarget = e.currentTarget.id;
     // Find the specific task object from tableData based on the record ID
@@ -789,6 +822,28 @@ Page({
         duration: 3000, // Show the success message for 3 seconds
       });
     } else {
+      tt.getStorage({
+        key: "user_access_token",
+        success: (res) => {
+          const access_token = res.data.access_token;
+          const body = {
+            "time_min": this.data.startDate+"T00:00:00Z",
+            "time_max": this.data.endDate+"T23:59:59Z",
+            "user_id": res.data.open_id,
+          }
+          
+          getListBusy(access_token,body).then((rs) => {
+            console.log(rs);
+            rs.data?.freebusy_list?.map(i => listBusy.push({
+              start: this.convertUTCtoGMT7Timestamp(i.start_time),
+              end: this.convertUTCtoGMT7Timestamp(i.end_time)
+            }))
+            this.setData({
+              listBusy
+            })
+          })
+        }
+      })
       // Call a function (presumably to set calendar data - unclear without context)
     that.setCalendarData();
       // Update component state to display the edit2 popup
@@ -1365,6 +1420,28 @@ Page({
     this.setData({ totalHours })
       // Return the calculated total hours
     return totalHours;
+  },
+
+  convertUTCtoGMT7Timestamp: function (utcString) {
+    // Create a Date object from the UTC string
+    const utcDate = new Date(utcString);
+    // Add the offset to the UTC date to get GMT+7 date
+    const gmt7Date = new Date(utcDate.getTime() / 1000);
+    // Return the timestamp of the GMT+7 date
+    return gmt7Date.getTime();
+  },
+
+  isDuringAnyBusyPeriod: (check, list) => {
+    for (const period of list) {      
+        if (
+          (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
+          (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+          (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
+      ) {  
+            return false; // Return false immediately if any condition is met
+        }
+    }
+    return true; // Return true if no overlap is found
   },
 
 });

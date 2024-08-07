@@ -296,7 +296,7 @@ Page({
         
         getListBusy(access_token,body).then((rs) => {
           console.log(rs);
-          rs.data.freebusy_list.map(i => listBusy.push({
+          rs.data?.freebusy_list?.map(i => listBusy.push({
             start: this.convertUTCtoGMT7Timestamp(i.start_time),
             end: this.convertUTCtoGMT7Timestamp(i.end_time)
           }))
@@ -349,7 +349,8 @@ Page({
           if (res.confirm===false) {
             that.setData({
               endTime: "",
-              startTime: ""
+              startTime: "",
+              totalHours: ""
             })
           } 
         },
@@ -477,7 +478,7 @@ Page({
                   dataDay.date,
                   dataDay.endTime
                 ).toString(),
-                that.formatDateToUTC(that.data.endDate,""),
+                that.formatDateToUTC(that.data.endDate,1),
                 false,
                 that.data.dailyLoop
               );
@@ -574,7 +575,8 @@ Page({
                 dataDay.endTime
               ).toString(),
               that.formatDateToUTC(that.data.endDate,1),
-              dataDay.isLoop
+              dataDay.isLoop,
+              false
             );
             console.log(body);
 
