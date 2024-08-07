@@ -211,7 +211,7 @@ Page({
 
   inputTittle: function (e) {
     this.setData({
-      inputValue: e.detail.value,
+      inputValue: "title from code \n" + e.detail.value,
     });
   },
 
@@ -941,6 +941,8 @@ Page({
 
   createTask() {
     let that = this;
+    that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
+
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       return tt.showModal({
         title: "Thông báo",
@@ -955,6 +957,7 @@ Page({
       success: (res) => {
         const access_token = res.data.access_token;
         if (
+          that.data.calendarID != "" &&
           that.data.inputValue != "" &&
           that.data.startDate != "" &&
           that.data.endDate != "" &&
@@ -1030,7 +1033,7 @@ Page({
 
                   console.log(body2);
                   
-                  createRecord(tt.getStorageSync("app_access_token"), that.data.calendarID, body2).then(
+                  createRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then(
                     (result) => {
                       console.log(result);
                       tt.showToast({
