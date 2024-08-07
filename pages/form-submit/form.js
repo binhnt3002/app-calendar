@@ -20,15 +20,6 @@ dayOptions2 = [
 
 Page({
   data: {
-    // dayOptions: [
-    //   "Thứ 2",
-    //   "Thứ 3",
-    //   "Thứ 4",
-    //   "Thứ 5",
-    //   "Thứ 6",
-    //   "Thứ 7",
-    //   "Chủ Nhật",
-    // ],
     selectedDay: dayOptions2[new Date().getDay()],
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     selectedHours: "1",
@@ -42,58 +33,16 @@ Page({
       "Việc cần đôn đốc",
       "Đọc & học",
     ],
+    
     dailyData: [
-      {
-        "Thứ 2": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-
-        "Thứ 3": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 4": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 5": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 6": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 7": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Chủ nhật": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
+      { 
+        "Thứ 2": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Thứ 3": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Thứ 4": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Thứ 5": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Thứ 6": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Thứ 7": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Chủ nhật": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
       },
     ],
 
@@ -107,11 +56,13 @@ Page({
     startTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     endTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDayWork: new Date().toISOString().substring(0, 10),
+
     calendarID: "",
     eventId: "",
     lich: [],
     chonlich: "",
     dataLich: [],
+
     inputValue: "",
     inputNote: "",
     listBusy: [],
@@ -155,6 +106,7 @@ Page({
       inputValue: e.detail.value,
     });
   },
+  
   inputNote: function (e) {
     this.setData({
       inputNote: e.detail.value,
@@ -592,11 +544,7 @@ Page({
                 dailyLoop: false,
                 weekLoop: false,
               });
-              
             })
-            
-
-
             }
             return;
           }
@@ -742,6 +690,4 @@ Page({
   getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   }
-
-
 });

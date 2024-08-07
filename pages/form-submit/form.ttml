@@ -147,7 +147,6 @@
                 </block>
               </div>
                       <p>{{totalHours}}</p>
-
               <div class="col" style="padding-right:0px !important;">
                 <div class="title1">
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại
