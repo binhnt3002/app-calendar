@@ -1,4 +1,4 @@
-const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEndLoop, isLoop) => {
+const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEndLoop, weekLoop, dailyLoop) => {
   const body =
   {
     "summary": eventTitle,
@@ -23,10 +23,17 @@ const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEnd
     ],
     "recurrence": ""
   }
-  if (isLoop) {
+  
+  if (weekLoop) {
     body.recurrence = `FREQ=WEEKLY;UNTIL=${dateEndLoop}`
     return body;
   }
+
+  if (dailyLoop) {
+    body.recurrence = `FREQ=DAILY;UNTIL=${dateEndLoop}`
+    return body;
+  }
+  
   return body;
 }
 const bodyScheduleParticipants = (type, id, res) => {
