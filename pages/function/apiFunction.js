@@ -1,4 +1,4 @@
-import { sendRequest } from "../../../utils/sendRequest";
+import { sendRequest } from "../../utils/sendRequest";
 
 const appVar = getApp();
 
@@ -72,8 +72,8 @@ const createInvitation = (access_token, calendarId, eventID, data) => {
   return sendRequest(url, "POST", headers, body);
 };
 
-const createRecord = (access_token, data) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records`;
+const createRecord = (access_token, data,tableId) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records`;
   const headers = {
     Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
@@ -84,8 +84,8 @@ const createRecord = (access_token, data) => {
   return sendRequest(url, "POST", headers, body);
 };
 
-const searchRecord = (access_token, data) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
+const searchRecord = (access_token, data,tableId) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records/search`;
   const headers = {
     Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
@@ -96,8 +96,8 @@ const searchRecord = (access_token, data) => {
   return sendRequest(url, "POST", headers, body);
 };
 
-const updateRecord = (access_token, data) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/batch_update`;
+const updateRecord = (access_token, data,tableId,recordId) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records/${recordId}`;
   const headers = {
     Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
@@ -107,7 +107,27 @@ const updateRecord = (access_token, data) => {
     ...data,
   };
 
-  console.log(body);
+  return sendRequest(url, "PUT", headers, body);
+};
+
+const getAllTableName = (access_token) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables`;
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+    "Content-Type": "application/json",
+  };
+  return sendRequest(url, "GET", headers, {});
+};
+
+const getListBusy = (access_token,data) => {
+  const url = `https://open.larksuite.com/open-apis/calendar/v4/freebusy/list`;
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+    "Content-Type": "application/json",
+  };
+  const body = {
+    ...data,
+  };
   return sendRequest(url, "POST", headers, body);
 };
 
@@ -122,4 +142,6 @@ export {
   searchRecord,
   getCalendar,
   updateRecord,
+  getAllTableName,
+  getListBusy
 };

@@ -3,17 +3,13 @@ import {
   createEvent,
   createRecord,
   getCalendarList,
-} from "./function/apiFunction";
+  getListBusy
+} from "../function/apiFunction";
+
+const appVar = getApp();
 
 Page({
   data: {
-    time1: 0,
-    time2: 0,
-    time3: 0,
-    time4: 0,
-    time5: 0,
-    time6: 0,
-    time7: 0,
     dayOptions: [
       "Thứ 2",
       "Thứ 3",
@@ -21,7 +17,7 @@ Page({
       "Thứ 5",
       "Thứ 6",
       "Thứ 7",
-      "Chủ nhật",
+      "Chủ Nhật",
     ],
     selectedDay: "Thứ 2",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -108,6 +104,9 @@ Page({
     dataLich: [],
     inputValue: "",
     inputNote: "",
+    listBusy: [],
+    tableName: [],
+    checkBusy : []
   },
   onSelectedHours: function (e) {
     this.setData({
@@ -140,18 +139,26 @@ Page({
   },
 
   checkboxChange: function (e) {
-    console.log(e.currentTarget.dataset.checked);
+    const selectedDay = this.data.selectedDay;
+    const selectedDayWork = this.data.selectedDayWork;
+    const startTime = this.data.startTime;
+    const endTime = this.data.endTime;
+    const inputNote = this.data.inputNote;
+
+    const dailyData = this.data.dailyData;
+    const isLoop = !e.currentTarget.dataset.checked;
+
+    dailyData[0][selectedDay] = {
+      date: selectedDayWork,
+      startTime,
+      endTime,
+      inputNote,
+      isLoop,
+    };
+
     this.setData({
-      isLoop: !e.currentTarget.dataset.checked,
-    });
-    let data = this.data.dailyData;
-    data[0][this.data.selectedDay].date = this.data.selectedDayWork;
-    data[0][this.data.selectedDay].startTime = this.data.startTime;
-    data[0][this.data.selectedDay].endTime = this.data.endTime;
-    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
-    data[0][this.data.selectedDay].isLoop = !e.currentTarget.dataset.checked;
-    this.setData({
-      dailyData: data,
+      isLoop,
+      dailyData,
     });
   },
 
@@ -195,8 +202,6 @@ Page({
         selectedDayWork: this.data.startDate,
       });
     }
-
-    console.log(this.data.startDate);
   },
 
   onTimeChange1: function (e) {
@@ -244,6 +249,8 @@ Page({
   },
 
   onDateChange2: function (e) {
+    let listBusy = this.data.listBusy
+    listBusy = []
     this.setData({
       endDate: e.detail.value,
     });
@@ -252,9 +259,35 @@ Page({
         endDate: this.data.startDate,
       });
     }
+    tt.getStorage({
+      key: "user_access_token",
+      success: (res) => {
+        const access_token = res.data.access_token;
+        const body = {
+          "time_min": this.data.startDate+"T00:00:00Z",
+          "time_max": this.data.endDate+"T23:59:59Z",
+          "user_id": res.data.open_id,
+        }
+        
+        getListBusy(access_token,body).then((rs) => {
+          console.log(rs);
+          rs.data.freebusy_list.map(i => listBusy.push({
+            start: this.convertUTCtoGMT7Timestamp(i.start_time),
+            end: this.convertUTCtoGMT7Timestamp(i.end_time)
+          }))
+          this.setData({
+            listBusy
+          })
+          
+        })
+      }
+    })
   },
 
   onTimeChange2: function (e) {
+    let that = this
+    let checkBusy = this.data.checkBusy
+    checkBusy = []
     this.setData({
       endTime: e.detail.value,
     });
@@ -274,6 +307,36 @@ Page({
         endTime: this.data.startTime,
       });
     }
+
+    checkBusy = {
+      start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
+      end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
+    }
+    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+      tt.showModal({
+        "title": "Cảnh báo",
+        "content": "Đã có lịch trùng",
+        "confirmText": "Tiếp",
+        "cancelText": "Hủy",
+        "showCancel": true,
+        success(res) {
+          console.log(JSON.stringify(res));
+          if (res.confirm===false) {
+            that.setData({
+              endTime: "",
+              startTime: ""
+            })
+          } 
+        },
+        fail(res) {
+          console.log(`showModal fail: ${JSON.stringify(res)}`);
+        }
+    });
+    }
+    this.setData({
+      checkBusy
+    })
+
   },
 
   onShow() {
@@ -303,6 +366,7 @@ Page({
           that.setData({
             dataLich: result.data.calendar_list,
             lich: result.data.calendar_list.map((item) => item.summary),
+            // tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})),
           });
         });
         tt.showToast({
@@ -325,105 +389,6 @@ Page({
     return totalHours;
   },
 
-  // createTask() {
-  //   const that = this;
-  //   const { inputValue, startDate, endDate, startTime, endTime } = that.data;
-  //   if (that.calculateTime() > parseInt(that.data.selectedHours)) {
-  //     tt.showToast({
-  //       title: "Vượt quá số giờ cần có",
-  //       icon: "error",
-  //       duration: 2000,
-  //     });
-  //     return;
-  //   }
-  //   tt.getStorage({
-  //     key: "user_access_token",
-  //     success: ({ data }) => {
-  //       if (inputValue && startDate && endDate && startTime && endTime) {
-  //         const promises = Object.entries(that.data.dailyData[0])
-  //           .filter(
-  //             ([key, value]) => value.date && value.startTime && value.endTime
-  //           )
-  //           .map(([dayName, dataDay]) => {
-  //             const body = bodyCreateTask(
-  //               inputValue,
-  //               dataDay.inputNote,
-  //               that
-  //                 .dateTimeToTimestamp(dataDay.date, dataDay.startTime)
-  //                 .toString(),
-  //               that
-  //                 .dateTimeToTimestamp(dataDay.date, dataDay.endTime)
-  //                 .toString(),
-  //               that.formatDateToUTC(endDate),
-  //               dataDay.isLoop
-  //             );
-
-  //             return createEvent(data.access_token, that.data.calendarID, body);
-  //           });
-
-  //         Promise.all(promises).then((results) => {
-  //           const body2 = {
-  //             fields: {
-  //               "Việc cần làm": inputValue,
-  //               "Thể loại": that.data.selectedCategory,
-  //               "Quan trọng": that.data.selectedImportant,
-  //               "Cấp bách": that.data.selectedurgent,
-  //               "Số giờ cần có": parseInt(that.data.selectedHours),
-  //               Person: [
-  //                 {
-  //                   id: data.open_id,
-  //                 },
-  //               ],
-  //               "Ngày - Giờ bắt đầu":
-  //                 that.dateTimeToTimestamp(startDate, "") * 1000,
-  //               "Ngày - Giờ kết thúc":
-  //                 that.dateTimeToTimestamp(endDate, "") * 1000,
-  //               "Ghi chú": "",
-  //               "Ngày làm": "",
-  //               EventID: "",
-  //               CalendarID: that.data.calendarID,
-  //             },
-  //           };
-
-  //           results.forEach((result) => {
-  //             body2.fields.EventID = result.data.event.event_id;
-  //             body2.fields["Ngày làm"] =
-  //               that.dateTimeToTimestamp(
-  //                 result.data.event.start_time.date,
-  //                 ""
-  //               ) * 1000;
-  //             createRecord(data.access_token, body2).then((rs) => {
-  //               console.log(rs);
-  //             });
-  //           });
-
-  //           tt.showToast({
-  //             title: "Tạo xong công việc",
-  //             icon: "success",
-  //           });
-
-  //           that.setData({
-  //             inputValue: "",
-  //             inputNote: "",
-  //             selectedCategory: "Việc chính",
-  //             selectedurgent: "1",
-  //             selectedImportant: "A",
-  //             selectedHours: "1",
-  //             startDate: "Chọn ngày",
-  //             endDate: "",
-  //             startTime: "",
-  //             endTime: "",
-  //           });
-  //         });
-  //       } else {
-  //         tt.showToast({
-  //           title: "Vui lòng nhập đầy đủ dữ liệu",
-  //           icon: "error",
-  //         });
-  //       }
-  //     },
-  //   });
-  // },
 
   createTask() {
     let that = this;
@@ -435,16 +400,26 @@ Page({
       });
       return;
     }
+
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
+        const access_token = res.data.access_token;
         if (
+          that.data.CalendarID != "" &&
           that.data.inputValue != "" &&
           that.data.startDate != "" &&
           that.data.endDate != "" &&
           that.data.startTime != "" &&
           that.data.endTime != ""
         ) {
+
+          tt.showToast({
+            title: "Đang tạo",
+            icon: "loading",
+            duration: 5000,
+          })
+
           for (const dayName in that.data.dailyData[0]) {
             const dataDay = that.data.dailyData[0][dayName];
 
@@ -467,17 +442,14 @@ Page({
                 dataDay.date,
                 dataDay.endTime
               ).toString(),
-              that.formatDateToUTC(that.data.endDate),
+              that.formatDateToUTC(that.data.endDate, 0),
               dataDay.isLoop
             );
-
             console.log(body);
-            console.log(dataDay);
-            console.log(dataDay.isLoop);
-            createEvent(res.data.access_token, that.data.calendarID, body).then(
-              (rs) => {
-                console.log(rs.data);
 
+            createEvent(access_token, that.data.calendarID, body).then(
+              (rs) => {
+                console.log(rs);
                 const body2 = {
                   fields: {
                     "Việc cần làm": that.data.inputValue,
@@ -485,7 +457,7 @@ Page({
                     "Quan trọng": that.data.selectedImportant,
                     "Cấp bách": that.data.selectedurgent,
                     "Số giờ cần có": parseInt(that.data.selectedHours),
-                    Person: [
+                    "Person": [
                       {
                         id: res.data.open_id,
                       },
@@ -497,17 +469,20 @@ Page({
                     "Ghi chú": dataDay.inputNote,
                     "Ngày làm":
                       this.dateTimeToTimestamp(dataDay.date, "") * 1000,
-                    EventID: rs.data.event.event_id,
-                    CalendarID: that.data.calendarID,
+                    "EventID": rs.data.event.event_id,
+                    "CalendarID": that.data.calendarID,
                     "Số giờ của 1 ngày": Math.abs(
                       (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
                         this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
-                        (60 * 60 * 1000)
+                      (60 * 60 * 1000)
                     ) * 1000,
+
+                    "id": this.getRandomArbitrary(1000, 9999)
+
                   },
                 };
                 console.log(body2);
-                createRecord(res.data.access_token, body2).then((rs) => {
+                createRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then((rs) => {
                   console.log(rs);
                   tt.showToast({
                     title: "Tạo xong công việc",
@@ -539,13 +514,43 @@ Page({
     });
   },
 
+  isDuringAnyBusyPeriod: (check, list) => {
+    for (const period of list) {      
+        if (
+          (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
+          (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+          (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
+      ) {  
+            return false; // Return false immediately if any condition is met
+        }
+    }
+    return true; // Return true if no overlap is found
+  },
+
   dateTimeToTimestamp: function (date, time) {
     let datetime = new Date(`${date} ${time}`);
     let timestamp = datetime.getTime();
     return Math.floor(timestamp / 1000);
   },
 
-  formatDateToUTC(dateString) {
-    return dateString.replace(/-/g, "") + "T000000Z";
+  formatDateToUTC(dateString, days) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    const newDate = date.toISOString().split('T')[0]
+    return newDate.replace(/-/g, "") + "T000000Z";
   },
+
+  convertUTCtoGMT7Timestamp: function (utcString) {
+    // Create a Date object from the UTC string
+    const utcDate = new Date(utcString);
+    // Add the offset to the UTC date to get GMT+7 date
+    const gmt7Date = new Date(utcDate.getTime() / 1000);
+    // Return the timestamp of the GMT+7 date
+    return gmt7Date.getTime();
+  },
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+
 });
