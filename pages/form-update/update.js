@@ -382,14 +382,19 @@ Page({
 
   // Function to handle changes in daily loop checkbox (dailyLoopCheckBoxChange)
   dailyLoopCheckBoxChange: function (e) {
-    const isChecked = e.currentTarget.dataset.check;
-
-    // Update loop states based on checkbox state
-    this.setData({
-      dailyLoop: !isChecked,
-      weekLoop: isChecked ? true : false, // Set weekLoop to true only if dailyLoop is unchecked
-      isLoop: false,
-    });
+    if (!e.currentTarget.dataset.check) {
+      this.setData({
+        dailyLoop:  !e.currentTarget.dataset.check,
+        weekLoop : true,
+        isLoop:false,
+      });
+    }else{
+      this.setData({
+        dailyLoop:  !e.currentTarget.dataset.check,
+        weekLoop : false,
+        isLoop: false,
+      });
+    }
   },
 
   // Function to handle changes in checkbox (checkboxChange)

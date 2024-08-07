@@ -72,7 +72,7 @@
               <view class="title-collumn">{{item.ngaygioketthuc}}</view>
               <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon" >
-                <image id="{{item.recordId}}" data-date="" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <image id="{{item.recordId}}" data-date="{{item.ngaygioketthuc}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
                 <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
               </view>
             </view>
