@@ -1218,6 +1218,21 @@ Page({
                         icon: "success",
                         duration: 2000,
                       });
+                      this.setData({
+                        inputValue: "",
+                        inputNote: "",
+                        selectedCategory: "Việc chính",
+                        selectedurgent: "1",
+                        selectedImportant: "A",
+                        selectedHours: "1",
+                        startDate: "Chọn ngày",
+                        endDate: "",
+                        startTime: "",
+                        endTime: "",
+                        turnMode: false,
+                        turnPopup2: false,
+                      });
+                      that.listTask()
                     }
                   );
                 }
@@ -1294,7 +1309,6 @@ Page({
                     title: "Tạo xong công việc",
                     icon: "success",
                   });
-                  this.listTask()
                   this.setData({
                     inputValue: "",
                     inputNote: "",
@@ -1307,8 +1321,9 @@ Page({
                     startTime: "",
                     endTime: "",
                     turnMode: false,
-                    turnPopup2: false
+                    turnPopup2: false,
                   });
+                  that.listTask()
                 });
               }
             );

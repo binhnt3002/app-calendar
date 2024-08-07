@@ -50,7 +50,7 @@ Page({
     urgentOptions: ["1", "2", "3"],
     selectedurgent: "1",
 
-    mindate: new Date(),
+    mindate: new Date().toISOString().substring(0, 10),
     startDate: new Date().toISOString().substring(0, 10), // Thêm selectedDate để lưu ngày và giờ được chọn
     endDate: "", // Thêm selectedDate để lưu ngày và giờ được chọn
     startTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
@@ -538,7 +538,7 @@ Page({
                 selectedurgent: "1",
                 selectedImportant: "A",
                 selectedHours: "1",
-                startDate: "Chọn ngày",
+                startDate: that.data.mindate,
                 endDate: "",
                 startTime: "",
                 endTime: "",
