@@ -43,7 +43,7 @@ Page({
     calendarname: "",
     hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     selectedDayWork: "",
-    mindate: new Date(),
+    mindate: new Date().toISOString().substring(0, 10),
     startDate: new Date().toISOString().substring(0, 10),
     endDate: "",
     selectedHours: "",
@@ -152,7 +152,10 @@ Page({
 
     dailyLoop: false,
     listBusy:[],
-    checkBusy: []
+    checkBusy: [],
+
+    disableDayWork: true,
+    
   },
 
   // Function triggered when the calendar selection changes
@@ -222,7 +225,7 @@ Page({
   // Function to handle input title changes (potentially unused based on naming)
   inputTittle: function (e) {
     this.setData({
-      inputValue: "title from code \n" + e.detail.value,
+      inputValue: e.detail.value,
     });
   },
 
@@ -387,12 +390,14 @@ Page({
         dailyLoop:  !e.currentTarget.dataset.check,
         weekLoop : true,
         isLoop:false,
+        disableDayWork: true,
       });
     }else{
       this.setData({
         dailyLoop:  !e.currentTarget.dataset.check,
         weekLoop : false,
         isLoop: false,
+        disableDayWork: false,
       });
     }
   },
@@ -1227,7 +1232,7 @@ Page({
                         selectedHours: "1",
                         startDate: "Chọn ngày",
                         endDate: "",
-                        startTime: "",
+                        startTime: that.data.mindate,
                         endTime: "",
                         turnMode: false,
                         turnPopup2: false,

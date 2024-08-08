@@ -21,7 +21,10 @@ dayOptions2 = [
 Page({
   data: {
     selectedDay: dayOptions2[new Date().getDay()],
-    hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    hours: ["0.5", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+      "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+      "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+      "31", "32", "33", "34", "35", "36"],
     selectedHours: "1",
     importantOptions: ["A", "B", "C"],
     selectedImportant: "A",
@@ -134,12 +137,14 @@ Page({
         dailyLoop:  !e.currentTarget.dataset.check,
         weekLoop : true,
         isLoop:false,
+        disableDayWork: true,
       });
     }else{
       this.setData({
         dailyLoop:  !e.currentTarget.dataset.check,
         weekLoop : false,
         isLoop: false,
+        disableDayWork: false,
       });
     }
     
@@ -457,7 +462,6 @@ Page({
 
           //tạo và lặp lại mỗi ngày
           if (that.data.dailyLoop == true) {
-
             for (const dayName in that.data.dailyData[0]) {
               const dataDay = that.data.dailyData[0][dayName];
               if (
