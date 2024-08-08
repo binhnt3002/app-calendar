@@ -2,7 +2,7 @@
   <view class="header">
     <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
-  <view class="body" style="background: rgb(196, 211, 226);">
+  <view class="body">
     <view class="box">
       <view class="row">
         <view class="col-7">
@@ -33,7 +33,7 @@
             <view class="list-item" style="padding: 10px;">
               <block wx:if="{{selectedInvitePerson==='Cá nhân'}}">
                 <block wx:for="{{checkInvite}}" wx:key="*this.value">
-                  <view class="event-item" style="background-color:rgb(136, 207, 255)">
+                  <view class="event-item" style="background-color: rgb(136, 207, 255);">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
@@ -57,7 +57,7 @@
               </block>
               <block wx:else>
                 <block wx:for="{{checkChatInvite}}" wx:key="*this.value">
-                  <view class="event-item" style="background-color:rgb(136, 207, 255)">
+                  <view class="event-item" style="background-color: rgb(136, 207, 255);">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
@@ -87,29 +87,7 @@
         </view>
       </view>
       <view class="row">
-        <view class="col-7">
-          <!-- <view class="event-daily">
-            <view class="evt-col">
-              <input type="number" placeholder="Nhập số phút">
-            </view>
-            <view class="evt-col">
-              <view style="color: brown; margin-right: 5px; font-weight: bold; ">LẶP LẠI </view>
-                <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{frequencyOptions}}" bindchange="onFrequencyChange">
-                <view class="picker-text" style="background-color: rgb(225, 225, 225, 0.8);">
-                  {{selectedFrequency}}
-                </view>
-                </picker>
-              </view>
-            
-            <view class="evt-col">
-              <view style="margin-right: 5px; font-weight: bold; ">Quyền</view>
-              <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{permissionOptions}}" bindchange="onPermissionChange">
-                <view class="picker-text" style="background-color: rgb(225, 225, 225, 0.8);">
-                  {{selectedPermission}}
-                </view>
-            </view>
-          </view> -->
-        </view>
+        <view class="col-7"> </view>
         <view class="col-3">
           <view style="display: flex; justify-content: flex-end;">
             <view class="form-buttons">
@@ -124,7 +102,4 @@
       </view>
     </view>
   </view>
-  <!-- <view class="footer">
-    Nội dung của footer
-  </view> -->
 </view>
