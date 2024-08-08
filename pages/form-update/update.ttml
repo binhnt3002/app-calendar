@@ -72,7 +72,7 @@
               <view class="title-collumn">{{item.ngaygioketthuc}}</view>
               <view class="title-collumn">{{item.ghichu}}</view>
               <view class="title-collumn content-icon" >
-                <image id="{{item.recordId}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <image id="{{item.recordId}}" data-date="{{item.ngaygioketthuc}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
                 <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
               </view>
             </view>
@@ -286,16 +286,6 @@
             </view>
           </view>
         </view>
-        <view class="section-2">
-          <view class="row" style="margin-left:2px;">
-            <view class="note-info">
-              <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
-            </view>
-          </view>
-          <view class="row" style="margin-left:2px;">
-            <textarea style="height:120px;" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
-          </view>
-        </view>
         <view class="section-3">
           <div class="row align-items-start" style="margin-top: 5px;">
             <div class="col" style="padding-right:0px !important;">
@@ -334,7 +324,7 @@
           </view>
           <view class="row">
             <view class="col-8">
-              <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+              <picker disabled="{{}}" style="background-color: rgb(255, 255, 255,0.8);" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
                 {{selectedDayWork}}
               </picker>
             </view>
@@ -392,6 +382,16 @@
                   bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />           
               </div>
           </view> 
+        </view>
+        <view class="section-2">
+          <view class="row" style="margin-left:2px;">
+            <view class="note-info">
+              <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+            </view>
+          </view>
+          <view class="row" style="margin-left:2px;">
+            <textarea style="height:120px;" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
+          </view>
         </view>
       </view>
     </view>

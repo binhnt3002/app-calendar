@@ -20,17 +20,11 @@ dayOptions2 = [
 
   Page({
     data: {
-      // dayOptions: [
-      //   "Thứ 2",
-      //   "Thứ 3",
-      //   "Thứ 4",
-      //   "Thứ 5",
-      //   "Thứ 6",
-      //   "Thứ 7",
-      //   "Chủ Nhật",
-      // ],
       selectedDay: dayOptions2[new Date().getDay()],
-      hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      hours: ["0.5", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+        "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+        "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+        "31", "32", "33", "34", "35", "36"],
       selectedHours: "1",
       importantOptions: ["A", "B", "C"],
       selectedImportant: "A",
@@ -42,58 +36,16 @@ dayOptions2 = [
         "Việc cần đôn đốc",
         "Đọc & học",
       ],
+
       dailyData: [
         {
-          "Thứ 2": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
-
-          "Thứ 3": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
-          "Thứ 4": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
-          "Thứ 5": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
-          "Thứ 6": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
-          "Thứ 7": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
-          "Chủ nhật": {
-            date: "",
-            startTime: "",
-            endTime: "",
-            inputNote: "",
-            isLoop: false,
-          },
+          "Thứ 2": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
+          "Thứ 3": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
+          "Thứ 4": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
+          "Thứ 5": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
+          "Thứ 6": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
+          "Thứ 7": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
+          "Chủ nhật": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false, },
         },
       ],
 
@@ -101,28 +53,28 @@ dayOptions2 = [
       urgentOptions: ["1", "2", "3"],
       selectedurgent: "1",
 
-      mindate: new Date(),
+      mindate: new Date().toISOString().substring(0, 10),
       startDate: new Date().toISOString().substring(0, 10), // Thêm selectedDate để lưu ngày và giờ được chọn
       endDate: "", // Thêm selectedDate để lưu ngày và giờ được chọn
       startTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
       endTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
       selectedDayWork: new Date().toISOString().substring(0, 10),
+
       calendarID: "",
       eventId: "",
       lich: [],
       chonlich: "",
       dataLich: [],
+
       inputValue: "",
       inputNote: "",
       listBusy: [],
       tableName: [],
-
+      checkBusy: [],
       isSHow: false,
       iSo: true,
-
       diabledBtn: false,
       disableDayWork: true,
-
       dailyLoop: false,
     },
 
@@ -157,6 +109,7 @@ dayOptions2 = [
         inputValue: e.detail.value,
       });
     },
+
     inputNote: function (e) {
       this.setData({
         inputNote: e.detail.value,
@@ -184,12 +137,14 @@ dayOptions2 = [
           dailyLoop: !e.currentTarget.dataset.check,
           weekLoop: true,
           isLoop: false,
+          disableDayWork: true,
         });
       } else {
         this.setData({
           dailyLoop: !e.currentTarget.dataset.check,
           weekLoop: false,
           isLoop: false,
+          disableDayWork: false,
         });
       }
 
@@ -346,7 +301,7 @@ dayOptions2 = [
 
           getListBusy(access_token, body).then((rs) => {
             console.log(rs);
-            rs.data.freebusy_list.map(i => listBusy.push({
+            rs.data?.freebusy_list?.map(i => listBusy.push({
               start: this.convertUTCtoGMT7Timestamp(i.start_time),
               end: this.convertUTCtoGMT7Timestamp(i.end_time)
             }))
@@ -382,6 +337,37 @@ dayOptions2 = [
           endTime: this.data.startTime,
         });
       }
+
+      checkBusy = {
+        start: this.dateTimeToTimestamp(this.data.selectedDayWork, this.data.startTime),
+        end: this.dateTimeToTimestamp(this.data.selectedDayWork, this.data.endTime)
+      }
+      if (this.isDuringAnyBusyPeriod(checkBusy, this.data.listBusy) === false) {
+        tt.showModal({
+          "title": "Cảnh báo",
+          "content": "Đã có lịch trùng",
+          "confirmText": "Tiếp",
+          "cancelText": "Hủy",
+          "showCancel": true,
+          success(res) {
+            console.log(JSON.stringify(res));
+            if (res.confirm === false) {
+              that.setData({
+                endTime: "",
+                startTime: "",
+                totalHours: ""
+              })
+            }
+          },
+          fail(res) {
+            console.log(`showModal fail: ${JSON.stringify(res)}`);
+          }
+        });
+      }
+      this.setData({
+        checkBusy
+      })
+
       this.calculateTime();
     },
 
@@ -476,7 +462,6 @@ dayOptions2 = [
 
             //tạo và lặp lại mỗi ngày
             if (that.data.dailyLoop == true) {
-
               for (const dayName in that.data.dailyData[0]) {
                 const dataDay = that.data.dailyData[0][dayName];
                 if (
@@ -497,7 +482,7 @@ dayOptions2 = [
                     dataDay.date,
                     dataDay.endTime
                   ).toString(),
-                  that.formatDateToUTC(that.data.endDate, ""),
+                  that.formatDateToUTC(that.data.endDate, 1),
                   false,
                   that.data.dailyLoop
                 );
@@ -557,18 +542,14 @@ dayOptions2 = [
                     selectedurgent: "1",
                     selectedImportant: "A",
                     selectedHours: "1",
-                    startDate: "Chọn ngày",
+                    startDate: that.data.mindate,
                     endDate: "",
                     startTime: "",
                     endTime: "",
                     dailyLoop: false,
                     weekLoop: false,
                   });
-
                 })
-
-
-
               }
               return;
             }
@@ -598,7 +579,8 @@ dayOptions2 = [
                   dataDay.endTime
                 ).toString(),
                 that.formatDateToUTC(that.data.endDate, 1),
-                dataDay.isLoop
+                dataDay.isLoop,
+                false
               );
               console.log(body);
 
@@ -714,6 +696,4 @@ dayOptions2 = [
     getRandomArbitrary(min, max) {
       return Math.random() * (max - min) + min;
     }
-
-
   });
