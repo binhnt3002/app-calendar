@@ -111,12 +111,24 @@ const updateRecord = (access_token, data,tableId,recordId) => {
 };
 
 const getAllTableName = (access_token) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables`;
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables`;
   const headers = {
     Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
   };
   return sendRequest(url, "GET", headers, {});
+};
+
+const getListBusy = (access_token,data) => {
+  const url = `https://open.larksuite.com/open-apis/calendar/v4/freebusy/list`;
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+    "Content-Type": "application/json",
+  };
+  const body = {
+    ...data,
+  };
+  return sendRequest(url, "POST", headers, body);
 };
 
 export {
@@ -130,5 +142,6 @@ export {
   searchRecord,
   getCalendar,
   updateRecord,
-  getAllTableName
+  getAllTableName,
+  getListBusy
 };

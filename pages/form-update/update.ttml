@@ -1,10 +1,10 @@
-<view tt:if={{turnPopup===false}} class="container">
+<view tt:if={{turnMode===false}} class="container">
   <view class="header-update">
     <image src="/images/logoBg.jpg" class="logo" style="z-index: 1000;"></image>
     <text style="font-size: 20px; flex: 1; text-transform: uppercase;">Kiểm tra công việc</text>
   </view>
   <view class="body">
-    <view class="box">
+    <view class="formtable">
       <scroll-view scroll-y="true" class="table-container">
         <view class="table" style="font-size: 15px;">
           <!-- Row đầu tiên là tiêu đề -->
@@ -46,7 +46,7 @@
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{filterData}}" wx:key="index" wx:for-item="item" wx:for-index="index">
-            <view class="title-row">
+            <view class="title-row" wx:if="{{item.type!=='new'}}">
               <view class="title-collumn-stt">{{index + 1}}</view>
               <view class="title-collumn">{{item.vieccanlam}}</view>
               <view class="title-collumn">{{item.theloai}}</view>
@@ -56,9 +56,24 @@
               <view class="title-collumn">{{item.ngaygiobatdau}}</view>
               <view class="title-collumn">{{item.ngaygioketthuc}}</view>
               <view class="title-collumn">{{item.ghichu}}</view>
-              <view class="title-collumn content-icon">
+              <view class="title-collumn content-icon" >
                 <image id="{{item.eventid}}" bindtap="edit" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
                 <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="confirmDelete" class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
+              </view>
+            </view>
+            <view class="title-row" wx:if="{{item.type==='new'}}" style="background-color: rgb(136, 207, 255);"> 
+              <view class="title-collumn-stt">{{index + 1}}</view>
+              <view class="title-collumn">{{item.vieccanlam}}</view>
+              <view class="title-collumn">{{item.theloai}}</view>
+              <view class="title-collumn">{{item.quantrong}}</view>
+              <view class="title-collumn">{{item.capbach}}</view>
+              <view class="title-collumn">{{item.thu}}</view>
+              <view class="title-collumn">{{item.ngaygiobatdau}}</view>
+              <view class="title-collumn">{{item.ngaygioketthuc}}</view>
+              <view class="title-collumn">{{item.ghichu}}</view>
+              <view class="title-collumn content-icon" >
+                <image id="{{item.recordId}}" data-date="{{item.ngaygioketthuc}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
+                <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
               </view>
             </view>
           </block>
@@ -68,10 +83,8 @@
   </view>
 </view>
 
-
-
-<div tt:if={{turnPopup===true}} class="page-task-form">
-  <view class="form-1" style="background:#c9d9e5 ;">
+<div tt:if={{turnPopup===true}} class="page-task-form" style="margin-top: 60px;">
+  <view class="form-1" >
     <view class="header">
       <text style="flex: 1;">Chỉnh sửa công việc</text>
       <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
@@ -136,6 +149,158 @@
             <div class="col" style="padding-right:0px !important;">
               <block class="select-time">
                 <div  class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Tổng giờ một việc
+                </div >
+                <picker disabled  class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
+                  {{selectedHours}}
+                </picker>
+              </block>
+            </div>
+            <div class="col" style="padding-right:0px !important;">
+              <div  class="title1">
+                <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày bắt đầu
+              </div >
+              <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
+                {{edit.ngaygiobatdau}}
+              </picker> 
+            </div>
+            <div class="col" style="padding-right:0px !important;">
+              <div text class="title1">
+                <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày kết thúc
+              </div >
+              <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
+                {{edit.ngaygioketthuc}}
+              </picker>
+            </div>
+          </div>
+          <view class="row" style="margin-left:2px;">
+            <view class="note-info">
+              <div  class="title1">
+                <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Chọn thời gian làm việc
+              </div >
+            </view>
+          </view>
+          <view class="row">
+            <view class="col-8">
+              <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+                {{edit.ngaylam}}
+              </picker>
+            </view>
+            <view class="col-4 ml-auto">
+              <view class="row" style="display:block;">
+                <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;" range="{{dayOptions}}" bindchange="onWeekChange">
+                  {{edit.thu}}
+                </picker>
+              </view>
+            </view>
+          </view>
+          <div class="row align-items-start" style="margin-top: 5px;">
+            <div class="col-4" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div  class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu
+                </div >
+                <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+                  {{startTime}}
+                </picker>
+              </block>
+            </div>
+            <div class="col-4" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div  class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc
+                </div >
+                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+                  {{endTime}}
+                </picker>
+              </block>
+            </div>
+            <div class="col-4" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Tổng giờ đã chọn:
+                </div>
+                <view class="picker-time">{{totalHours}}</view>
+              </block>
+            </div>
+          </div>
+        </view>
+      </view>
+    </view>
+    <block >
+      <view class="d-flex justify-content-end">
+        <button bindtap="confirmUpdate" disabled="{{disabledBtn}}" class="btn btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
+      </view>
+    </block> 
+  </view>
+</div>
+
+<div tt:if={{turnPopup2===true}} class="page-task-form" style="margin-top: 60px;">
+  <view class="form-1" >
+    <view class="header">
+      <text style="flex: 1;">Tạo công việc</text>
+      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
+    </view>
+    <view class="form">
+      <view class="box">
+        <view class="section-1">
+          <view class="row align-items-start">
+            <view class="col-8">
+              <block class="task-name">
+                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
+                <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+                  style="margin-right: 10px; background-color: rgb(255, 255, 255,0.8)" bindinput="inputTittle">
+              </block>
+            </view>
+            <view class="col-4 "> 
+              <view class="row" style="display: block;">
+                <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
+                <picker disabled={true} class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+                  {{edit.theloai}}
+                </picker>
+              </view>
+              <view class="row" style="display: block;">
+                <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
+                <picker disabled={true} class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
+                  {{edit.capbach}}
+                </picker>
+              </view>
+            </view>
+          </view>
+          <view class="row">
+            <view class="col-8">
+              <block class="task-name">
+                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
+                <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+                  {{chonlich}}
+                </picker>
+              </block>
+            </view>
+            <view class="col-4 ml-auto">
+              <view class="row" style="display:block;">
+                <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
+                <picker disabled={true} class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+                  {{edit.quantrong}}
+                </picker>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="section-2">
+          <view class="row" style="margin-left:2px;">
+            <view class="note-info">
+              <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+            </view>
+          </view>
+          <view class="row" style="margin-left:2px;">
+            <textarea style="height:120px;" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
+          </view>
+        </view>
+        <view class="section-3">
+          <div class="row align-items-start" style="margin-top: 5px;">
+            <div class="col" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Số giờ cần có
                 </div >
                 <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
@@ -169,14 +334,14 @@
           </view>
           <view class="row">
             <view class="col-8">
-              <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
-                {{edit.ngaylam}}
+              <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+                {{selectedDayWork}}
               </picker>
             </view>
             <view class="col-4 ml-auto">
               <view class="row" style="display:block;">
                 <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;" range="{{dayOptions}}" bindchange="onWeekChange">
-                  {{edit.thu}}
+                  {{selectedDay}}
                 </picker>
               </view>
             </view>
@@ -202,23 +367,37 @@
                 </picker>
               </block>
             </div>
-            <div class="col" style="padding-right:0px !important;">
-              <div class="title1">
-                Lặp lại
-              </div>
+            <div class="col-4" style="padding-right:0px !important;">
               <block class="select-time">
-                <label style="margin-left:15px;"> 
-                  <checkbox disabled={true} style="height: 15px; width: 15px; transform: scale(1.3);" bindtap="checkboxChange" value="{{isLoop}}" checked="{{isLoop}}" />
-                </label>
+                <div class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Tổng giờ đã chọn:
+                </div>
+                <view class="picker-time">{{totalHours}}</view>
               </block>
             </div>
           </div>
+          <view class="row" style=" display: flex; justify-content: space-between;">
+              <div class="col-6 checkbox-loop" style="padding-right:0px !important;">
+                <div class="title1" style="padding-bottom:0px !important;  margin-top: 4px;">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại mỗi ngày
+                </div>
+                <checkbox disabled="{{dailyCheckBox}}" style="height: 15px; width: 15px; transform: scale(1.3);" 
+                  bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />                         
+              </div>
+              <div class="col-6 checkbox-loop" style="padding-right:0px !important;">
+                <div class="title1" style="padding-bottom:0px !important;  margin-top: 4px;">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại mỗi tuần
+                </div>              
+                <checkbox disabled="{{weekLoop}}" style="height: 15px; width: 15px; transform: scale(1.3);"
+                  bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />           
+              </div>
+          </view> 
         </view>
       </view>
     </view>
     <block >
       <view class="d-flex justify-content-end">
-        <button bindtap="confirmUpdate" class="btn btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
+        <button bindtap="createTask" class="btn btn-primary m-2" style="border-radius: none !important;">Tạo công việc</button>
       </view>
     </block> 
   </view>

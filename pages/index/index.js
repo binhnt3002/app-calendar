@@ -27,11 +27,11 @@ Page({
 
     allData: [],
   },
-  onLoad(){
-    getAllTableName(tt.getStorageSync("user_access_token").access_token).then((rs) => {
-      this.setData({ tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})) });
-    })
-  },
+  // onLoad(){
+  //   getAllTableName(tt.getStorageSync("user_access_token").access_token).then((rs) => {
+  //     this.setData({ tableName: rs.data.items.filter(item => item.name.includes("Bảng Phân Công")).map(item => ({name: item.name, table: item.table_id})) });
+  //   })
+  // },
 
   onShow() {
     let that = this;
@@ -63,6 +63,19 @@ Page({
   
 
   onChangeHoursWeek(e) {
+    if (e.detail.value > 48 || e.detail.value < 1) {
+      return tt.showModal({
+        title: "Thông báo",
+        content: "thời gian trong tuần khoảng 1h - 48h.",
+        confirmText: "Đóng",
+        showCancel: false,
+        success: () => {
+          this.setData({
+            totalHoursInWeek : ""
+          })
+        },
+      })
+    }
     this.setData({
       totalHoursInWeek: e.detail.value,
     });
@@ -81,40 +94,18 @@ Page({
       key: "user_access_token",
       success: (res) => {
         const access_token = res.data.access_token;
-        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${this.data.tableName[0].table}/records/search`;
+        const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/search`;
         const headers = {
           Authorization: `Bearer ${access_token}`,
           "Content-Type": "application/json",
         };
 
-        const body2 = {
-          field_names: [
-            "Tên Task *",
-            "Thể loại",
-            "Quan Trọng",
-            "Cấp Bách",
-            "Số giờ cần có",
-          ],
-
-          filter: {
-            conjunction: "and",
-            conditions: [
-              {
-                field_name: "Mời",
-                operator: "contains",
-                value: [res.data.open_id],
-              },
-            ],
-          },
-          automatic_fields: false,
-        };
-
         const body = {
           field_names: [
-            "Tên Task *",
+            "Việc cần làm",
             "Thể loại",
-            "Quan Trọng",
-            "Cấp Bách",
+            "Quan trọng",
+            "Cấp bách",
             "Số giờ cần có",
           ],
 
@@ -122,7 +113,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Người giao việc *",
+                field_name: "Person",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -131,50 +122,44 @@ Page({
           automatic_fields: false,
         };
 
-        sendRequest(url, "POST", headers, body2).then((rs) => {
-          this.setData({
-            allData: rs.data.items,
-        });
-      });
-
         sendRequest(url, "POST", headers, body).then((result) => {
           console.log(result.data);
-          let data = [...this.data.allData, ...result.data.items];
+          let data = [...result.data.items];
           let listItems = data || 0;
           let listItemsLength = data.length || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
-            "Cấp Bách",
+            "Cấp bách",
             "1",
             listItemsLength
           );
           let totalHours2 = this.calculateTotal(
             listItems,
-            "Cấp Bách",
+            "Cấp bách",
             "2",
             listItemsLength
           );
           let totalHours3 = this.calculateTotal(
             listItems,
-            "Cấp Bách",
+            "Cấp bách",
             "3",
             listItemsLength
           );
           let totalHoursQuanTrongA = this.calculateTotal(
             listItems,
-            "Quan Trọng",
+            "Quan trọng",
             "A",
             listItemsLength
           );
           let totalHoursQuanTrongB = this.calculateTotal(
             listItems,
-            "Quan Trọng",
+            "Quan trọng",
             "B",
             listItemsLength
           );
           let totalHoursQuanTrongC = this.calculateTotal(
             listItems,
-            "Quan Trọng",
+            "Quan trọng",
             "C",
             listItemsLength
           );

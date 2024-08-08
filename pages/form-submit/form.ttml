@@ -1,5 +1,5 @@
 <view class="page-task-form">
-  <view class="form-1" style="background:#c9d9e5 ;">
+  <view class="form-1" style="margin-top:60px;">
     <view class="header">
       Tạo công việc mới
     </view>
@@ -12,15 +12,15 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/tasks.svg" style="color:#ff92a4;" />Việc cần làm
                 </div>
-                <textarea class="input-text" type="text" value="{{inputValue}}" id="task"
-                  placeholder="Nhập chi tiết công việc..." style="margin-top: 5px;margin-right: 10px;"
+                <textarea maxlength="100" class="input-text" type="text" value="{{inputValue}}" id="task"
+                  placeholder="Nhập chi tiết công việc..." style="margin-right: 10px;"
                   bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 ml-auto">
               <view class="row" style="display:block;">
                 <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
-                <picker style="margin-top:5px;"class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+                <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
                   {{selectedCategory}}
                 </picker>
               </view>
@@ -51,6 +51,116 @@
             </view>
           </view>
         </view> 
+        <view class="section-3">
+          <div class="row align-items-start" style="margin-top: 5px;">
+            <div class="col" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div class="title1">
+                  <image class="f-icon" src="/images/warning.svg" mode="" />Tổng giờ một việc
+                </div>
+                <picker tt:if="{{iSo}}" class="picker-text" mode="selector" id="important" range="{{hours}}"
+                  bindchange="onSelectedHours">
+                  {{selectedHours}}
+                </picker>
+                <input tt:if="{{isSHow}}" type="number" class="picker-text" mode="selector" id="important" range="{{hours}}"
+                  bindinput="inputHours">
+                  {{selectedHours}}
+                </input>
+              </block>
+            </div>
+            <div class="col" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div class="title1">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày bắt đầu
+                </div>
+                <picker class="picker-date" mode="date" id="datePicker" start="{{mindate}}"
+                  bindchange="onDateChange1">
+                  {{startDate}}
+                </picker>
+              </block>
+            </div>
+            <div class="col" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div text class="title1">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc
+                </div>
+                <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" 
+                  bindchange="onDateChange2">
+                  {{endDate}}
+                </picker>
+              </block>
+            </div>
+          </div>
+          <view class="row" style="margin-left:2px;">
+            <view class="note-info">
+              <div class="title1">
+                <image class="f-icon" src="/images/calendar-day-solid.svg" />Chọn thời gian làm việc
+              </div>
+            </view>
+          </view>
+          <view class="row">
+            <view class="col-8">
+              <picker disabled="{{disableDayWork}}" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"
+                bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+                {{selectedDayWork}}
+              </picker>
+            </view>
+            <view class="col-4 ml-auto">
+              <view class="row" style="display:block;">
+                <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;"
+                  range="{{dayOptions}}" bindchange="onWeekChange">
+                  {{selectedDay}}
+                </picker>
+              </view>
+            </view>
+          </view>
+          <div class="row align-items-start" style="margin-top: 5px;">
+            <div class="col-4" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu
+                </div>
+                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
+                  {{startTime}}
+                </picker>
+              </block>
+            </div>
+            <div class="col-4" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc
+                </div>
+                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
+                  {{endTime}}
+                </picker>
+              </block>
+            </div> 
+            <div class="col-4" style="padding-right:0px !important;">
+              <block class="select-time">
+                <div class="title1">
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Tổng giờ đã chọn:
+                </div>
+                <view class="picker-time">{{totalHours}}</view>
+              </block>
+            </div> 
+          </div>
+          <view class="row" style=" display: flex; justify-content: space-between;">
+              <div class="col-6 checkbox-loop" style="padding-right:0px !important;">
+                <div class="title1" style="padding-bottom:0px !important;  margin-top: 4px;">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại mỗi ngày
+                </div>
+                <checkbox disabled="{{dailyCheckBox}}" style="height: 15px; width: 15px; transform: scale(1.3);" 
+                  bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />                         
+              </div>
+              <div class="col-6 checkbox-loop" style="padding-right:0px !important;">
+                <div class="title1" style="padding-bottom:0px !important;  margin-top: 4px;">
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại mỗi tuần
+                </div>              
+                <checkbox disabled="{{weekLoop}}" style="height: 15px; width: 15px; transform: scale(1.3);"
+                  bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />           
+              </div>
+          </view> 
+        </view>
         <view class="section-2">
           <view class="row" style="margin-left:2px;">
             <view class="note-info">
@@ -58,128 +168,34 @@
             </view>
           </view>
           <view class="row" style="margin-left:2px;">
-            <textarea style="height:120px;" class="input-text1" value="{{inputNote}}" placeholder="Điền ghi chú " bindinput="inputNote">
+            <textarea maxlength="1000" style="height:120px;" class="input-text1" value="{{inputNote}}" placeholder="Điền ghi chú " bindinput="inputNote">
             </textarea>
-            </view>
-          </view>
-          <view class="section-3">
-            <div class="row align-items-start" style="margin-top: 5px;">
-              <div class="col" style="padding-right:0px !important;">
-                <block class="select-time">
-                  <div class="title1">
-                    <image class="f-icon" src="/images/warning.svg" mode="" />Số giờ cần có
-                  </div>
-                  <picker class="picker-text" mode="selector" id="important" range="{{hours}}"
-                    bindchange="onSelectedHours">
-                    {{selectedHours}}
-                  </picker>
-                </block>
-              </div>
-              <div class="col" style="padding-right:0px !important;">
-                <block class="select-time">
-                  <div class="title1">
-                    <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày bắt đầu
-                  </div>
-                  <picker class="picker-date" mode="date" id="datePicker" start="{{mindate}}"
-                    bindchange="onDateChange1">
-                    {{startDate}}
-                  </picker>
-                </block>
-              </div>
-              <div class="col" style="padding-right:0px !important;">
-                <block class="select-time">
-                  <div text class="title1">
-                    <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc
-                  </div>
-                  <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}"
-                    bindchange="onDateChange2">
-                    {{endDate}}
-                  </picker>
-                </block>
-              </div>
-            </div>
-            <view class="row" style="margin-left:2px;">
-              <view class="note-info">
-                <div class="title1">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" />Chọn thời gian làm việc
-                </div>
-              </view>
-            </view>
-            <view class="row">
-              <view class="col-8">
-                <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"
-                  bindchange="onDateChange3" placeholder="yyyy-mm-dd">
-                  {{selectedDayWork}}
-                </picker>
-              </view>
-              <view class="col-4 ml-auto">
-                <view class="row" style="display:block;">
-                  <picker class="picker-text" mode="selector" id="week" style=" pointer-events: none; cursor: default;"
-                    range="{{dayOptions}}" bindchange="onWeekChange">
-                    {{selectedDay}}
-                  </picker>
-                </view>
-              </view>
-            </view>
-            <div class="row align-items-start" style="margin-top: 5px;">
-              <div class="col" style="padding-right:0px !important;">
-                <block class="select-time">
-                  <div class="title1">
-                    <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu
-                  </div>
-                  <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                    {{startTime}}
-                  </picker>
-                </block>
-              </div>
-              <div class="col" style="padding-right:0px !important;">
-                <block class="select-time">
-                  <div class="title1">
-                    <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc
-                  </div>
-                  <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                    {{endTime}}
-                  </picker>
-                </block>
-              </div>
-              <div class="col" style="padding-right:0px !important;">
-                <div class="title1">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại
-                </div>
-                <block class="select-time">
-                  <label style="justify-content: center; display: flex;">
-                    <checkbox style="height: 15px; width: 15px; transform: scale(1.3); margin-bottom: 5px;"
-                      bindtap="checkboxChange" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />
-                  </label>
-                </block>
-              </div>
-            </div>
           </view>
         </view>
-        <view class="row" style="padding-bottom: 20px; padding-top: 30px;">
-          <view class="col-6">
-            <view class="notes">
-              <view>Chú Thích:</view>
-              <view>* Chọn lịch: chọn lịch của mỗi cá nhân.</view>
-              <view>* Thể loại: có 5 thể loại tùy theo mục đích của công việc.</view>
-              <view>* Cấp bách: có 3 mức độ cao nhất là 1, thấp nhất là 3.</view>
-              <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
-            </view>
-          </view>
-          <view class="col-6" style="display: flex; justify-content: flex-end; align-items: center;">
-            <button class="btn btn-primary m-2" bindtap="createTask"
-              style="border-radius: none !important; margin-left: auto;">Tạo công việc</button>
-          </view>
-        </view>
+      </view>
 
+      <view class="row" style="padding-bottom: 20px; padding-top: 30px;">
+        <view class="col-6">
+          <view class="notes">
+            <view>Chú Thích:</view>
+            <view>* Chọn lịch: chọn lịch của mỗi cá nhân.</view>
+            <view>* Thể loại: có 5 thể loại tùy theo mục đích của công việc.</view>
+            <view>* Cấp bách: có 3 mức độ cao nhất là 1, thấp nhất là 3.</view>
+            <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
+          </view>
+        </view>
+        <view class="col-6" style="display: flex; justify-content: flex-end; align-items: center;">
+          <button class="btn btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}"
+            style="border-radius: none !important; margin-left: auto;">Tạo công việc</button>
+        </view>
       </view>
     </view>
   </view>
-
-
-  <view class="footer">
-
-
-  </view>
 </view>
-</view>
+
+  
+
+
+
+
+
