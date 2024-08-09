@@ -6,6 +6,8 @@ import {
   getEvent,
   updateRecord,
   getAllTableName,
+  getListBusy,
+  isDuringAnyBusyPeriod,
 } from "../function/apiFunction";
 import {
   bodyScheduleParticipants,
@@ -48,6 +50,10 @@ Page({
     thu: [],
     theloai: [],
     recordid: [],
+    ngaygiobatdau:[],
+    ngaygioketthuc: [],
+    checkBusy: [],
+    ngaylam: [],
     getRecord: "",
 
     tableName: [],
@@ -131,7 +137,8 @@ Page({
                 url: item.avatarUrls[0],
               });
           });
-
+          
+          
           // inviteData = invite.map((item, index) => ({
           //   id: inviteOpenId[index],
           //   name: item.name,
@@ -231,15 +238,19 @@ Page({
         const body = {
           field_names: [
             "Việc cần làm",
+            "Thể loại",
+            "Thứ",
+            "Ngày - Giờ bắt đầu",
+            "Ngày - Giờ kết thúc",
+            "Ngày làm",
+            "Ghi chú",
             "EventID",
             "CalendarID",
-            "Thứ",
-            "Thể loại",
           ],
           sort: [
             {
-              field_name: "Thể loại",
-              desc: false,
+              field_name: "Ngày - Giờ bắt đầu",
+              desc: true,
             },
           ],
           filter: {
@@ -341,7 +352,11 @@ Page({
           currentValue.calendar,
           currentValue.eventid
         ).then((rs) => {
-          // console.log(rs);
+          console.log(rs);
+          const checkBusy = 
+          {start: that.convertTimestampToDate(rs.data.event.start_time.timestamp*1000), 
+            end: that.convertTimestampToDate(rs.data.event.end_time.timestamp*1000)}
+          that.setData({checkBusy: checkBusy})
           that.setData({
             events: that.data.events.map((i) => {
               if (i.value == currentValue.eventid && i.checked == false) {
@@ -609,5 +624,18 @@ Page({
     } else {
       console.error("Element with ID", index, "not found in chatData"); // Handle potential errors
     }
+  },
+
+  convertTimestampToDate(timestamp) {
+    // Create a new Date object with the given timestamp
+    const date = new Date(timestamp);
+    // Get the day, month, and year from the Date object
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+    // Format the date as dd/mm/yyyy
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
   },
 });

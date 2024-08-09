@@ -1,4 +1,4 @@
-import { searchRecord, getCalendar, getAllTableName, getCalendarList, createEvent, createRecord, getListBusy } from "../function/apiFunction";
+import { searchRecord, getCalendar,  getAllTableName, getCalendarList, createEvent, createRecord, getListBusy, isDuringAnyBusyPeriod } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
@@ -282,7 +282,7 @@ Page({
       start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
       end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
     }
-    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+    if (isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
       tt.showModal({
         "title": "Cảnh báo",
         "content": "Đã có lịch trùng",
@@ -803,7 +803,7 @@ Page({
       endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
-
+      selectedDayWork: edit.ngaylam
     });
   },
 
@@ -1165,10 +1165,12 @@ Page({
               const body = bodyCreateTask(
                 that.data.inputValue,
                 dataDay.inputNote,
+                dataDay.date,
                 this.dateTimeToTimestamp(
                   dataDay.date,
                   dataDay.startTime
                 ).toString(),
+                dataDay.date,
                 this.dateTimeToTimestamp(
                   dataDay.date,
                   dataDay.endTime
@@ -1258,10 +1260,12 @@ Page({
             const body = bodyCreateTask(
               that.data.inputValue,
               dataDay.inputNote,
+              dataDay.date,
               this.dateTimeToTimestamp(
                 dataDay.date,
                 dataDay.startTime
               ).toString(),
+              dataDay.date,
               this.dateTimeToTimestamp(
                 dataDay.date,
                 dataDay.endTime
@@ -1448,19 +1452,6 @@ Page({
     const gmt7Date = new Date(utcDate.getTime() / 1000);
     // Return the timestamp of the GMT+7 date
     return gmt7Date.getTime();
-  },
-
-  isDuringAnyBusyPeriod: (check, list) => {
-    for (const period of list) {      
-        if (
-          (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
-          (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
-          (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
-      ) {  
-            return false; // Return false immediately if any condition is met
-        }
-    }
-    return true; // Return true if no overlap is found
   },
 
 });

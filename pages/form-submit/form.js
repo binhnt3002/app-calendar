@@ -3,7 +3,8 @@ import {
   createEvent,
   createRecord,
   getCalendarList,
-  getListBusy
+  getListBusy,
+  isDuringAnyBusyPeriod
 } from "../function/apiFunction";
 
 const appVar = getApp();
@@ -337,7 +338,7 @@ Page({
       start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
       end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
     }
-    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+    if (isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
       tt.showModal({
         "title": "Cảnh báo",
         "content": "Đã có lịch trùng",
@@ -470,10 +471,12 @@ Page({
               const body = bodyCreateTask(
                 that.data.inputValue,
                 dataDay.inputNote,
+                dataDay.date,
                 this.dateTimeToTimestamp(
                   dataDay.date,
                   dataDay.startTime
                 ).toString(),
+                dataDay.date,
                 this.dateTimeToTimestamp(
                   dataDay.date,
                   dataDay.endTime
@@ -505,14 +508,13 @@ Page({
                   "Ghi chú": dataDay.inputNote,
                   "Ngày làm":
                     this.dateTimeToTimestamp(dataDay.date, "") * 1000 ,
-                  EventID: result.data.event.event_id,
-                  CalendarID: that.data.calendarID,
+                  "EventID": result.data.event.event_id,
+                  "CalendarID": that.data.calendarID,
                   "Số giờ của 1 ngày": Math.abs(
                     (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
                       this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
                       (60 * 60 * 1000)
                   ) * 1000,
-
                   "id" : (Math.round(this.getRandomArbitrary(1000, 9999))).toString()
 
                 },
@@ -538,7 +540,8 @@ Page({
                 selectedurgent: "1",
                 selectedImportant: "A",
                 selectedHours: "1",
-                startDate: that.data.mindate,
+                startDate: "Chọn ngày",
+                selectedDayWork: that.data.mindate,
                 endDate: "",
                 startTime: "",
                 endTime: "",
@@ -566,10 +569,12 @@ Page({
             const body = bodyCreateTask(
               that.data.inputValue,
               dataDay.inputNote,
+              dataDay.date,
               this.dateTimeToTimestamp(
                 dataDay.date,
                 dataDay.startTime
               ).toString(),
+              dataDay.date,
               this.dateTimeToTimestamp(
                 dataDay.date,
                 dataDay.endTime
@@ -636,6 +641,7 @@ Page({
                     selectedImportant: "A",
                     selectedHours: "1",
                     startDate: "Chọn ngày",
+                    selectedDayWork: that.data.mindate,
                     endDate: "",
                     startTime: "",
                     endTime: "",

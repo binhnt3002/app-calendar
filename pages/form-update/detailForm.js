@@ -7,10 +7,12 @@ const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEnd
     "start_time": {
       // "date": dateStart,
       "timestamp": timeStart,
+      "timezone": "Asia/Ho_Chi_Minh"
     },
     "end_time": {
       // "date": dateEnd,
       "timestamp": timeEnd,
+      "timezone": "Asia/Ho_Chi_Minh"
     },
     "visibility": "default",
     // "attendee_ability": "can_see_others",
@@ -105,16 +107,16 @@ const bodyUpdateEvent = (changedTitle, startTime, endTime, description) => {
   const body = {
     summary: changedTitle,
     description: description,
-    // "need_notification": true,
+    "need_notification": true,
     start_time: {
-      // "date": "2018-09-01",
+      // "date": dataStart,
       timestamp: startTime,
-      // "timezone": "Asia/Shanghai"
+      "timezone": "Asia/Ho_Chi_Minh"
     },
     end_time: {
-      // "date": "2018-09-01",
+      // "date": dateEnd,
       timestamp: endTime,
-      // "timezone": "Asia/Shanghai"
+      "timezone": "Asia/Ho_Chi_Minh"
     },
     // "visibility": "default", // default, public, private
     // "attendee_ability": "can_see_others", //none, can_see_others, can_invite_others, can_modify_event

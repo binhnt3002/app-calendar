@@ -131,6 +131,19 @@ const getListBusy = (access_token,data) => {
   return sendRequest(url, "POST", headers, body);
 };
 
+const isDuringAnyBusyPeriod = (check, list) => {
+  for (const period of list) {      
+      if (
+        (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
+        (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+        (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
+    ) {  
+          return false; // Return false immediately if any condition is met
+      }
+  }
+  return true; // Return true if no overlap is found
+};
+
 export {
   getCalendarList,
   createEvent,
@@ -143,5 +156,6 @@ export {
   getCalendar,
   updateRecord,
   getAllTableName,
-  getListBusy
+  getListBusy,
+  isDuringAnyBusyPeriod
 };
