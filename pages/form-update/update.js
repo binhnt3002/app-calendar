@@ -618,14 +618,14 @@ Page({
 
           newData = rs.data.items.map((item) => {
             return {
-              vieccanlam: item.fields["Tên Task *"][0].text,
-              theloai: item.fields["Thể loại"],
-              quantrong: item.fields["Quan Trọng"],
-              capbach: item.fields["Cấp Bách"],
-              thu: item.fields["Thứ"].value[0].text,
-              ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu *"]),
-              ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc *"]),
-              ghichu: item.fields["Ghi chú"]?.[0].text || "",
+              vieccanlam: item.fields?.["Tên Task *"]?.[0]?.text,
+              theloai: item.fields?.["Thể loại"],
+              quantrong: item.fields?.["Quan Trọng"],
+              capbach: item.fields?.["Cấp Bách"],
+              thu: item.fields?.["Thứ"]?.value[0]?.text,
+              ngaygiobatdau: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu *"]),
+              ngaygioketthuc: that.convertTimestampToDate(item.fields?.["Thời gian kết thúc *"]),
+              ghichu: item.fields?.["Ghi chú"]?.[0].text || "",
               eventid: item.fields?.["EventID"]?.[0]?.text || "",
               calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
               ngaylam: that.convertTimestampToDate(item.fields["Thời gian bắt đầu *"]),
@@ -856,7 +856,10 @@ Page({
       turnPopup2: true,
       turnMode: true,
       edit,
-      // selectedHours:"",
+      weekLoop: false,
+      isLoop: false,
+      dailyCheckBox: false,
+      dailyLoop: false,
       selectedImportant: edit.quantrong,
       selectedCategory: edit.theloai,
       selectedurgent: edit.capbach,
@@ -1112,13 +1115,13 @@ Page({
   },
 
   exit() {
-    this.setData({ turnPopup: false, turnPopup2: false, turnMode: false });
+    this.setData({ turnPopup: false, turnPopup2: false, turnMode: false, weekLoop: false, dailyLoop: false, isLoop: false, dailyCheckBox:false });
     this.setData({ endTime: "", startTime: "", startDate: new Date().toISOString().substring(0, 10), endDate: "", inputNote: "", inputValue: "", selectedHours: "" })
   },
 
   createTask() {
     let that = this;
-    that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
+    that.setData({ turnPopup: false, turnMode: false, turnPopup2: false, selectedFilter: "Tất cả" });
 
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       return tt.showModal({
@@ -1229,8 +1232,6 @@ Page({
                         endDate: "",
                         startTime: "",
                         endTime: "",
-                        turnMode: false,
-                        turnPopup2: false,
                       });
                       that.listTask()
                     }
@@ -1320,8 +1321,6 @@ Page({
                     endDate: "",
                     startTime: "",
                     endTime: "",
-                    turnMode: false,
-                    turnPopup2: false,
                   });
                   that.listTask()
                 });
