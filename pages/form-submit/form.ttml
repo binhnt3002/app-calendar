@@ -111,9 +111,17 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu
                 </div>
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                  {{startTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeHours}}" value="{{customStartTimeHourIndex}}" bindchange="customStartTimeOnHourChange">
+                    {{customStartTimeHours[customStartTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeMinutes}}" value="{{customStartTimeMinuteIndex}}" bindchange="customStartTimeOnMinuteChange">
+                    {{customStartTimeMinutes[customStartTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div>
             <div class="col-4" >
@@ -121,9 +129,17 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc
                 </div>
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                  {{endTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                    {{customEndTimeHours[customEndTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                    {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div> 
             <div class="col-4" >
