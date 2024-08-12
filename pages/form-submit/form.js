@@ -304,6 +304,7 @@ Page({
           this.setData({
             listBusy
           })
+          console.log(this.data.listBusy);
           
         })
       }

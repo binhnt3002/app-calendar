@@ -8,6 +8,7 @@ import {
   getAllTableName,
   getListBusy,
   isDuringAnyBusyPeriod,
+  findAvailableIds
 } from "../function/apiFunction";
 import {
   bodyScheduleParticipants,
@@ -52,10 +53,12 @@ Page({
     recordid: [],
     ngaygiobatdau:[],
     ngaygioketthuc: [],
+    ngaybatdau:"",
+    ngayketthuc: "",
     checkBusy: [],
     ngaylam: [],
     getRecord: "",
-
+    listBusy: [],
     tableName: [],
   },
 
@@ -154,6 +157,55 @@ Page({
           });
 
           console.log(that.data.inviteData);
+
+          tt.getStorage({
+            key: "user_access_token",
+            success: (res) => {
+              const access_token = res.data.access_token;
+              const userIds = ["ou_863eed51f511be97513ca7801ae65337","ou_9b04dc2474d1e22201cb1dbc6017c7e9","ou_89cf7dbb96c9e44e7ab35e44c9eee208"]; // Assuming 'array' contains user IDs
+
+              const bodyArray = userIds.map(userId => {
+                return {
+                  "time_min": that.data.ngaybatdau + "T00:00:00Z",
+                  "time_max": that.data.ngayketthuc + "T23:59:59Z",
+                  "user_id": userId
+                };
+              });
+              console.log(bodyArray);
+
+              // const body = {
+              //   "time_min": that.data.ngaybatdau+"T00:00:00Z",
+              //   "time_max": that.data.ngayketthuc+"T23:59:59Z",
+              //   "user_id": res.data.open_id,
+              // }
+              // console.log(body);
+              const resultsArray= []
+              bodyArray.map(body => {
+                return getListBusy(access_token, body).then(rs => {
+                  const t = rs.data?.freebusy_list ? rs.data.freebusy_list.length : 0
+                  console.log(t);
+                  if(t !== 0){
+                    const userId = body.user_id;
+                    const enrichedRs = rs.data?.freebusy_list?.map(item => ({
+                      start: that.convertUTCtoGMT7Timestamp(item.start_time),
+                      end: that.convertUTCtoGMT7Timestamp(item.end_time),
+                      id: userId }));
+                    resultsArray.push(...enrichedRs);
+                    that.setData({
+                      listBusy: resultsArray
+                    })
+                    // console.log(resultsArray);
+                  }                   
+                  // return rs; // Return rs for Promise.all to resolve
+                });
+              })
+                 // All results are collected in resultsArray
+                setTimeout(() => console.log(findAvailableIds(that.data.checkBusy,that.data.listBusy)), 2000) 
+                // const availableIds = that.findAvailableIds(that.data.checkBusy,resultsArray)
+                // console.log(availableIds);
+            }
+          })
+
         },
         fail(res) {
           console.log(`chooseContact fail: ${JSON.stringify(res)}`);
@@ -211,7 +263,7 @@ Page({
 
   onShow() {
     let that = this;
-    setTimeout(() => that.listTask(), 2000);
+    setTimeout(() => that.listTask(), 500);
   },
 
   listTask() {
@@ -353,10 +405,26 @@ Page({
           currentValue.eventid
         ).then((rs) => {
           console.log(rs);
-          const checkBusy = 
-          {start: that.convertTimestampToDate(rs.data.event.start_time.timestamp*1000), 
-            end: that.convertTimestampToDate(rs.data.event.end_time.timestamp*1000)}
-          that.setData({checkBusy: checkBusy})
+          if(rs.data.event.start_time.timezone === "UTC"){
+            const checkBusy = {
+              start: that.dateTimeToTimestamp(rs.data.event.start_time.date,""),
+              end: that.dateTimeToTimestamp(rs.data.event.end_time.date,"")
+            }
+            that.setData({
+              ngaybatdau: rs.data.event.start_time.date,
+              ngayketthuc: rs.data.event.end_time.date,
+              checkBusy: checkBusy
+            })
+          } else {
+            const checkBusy = 
+            {start: rs.data.event.start_time.timestamp, 
+              end: rs.data.event.end_time.timestamp}
+            that.setData({
+              checkBusy: checkBusy,
+              ngaybatdau: that.convertTimestampToDate(rs.data.event.start_time.timestamp*1000),
+              ngayketthuc: that.convertTimestampToDate(rs.data.event.end_time.timestamp*1000)
+            })
+          }
           that.setData({
             events: that.data.events.map((i) => {
               if (i.value == currentValue.eventid && i.checked == false) {
@@ -626,6 +694,12 @@ Page({
     }
   },
 
+  dateTimeToTimestamp: function (date, time) {
+    let datetime = new Date(`${date} ${time}`);
+    let timestamp = datetime.getTime();
+    return Math.floor(timestamp / 1000);
+  },
+
   convertTimestampToDate(timestamp) {
     // Create a new Date object with the given timestamp
     const date = new Date(timestamp);
@@ -637,5 +711,14 @@ Page({
     const formattedDate = `${year}-${month}-${day}`;
 
     return formattedDate;
+  },
+
+  convertUTCtoGMT7Timestamp: function (utcString) {
+    // Create a Date object from the UTC string
+    const utcDate = new Date(utcString);
+    // Add the offset to the UTC date to get GMT+7 date
+    const gmt7Date = new Date(utcDate.getTime() / 1000);
+    // Return the timestamp of the GMT+7 date
+    return gmt7Date.getTime();
   },
 });

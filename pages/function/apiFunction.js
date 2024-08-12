@@ -132,16 +132,30 @@ const getListBusy = (access_token,data) => {
 };
 
 const isDuringAnyBusyPeriod = (check, list) => {
-  for (const period of list) {      
+  for (const period of list) {     
       if (
-        (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
-        (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+        (check.start >= period.start && check.start <= period.end) || // check.start is within a busy period
+        (check.end >= period.start && check.end <= period.end) || // check.end is within a busy period
         (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
     ) {  
           return false; // Return false immediately if any condition is met
       }
   }
   return true; // Return true if no overlap is found
+};
+
+const findAvailableIds = (check, resultsArray) => {
+  const availableIds = [];
+  for (const period of resultsArray) {
+    if (isDuringAnyBusyPeriod(check, [period])===false) {
+      console.log(isDuringAnyBusyPeriod(check, [period]));
+      availableIds.push({
+        start: period.start,
+        end: period.start,
+        id: period.id});
+    }
+  }
+  return availableIds;
 };
 
 export {
@@ -157,5 +171,6 @@ export {
   updateRecord,
   getAllTableName,
   getListBusy,
-  isDuringAnyBusyPeriod
+  isDuringAnyBusyPeriod,
+  findAvailableIds
 };
