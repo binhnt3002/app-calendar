@@ -63,7 +63,7 @@ async function getUserInfo(user_token) {
 }
 
 async function refeshTOken(app_token, refres_tok) {
-  const url = "https://open.larksuite.com/open-apis/authen/v1/oidc/refresh_access_token";
+  const url = "https://open.larksuite.com/open-apis/authen/v1/refresh_access_token";
   const headers = {
     Authorization: `Bearer ${app_token}`,
     "Content-Type": "application/json",

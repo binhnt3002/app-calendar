@@ -233,12 +233,15 @@ dayOptions2 = [
     onDateChange1: function (e) {
       this.setData({
         startDate: e.detail.value,
+        selectedDayWork: e.detail.value,
         disableEndDate: false,
+        selectedDay: dayOptions2[new Date(e.detail.value).getDay()],
       });
       if (this.data.startDate > this.data.endDate) {
         this.setData({
           endDate: this.data.startDate,
           selectedDayWork: this.data.startDate,
+          selectedDay: dayOptions2[new Date(e.detail.value).getDay()],
         });
       }
     },
@@ -256,9 +259,6 @@ dayOptions2 = [
     },
 
     onDateChange3: function (e) {
-
-
-
       let now = new Date(e.detail.value);
       let dayOfWeek = now.getDay();
 
