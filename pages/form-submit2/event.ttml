@@ -1,13 +1,13 @@
-<view class="container">
-  <view class="header">
+<view tt:if={{turnMode===false}} class="page-invite-event">
+  <view class="header-event">
     <text>MỜI NGƯỜI VÀO SỰ KIỆN</text>
   </view>
-  <view class="body" style="background: rgb(196, 211, 226);">
-    <view class="box">
+  <view class="body py-1">
+    <view class="container">
       <view class="row">
-        <view class="col-7">
-          <text class="block" style="margin-bottom: 13px; margin-top: 7px;">Danh sách công việc</text>
-          <scroll-view class="event-box" scroll-y="true">
+        <view class="col-8 event-invite">
+          <text class="col-12 px-0 block" style="margin-bottom: 13px; margin-top: 7px;">Danh sách công việc</text>
+          <scroll-view class="col-12 event-box" scroll-y="true">
             <block wx:for="{{events}}" wx:key="*this.value">
               <view class="event-item">
                 <view class="event-details">
@@ -22,18 +22,20 @@
             </block>
           </scroll-view>
         </view>
-        <view class="col-3">
-          <view class="row" style="align-items: center;">
-            <text class="block">Danh sách mời</text>
-            <picker class="picker-text" style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector" id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
-              {{selectedInvitePerson}}
-            </picker>
+        <view class="col-4 person-invite">
+          <view class="col-12 px-0 d-flex" style="align-items: center;">
+            <text class="col-7 px-0 block">Danh sách mời</text>
+            <view class="col-5">
+              <picker class="picker-text" style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector" id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
+                {{selectedInvitePerson}}
+              </picker>
+            </view>
           </view>
-          <scroll-view class="event-list" scroll-y="true">
+          <scroll-view class="col-12 event-list" scroll-y="true">
             <view class="list-item" style="padding: 10px;">
               <block wx:if="{{selectedInvitePerson==='Cá nhân'}}">
                 <block wx:for="{{checkInvite}}" wx:key="*this.value">
-                  <view class="event-item" style="background-color:rgb(136, 207, 255)">
+                  <view class="event-item" style="background-color: rgb(136, 207, 255);">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
@@ -57,7 +59,7 @@
               </block>
               <block wx:else>
                 <block wx:for="{{checkChatInvite}}" wx:key="*this.value">
-                  <view class="event-item" style="background-color:rgb(136, 207, 255)">
+                  <view class="event-item" style="background-color: rgb(136, 207, 255);">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
                     <view class="event-details" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
@@ -86,45 +88,75 @@
           </scroll-view>
         </view>
       </view>
-      <view class="row">
-        <view class="col-7">
-          <!-- <view class="event-daily">
-            <view class="evt-col">
-              <input type="number" placeholder="Nhập số phút">
-            </view>
-            <view class="evt-col">
-              <view style="color: brown; margin-right: 5px; font-weight: bold; ">LẶP LẠI </view>
-                <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{frequencyOptions}}" bindchange="onFrequencyChange">
-                <view class="picker-text" style="background-color: rgb(225, 225, 225, 0.8);">
-                  {{selectedFrequency}}
-                </view>
-                </picker>
-              </view>
-            
-            <view class="evt-col">
-              <view style="margin-right: 5px; font-weight: bold; ">Quyền</view>
-              <picker style="border: 1px solid gray; padding: 6px;" mode="selector" id="frequency" range="{{permissionOptions}}" bindchange="onPermissionChange">
-                <view class="picker-text" style="background-color: rgb(225, 225, 225, 0.8);">
-                  {{selectedPermission}}
-                </view>
-            </view>
-          </view> -->
-        </view>
-        <view class="col-3">
+      <view class="row py-1 form-buttons">
+        <view class="col-8"><button class="col-3 btn-primary add" bindtap="checkPopup">check</button></view>
+        <view class="col-4">
           <view style="display: flex; justify-content: flex-end;">
-            <view class="form-buttons">
-              <button class="btn" bindtap="addEventParticipate">Thêm sự kiện</button>
+            <view>
+              <button class="btn-primary add" bindtap="addEventParticipate">Thêm sự kiện</button>
             </view>
-            <view class="form-buttons" style="margin-left: 10px;">
-              <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn" bindtap="listUser">Thêm người</button>
-              <button wx:else class="btn" bindtap="listUser">Xem nhóm</button>
+            <view style="margin-left: 10px;">
+              <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn-primary invite" bindtap="listUser">Thêm người</button>
+              <button wx:else class="btn-primary invite" bindtap="listUser">Xem nhóm</button>
             </view>
           </view>
         </view>
       </view>
     </view>
   </view>
-  <!-- <view class="footer">
-    Nội dung của footer
-  </view> -->
+</view>
+
+<view tt:if={{turnPopup===true}} class="page-confict">
+  <view class="form-confict">
+    <view class="header">
+      <text style="flex: 1;">Kiểm tra trùng lặp</text>
+      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
+    </view>
+    <view class="body">
+      <view class="row line">
+        <view class="col-4 person">
+          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Người được mời</div>
+        </view>
+        <view class="col-6 time">
+          <div class="title-col"><image class="f-icon" src="/images/clock.svg" />Giờ trùng lặp / Giờ sự kiện</div>
+        </view>
+        <view class="col-2 status">
+          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Trạng thái</div>
+        </view>
+      </view>
+      <scroll-view class="scroll-body" scroll-y="true">
+        <view class="row line" wx:for="{{participants}}" wx:key="index">
+          <view class="col-4 person">
+            <div class="title-1">
+              {{item.name}}
+            </div>
+          </view>
+          <view class="col-6 time">
+            <div class="title-1">{{item.time}} / <text class="confict-time">{{confict}}</text></div>
+          </view>
+          <view class="col-2 status">
+          <!-- <div class="title-1">
+            <button class="btn-agree" bindtap="onAgree" data-index="{{index}}"
+              wx:if="{{item.status !== 'Đã đồng ý'}}">Đồng ý</button>
+            <button class="btn-decline" bindtap="onDecline" data-index="{{index}}"
+              wx:if="{{item.status !== 'Từ chối'}}">Không đồng ý</button>
+          </div> -->
+            <div class="title-col">
+              <checkbox style="height: 15px; width: 15px; transform: scale(1.3);"></checkbox>
+            </div>
+          </view>
+        </view>
+      </scroll-view>
+      <!-- Vòng lặp để hiển thị thông tin người tham gia -->
+      
+    </view>
+    <view class="footer">
+      <view class="row" style="padding-bottom: 20px; padding-top: 30px;">
+        <view class="col-5"> </view>
+        <view class="col-7 d-flex" style="justify-content: flex-end; align-items: center;">
+          <button type="button" class="btn-primary">Primary</button>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

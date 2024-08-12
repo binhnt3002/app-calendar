@@ -10,7 +10,7 @@ padding-bottom: 100px;
 .body{
   padding-top:10px;
   padding-left: 35px;
-  padding-right: 50px;
+  padding-right: 35px;
   
   
 }
@@ -34,13 +34,10 @@ padding-bottom: 100px;
   height: 100%;
   width: 100%;
 }
+
 .header {
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0;
-  font-size: 20px; 
-  background: #045A97 !important;
-  font-weight: bolder;
+  color: black;
+  font-size: 20px;
 }
 
 .user-info {
@@ -112,24 +109,24 @@ textarea {
   height: 113px;
   padding: 10px 0;
   /* box-sizing: border-box; */
-  border-radius: 15px;
+  border-radius: 5px;
   resize: none;
   border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
 .picker-text{
   height: 40px;
   line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 30px;
+  border-radius: 6px;
   padding: 0;
   margin-bottom: 5px;
   font-size: 13px;
   width: auto;
   text-align: center;
   border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 
 
 }
@@ -139,14 +136,12 @@ textarea {
   height:40px; 
   line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 30px;
+  border-radius: 6px;
   font-size: 15px;
   min-width:auto;
   text-align: center;  
   border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
-
-
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 
 }
 
@@ -154,21 +149,25 @@ textarea {
   height: 40px;
   line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 30px;
+  border-radius: 6px;
   font-size: 15px;
   width: auto;
   text-align: center;
   border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
-
-
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
+
+
 .title1{
-  font-weight: bold;
   font-size: 16px ;
-  color: #045A97 !important;
   padding-bottom: 4px;
+}
+.title-loop{
+  font-size: 16px ;
+  padding-bottom: 0 !important;
+  margin-top: 7px;
+  padding-right: 15px;
 }
 
 button{
@@ -176,7 +175,7 @@ button{
   font-size: 15px !important;
   line-height: 5px !important;
   background: #045A97 !important;
-  border-radius: 30px !important;
+  border-radius: 6px !important;
   border: none !important;
   outline: none !important;
 }
@@ -251,7 +250,6 @@ button{
 
 .checkbox-loop{
   display: flex;
-  gap: 15px;
   margin-top:5px;
 }
 

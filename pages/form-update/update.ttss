@@ -135,9 +135,7 @@
 .form{
   padding: 0 30px;
 }
-.box{
-  padding-right: 10px;
-}
+
 
 .form-1 {
   /* padding: 30px; */
