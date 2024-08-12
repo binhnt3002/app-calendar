@@ -164,12 +164,17 @@ Page({
               const access_token = res.data.access_token;
               const userIds = ["ou_863eed51f511be97513ca7801ae65337","ou_9b04dc2474d1e22201cb1dbc6017c7e9","ou_89cf7dbb96c9e44e7ab35e44c9eee208"]; // Assuming 'array' contains user IDs
 
-              const bodyArray = userIds.map(userId => {
+              const bodyArray = inviteData.map(userId => {
                 return {
                   "time_min": that.data.ngaybatdau + "T00:00:00Z",
                   "time_max": that.data.ngayketthuc + "T23:59:59Z",
-                  "user_id": userId
+                  "user_id": userId.id
                 };
+              });
+              tt.showToast({
+                title: "hi"+bodyArray.length,
+                icon: "loading",
+                duration: 5000,
               });
               console.log(bodyArray);
 
@@ -199,6 +204,11 @@ Page({
                   // return rs; // Return rs for Promise.all to resolve
                 });
               })
+                setTimeout(() => tt.showToast({
+                  title: "Ok "+that.data.listBusy.length,
+                  icon: "loading",
+                  duration: 5000,
+                }), 2000)
                  // All results are collected in resultsArray
                 setTimeout(() => console.log(findAvailableIds(that.data.checkBusy,that.data.listBusy)), 2000) 
                 // const availableIds = that.findAvailableIds(that.data.checkBusy,resultsArray)
