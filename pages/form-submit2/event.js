@@ -51,6 +51,42 @@ Page({
     getRecord: "",
 
     tableName: [],
+
+    confict: "9:00 AM - 10:00 AM", // Biến lưu thời gian trùng lặp
+    participants: [
+      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
+      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
+      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" },
+      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
+      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
+      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" },
+      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
+      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
+      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" },
+      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
+      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
+      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" }
+    ],
+
+    turnPopup: false,
+    turnMode: false,
+
+  },
+
+  onAgree(e) {
+    const index = e.currentTarget.dataset.index;
+    let participants = this.data.participants;
+    participants[index].status = "Đã đồng ý";
+    this.setData({ participants });
+    console.log(`Người tham gia thứ ${index + 1} đã đồng ý.`);
+  },
+
+  onDecline(e) {
+    const index = e.currentTarget.dataset.index;
+    let participants = this.data.participants;
+    participants[index].status = "Từ chối";
+    this.setData({ participants });
+    console.log(`Người tham gia thứ ${index + 1} đã từ chối.`);
   },
 
   onLoad() {
@@ -62,6 +98,19 @@ Page({
     this.setData({
       events: events,
     });
+  },
+
+  checkPopup() {
+    this.setData({
+      turnPopup: true,
+      turnMode: true
+    })
+  },
+
+
+  exit(e) {
+    false
+    this.setData({ turnPopup: false, turnMode: false });
   },
 
   onLoad() {
@@ -178,19 +227,19 @@ Page({
                 url: chatAvatar[index],
                 checked: false,
               }));
-              if(that.data.checkChatStatue.length===0){
+              if (that.data.checkChatStatue.length === 0) {
                 console.log(1);
                 that.setData({
                   chatData
                 })
               } else {
-                chatData = chatData.filter(obj => !that.data.checkChatInvite.map(i =>i.name).includes(obj.name));
+                chatData = chatData.filter(obj => !that.data.checkChatInvite.map(i => i.name).includes(obj.name));
                 console.log(chatData);
                 that.setData({
                   chatData
                 })
               }
-              
+
               that.setData({
                 chat,
                 chatId,
@@ -524,8 +573,8 @@ Page({
           if (isIndividual) {
             const body2 = {
               "fields": {
-                "Người làm *" : [{"id" : that.data.inviteData2[0].id}],
-                "Mời": this.data.inviteData2.map((i) => ({"id" : i.id})),
+                "Người làm *": [{ "id": that.data.inviteData2[0].id }],
+                "Mời": this.data.inviteData2.map((i) => ({ "id": i.id })),
               },
             };
             updateRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then(

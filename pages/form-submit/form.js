@@ -695,5 +695,28 @@ dayOptions2 = [
     },
     getRandomArbitrary(min, max) {
       return Math.random() * (max - min) + min;
+    },
+    data: {
+      customStartTimeHours: Array.from({ length: 24 }, (_, i) => (i < 10 ? '0' : '') + i), // Tạo danh sách giờ từ 00 đến 23
+      customStartTimeMinutes: ['00', '15', '30', '45'], // Giới hạn giá trị phút
+      customStartTimeHourIndex: 0, // Giá trị khởi tạo cho giờ
+      customStartTimeMinuteIndex: 0, // Giá trị khởi tạo cho phút
+      customStartTime: "00:00" // Giá trị giờ bắt đầu
+    },
+  
+    customStartTimeOnHourChange(e) {
+      const customStartTimeHourIndex = e.detail.value;
+      this.setData({
+        customStartTimeHourIndex: customStartTimeHourIndex,
+        customStartTime: `${this.data.customStartTimeHours[customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[this.data.customStartTimeMinuteIndex]}`
+      });
+    },
+  
+    customStartTimeOnMinuteChange(e) {
+      const customStartTimeMinuteIndex = e.detail.value;
+      this.setData({
+        customStartTimeMinuteIndex: customStartTimeMinuteIndex,
+        customStartTime: `${this.data.customStartTimeHours[this.data.customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[customStartTimeMinuteIndex]}`
+      });
     }
   });
