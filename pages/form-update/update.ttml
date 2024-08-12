@@ -383,16 +383,6 @@
               </div>
           </view> 
         </view>
-        <view class="section-2">
-          <view class="row" style="margin-left:2px;">
-            <view class="note-info">
-              <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
-            </view>
-          </view>
-          <view class="row" style="margin-left:2px;">
-            <textarea style="height:120px;" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
-          </view>
-        </view>
       </view>
     </view>
     <block >
