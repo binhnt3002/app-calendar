@@ -150,19 +150,19 @@
                 <view class="picker-time">{{totalHours}}</view>
               </block>
             </div> 
-            <div class="col-2 checkbox-loop" style="padding-right:0px !important;">
+            <div class="col-2 name-checkbox-loop">
                 <div class="title-loop" >
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại:
                 </div>   
                                        
               </div>
-              <div class="col-10 checkbox-loop" style="padding-right:0px !important;">             
-                <checkbox class="check" disabled="{{weekLoop}}" style="height: 15px; width: 15px; transform: scale(1.3);"
+              <div class="col-10 checkbox-loop">             
+                <checkbox class="cb-l-w" disabled="{{weekLoop}}"
                   bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" /> 
                 <div class="title-loop" >
                   Mỗi tuần
                 </div> 
-                <checkbox disabled="{{dailyCheckBox}}" style="height: 15px; width: 15px; transform: scale(1.3);" 
+                <checkbox class="cb-l-d"  disabled="{{dailyCheckBox}}" 
                   bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />  
                 <div class="title-loop" >
                   Mỗi ngày

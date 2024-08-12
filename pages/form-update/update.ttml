@@ -1,6 +1,5 @@
 <view tt:if={{turnMode===false}} class="container">
   <view class="header-update">
-    <image src="/images/logoBg.jpg" class="logo" style="z-index: 1000;"></image>
     <text style="font-size: 20px; flex: 1; text-transform: uppercase;">Kiểm tra công việc</text>
   </view>
   <view class="body">
@@ -83,13 +82,13 @@
   </view>
 </view>
 
-<div tt:if={{turnPopup===true}} class="page-task-form" style="margin-top: 60px;">
-  <view class="form-1" >
-    <view class="header">
-      <text style="flex: 1;">Chỉnh sửa công việc</text>
-      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
-    </view>
-    <view class="form">
+<div tt:if={{turnPopup===true}} class="page-task-form" >
+  <view class="header ">
+    <text style="flex: 1;">Chỉnh sửa công việc</text>
+    <view class="del-x" bindtap="exit">X</view>
+  </view>
+  <view class="form-1 ">
+    <view class="form py-1">
       <view class="box">
         <view class="section-1">
           <view class="row align-items-start">
@@ -135,7 +134,7 @@
                 <view class="note-info">
                   <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
                 </view>
-                <textarea style="height:120px;" class="input-text" value="{{edit.ghichu}}" bindinput="inputNote"></textarea>
+                <textarea style="height:120px;" maxlength="5000" class="input-text" value="{{edit.ghichu}}" bindinput="inputNote"></textarea>
               </view>
             </view>
             <div class="col-4">
@@ -188,9 +187,17 @@
                 <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu
                 </div >
-                <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                  {{startTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeHours}}" value="{{customStartTimeHourIndex}}" bindchange="customStartTimeOnHourChange">
+                    {{customStartTimeHours[customStartTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeMinutes}}" value="{{customStartTimeMinuteIndex}}" bindchange="customStartTimeOnMinuteChange">
+                    {{customStartTimeMinutes[customStartTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div>
             <div class="col-4">
@@ -198,9 +205,17 @@
                 <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc
                 </div >
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                  {{endTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                    {{customEndTimeHours[customEndTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                    {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div>
             <div class="col-4">
@@ -223,7 +238,7 @@
   </view>
 </div>
 
-<div tt:if={{turnPopup2===true}} class="page-task-form" style="margin-top: 60px;">
+<div tt:if={{turnPopup2===true}} class="page-task-form" >
   <view class="form-1" >
     <view class="header">
       <text style="flex: 1;">Tạo công việc</text>
@@ -236,8 +251,8 @@
             <view class="col-8">
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
-                <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-                  style="margin-right: 10px; background-color: rgb(255, 255, 255,0.8)" bindinput="inputTittle">
+                <textarea class="input-text task-name" type="text" id="task" value="{{edit.vieccanlam}}"
+                   bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
@@ -320,9 +335,17 @@
                 <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu
                 </div >
-                <picker  class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                  {{startTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeHours}}" value="{{customStartTimeHourIndex}}" bindchange="customStartTimeOnHourChange">
+                    {{customStartTimeHours[customStartTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeMinutes}}" value="{{customStartTimeMinuteIndex}}" bindchange="customStartTimeOnMinuteChange">
+                    {{customStartTimeMinutes[customStartTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div>
             <div class="col-4">
@@ -330,9 +353,17 @@
                 <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc
                 </div >
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                  {{endTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                    {{customEndTimeHours[customEndTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                    {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div>
             <div class="col-4">
@@ -343,20 +374,24 @@
                 <view class="picker-time">{{totalHours}}</view>
               </block>
             </div>
-            <div class="col-4 checkbox-loop" style="padding-right:0px !important;">
-                <div class="title1" style="padding-bottom:0px !important;  margin-top: 4px;">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại mỗi ngày
-                </div>
-                <checkbox disabled="{{dailyCheckBox}}" style="height: 15px; width: 15px; transform: scale(1.3);" 
-                  bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />                         
-              </div>
-              <div class="col-4 checkbox-loop" style="padding-right:0px !important;">
-                <div class="title1" style="padding-bottom:0px !important;  margin-top: 4px;">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại mỗi tuần
-                </div>              
-                <checkbox disabled="{{weekLoop}}" style="height: 15px; width: 15px; transform: scale(1.3);"
-                  bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" />           
-              </div>
+            <div class="col-2 name-checkbox-loop">
+              <div class="title-loop" >
+                <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại:
+              </div>   
+                                     
+            </div>
+            <div class="col-10 checkbox-loop">             
+              <checkbox class="cb-l-w" disabled="{{weekLoop}}"
+                bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" /> 
+              <div class="title-loop" >
+                Mỗi tuần
+              </div> 
+              <checkbox class="cb-l-d"  disabled="{{dailyCheckBox}}" 
+                bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />  
+              <div class="title-loop" >
+                Mỗi ngày
+              </div>          
+            </div>
           </view>
         </view>
         <view class="section-2">
@@ -366,7 +401,7 @@
             </view>
           </view>
           <view >
-            <textarea style="height:120px;" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
+            <textarea style="height:120px;" maxlength="5000" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
           </view>
         </view>
       </view>
