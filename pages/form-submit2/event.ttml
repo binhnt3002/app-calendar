@@ -105,7 +105,7 @@
 <view tt:if={{turnPopup===true}} class="page-confict">
   <view class="form-confict">
     <view class="px-1 py-1 header">
-      <text >Kiểm tra trùng lặp</text>
+      <text >Danh sách người mời bị trùng</text>
       <view class="del-x" bindtap="exit">x</view>
     </view>
     <view class="body">
@@ -113,14 +113,14 @@
         <view class="col-1 stt">
           <div class="title-col">STT</div>
         </view>
-        <view class="col-4 person">
-          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Người được mời</div>
+        <view class="col-3 person">
+          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Người mời bị trùng</div>
         </view>
-        <view class="col-5 time">
+        <view class="col-6 time">
           <div class="title-col"><image class="f-icon" src="/images/clock.svg" />Giờ trùng lặp / Giờ sự kiện</div>
         </view>
         <view class="col-2 status">
-          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Tạo sự kiện</div>
+          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Chọn</div>
         </view>
       </view>
       <scroll-view class="scroll-body" scroll-y="true">
@@ -150,7 +150,7 @@
       <view class="py-2 row">
         <view class="col-5"> </view>
         <view class="col-7 d-flex justify-content-end align-items-center">
-          <button type="button" class="btn-primary add-event">Mời</button>
+          <button type="button" class="btn-primary add-event">Tiếp tục mời</button>
         </view>
       </view>
     </view>
