@@ -1,9 +1,9 @@
 
 <view class="page-task-form">
-  <view class="py-1 header">
-    <text >Tạo công việc</text>
-  </view>
   <view class="form-1" >
+    <view class="px-1 py-1 header">
+      <text >Tạo công việc</text>
+    </view>
     <view class="body">
       <view class="box">
         <view class="section-1">
@@ -193,9 +193,8 @@
             <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
           </view>
         </view>
-        <view class="col-6" style="display: flex; justify-content: flex-end; align-items: center;">
-          <button class="btn btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}"
-            style="border-radius: none !important; margin-left: auto;">Tạo công việc</button>
+        <view class="col-6 d-flex  justify-content-end align-items-center ">
+          <button class="btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}">Tạo công việc</button>
         </view>
       </view>
     </view>

@@ -351,7 +351,7 @@ Page({
               100
             ).toFixed(0);
             percentdistance =
-              test >= totalHours &&
+            totalHours >= test &&
                 ((-distance / test) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";

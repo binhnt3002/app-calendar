@@ -9,6 +9,7 @@
   font-size: 14px;
   background-color: #fff;
   margin-bottom: 50px;
+  border-radius: 10px;
 }
 
 .userinfo-avatar {
@@ -27,13 +28,13 @@
 }
 
 .header-event {
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0;
+  color: #045A97;
   font-size: 20px;
   border-radius: 10px 10px 0px 0px;
-  background: #045A97 !important;
   font-weight: bolder;
+  border-bottom: 1px solid #ddd;
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
 }
 
 .body {
@@ -247,12 +248,10 @@
 .header{
   display: flex;
   justify-content: space-between;
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0;
+  color: #045A97 ;
   font-size: 20px; 
-  background: #045A97 !important;
   font-weight: bolder;
+  border-bottom: 1px solid #ddd;
 }
 
 .title-col{
@@ -279,32 +278,12 @@
   margin-right: 5px;
 }
 
-.person, .time {
+.person, .time, .stt {
   border-right: 1px solid #ccc; /* Màu và độ dày của đường viền phải */
 }
 
 .line{
   border-bottom: 2px solid #ddd;
-}
-
-
-.btn-agree {
-  background-color: #4CAF50; /* Màu xanh cho nút Đồng ý */
-  color: white;
-  padding: 5px 10px;
-  margin-right: 5px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.btn-decline {
-  background-color: #f44336; /* Màu đỏ cho nút Không đồng ý */
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
 }
 
 
@@ -315,10 +294,9 @@
 }
 
 
-.btn-add-event {
-  background-color: #4CAF50; /* Màu nền nút */
+.add-event {
   color: white; /* Màu chữ */
-  padding: 10px 20px;
+  padding: 10px 30px !important;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -326,6 +304,7 @@
 
 }
 
-.btn-add-event:hover {
-  background-color: #45a049; /* Màu khi hover */
+.add-event:hover {
+  color: black;
+  cursor: pointer;
 }

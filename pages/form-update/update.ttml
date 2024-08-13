@@ -1,6 +1,6 @@
 <view tt:if={{turnMode===false}} class="container">
-  <view class="header-update">
-    <text style="font-size: 20px; flex: 1; text-transform: uppercase;">Kiểm tra công việc</text>
+  <view class="py-1 px-1 header-update">
+    <text class="name-form">Kiểm tra công việc</text>
   </view>
   <view class="body">
     <view class="formtable">
@@ -83,12 +83,12 @@
 </view>
 
 <div tt:if={{turnPopup===true}} class="page-task-form" >
-  <view class="header ">
-    <text style="flex: 1;">Chỉnh sửa công việc</text>
-    <view class="del-x" bindtap="exit">X</view>
-  </view>
   <view class="form-1 ">
-    <view class="form py-1">
+    <view class="px-1 py-1 header">
+      <text class="name-form">Chỉnh sửa công việc</text>
+      <view class="del-x" bindtap="exit">x</view>
+    </view>
+    <view class="form">
       <view class="box">
         <view class="section-1">
           <view class="row align-items-start">
@@ -232,7 +232,7 @@
     </view>
     <block >
       <view class="d-flex justify-content-end">
-        <button bindtap="confirmUpdate" disabled="{{disabledBtn}}" class="btn btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
+        <button bindtap="confirmUpdate" disabled="{{disabledBtn}}" class="btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
       </view>
     </block> 
   </view>
@@ -240,9 +240,9 @@
 
 <div tt:if={{turnPopup2===true}} class="page-task-form" >
   <view class="form-1" >
-    <view class="header">
-      <text style="flex: 1;">Tạo công việc</text>
-      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
+    <view class="px-1 py-1 header">
+      <text class="name-form">Tạo công việc</text>
+      <view class="del-x" bindtap="exit">x</view>
     </view>
     <view class="form">
       <view class="box">
@@ -408,7 +408,7 @@
     </view>
     <block >
       <view class="d-flex justify-content-end">
-        <button bindtap="createTask" class="btn btn-primary m-2" style="border-radius: none !important;">Tạo công việc</button>
+        <button bindtap="createTask" class="btn-primary m-2" style="border-radius: none !important;">Tạo công việc</button>
       </view>
     </block> 
   </view>

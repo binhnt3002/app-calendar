@@ -8,6 +8,7 @@
   padding-right: 0 !important;
   padding-left: 0 !important;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
 }
 .logo{
   height: fit-content;
@@ -21,15 +22,10 @@
 }
 
 .header-update{
-  padding: 10px;
-  background-color: #045A97;
   width: 100%;
   display: flex;
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0.5rem;
+  color: #045A97;
   font-size: 20px; 
-  background: #045A97 !important;
   font-weight: bolder;
   border-radius: 10px 10px 0 0;
 }
@@ -120,9 +116,7 @@
   height: auto;
   margin: 0 auto;
   padding-bottom: 100px;
-  }
-
-
+}
 
 .f-icon{
   height:14px;
@@ -133,7 +127,6 @@
 .form{
   padding: 0 30px;
 }
-
 
 .form-1 {
   height: fit-content;
@@ -153,7 +146,6 @@
   opacity: 0.7 !important;
 }
 
-
 .main{
   padding:0 10px;
   flex-direction: column;
@@ -162,25 +154,19 @@
 }
 .header {
   display: flex;
-  justify-content: space-between;
   height: auto;
   margin-bottom: 10px;
-  text-align: center;
-  padding: 0.5rem 0.5rem;
   font-size: 20px; 
   font-weight: bolder;
+  border-bottom: 1px solid #ddd;
+  color: #045A97;
 }
 
-/* .user-info {
-  font-size: 14px;
-} */
+.name-form{
+  flex: 1;
 
-/* .section-user {
-  align-self: flex-end; 
-  padding: 10px;
-  margin-bottom: 10px;
-  margin-right: 40px;
-} */
+}
+
 .task-form {
   display: flex;
   justify-content: space-between;
@@ -221,11 +207,9 @@
 }
 
 textarea {
-  /* margin-top: 5px; */
   width: 99%;
   height: 110px;
   padding: 10px 0;
-  /* box-sizing: border-box; */
   border-radius: 6px;
   resize: none;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
@@ -285,9 +269,8 @@ textarea {
 
 
 button{
-  height: 50px !important;
+  padding: 20px 10px !important;
   font-size: 15px !important;
-  line-height: 5px !important;
   background: #045A97 !important;
   border-radius: 6px !important;
 }
