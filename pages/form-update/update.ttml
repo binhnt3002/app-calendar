@@ -14,7 +14,7 @@
             <view class="title-collumn">
               <p>Thể loại</p>
               <image src="/images/sort-down.svg" class="sort-icon" bindtap="toggleFilter"/>
-              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{theloaiOptions}}" bindchange="onFilterChange">
+              <picker wx:if="{{showFilterPicker}}" mode="selector" range="{{theloaiOptions}}" bindchange="onFilterChange" value="{{theloaiOptions}}">
                 <text class="filter-text">{{selectedFilter}}</text>
               </picker>
             </view>

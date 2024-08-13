@@ -51,9 +51,9 @@ Page({
     thu: [],
     theloai: [],
     recordid: [],
-    ngaygiobatdau:[],
+    ngaygiobatdau: [],
     ngaygioketthuc: [],
-    ngaybatdau:"",
+    ngaybatdau: "",
     ngayketthuc: "",
     checkBusy: [],
     ngaylam: [],
@@ -61,21 +61,8 @@ Page({
     listBusy: [],
     tableName: [],
 
-    confict: "9:00 AM - 10:00 AM", // Biến lưu thời gian trùng lặp
-    participants: [
-      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
-      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
-      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" },
-      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
-      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
-      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" },
-      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
-      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
-      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" },
-      { name: "Nguyễn Văn A", time: "9:00 AM - 10:00 AM", status: "Đã đồng ý" },
-      { name: "Trần Thị B", time: "10:30 AM - 11:30 AM", status: "Từ chối" },
-      { name: "Lê Văn C", time: "1:00 PM - 2:00 PM", status: "Từ chối" }
-    ],
+    conflict: "", // Biến lưu thời gian trùng lặp
+    participants: [],
 
     turnPopup: false,
     turnMode: false,
@@ -118,7 +105,6 @@ Page({
 
 
   exit(e) {
-    false
     this.setData({ turnPopup: false, turnMode: false });
   },
 
@@ -189,8 +175,8 @@ Page({
                 url: item.avatarUrls[0],
               });
           });
-          
-          
+
+
           // inviteData = invite.map((item, index) => ({
           //   id: inviteOpenId[index],
           //   name: item.name,
@@ -211,57 +197,60 @@ Page({
             key: "user_access_token",
             success: (res) => {
               const access_token = res.data.access_token;
-              const userIds = ["ou_863eed51f511be97513ca7801ae65337","ou_9b04dc2474d1e22201cb1dbc6017c7e9","ou_89cf7dbb96c9e44e7ab35e44c9eee208"]; // Assuming 'array' contains user IDs
-
-              const bodyArray = inviteData.map(userId => {
+              const userIds = [{ name: "Nhân", id: "ou_863eed51f511be97513ca7801ae65337", url: "urlnhan" }, { name: "Bình", id: "ou_9b04dc2474d1e22201cb1dbc6017c7e9", url: "urlbinh" }, { name: "Sang", id: "ou_89cf7dbb96c9e44e7ab35e44c9eee208", url: "urlsang" }]; // Assuming 'array' contains user IDs
+              const bodyArray = that.data.inviteData.map(userId => {
                 return {
                   "time_min": that.data.ngaybatdau + "T00:00:00Z",
                   "time_max": that.data.ngayketthuc + "T23:59:59Z",
                   "user_id": userId.id
                 };
               });
-              tt.showToast({
-                title: "hi"+bodyArray.length,
-                icon: "loading",
-                duration: 5000,
-              });
               console.log(bodyArray);
 
-              // const body = {
-              //   "time_min": that.data.ngaybatdau+"T00:00:00Z",
-              //   "time_max": that.data.ngayketthuc+"T23:59:59Z",
-              //   "user_id": res.data.open_id,
-              // }
-              // console.log(body);
-              const resultsArray= []
+              const resultsArray = []
+              const participants = []
               bodyArray.map(body => {
                 return getListBusy(access_token, body).then(rs => {
                   const t = rs.data?.freebusy_list ? rs.data.freebusy_list.length : 0
                   console.log(t);
-                  if(t !== 0){
+                  if (t !== 0) {
                     const userId = body.user_id;
                     const enrichedRs = rs.data?.freebusy_list?.map(item => ({
                       start: that.convertUTCtoGMT7Timestamp(item.start_time),
                       end: that.convertUTCtoGMT7Timestamp(item.end_time),
-                      id: userId }));
+                      id: userId
+                    }));
                     resultsArray.push(...enrichedRs);
-                    that.setData({
-                      listBusy: resultsArray
-                    })
                     // console.log(resultsArray);
-                  }                   
+                  }
                   // return rs; // Return rs for Promise.all to resolve
                 });
               })
-                setTimeout(() => tt.showToast({
-                  title: "Ok "+that.data.listBusy.length,
-                  icon: "loading",
-                  duration: 5000,
-                }), 2000)
-                 // All results are collected in resultsArray
-                setTimeout(() => console.log(findAvailableIds(that.data.checkBusy,that.data.listBusy)), 2000) 
-                // const availableIds = that.findAvailableIds(that.data.checkBusy,resultsArray)
-                // console.log(availableIds);
+
+              setTimeout(() => {
+                resultsArray.forEach(result => {
+                  const matchingInvite = that.data.inviteData.find(invite => invite.id === result.id);
+                  if (matchingInvite) {
+                    result.name = matchingInvite.name;
+                    result.url = matchingInvite.url;
+                  }
+                })
+                that.setData({ listBusy: resultsArray })
+              }
+                , 2000)
+              setTimeout(() => {
+                const availableIds = findAvailableIds(that.data.checkBusy, that.data.listBusy)
+                console.log(availableIds);
+                availableIds.map(i => participants.push({ name: i.name, url: i.url, time: `${that.unixTimestampToDateString(i.start)} - ${that.unixTimestampToDateString(i.end)}`, }))
+                const conflict = `${that.unixTimestampToDateString(that.data.checkBusy[0].start)} - ${that.unixTimestampToDateString(that.data.checkBusy[0].end)}`
+                that.setData({
+                  participants: that.groupByNameAndUrl(participants),
+                  turnPopup: true,
+                  turnMode: true,
+                  conflict: conflict
+                })
+                console.log(that.data.participants);
+              }, 3000)
             }
           })
 
@@ -337,6 +326,9 @@ Page({
     let thu = that.data.thu;
     let theloai = that.data.theloai;
     let recordid = that.data.recordid;
+    let ngaylam = that.data.ngaylam;
+    let ngaygiobatdau = that.data.ngaygiobatdau;
+    let ngaygioketthuc = that.data.ngaygioketthuc;
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -402,6 +394,9 @@ Page({
               thu.push(item.fields["Thứ"].value[0].text);
               theloai.push(item.fields["Thể loại"]);
               recordid.push(item.record_id);
+              ngaylam.push(that.convertTimestampToDate(item.fields["Ngày làm"]));
+              ngaygiobatdau.push(that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"]));
+              ngaygioketthuc.push(that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"]))
             });
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
@@ -414,6 +409,9 @@ Page({
                 thu: thu[index],
                 theloai: theloai[index],
                 recordid: recordid[index],
+                ngaylam: ngaylam[index],
+                ngaygiobatdau: ngaygiobatdau[index],
+                ngaygioketthuc: ngaygioketthuc[index]
               };
             } else {
               // Return the original event if no corresponding ID is found
@@ -422,7 +420,7 @@ Page({
           });
 
           events = updatedEvents;
-          that.setData({ eventsID, events, arCalendarId, thu, recordid });
+          that.setData({ eventsID, events, arCalendarId, thu, recordid, ngaylam, ngaygiobatdau, ngaygioketthuc });
         });
       },
     });
@@ -444,6 +442,7 @@ Page({
       checkChatInvite: [],
       checkChatStatue: [],
       checkChatId: [],
+      checkBusy: [],
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
@@ -452,7 +451,8 @@ Page({
     let checkChatStatue = that.data.checkChatStatue;
     let checkChatInvite = that.data.checkChatInvite;
     let checkChatId = that.data.checkChatId;
-
+    let checkBusy = that.data.checkBusy;
+    checkBusy = []
     Id = that.data.checkId;
     console.log(currentValue);
     tt.getStorage({
@@ -464,26 +464,43 @@ Page({
           currentValue.eventid
         ).then((rs) => {
           console.log(rs);
-          if(rs.data.event.start_time.timezone === "UTC"){
-            const checkBusy = {
-              start: that.dateTimeToTimestamp(rs.data.event.start_time.date,""),
-              end: that.dateTimeToTimestamp(rs.data.event.end_time.date,"")
+          const diff = that.calculateDaysDifference(currentValue.ngaygiobatdau, currentValue.ngaygioketthuc)
+          if (rs.data.event.recurrence !== "") {
+            for (let i = 0; i <= diff; i++) {
+              checkBusy.push({
+                start: (parseInt(rs.data.event.start_time.timestamp) + (i * 86400)).toString(),
+                end: (parseInt(rs.data.event.end_time.timestamp) + (i * 86400)).toString()
+              })
             }
             that.setData({
-              ngaybatdau: rs.data.event.start_time.date,
-              ngayketthuc: rs.data.event.end_time.date,
-              checkBusy: checkBusy
+              checkBusy,
+              ngaybatdau: currentValue.ngaygiobatdau,
+              ngayketthuc: currentValue.ngaygioketthuc,
             })
           } else {
-            const checkBusy = 
-            {start: rs.data.event.start_time.timestamp, 
-              end: rs.data.event.end_time.timestamp}
-            that.setData({
-              checkBusy: checkBusy,
-              ngaybatdau: that.convertTimestampToDate(rs.data.event.start_time.timestamp*1000),
-              ngayketthuc: that.convertTimestampToDate(rs.data.event.end_time.timestamp*1000)
-            })
+            if (rs.data.event.start_time.timezone === "UTC") {
+              const checkBusy = [{
+                start: that.dateTimeToTimestamp(rs.data.event.start_time.date, "00:00:00"),
+                end: that.dateTimeToTimestamp(rs.data.event.end_time.date, "00:00:00")
+              }]
+              that.setData({
+                ngaybatdau: currentValue.ngaygiobatdau,
+                ngayketthuc: currentValue.ngaygioketthuc,
+                checkBusy: checkBusy
+              })
+            } else {
+              checkBusy = [{
+                start: rs.data.event.start_time.timestamp,
+                end: rs.data.event.end_time.timestamp
+              }]
+              that.setData({
+                checkBusy: checkBusy,
+                ngaybatdau: currentValue.ngaygiobatdau,
+                ngayketthuc: currentValue.ngaygioketthuc,
+              })
+            }
           }
+          console.log(that.data.checkBusy);
           that.setData({
             events: that.data.events.map((i) => {
               if (i.value == currentValue.eventid && i.checked == false) {
@@ -780,4 +797,45 @@ Page({
     // Return the timestamp of the GMT+7 date
     return gmt7Date.getTime();
   },
+  unixTimestampToDateString(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1000); // Convert to milliseconds
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    return `${hours}:${minutes}:${seconds}  ${day}/${month}`
+  },
+
+  calculateDaysDifference(startDateString, endDateString) {
+    const startDate = new Date(startDateString);
+    const endDate = new Date(endDateString);
+
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds
+      = endDate - startDate;
+
+    // Convert milliseconds to days
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+    // Round down to get the exact number of days
+    return Math.floor(differenceInDays);
+  },
+  groupByNameAndUrl(array) {
+    const groupedData = {};
+  
+    array.forEach(item => {
+      const { name, url, time } = item;
+      const key = `${name}-${url}`;
+  
+      if (!groupedData[key]) {
+        groupedData[key] = { name, url, times: [] };
+      }
+  
+      groupedData[key].times.push(time);
+    });
+  
+    return Object.values(groupedData);
+  }
 });

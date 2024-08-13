@@ -81,7 +81,6 @@ Page({
 
     filterTheloai: [],
     filterQuantrong: ["A", "B", "C"],
-    selFilterQuantrong: "A",
 
     tableName: [],
     calendarID: "",
@@ -1170,12 +1169,10 @@ Page({
               const body = bodyCreateTask(
                 that.data.inputValue,
                 dataDay.inputNote,
-                dataDay.date,
                 this.dateTimeToTimestamp(
                   dataDay.date,
                   dataDay.startTime
                 ).toString(),
-                dataDay.date,
                 this.dateTimeToTimestamp(
                   dataDay.date,
                   dataDay.endTime

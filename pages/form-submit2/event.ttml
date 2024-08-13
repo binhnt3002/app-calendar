@@ -13,10 +13,13 @@
                 <view class="event-details">
                   <text class="block">{{item.name}}</text>
                   <text class="block2">{{item.thu}}</text>
-                  <text class="block3">{{item.theloai}}</text>
+                  <text class="block3">{{item.ngaylam}}</text>
                 </view>
                 <view class="event-checkbox">
-                  <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}" data-checked="{{item.checked}}" data-recordid="{{item.recordid}}" checked="{{item.checked}}"></checkbox>
+                  <checkbox bindtap="checkboxChange" data-eventid="{{item.value}}" data-calendar="{{item.id}}"
+                    data-checked="{{item.checked}}" data-recordid="{{item.recordid}}"
+                    data-ngaygiobatdau="{{item.ngaygiobatdau}}" data-ngaygioketthuc="{{item.ngaygioketthuc}}"
+                    checked="{{item.checked}}"></checkbox>
                 </view>
               </view>
             </block>
@@ -26,7 +29,9 @@
           <view class="col-12 px-0 d-flex" style="align-items: center;">
             <text class="col-7 px-0 block">Danh sách mời</text>
             <view class="col-5">
-              <picker class="picker-text" style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector" id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
+              <picker class="picker-text"
+                style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector"
+                id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
                 {{selectedInvitePerson}}
               </picker>
             </view>
@@ -41,9 +46,13 @@
                       <text class="block">{{item.name}}</text>
                     </view>
                     <!-- <button class="button-del" bindtap="remov src="{{item.url}}eElement" id="{{item.id}}"></button> -->
-                    <image wx:if="{{item.status === 'accept'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-check-solid.svg"></image>
-                    <image wx:if="{{item.status === 'decline'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-minus-solid.svg"></image>
-                    <image wx:if="{{item.status === 'needs_action'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/clock-rotate-left-solid.svg"></image>
+                    <image wx:if="{{item.status === 'accept'}}" style="height: 20px; width: 20px; font-weight: 100;"
+                      src="/images/circle-check-solid.svg"></image>
+                    <image wx:if="{{item.status === 'decline'}}" style="height: 20px; width: 20px; font-weight: 100;"
+                      src="/images/circle-minus-solid.svg"></image>
+                    <image wx:if="{{item.status === 'needs_action'}}"
+                      style="height: 20px; width: 20px; font-weight: 100;" src="/images/clock-rotate-left-solid.svg">
+                    </image>
                   </view>
                 </block>
                 <block wx:for="{{inviteData}}" wx:key="*this.value">
@@ -53,7 +62,8 @@
                       <text class="block">{{item.name}}</text>
                     </view>
                     <!-- <button class="button-del" bindtap="removeElement" id="{{item.id}}"></button> -->
-                    <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg"></image>
+                    <image style="height: 20px; width: 20px; font-weight: 100;" bindtap="removeElement" id="{{item.id}}"
+                      src="/images/close-outline.svg"></image>
                   </view>
                 </block>
               </block>
@@ -65,9 +75,13 @@
                       <text class="block">{{item.name}}</text>
                     </view>
                     <!-- <button class="button-del" bindtap="remov src="{{item.url}}eElement" id="{{item.id}}"></button> -->
-                    <image wx:if="{{item.status === 'accept'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-check-solid.svg"></image>
-                    <image wx:if="{{item.status === 'decline'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/circle-minus-solid.svg"></image>
-                    <image wx:if="{{item.status === 'needs_action'}}" style="height: 20px; width: 20px; font-weight: 100;" src="/images/clock-rotate-left-solid.svg"></image>
+                    <image wx:if="{{item.status === 'accept'}}" style="height: 20px; width: 20px; font-weight: 100;"
+                      src="/images/circle-check-solid.svg"></image>
+                    <image wx:if="{{item.status === 'decline'}}" style="height: 20px; width: 20px; font-weight: 100;"
+                      src="/images/circle-minus-solid.svg"></image>
+                    <image wx:if="{{item.status === 'needs_action'}}"
+                      style="height: 20px; width: 20px; font-weight: 100;" src="/images/clock-rotate-left-solid.svg">
+                    </image>
                   </view>
                 </block>
                 <block wx:for="{{chatData}}" wx:key="*this.value">
@@ -77,9 +91,11 @@
                       <text class="block">{{item.name}}</text>
                     </view>
                     <view class="event-checkbox">
-                      <checkbox bindtap="checkGroupChange" data-chat="{{item.id}}" data-checked="{{item.checked}}" checked="{{item.checked}}"></checkbox>
+                      <checkbox bindtap="checkGroupChange" data-chat="{{item.id}}" data-checked="{{item.checked}}"
+                        checked="{{item.checked}}"></checkbox>
                     </view>
-                    <image style="height: 20px; width: 20px; font-weight: 100; padding-top: 2px;" bindtap="removeElement2" id="{{item.id}}" src="/images/close-outline.svg"></image>
+                    <image style="height: 20px; width: 20px; font-weight: 100; padding-top: 2px;"
+                      bindtap="removeElement2" id="{{item.id}}" src="/images/close-outline.svg"></image>
                     <!-- <button class="button-del" >x</button> -->
                   </view>
                 </block>
@@ -96,7 +112,8 @@
               <button class="btn-primary add" bindtap="addEventParticipate">Thêm sự kiện</button>
             </view>
             <view style="margin-left: 10px;">
-              <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn-primary invite" bindtap="listUser">Thêm người</button>
+              <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn-primary invite" bindtap="listUser">Thêm
+                người</button>
               <button wx:else class="btn-primary invite" bindtap="listUser">Xem nhóm</button>
             </view>
           </view>
@@ -115,27 +132,39 @@
     <view class="body">
       <view class="row line">
         <view class="col-4 person">
-          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Người được mời</div>
+          <div class="title-col">
+            <image class="f-icon" src="/images/tasks.svg" />Người được mời
+          </div>
         </view>
         <view class="col-6 time">
-          <div class="title-col"><image class="f-icon" src="/images/clock.svg" />Giờ trùng lặp / Giờ sự kiện</div>
+          <div class="title-col">
+            <image class="f-icon" src="/images/clock.svg" />Giờ trùng lặp / Giờ sự kiện
+          </div>
         </view>
         <view class="col-2 status">
-          <div class="title-col"><image class="f-icon" src="/images/tasks.svg" />Trạng thái</div>
+          <div class="title-col">
+            <image class="f-icon" src="/images/tasks.svg" />Trạng thái
+          </div>
         </view>
       </view>
       <scroll-view class="scroll-body" scroll-y="true">
         <view class="row line" wx:for="{{participants}}" wx:key="index">
           <view class="col-4 person">
             <div class="title-1">
+              <image class="userinfo-avatar" src="{{item.url}}"></image>
               {{item.name}}
             </div>
           </view>
           <view class="col-6 time">
-            <div class="title-1">{{item.time}} / <text class="confict-time">{{confict}}</text></div>
+            <div class="title-1">
+              <view wx:for="{{item.times}}" wx:key="timeIndex">
+                <text>{{item}}</text>
+                </view> /
+              <text class="confict-time">{{conflict}}</text>
+            </div>
           </view>
           <view class="col-2 status">
-          <!-- <div class="title-1">
+            <!-- <div class="title-1">
             <button class="btn-agree" bindtap="onAgree" data-index="{{index}}"
               wx:if="{{item.status !== 'Đã đồng ý'}}">Đồng ý</button>
             <button class="btn-decline" bindtap="onDecline" data-index="{{index}}"
@@ -148,7 +177,7 @@
         </view>
       </scroll-view>
       <!-- Vòng lặp để hiển thị thông tin người tham gia -->
-      
+
     </view>
     <view class="footer">
       <view class="row" style="padding-bottom: 20px; padding-top: 30px;">

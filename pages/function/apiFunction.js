@@ -131,17 +131,19 @@ const getListBusy = (access_token,data) => {
   return sendRequest(url, "POST", headers, body);
 };
 
-const isDuringAnyBusyPeriod = (check, list) => {
-  for (const period of list) {     
+const isDuringAnyBusyPeriod = (checkList, busyPeriods) => {
+  for (const check of checkList) {
+    for (const period of busyPeriods) {
       if (
-        (check.start >= period.start && check.start <= period.end) || // check.start is within a busy period
-        (check.end >= period.start && check.end <= period.end) || // check.end is within a busy period
-        (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
-    ) {  
-          return false; // Return false immediately if any condition is met
+        (check.start >= period.start && check.start <= period.end) ||
+        (check.end >= period.start && check.end <= period.end) ||
+        (check.start <= period.start && check.end >= period.end)
+      ) {
+        return false; // Return false immediately if any overlap found
       }
+    }
   }
-  return true; // Return true if no overlap is found
+  return true; // Return true if no overlaps found for any check
 };
 
 const findAvailableIds = (check, resultsArray) => {
@@ -151,8 +153,11 @@ const findAvailableIds = (check, resultsArray) => {
       console.log(isDuringAnyBusyPeriod(check, [period]));
       availableIds.push({
         start: period.start,
-        end: period.start,
-        id: period.id});
+        end: period.end,
+        id: period.id,
+        name: period.name,
+        url: period.url
+      });
     }
   }
   return availableIds;
