@@ -160,8 +160,8 @@ Page({
         ignore: false,
         maxNum: 100,
         limitTips: 10,
-        externalContact: true,
-        enableChooseDepartment: true,
+        externalContact: false,
+        enableChooseDepartment: false,
         disableChosenIds: [...that.data.inviteOpenId, ...that.data.checkId],
         success(res) {
           console.log(res);
@@ -191,7 +191,11 @@ Page({
             inviteData2: inviteData,
           });
 
-          console.log(that.data.inviteData);
+          tt.showToast({
+            title: `${that.data.inviteOpenId.length}+${that.data.inviteData.length}`,
+            icon: "loading",
+            duration: 5000
+          });
 
           tt.getStorage({
             key: "user_access_token",
@@ -241,8 +245,15 @@ Page({
               setTimeout(() => {
                 const availableIds = findAvailableIds(that.data.checkBusy, that.data.listBusy)
                 console.log(availableIds);
-                availableIds.map(i => participants.push({ name: i.name, url: i.url, time: `${that.unixTimestampToDateString(i.start)} - ${that.unixTimestampToDateString(i.end)}`, }))
+                availableIds.map(i => participants.push({ name: i.name, url: i.url, id: i.id, time: `${that.unixTimestampToDateString(i.start)} - ${that.unixTimestampToDateString(i.end)}`, checked: false }))
                 const conflict = `${that.unixTimestampToDateString(that.data.checkBusy[0].start)} - ${that.unixTimestampToDateString(that.data.checkBusy[0].end)}`
+                if (availableIds.length > 0) {
+                  that.setData({
+                    inviteData: that.data.inviteData.filter(itemA => !availableIds.some(itemB => itemB.id === itemA.id)),
+                    inviteOpenId: that.data.inviteOpenId.filter(itemA => !availableIds.some(itemB => itemB.id === itemA)),
+                    inviteData2: that.data.inviteData.filter(itemA => !availableIds.some(itemB => itemB.id === itemA.id)),
+                  })
+                }
                 that.setData({
                   participants: that.groupByNameAndUrl(participants),
                   turnPopup: true,
@@ -250,6 +261,12 @@ Page({
                   conflict: conflict
                 })
                 console.log(that.data.participants);
+                tt.showToast({
+                  title: `${that.data.inviteOpenId.length}+${that.data.inviteData.length}`,
+                  icon: "loading",
+                  duration: 5000
+                });
+
               }, 3000)
             }
           })
@@ -307,6 +324,51 @@ Page({
           },
         });
     }
+  },
+
+  checkConflict(e) {
+    let that = this
+    console.log(e);
+    let currentValue = e.currentTarget.dataset;
+    that.setData({
+      participants: that.data.participants.map((i) => {
+        if (i.id == currentValue.id && i.checked == false) {
+          i.checked = !currentValue.checked;
+        }
+        return i;
+      }),
+    });
+    console.log(that.data.participants);
+  },
+
+  saveInvite() {
+    let that = this
+    let inviteData = [...that.data.inviteData]
+    let inviteOpenId = [...that.data.inviteOpenId]
+
+    that.data.participants.forEach(itemB => {
+      if (itemB.checked===true) {
+        inviteData.push({
+          url: itemB.url,
+          name: itemB.name,
+          id: itemB.id
+        });
+        inviteOpenId.push(itemB.id)
+      }
+    });
+    that.setData({
+      turnMode: false,
+      turnPopup: false,
+      inviteData: inviteData,
+      inviteData2: inviteData,
+      inviteOpenId: inviteOpenId,
+      participants: []
+    })
+    tt.showToast({
+      title: `${that.data.inviteOpenId.length}+${that.data.inviteData.length}`,
+      icon: "loading",
+      duration: 5000
+    });
   },
 
   onShow() {
@@ -801,11 +863,10 @@ Page({
     const date = new Date(unixTimestamp * 1000); // Convert to milliseconds
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
 
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
-    return `${hours}:${minutes}:${seconds}  ${day}/${month}`
+    return `${hours}:${minutes}  ${day}/${month}`
   },
 
   calculateDaysDifference(startDateString, endDateString) {
@@ -824,18 +885,18 @@ Page({
   },
   groupByNameAndUrl(array) {
     const groupedData = {};
-  
+
     array.forEach(item => {
-      const { name, url, time } = item;
+      const { name, url, time, checked, id } = item;
       const key = `${name}-${url}`;
-  
+
       if (!groupedData[key]) {
-        groupedData[key] = { name, url, times: [] };
+        groupedData[key] = { name, url, times: [], checked, id };
       }
-  
+
       groupedData[key].times.push(time);
     });
-  
+
     return Object.values(groupedData);
   }
 });
