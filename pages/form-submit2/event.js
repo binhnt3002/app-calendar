@@ -5,10 +5,9 @@ import {
   getGroupId,
   getEvent,
   updateRecord,
-  getAllTableName,
   getListBusy,
-  isDuringAnyBusyPeriod,
-  findAvailableIds
+  findAvailableIds,
+  createRecord
 } from "../function/apiFunction";
 import {
   bodyScheduleParticipants,
@@ -50,6 +49,10 @@ Page({
     attendees: [],
     thu: [],
     theloai: [],
+    quantrong: [],
+    capbach: [],
+    sogiocanco: [],
+    ghichu: [],
     recordid: [],
     ngaygiobatdau: [],
     ngaygioketthuc: [],
@@ -192,7 +195,7 @@ Page({
           });
 
           tt.showToast({
-            title: `${that.data.inviteOpenId.length}+${that.data.inviteData.length}`,
+            title: `Vui lòng chờ kiểm tra!!!`,
             icon: "loading",
             duration: 5000
           });
@@ -252,19 +255,17 @@ Page({
                     inviteData: that.data.inviteData.filter(itemA => !availableIds.some(itemB => itemB.id === itemA.id)),
                     inviteOpenId: that.data.inviteOpenId.filter(itemA => !availableIds.some(itemB => itemB.id === itemA)),
                     inviteData2: that.data.inviteData.filter(itemA => !availableIds.some(itemB => itemB.id === itemA.id)),
+                    participants: that.groupByNameAndUrl(participants),
+                    turnPopup: true,
+                    turnMode: true,
+                    conflict: conflict
                   })
                 }
-                that.setData({
-                  participants: that.groupByNameAndUrl(participants),
-                  turnPopup: true,
-                  turnMode: true,
-                  conflict: conflict
-                })
-                console.log(that.data.participants);
+                // console.log(that.data.participants);
                 tt.showToast({
-                  title: `${that.data.inviteOpenId.length}+${that.data.inviteData.length}`,
+                  title: `Hoàn tất kiểm tra`,
                   icon: "loading",
-                  duration: 5000
+                  duration: 1000
                 });
 
               }, 3000)
@@ -338,7 +339,7 @@ Page({
         return i;
       }),
     });
-    console.log(that.data.participants);
+    // console.log(that.data.participants);
   },
 
   saveInvite() {
@@ -347,7 +348,7 @@ Page({
     let inviteOpenId = [...that.data.inviteOpenId]
 
     that.data.participants.forEach(itemB => {
-      if (itemB.checked===true) {
+      if (itemB.checked === true) {
         inviteData.push({
           url: itemB.url,
           name: itemB.name,
@@ -364,16 +365,12 @@ Page({
       inviteOpenId: inviteOpenId,
       participants: []
     })
-    tt.showToast({
-      title: `${that.data.inviteOpenId.length}+${that.data.inviteData.length}`,
-      icon: "loading",
-      duration: 5000
-    });
+    // that.addEventParticipate()
   },
 
   onShow() {
     let that = this;
-    setTimeout(() => that.listTask(), 500);
+    setTimeout(() => that.listTask(), 200);
   },
 
   listTask() {
@@ -391,6 +388,10 @@ Page({
     let ngaylam = that.data.ngaylam;
     let ngaygiobatdau = that.data.ngaygiobatdau;
     let ngaygioketthuc = that.data.ngaygioketthuc;
+    let quantrong = that.data.quantrong;
+    let ghichu = that.data.ghichu;
+    let capbach = that.data.capbach;
+    let sogiocanco = that.data.sogiocanco;
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -404,6 +405,9 @@ Page({
           field_names: [
             "Việc cần làm",
             "Thể loại",
+            "Quan trọng",
+            "Cấp bách",
+            "Số giờ cần có",
             "Thứ",
             "Ngày - Giờ bắt đầu",
             "Ngày - Giờ kết thúc",
@@ -455,6 +459,10 @@ Page({
               arCalendarId.push(item.fields["CalendarID"][0].text);
               thu.push(item.fields["Thứ"].value[0].text);
               theloai.push(item.fields["Thể loại"]);
+              capbach.push(item.fields["Cấp bách"]);
+              quantrong.push(item.fields["Quan trọng"]);
+              sogiocanco.push(item.fields["Số giờ cần có"]);
+              ghichu.push(item.fields["Ghi chú"]?.[0]?.text);
               recordid.push(item.record_id);
               ngaylam.push(that.convertTimestampToDate(item.fields["Ngày làm"]));
               ngaygiobatdau.push(that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"]));
@@ -470,6 +478,10 @@ Page({
                 checked: false,
                 thu: thu[index],
                 theloai: theloai[index],
+                quantrong: quantrong[index],
+                capbach: capbach[index],
+                sogiocanco: sogiocanco[index],
+                ghichu: ghichu[index],
                 recordid: recordid[index],
                 ngaylam: ngaylam[index],
                 ngaygiobatdau: ngaygiobatdau[index],
@@ -482,7 +494,7 @@ Page({
           });
 
           events = updatedEvents;
-          that.setData({ eventsID, events, arCalendarId, thu, recordid, ngaylam, ngaygiobatdau, ngaygioketthuc });
+          that.setData({ eventsID, events, arCalendarId, thu, recordid, ngaylam, ngaygiobatdau, ngaygioketthuc, quantrong, theloai, capbach, sogiocanco, ghichu });
         });
       },
     });
@@ -505,6 +517,7 @@ Page({
       checkChatStatue: [],
       checkChatId: [],
       checkBusy: [],
+      disabledAdd: true,
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
@@ -634,7 +647,7 @@ Page({
                           }))[index]?.url || null,
                       };
                     });
-                    that.setData({ checkInvite });
+                    that.setData({ checkInvite, disabledAdd: false });
                   });
                 } else {
                   checkChatStatue = data
@@ -655,6 +668,8 @@ Page({
                   });
                 }
                 return;
+              } else {
+                that.setData({ disabledAdd: false })
               }
             });
           }
@@ -691,11 +706,11 @@ Page({
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
     let idGroup = that.data.idGroup;
-
+    let events = that.data.events;
     const isIndividual = that.data.selectedInvitePerson === "Cá nhân";
     const idValid = that.data.idCongViec !== "" && that.data.calendarID !== "";
     const inviteValid = isIndividual ? inviteOpenId.length > 0 : idGroup !== "";
-
+    const newEvents = events.filter(i => (i.recordid === that.data.getRecord && i.value === that.data.idCongViec))
     if (idValid && inviteValid) {
       tt.getStorage({
         key: "user_access_token",
@@ -741,23 +756,55 @@ Page({
                 // Handle invitation sending errors gracefully (optional)
               });
           };
-
+          const bodyTask = {
+            fields: {
+              "Việc cần làm": newEvents[0].name,
+              "Thể loại": newEvents[0].theloai,
+              "Quan trọng": newEvents[0].quantrong,
+              "Cấp bách": newEvents[0].capbach,
+              "Số giờ cần có": parseInt(newEvents[0].sogiocanco),
+              "Person": [
+                {
+                  id: "",
+                },
+              ],
+              "Ngày - Giờ bắt đầu":
+                this.dateTimeToTimestamp(newEvents[0].ngaygiobatdau, "") * 1000,
+              "Ngày - Giờ kết thúc":
+                this.dateTimeToTimestamp(newEvents[0].ngaygioketthuc, "") * 1000,
+              "Ghi chú": newEvents[0].ghichu,
+              "Ngày làm":
+                this.dateTimeToTimestamp(newEvents[0].ngaylam, "") * 1000,
+              "EventID": newEvents[0].value,
+              "CalendarID": newEvents[0].id,
+              // "Số giờ của 1 ngày": Math.abs(
+              //   (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
+              //     this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
+              //   (60 * 60 * 1000)
+              // ) * 1000,
+              "id": newEvents[0].recordid,
+              "Loại": "shared"
+            },
+          };
+          console.log(bodyTask);
           if (isIndividual) {
-            const body2 = {
-              "fields": {
-                "Người làm *": [{ "id": that.data.inviteData2[0].id }],
-                "Mời": this.data.inviteData2.map((i) => ({ "id": i.id })),
-              },
-            };
-            updateRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then(
-              (res) => {
-                console.log(res);
-              }
-            );
-
             inviteOpenId.forEach((id) => {
               const body = bodyScheduleParticipants("user", id, res);
               createInvitations(body);
+
+              // Create a copy of the body object to avoid modifying the original
+              const newBody = { ...bodyTask };
+              // Update the "id" field with the current element
+              newBody.fields["Person"] = [{ id: id }]; // Assuming Person is an array with one object
+
+              // Call createRecord with the new body object
+              createRecord(tt.getStorageSync("app_access_token"), newBody, appVar.GlobalConfig.tableId).then((rs) => {
+                tt.showToast({
+                  title: "Đã tạo record",
+                  icon: "success",
+                  duration: 2000
+                });
+              })
             });
           } else {
             const bodyGroup = bodyScheduleParticipantsGroup(
@@ -770,10 +817,18 @@ Page({
         },
       });
     } else {
-      tt.showToast({
-        title: "Vui lòng đủ thông tin",
-        icon: "error",
-      });
+      if (!idValid) {
+        tt.showToast({
+          title: "Vui lòng chọn công việc",
+          icon: "error",
+        });
+      }
+      if (!inviteValid) {
+        tt.showToast({
+          title: "Vui lòng thêm người tham gia",
+          icon: "error",
+        });
+      }
     }
   },
 
