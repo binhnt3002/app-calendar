@@ -223,7 +223,7 @@ textarea {
 .picker-text{
   height: 40px;
   line-height: 35px;
-  background-color: #bbbfc4;
+  background-color: #bbbfc481;
   border-radius: 6px;
   padding: 0;
   margin-bottom: 5px;
@@ -237,7 +237,7 @@ textarea {
 .picker-date{
   height:40px; 
   line-height: 35px;
-  background-color: #bbbfc4;
+  background-color: #bbbfc481;
   border-radius: 5px;
   font-size: 13px;
   min-width:auto;

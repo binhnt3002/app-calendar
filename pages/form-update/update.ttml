@@ -96,7 +96,7 @@
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
                 <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-                  style="margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
+                  style="margin-right: 10px; background-color: #bbbfc481" bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
