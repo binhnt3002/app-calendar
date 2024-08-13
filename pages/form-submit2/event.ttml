@@ -125,9 +125,15 @@
 
 <view tt:if={{turnPopup===true}} class="page-confict">
   <view class="form-confict">
-    <view class="header">
-      <text style="flex: 1;">Kiểm tra trùng lặp</text>
-      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
+    <view class="header py-1 px-1 d-block">
+      <view class="d-flex">
+        <text style="flex: 1;">Kiểm tra trùng lặp</text>
+        <view class="del-x" bindtap="exit">x</view>
+      </view>
+      <view style=" padding-right:20px;">
+        <text style="color: red; font-size: 15px;">Hệ thống phát hiện có người mời bị trùng lịch. Hãy chọn user cần tạo event ở danh sách như bên dưới. Nếu bạn không chọn hoặc tắt form này, hệ thống sẽ loại bỏ user bị trùng ra khỏi danh sách mời.</text>
+
+      </view>
     </view>
     <view class="body">
       <view class="row line">
@@ -143,7 +149,7 @@
         </view>
         <view class="col-2 status">
           <div class="title-col">
-            <image class="f-icon" src="/images/tasks.svg" />Trạng thái
+            <image class="f-icon" src="/images/tasks.svg" />Chọn
           </div>
         </view>
       </view>
@@ -183,7 +189,7 @@
       <view class="row" style="padding-bottom: 20px; padding-top: 30px;">
         <view class="col-5"> </view>
         <view class="col-7 d-flex" style="justify-content: flex-end; align-items: center;">
-          <button type="button" class="btn-primary" bindtap="saveInvite">Primary</button>
+          <button type="button" class="btn-primary" bindtap="saveInvite">Tiếp tục mời</button>
         </view>
       </view>
     </view>
