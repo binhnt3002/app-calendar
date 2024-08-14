@@ -183,7 +183,7 @@
         </view>
       </view>
 
-      <view class="row" style="padding-bottom: 20px; padding-top: 30px;">
+      <view class="py-1 row">
         <view class="col-6">
           <view class="notes">
             <view>Chú Thích:</view>
@@ -194,7 +194,7 @@
           </view>
         </view>
         <view class="col-6 d-flex  justify-content-end align-items-center ">
-          <button class="btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}">Tạo công việc</button>
+          <button class="btn-primary m-0" bindtap="createTask" disabled="{{diabledBtn}}">Tạo công việc</button>
         </view>
       </view>
     </view>
