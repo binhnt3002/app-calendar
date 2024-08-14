@@ -630,7 +630,8 @@ Page({
           body2
         ).then((rs) => {
           // This section processes data retrieved from the Lark table and prepares it for display
-          if (rs.data.items != "") {
+          console.log(rs);
+          if (rs.data.items !== null) {
             
           newData = rs.data?.items?.map((item) => {
             return {
@@ -651,8 +652,10 @@ Page({
               id: item.record_id
             };
           });
+          that.setData({newData :newData})
         }else{
           newData = [];
+          that.setData({newData :newData})
         }
 
 
@@ -667,7 +670,7 @@ Page({
           // });
 
           // Combine the processed newData with existing oldData (presumably containing previous tasks)
-          tableData = [...newData, ...that.data.oldData]
+          tableData = [...that.data.newData, ...that.data.oldData]
 
           // Sort the combined tableData array by ID and then by date (for organized display)
           tableData.sort((a, b) => {
