@@ -27,7 +27,7 @@
         "pagePath": "pages/form-submit2/event",
         "iconPath": "images/event-black.svg",
         "selectedIconPath": "images/event-blue.svg",
-        "text": "\t   Tạo sự kiện"
+        "text": "\t   Mời sự kiện"
       },
       {
         "pagePath": "pages/form-update/update",

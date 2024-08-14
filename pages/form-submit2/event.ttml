@@ -153,12 +153,14 @@
       <scroll-view class="scroll-body" scroll-y="true">
         <view class="row line" wx:for="{{participants}}" wx:key="index">
           <view class="col-1 stt">
-            <view class="title-1">{{index + 1}}</view>
+            <text class="title-1">{{index + 1}}</text>
           </view>
           <view class="col-3 person">
-            <div class="title-1">
+            <div class="title-1 d-flex">
               <image class="userinfo-avatar" src="{{item.url}}"></image>
-              {{item.name}}
+              <view class="event-details">
+                <text class="block">{{item.name}}</text>
+              </view>
             </div>
           </view>
           <view class="col-6 time">
