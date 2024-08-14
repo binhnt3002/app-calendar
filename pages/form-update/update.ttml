@@ -185,7 +185,7 @@
             <div class="col-4">
               <block class="select-time">
                 <div  class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu (*)
                 </div >
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
@@ -203,7 +203,7 @@
             <div class="col-4">
               <block class="select-time">
                 <div  class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc (*)
                 </div >
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
@@ -226,15 +226,15 @@
                 <view class="picker-time">{{totalHours}}</view>
               </block>
             </div>
+            <div class="col-12">
+              <view class="d-flex justify-content-end">
+                <button bindtap="confirmUpdate" disabled="{{disabledBtn}}" class="btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
+              </view>
+            </div>
           </view>
         </view>
       </view>
     </view>
-    <block >
-      <view class="d-flex justify-content-end">
-        <button bindtap="confirmUpdate" disabled="{{disabledBtn}}" class="btn-primary m-2" style="border-radius: none !important;">Cập nhật công việc</button>
-      </view>
-    </block> 
   </view>
 </div>
 
@@ -250,20 +250,20 @@
           <view class="row align-items-start">
             <view class="col-8">
               <block class="task-name">
-                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
+                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm (*)</div>
                 <textarea class="input-text task-name" type="text" id="task" value="{{edit.vieccanlam}}"
                    bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
               <view style="display: block;">
-                <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
+                <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại (*)</div>
                 <picker disabled={true} class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
                   {{edit.theloai}}
                 </picker>
               </view>
               <view style="display: block;">
-                <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
+                <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách (*)</div>
                 <picker disabled={true} class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
                   {{edit.capbach}}
                 </picker>
@@ -271,7 +271,7 @@
             </view>
             <view class="col-8">
               <block class="task-name">
-                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
+                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch (*)</div>
                 <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
                   {{chonlich}}
                 </picker>
@@ -279,7 +279,7 @@
             </view>
             <view class="col-4">
               <view style="display:block;">
-                <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
+                <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng (*)</div>
                 <picker disabled={true} class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
                   {{edit.quantrong}}
                 </picker>
@@ -288,7 +288,7 @@
             <div class="col-4">
               <block class="select-time">
                 <div  class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Số giờ cần có
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Số giờ cần có (*)
                 </div>
                 <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
                   {{selectedHours}}
@@ -314,7 +314,7 @@
             <view class="col-12">
               <view class="note-info">
                 <div  class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Chọn thời gian làm việc
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Chọn thời gian làm việc (*)
                 </div >
               </view>
             </view>
@@ -332,8 +332,8 @@
             </view>
             <div class="col-4">
               <block class="select-time">
-                <div  class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu
+                <div  class="title1"> 
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ bắt đầu (*)
                 </div >
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
@@ -351,7 +351,7 @@
             <div class="col-4">
               <block class="select-time">
                 <div  class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc
+                  <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Giờ kết thúc (*)
                 </div >
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->

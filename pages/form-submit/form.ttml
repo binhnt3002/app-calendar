@@ -11,7 +11,7 @@
             <view class="col-8">
               <block class="task-name">
                 <div class="title1">
-                  <image class="f-icon" src="/images/tasks.svg" />Việc cần làm
+                  <image class="f-icon" src="/images/tasks.svg" />Việc cần làm (*)
                 </div>
                 <textarea maxlength="100" class="input-text" type="text" value="{{inputValue}}" id="task"
                   placeholder="Nhập chi tiết công việc..." style="margin-right: 10px;"
@@ -20,13 +20,13 @@
             </view>
             <view class="col-4">
               <view  style="display:block;">
-                <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
+                <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại (*)</div>
                 <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
                   {{selectedCategory}}
                 </picker>
               </view>
               <view style="display:block;" >
-                <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
+                <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách (*)</div>
                 <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
                 {{selectedurgent}}
                 </picker>
@@ -34,7 +34,7 @@
             </view>
             <view class="col-8">
               <block class="task-name">
-                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
+                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch (*)</div>
                 <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
                   {{chonlich}}
                 </picker>
@@ -42,7 +42,7 @@
             </view>
             <view class="col-4">
               <view  style="display:block;">
-                <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
+                <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng (*)</div>
                  <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
                 {{selectedImportant}}
                 </picker>
@@ -51,7 +51,7 @@
             <div class="col-4">
               <block class="select-time">
                 <div class="title1">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày bắt đầu
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày bắt đầu (*)
                 </div>
                 <picker class="picker-date" mode="date" id="datePicker" start="{{mindate}}"
                   bindchange="onDateChange1">
@@ -62,7 +62,7 @@
             <div class="col-4" >
               <block class="select-time">
                 <div text class="title1">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc (*)
                 </div>
                 <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" 
                   bindchange="onDateChange2">
@@ -73,7 +73,7 @@
             <div class="col-4">
               <block class="select-time">
                 <div class="title1">
-                  <image class="f-icon" src="/images/warning.svg" mode="" />Tổng giờ một việc
+                  <image class="f-icon" src="/images/warning.svg" mode="" />Tổng giờ một việc (*)
                 </div>
                 <picker tt:if="{{iSo}}" class="picker-text" mode="selector" id="important" range="{{hours}}"
                   bindchange="onSelectedHours">
@@ -88,7 +88,7 @@
             <view class="col-12">
               <view class="note-info">
                 <div class="title1">
-                  <image class="f-icon" src="/images/calendar-day-solid.svg" />Chọn thời gian làm việc
+                  <image class="f-icon" src="/images/calendar-day-solid.svg" />Chọn thời gian làm việc (*)
                 </div>
               </view>
             </view>
@@ -109,7 +109,7 @@
             <div class="col-4" >
               <block class="select-time">
                 <div class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu (*)
                 </div>
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
@@ -127,7 +127,7 @@
             <div class="col-4" >
               <block class="select-time">
                 <div class="title1">
-                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc
+                  <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc (*)
                 </div>
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
@@ -154,7 +154,6 @@
                 <div class="title-loop" >
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại:
                 </div>   
-                                       
               </div>
               <div class="col-10 checkbox-loop">             
                 <checkbox class="cb-l-w" disabled="{{weekLoop}}"
@@ -202,7 +201,6 @@
 </view>
 
   
-
 
 
 
