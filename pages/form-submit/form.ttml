@@ -1,9 +1,9 @@
 
 <view class="page-task-form">
-  <view class="py-1 header">
-    <text >Tạo công việc</text>
-  </view>
   <view class="form-1" >
+    <view class="px-1 py-1 header">
+      <text >Tạo công việc</text>
+    </view>
     <view class="body">
       <view class="box">
         <view class="section-1">
@@ -111,9 +111,17 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu
                 </div>
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange1">
-                  {{startTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeHours}}" value="{{customStartTimeHourIndex}}" bindchange="customStartTimeOnHourChange">
+                    {{customStartTimeHours[customStartTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeMinutes}}" value="{{customStartTimeMinuteIndex}}" bindchange="customStartTimeOnMinuteChange">
+                    {{customStartTimeMinutes[customStartTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div>
             <div class="col-4" >
@@ -121,9 +129,17 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc
                 </div>
-                <picker class="picker-time" mode="time" id="datePicker" bindchange="onTimeChange2">
-                  {{endTime}}
-                </picker>
+                <view class="customStartTime-pickerContainer">
+                  <!-- Combobox chọn giờ -->
+                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                    {{customEndTimeHours[customEndTimeHourIndex]}}
+                  </picker>
+                
+                  <!-- Combobox chọn phút -->
+                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                    {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
+                  </picker>
+                </view>
               </block>
             </div> 
             <div class="col-4" >
@@ -134,19 +150,19 @@
                 <view class="picker-time">{{totalHours}}</view>
               </block>
             </div> 
-            <div class="col-2 checkbox-loop" style="padding-right:0px !important;">
+            <div class="col-2 name-checkbox-loop">
                 <div class="title-loop" >
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Lặp lại:
                 </div>   
                                        
               </div>
-              <div class="col-10 checkbox-loop" style="padding-right:0px !important;">             
-                <checkbox class="check" disabled="{{weekLoop}}" style="height: 15px; width: 15px; transform: scale(1.3);"
+              <div class="col-10 checkbox-loop">             
+                <checkbox class="cb-l-w" disabled="{{weekLoop}}"
                   bindtap="checkboxChange" id="weekly" value="{{isLoop}}" data-checked="{{isLoop}}" checked="{{isLoop}}" /> 
                 <div class="title-loop" >
                   Mỗi tuần
                 </div> 
-                <checkbox disabled="{{dailyCheckBox}}" style="height: 15px; width: 15px; transform: scale(1.3);" 
+                <checkbox class="cb-l-d"  disabled="{{dailyCheckBox}}" 
                   bindtap="dailyLoopCheckBoxChange" id="daily" data-check="{{dailyLoop}}" value="{{dailyLoop}}" checked="{{dailyLoop}}" />  
                 <div class="title-loop" >
                   Mỗi ngày
@@ -177,9 +193,8 @@
             <view>* Độ quan trọng: có 3 mức độ A, B, C. Cao nhất là A, thấp nhất là C.</view>
           </view>
         </view>
-        <view class="col-6" style="display: flex; justify-content: flex-end; align-items: center;">
-          <button class="btn btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}"
-            style="border-radius: none !important; margin-left: auto;">Tạo công việc</button>
+        <view class="col-6 d-flex  justify-content-end align-items-center ">
+          <button class="btn-primary m-2" bindtap="createTask" disabled="{{diabledBtn}}">Tạo công việc</button>
         </view>
       </view>
     </view>

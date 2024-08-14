@@ -164,8 +164,8 @@ Page({
         ignore: false,
         maxNum: 100,
         limitTips: 10,
-        externalContact: false,
-        enableChooseDepartment: false,
+        externalContact: true,
+        enableChooseDepartment: true,
         disableChosenIds: [...that.data.inviteOpenId, ...that.data.checkId],
         success(res) {
           console.log(res);
@@ -383,10 +383,10 @@ Page({
     })
     // that.addEventParticipate()
   },
-
+  
   onShow() {
     let that = this;
-    setTimeout(() => that.listTask(), 200);
+    setTimeout(() => that.listTask(), 2000);
   },
 
   listTask() {

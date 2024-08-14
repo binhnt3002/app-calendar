@@ -1,6 +1,6 @@
 
 //phần body của tạo event lấy từ base
-const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, dateEndLoop, weekLoop, dailyLoop) => {
+const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd,dateEndLoop, weekLoop, dailyLoop) => {
   const body =
   {
     "summary": eventTitle,
@@ -9,12 +9,10 @@ const bodyCreateTask = (eventTitle, eventDescription, timeStart, timeEnd, dateEn
     "start_time": {
       // "date": dateStart,
       "timestamp": timeStart,
-      "timezone": "Asia/Ho_Chi_Minh"
     },
     "end_time": {
       // "date": dateEnd,
       "timestamp": timeEnd,
-      "timezone": "Asia/Ho_Chi_Minh"
     },
     "visibility": "default",
     // "attendee_ability": "can_see_others",
@@ -113,5 +111,32 @@ const bodyCreateRecord = (vieccanlam, theloai, quantrong, capbach, sogio, nguoi,
   }
   return body
 }
-
-export { bodyCreateTask, bodyScheduleParticipants, bodyCreateRecord, bodyScheduleParticipantsGroup };
+const bodyUpdateEvent = () => {
+  const body =
+  {
+    "summary": "Event title",
+    "description": "Event description",
+    "need_notification": true,
+    "start_time": {
+      "date": "2018-09-01",
+      "timestamp": "1602504000",
+      "timezone": "Asia/Shanghai"
+    },
+    "end_time": {
+      "date": "2018-09-01",
+      "timestamp": "1602504000",
+      "timezone": "Asia/Shanghai"
+    },
+    "visibility": "default", // default, public, private
+    "attendee_ability": "can_see_others", //none, can_see_others, can_invite_others, can_modify_event
+    "free_busy_status": "busy",
+    "reminders": [
+      {
+        "minutes": 5
+      }
+    ],
+    "recurrence": `FREQ=DAILY;INTERVAL=1`,
+  }
+  return body
+}
+export { bodyCreateTask, bodyScheduleParticipants, bodyCreateRecord, bodyUpdateEvent, bodyScheduleParticipantsGroup };

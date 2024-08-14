@@ -10,9 +10,7 @@ padding-bottom: 100px;
 .body{
   padding-top:10px;
   padding-left: 35px;
-  padding-right: 35px;
-  
-  
+  padding-right: 35px;  
 }
 
 .form-1 {
@@ -24,9 +22,7 @@ padding-bottom: 100px;
   overflow: hidden;
   font-size: 14px; 
   background-size: cover;
-
 }
-
 
 .main{
   padding:0 10px;
@@ -36,8 +32,11 @@ padding-bottom: 100px;
 }
 
 .header {
+  font-weight: 600;
   color: black;
   font-size: 20px;
+  color: #045A97;
+  border-bottom: 1px solid #ddd;
 }
 
 .user-info {
@@ -101,9 +100,6 @@ padding-bottom: 100px;
   padding: 5px;
 }
 
-
-
-
 textarea {
   width: 100%;
   height: 113px;
@@ -111,7 +107,7 @@ textarea {
   /* box-sizing: border-box; */
   border-radius: 5px;
   resize: none;
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
@@ -125,10 +121,8 @@ textarea {
   font-size: 13px;
   width: auto;
   text-align: center;
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
-
-
 }
 
 
@@ -140,9 +134,8 @@ textarea {
   font-size: 15px;
   min-width:auto;
   text-align: center;  
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
-
 }
 
 .picker-time{
@@ -153,11 +146,9 @@ textarea {
   font-size: 15px;
   width: auto;
   text-align: center;
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
-
-
 
 .title1{
   font-size: 16px ;
@@ -167,13 +158,11 @@ textarea {
   font-size: 16px ;
   padding-bottom: 0 !important;
   margin-top: 7px;
-  padding-right: 15px;
 }
 
 button{
-  height: 50px !important;
+  padding: 10px 20px !important;
   font-size: 15px !important;
-  line-height: 5px !important;
   background: #045A97 !important;
   border-radius: 6px !important;
   border: none !important;
@@ -185,6 +174,8 @@ button{
   opacity: 0.8 !important;
   cursor:pointer;
   position:relative; 
+  border: none !important;
+  outline: none !important;
 }
 
 .btn{
@@ -222,19 +213,20 @@ button{
   flex: 1;
 }
 
+.cb-l-w{
+  height: 15px; 
+  width: 15px; 
+  transform: scale(1.3);
+}
+.cb-l-d{
+  margin-left: 38px;
+  height: 15px; 
+  width: 15px; 
+  transform: scale(1.3);
+}
 .page-body-info {
   padding-bottom: 0;
   height: 260px;
-}
-.userinfo-avatar {
-  border-radius: 128rpx;
-  width: 100px;
-  height: 100px;
-}
-.userinfo-nickname {
-  font-weight: bold;
-  /* margin-top: 20rpx; */
-  font-size: 20px;
 }
 
 .notes {
@@ -251,8 +243,31 @@ button{
 .checkbox-loop{
   display: flex;
   margin-top:5px;
+  margin-left: -10px;
+}
+.name-checkbox-loop{
+  display: flex;
+  margin-top:5px;
 }
 
 .section-2{
   margin-top: 10px;
+}
+
+.customStartTime-pickerContainer {
+  display: flex;
+  justify-content: space-between; /* Đặt khoảng cách giữa các picker */
+  align-items: center;
+}
+
+.customStartTime-picker {
+  height: 40px;
+  line-height: 35px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  font-size: 15px;
+  width: 48%; /* Điều chỉnh chiều rộng để vừa trên một dòng */
+  text-align: center;
+  border: 1px solid rgb(231, 230, 230);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }

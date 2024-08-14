@@ -1,4 +1,4 @@
-import { searchRecord, getCalendar,  getAllTableName, getCalendarList, createEvent, createRecord, getListBusy, isDuringAnyBusyPeriod } from "../function/apiFunction";
+import { searchRecord, getCalendar, getAllTableName, getCalendarList, createEvent, createRecord, getListBusy } from "../function/apiFunction";
 import {
   updateRecord,
   deleteRecord,
@@ -81,6 +81,7 @@ Page({
 
     filterTheloai: [],
     filterQuantrong: ["A", "B", "C"],
+    selFilterQuantrong: "A",
 
     tableName: [],
     calendarID: "",
@@ -93,57 +94,14 @@ Page({
     dataLich: [],
     isLoop: false,
     dailyData: [
-      {
-        "Thứ 2": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-
-        "Thứ 3": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 4": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 5": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 6": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Thứ 7": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
-        "Chủ nhật": {
-          date: "",
-          startTime: "",
-          endTime: "",
-          inputNote: "",
-          isLoop: false,
-        },
+      { 
+        "Thứ 2": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 3": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 4": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 5": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 6": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 7": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Chủ nhật": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
       },
     ],
 
@@ -154,7 +112,18 @@ Page({
     checkBusy: [],
 
     disableDayWork: true,
+    disaleET: true,
     
+    customStartTimeHours: Array.from({ length: 24 }, (_, i) => (i < 10 ? '0' : '') + i), // Tạo danh sách giờ từ 00 đến 23
+    customStartTimeMinutes: ['00', '15', '30', '45'], // Giới hạn giá trị phút
+    customStartTimeHourIndex: 0, // Giá trị khởi tạo cho giờ
+    customStartTimeMinuteIndex: 0, // Giá trị khởi tạo cho phút
+
+    customEndTimeHours: Array.from({ length: 24 }, (_, i) => (i < 10 ? '0' : '') + i), // Tạo danh sách giờ từ 00 đến 23
+    customEndTimeMinutes: ['00', '15', '30', '45'], // Giới hạn giá trị phút
+    customEndTimeHourIndex: 0, // Giá trị khởi tạo cho giờ
+    customEndTimeMinuteIndex: 0, // Giá trị khởi tạo cho phút
+
   },
 
   // Function triggered when the calendar selection changes
@@ -284,7 +253,7 @@ Page({
       start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
       end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
     }
-    if (isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
       tt.showModal({
         "title": "Cảnh báo",
         "content": "Đã có lịch trùng",
@@ -312,6 +281,113 @@ Page({
 
     // Calculate total working hours (assuming relevant function exists)
     this.calculateTime();
+  },
+
+  customStartTimeOnHourChange(e) {
+    
+    const customStartTimeHourIndex = e.detail.value;
+    this.setData({
+      customStartTimeHourIndex: customStartTimeHourIndex,
+      startTime: `${this.data.customStartTimeHours[customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[this.data.customStartTimeMinuteIndex]}`,
+      disaleET : false,
+    });
+  },
+
+  customStartTimeOnMinuteChange(e) {
+    const customStartTimeMinuteIndex = e.detail.value;
+    this.setData({
+      customStartTimeMinuteIndex: customStartTimeMinuteIndex,
+      startTime: `${this.data.customStartTimeHours[this.data.customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[customStartTimeMinuteIndex]}`,
+      disaleET : false,
+    });
+  },
+
+  customEndTimeOnHourChange(e) {
+    const customEndTimeHourIndex = e.detail.value;
+    this.setData({
+      customEndTimeHourIndex: customEndTimeHourIndex,
+      endTime: `${this.data.customEndTimeHours[customEndTimeHourIndex]}:${this.data.customEndTimeMinutes[this.data.customEndTimeMinuteIndex]}`
+    });
+
+    let data = this.data.dailyData;
+    data[0][this.data.selectedDay].date = this.data.selectedDayWork;
+    data[0][this.data.selectedDay].startTime = this.data.startTime;
+    data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].indexSTH = this.data.customStartTimeHourIndex;
+    data[0][this.data.selectedDay].indexSTM = this.data.customStartTimeMinuteIndex;
+    data[0][this.data.selectedDay].indexETH = this.data.customEndTimeHourIndex;
+    data[0][this.data.selectedDay].indexETM = this.data.customEndTimeMinuteIndex;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
+    data[0][this.data.selectedDay].isLoop = this.data.isLoop;
+
+    this.setData({
+      dailyData: data,
+    });
+    this.calculateTime();
+  },
+
+  customEndTimeOnMinuteChange(e) {
+    const customEndTimeMinuteIndex = e.detail.value;
+    this.setData({
+      customEndTimeMinuteIndex: customEndTimeMinuteIndex,
+      endTime: `${this.data.customEndTimeHours[this.data.customEndTimeHourIndex]}:${this.data.customEndTimeMinutes[customEndTimeMinuteIndex]}`
+    });
+
+    let that = this
+    let checkBusy = this.data.checkBusy
+    checkBusy = []
+    
+    let data = this.data.dailyData;
+    data[0][this.data.selectedDay].date = this.data.selectedDayWork;
+    data[0][this.data.selectedDay].startTime = this.data.startTime;
+    data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].index1 = this.data.customEndTimeHourIndex;
+    data[0][this.data.selectedDay].index2 = this.data.customEndTimeMinuteIndex;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
+    data[0][this.data.selectedDay].isLoop = this.data.isLoop;
+
+    this.setData({
+      dailyData: data,
+    });
+
+    // if (this.data.customStartTime > this.data.customEndTime) {
+    //   this.setData({
+    //     endTime: this.data.startTime,
+    //   });
+    // }
+
+    checkBusy = {
+      start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
+      end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
+    }
+    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+      tt.showModal({
+        "title": "Cảnh báo",
+        "content": "Đã có lịch trùng",
+        "confirmText": "Tiếp",
+        "cancelText": "Hủy",
+        "showCancel": true,
+        success(res) {
+          console.log(JSON.stringify(res));
+          if (res.confirm===false) {
+            that.setData({
+              endTime: "",
+              startTime: "",
+              totalHours: 0
+            })
+          } 
+        },
+        fail(res) {
+          console.log(`showModal fail: ${JSON.stringify(res)}`);
+        }
+    });
+    }
+    this.setData({
+      checkBusy
+    })
+
+    this.calculateTime();
+
   },
 
   // Function to handle changes in start date (onDateChange1)
@@ -619,35 +695,40 @@ Page({
           body2
         ).then((rs) => {
           // This section processes data retrieved from the Lark table and prepares it for display
-          newData = rs.data.items.map((item) => {
-            return {
-              vieccanlam: item.fields?.["Tên Task"]?.[0]?.text,
-              theloai: item.fields?.["Thể loại"],
-              quantrong: item.fields?.["Quan Trọng"],
-              capbach: item.fields?.["Cấp Bách"],
-              thu: item.fields?.["Thứ"]?.value[0]?.text,
-              ngaygiobatdau: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
-              ngaygioketthuc: that.convertTimestampToDate(item.fields?.["Thời gian kết thúc"]),
-              ghichu: item.fields?.["Ghi chú"]?.[0].text || "",
-              eventid: item.fields?.["EventID"]?.[0]?.text || "",
-              calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
-              ngaylam: that.convertTimestampToDate(item.fields["Thời gian bắt đầu"]),
-              sogiocanco: item.fields["Số giờ cần có"],
-              recordId: item.record_id,
-              type: 'new',
-              id: item.record_id
-            };
-          });
+          if (rs.data.items !== null) {
+            newData = rs.data.items.map((item) => {
+              return {
+                vieccanlam: item.fields["Tên Task"][0].text,
+                theloai: item.fields["Thể loại"],
+                quantrong: item.fields["Quan Trọng"],
+                capbach: item.fields["Cấp Bách"],
+                thu: item.fields["Thứ"].value[0].text,
+                ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu"]),
+                ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc"]),
+                ghichu: item.fields["Ghi chú"]?.[0].text || "",
+                eventid: item.fields?.["EventID"]?.[0]?.text || "",
+                calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
+                ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+                sogiocanco: item.fields?.["Số giờ cần có"],
+                recordId: item.record_id,
+                type: 'new',
+                id: item.record_id
+              };
+            });
+          }else{
+            newData = [];
+          }
+          
 
           // Sort the newData array by start date-time in descending order (newest tasks first)
-          newData.sort((a, b) => {
-            // Convert date strings to Date objects for comparison
-            const dateA = new Date(a.ngaygiobatdau);
-            const dateB = new Date(b.ngaygiobatdau);
+          // newData.sort((a, b) => {
+          //   // Convert date strings to Date objects for comparison
+          //   const dateA = new Date(a.ngaygiobatdau);
+          //   const dateB = new Date(b.ngaygiobatdau);
 
-            // Compare dates in descending order
-            return dateB - dateA;
-          });
+          //   // Compare dates in descending order
+          //   return dateB - dateA;
+          // });
 
           // Combine the processed newData with existing oldData (presumably containing previous tasks)
           tableData = [...newData, ...that.data.oldData]
@@ -694,7 +775,12 @@ Page({
 
         //Fetch data from TMT base
         searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
-          const oldData = result.data.items.map((item) => {
+          if (result.data?.items == null) {
+            return that.setData({
+              oldData: [],
+            })
+          }
+          const oldData = result.data?.items?.map((item) => {
             return {
               vieccanlam: item.fields["Việc cần làm"]?.[0]?.text || "",
               theloai: item.fields["Thể loại"],
@@ -806,7 +892,7 @@ Page({
       endDate: edit.ngaygioketthuc,
       inputNote: edit.ghichu,
       inputValue: edit.vieccanlam,
-      selectedDayWork: edit.ngaylam
+
     });
   },
 
@@ -859,10 +945,7 @@ Page({
       turnPopup2: true,
       turnMode: true,
       edit,
-      weekLoop: false,
-      isLoop: false,
-      dailyCheckBox: false,
-      dailyLoop: false,
+      // selectedHours:"",
       selectedImportant: edit.quantrong,
       selectedCategory: edit.theloai,
       selectedurgent: edit.capbach,
@@ -1118,13 +1201,13 @@ Page({
   },
 
   exit() {
-    this.setData({ turnPopup: false, turnPopup2: false, turnMode: false, weekLoop: false, dailyLoop: false, isLoop: false, dailyCheckBox:false });
+    this.setData({ turnPopup: false, turnPopup2: false, turnMode: false });
     this.setData({ endTime: "", startTime: "", startDate: new Date().toISOString().substring(0, 10), endDate: "", inputNote: "", inputValue: "", selectedHours: "" })
   },
 
   createTask() {
     let that = this;
-    that.setData({ turnPopup: false, turnMode: false, turnPopup2: false, selectedFilter: "Tất cả" });
+    that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
 
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       return tt.showModal({
@@ -1235,6 +1318,8 @@ Page({
                         endDate: "",
                         startTime: that.data.mindate,
                         endTime: "",
+                        turnMode: false,
+                        turnPopup2: false,
                       });
                       that.listTask()
                     }
@@ -1324,6 +1409,8 @@ Page({
                     endDate: "",
                     startTime: "",
                     endTime: "",
+                    turnMode: false,
+                    turnPopup2: false,
                   });
                   that.listTask()
                 });
@@ -1434,13 +1521,29 @@ Page({
   },
 
   calculateTime() {
-      // Initialize total hours to 0
     let totalHours = 0;
-      // Calculate difference in hours between start and end time
-    totalHours += parseInt(this.data.endTime.split(":")[0]) - parseInt(this.data.startTime.split(":")[0]);
-      // Update component state with the calculated total hours
-    this.setData({ totalHours })
-      // Return the calculated total hours
+    this.data.dailyData.forEach((item) => {
+      if (item[this.data.selectedDay]) {
+        if (parseInt(item[this.data.selectedDay].endTime.split(":")[0]) < parseInt(item[this.data.selectedDay].startTime.split(":")[0])) {
+          tt.showModal({
+            title: "Thông báo",
+            content: "Giờ kết thúc không thể nhỏ hơn giờ bắt đầu. Vui lòng chọn lại!",
+            confirmText: "Đóng",
+            showCancel: false,
+          })
+          return this.setData({
+            customStartTimeHourIndex: 0,
+            customStartTimeMinuteIndex: 0,
+            customEndTimeHourIndex: 0,
+            customEndTimeMinuteIndex: 0,
+          })
+        }
+        totalHours +=
+          parseInt(item[this.data.selectedDay].endTime.split(":")[0]) -
+          parseInt(item[this.data.selectedDay].startTime.split(":")[0]);
+      }
+    });
+    this.setData({totalHours})
     return totalHours;
   },
 
@@ -1451,6 +1554,19 @@ Page({
     const gmt7Date = new Date(utcDate.getTime() / 1000);
     // Return the timestamp of the GMT+7 date
     return gmt7Date.getTime();
+  },
+
+  isDuringAnyBusyPeriod: (check, list) => {
+    for (const period of list) {      
+        if (
+          (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
+          (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+          (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
+      ) {  
+            return false; // Return false immediately if any condition is met
+        }
+    }
+    return true; // Return true if no overlap is found
   },
 
 });
