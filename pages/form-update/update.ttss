@@ -263,9 +263,7 @@ textarea {
   font-size: 16px ;
   /* color: #045A97 !important; */
 }
-.justify-content-end{
-  padding: 15px 0;
-}
+
 
 
 button{
