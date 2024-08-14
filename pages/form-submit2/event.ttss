@@ -72,6 +72,10 @@
   flex: 0.5;
 }
 
+.name-person{
+  /* padding-top: 5px; */
+}
+
 .footer {
   background-color: #f8f8f8;
   text-align: center;
@@ -133,7 +137,7 @@
   display: flex;
   width: 100%;
   flex: 1;
-  min-width: 0;
+  /* min-width: 0; */
 }
 
 .event-item .event-checkbox {
@@ -264,9 +268,10 @@
 }
 
 .title-1{
+  padding-left: 20px !important;
   display: table-cell;
-  word-wrap: break-word; /* Giúp văn bản tự động xuống dòng khi vượt quá độ rộng của ô */
-  padding: 8px; /* Khoảng cách giữa nội dung và biên ô */
+  word-wrap: break-word;
+  padding: 8px;
   font-size: 15px;;
 }
 
@@ -280,6 +285,10 @@
 
 .person, .time, .stt {
   border-right: 1px solid #ccc; /* Màu và độ dày của đường viền phải */
+}
+
+.stt{
+  text-align: center;
 }
 
 .line{
