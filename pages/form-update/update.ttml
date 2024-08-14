@@ -86,6 +86,7 @@
 <div tt:if={{turnPopup===true}} class="page-task-form" style="margin-top: 60px;">
   <view class="form-1" >
     <view class="header">
+                <view class="">show formm {{s1}}</view>
       <text style="flex: 1;">Chỉnh sửa công việc</text>
       <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
     </view>
@@ -94,10 +95,12 @@
         <view class="section-1">
           <view class="row align-items-start">
             <view class="col-8">
+                <view class="">set data edit {{s2}}</view>
               <block class="task-name">
-                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
+                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm ----- {{edit.vieccanlam}}</div>
                 <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
                   style="margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
+                  <view class="">set tên công việc {{s4}}</view>
               </block>
             </view>
             <view class="col-4 "> 
@@ -142,6 +145,7 @@
           </view>
           <view class="row" style="margin-left:2px;">
             <textarea style="height:120px;" class="input-text" value="{{edit.ghichu}}" bindinput="inputNote"></textarea>
+                <view class="">ghi chu {{s8}}</view>
           </view>
         </view>
         <view class="section-3">
@@ -154,15 +158,17 @@
                 <picker disabled  class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
                   {{selectedHours}}
                 </picker>
+                <view class="">số giwof cần có {{s7}}</view>
               </block>
             </div>
             <div class="col" style="padding-right:0px !important;">
-              <div  class="title1">
+              <div class="title1">
                 <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày bắt đầu
               </div >
               <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
                 {{edit.ngaygiobatdau}}
               </picker> 
+              <view class="">set ngày giờ bắt đầu {{s5}}</view>
             </div>
             <div class="col" style="padding-right:0px !important;">
               <div text class="title1">
@@ -171,6 +177,8 @@
               <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
                 {{edit.ngaygioketthuc}}
               </picker>
+              <view class="">set ngày giờ kết thúc {{s6}}</view>
+
             </div>
           </div>
           <view class="row" style="margin-left:2px;">
