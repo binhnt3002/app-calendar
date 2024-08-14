@@ -20,16 +20,6 @@ const dayOptions = [
 
 Page({
   data: {
-    s1:0,
-    s2:0,
-    s3:0,
-    s4:0,
-    s5:0,
-    s6:0,
-    s7:0,
-    s8:0,
-    s9:0,
-    s10:0,
     stt: [],
     tableData: [],
     oldData: [],
@@ -51,7 +41,13 @@ Page({
     turnPopup: false,
     turnPopup2: false,
     calendarname: "",
-    hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    hours: ["0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", 
+      "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", 
+      "12", "12.5", "13", "13.5", "14", "14.5", "15", "15.5", "16", "16.5", 
+      "17", "17.5", "18", "18.5", "19", "19.5", "20", "20.5", "21", "21.5", 
+      "22", "22.5", "23", "23.5", "24", "24.5", "25", "25.5", "26", "26.5", 
+      "27", "27.5", "28", "28.5", "29", "29.5", "30", "30.5", "31", "31.5", 
+      "32", "32.5", "33", "33.5", "34", "34.5", "35", "35.5", "36"],
     selectedDayWork: "",
     mindate: new Date().toISOString().substring(0, 10),
     startDate: new Date().toISOString().substring(0, 10),
@@ -876,7 +872,6 @@ Page({
     that.setData({
       turnPopup: true,
       turnMode: true,
-      s1:1
     })
 
     tt.showToast({ title: "1", icon: "loading",duration: 2000 })
@@ -901,32 +896,26 @@ Page({
     });
     // Update component state to display the edit popup
     this.setData({
-      s2:1,
       edit,
     })
 
     this.setData({
-      s4:1,
       inputValue: edit.vieccanlam,
     })
 
     this.setData({
-      s5:1,
       startDate: edit.ngaygiobatdau,
     })
 
     this.setData({
-      s6:1,
       endDate: edit.ngaygioketthuc,
     })
 
     this.setData({
-      s7:1,
       selectedHours: edit.sogiocanco,
     })
 
     this.setData({
-      s8:1,
       inputNote: edit.ghichu,
     })
 

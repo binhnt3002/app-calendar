@@ -82,22 +82,21 @@
   </view>
 </view>
 
-<div tt:if={{turnPopup===true}} class="page-task-form" style="margin-top: 60px;">
-  <view class="form-1" >
-    <view class="header">
-      <text style="flex: 1;">Chỉnh sửa công việc</text>
-      <image class="del-x" bindtap="exit" src="/images/times-solid.svg"></image>
+<div tt:if={{turnPopup===true}} class="page-task-form" >
+  <view class="form-1 ">
+    <view class="px-1 py-1 header">
+      <text class="name-form">Chỉnh sửa công việc</text>
+      <view class="del-x" bindtap="exit">x</view>
     </view>
     <view class="form">
       <view class="box">
         <view class="section-1">
           <view class="row align-items-start">
             <view class="col-8">
-                <view class="">set data edit {{s2}}</view>
               <block class="task-name">
-                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm ----- {{edit.vieccanlam}}</div>
+                <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
                 <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-                  style="margin-right: 10px; background-color: #bbbfc4" bindinput="inputTittle">
+                  style="margin-right: 10px; background-color: #bbbfc481" bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
@@ -130,21 +129,15 @@
                 </picker>
               </view>
             </view>
-          </view>
-        </view>
-        <view class="section-2">
-          <view class="row" style="margin-left:2px;">
-            <view class="note-info">
-              <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+            <view class="col-12">
+              <view style="dislay: block;">
+                <view class="note-info">
+                  <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
+                </view>
+                <textarea style="height:120px;" maxlength="5000" class="input-text" value="{{edit.ghichu}}" bindinput="inputNote"></textarea>
+              </view>
             </view>
-          </view>
-          <view class="row" style="margin-left:2px;">
-            <textarea style="height:120px;" class="input-text" value="{{edit.ghichu}}" bindinput="inputNote"></textarea>
-          </view>
-        </view>
-        <view class="section-3">
-          <div class="row align-items-start" style="margin-top: 5px;">
-            <div class="col" style="padding-right:0px !important;">
+            <div class="col-4">
               <block class="select-time">
                 <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Tổng giờ một việc
@@ -152,17 +145,15 @@
                 <picker disabled  class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
                   {{selectedHours}}
                 </picker>
-                <view class="">số giwof cần có {{s7}}</view>
               </block>
             </div>
-            <div class="col" style="padding-right:0px !important;">
+            <div class="col-4">
               <div  class="title1">
                 <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày bắt đầu
               </div >
               <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
                 {{edit.ngaygiobatdau}}
               </picker> 
-              <view class="">set ngày giờ bắt đầu {{s5}}</view>
             </div>
             <div class="col-4">
               <div text class="title1">
@@ -171,8 +162,6 @@
               <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
                 {{edit.ngaygioketthuc}}
               </picker>
-              <view class="">set ngày giờ kết thúc {{s6}}</view>
-
             </div>
             <view class="col-12">
               <view class="note-info">
@@ -218,12 +207,12 @@
                 </div >
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
-                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
                     {{customEndTimeHours[customEndTimeHourIndex]}}
                   </picker>
                 
                   <!-- Combobox chọn phút -->
-                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
                     {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
                   </picker>
                 </view>
@@ -234,7 +223,7 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Tổng giờ đã chọn:
                 </div>
-                <view class="picker-time" value="0">{{totalHours}}</view>
+                <view class="picker-time">{{totalHours}}</view>
               </block>
             </div>
           </view>
