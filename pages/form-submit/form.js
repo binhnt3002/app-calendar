@@ -499,7 +499,15 @@ Page({
         showCancel: false,
       })
     }
-
+    
+    if (that.data.chonlich != tt.getStorageSync("user_info").name) {
+      return tt.showModal({
+        title: "Thông báo",
+        content: "Bạn không có quyền để tạo công việc vào lịch người khác. Vui lòng chọn lại.",
+        confirmText: "Đóng",
+        showCancel: false,
+      })
+    }
     
 
     tt.getStorage({
