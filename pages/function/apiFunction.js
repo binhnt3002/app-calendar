@@ -131,6 +131,38 @@ const getListBusy = (access_token,data) => {
   return sendRequest(url, "POST", headers, body);
 };
 
+const isDuringAnyBusyPeriod = (checkList, busyPeriods) => {
+  for (const check of checkList) {
+    for (const period of busyPeriods) {
+      if (
+        (check.start >= period.start && check.start <= period.end) ||
+        (check.end >= period.start && check.end <= period.end) ||
+        (check.start <= period.start && check.end >= period.end)
+      ) {
+        return false; // Return false immediately if any overlap found
+      }
+    }
+  }
+  return true; // Return true if no overlaps found for any check
+};
+
+const findAvailableIds = (check, resultsArray) => {
+  const availableIds = [];
+  for (const period of resultsArray) {
+    if (isDuringAnyBusyPeriod(check, [period])===false) {
+      console.log(isDuringAnyBusyPeriod(check, [period]));
+      availableIds.push({
+        start: period.start,
+        end: period.end,
+        id: period.id,
+        name: period.name,
+        url: period.url
+      });
+    }
+  }
+  return availableIds;
+};
+
 export {
   getCalendarList,
   createEvent,
@@ -143,5 +175,7 @@ export {
   getCalendar,
   updateRecord,
   getAllTableName,
-  getListBusy
+  getListBusy,
+  isDuringAnyBusyPeriod,
+  findAvailableIds
 };

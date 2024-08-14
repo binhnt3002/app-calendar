@@ -5,7 +5,9 @@ import {
   getGroupId,
   getEvent,
   updateRecord,
-  getAllTableName,
+  getListBusy,
+  findAvailableIds,
+  createRecord
 } from "../function/apiFunction";
 import {
   bodyScheduleParticipants,
@@ -47,10 +49,43 @@ Page({
     attendees: [],
     thu: [],
     theloai: [],
+    quantrong: [],
+    capbach: [],
+    sogiocanco: [],
+    ghichu: [],
     recordid: [],
+    ngaygiobatdau: [],
+    ngaygioketthuc: [],
+    ngaybatdau: "",
+    ngayketthuc: "",
+    checkBusy: [],
+    ngaylam: [],
     getRecord: "",
-
+    listBusy: [],
     tableName: [],
+
+    conflict: "", // Biến lưu thời gian trùng lặp
+    participants: [],
+
+    turnPopup: false,
+    turnMode: false,
+    hiddenCheck: true
+  },
+
+  onAgree(e) {
+    const index = e.currentTarget.dataset.index;
+    let participants = this.data.participants;
+    participants[index].status = "Đã đồng ý";
+    this.setData({ participants });
+    console.log(`Người tham gia thứ ${index + 1} đã đồng ý.`);
+  },
+
+  onDecline(e) {
+    const index = e.currentTarget.dataset.index;
+    let participants = this.data.participants;
+    participants[index].status = "Từ chối";
+    this.setData({ participants });
+    console.log(`Người tham gia thứ ${index + 1} đã từ chối.`);
   },
 
   onLoad() {
@@ -62,6 +97,18 @@ Page({
     this.setData({
       events: events,
     });
+  },
+
+  checkPopup() {
+    this.setData({
+      turnPopup: true,
+      turnMode: true
+    })
+  },
+
+
+  exit(e) {
+    this.setData({ turnPopup: false, turnMode: false });
   },
 
   onLoad() {
@@ -110,6 +157,7 @@ Page({
     let chatId = that.data.chatId;
     let chatAvatar = that.data.chatAvatar;
     let chatData = that.data.chatData;
+    let inviteDataTemp = []
     if (that.data.selectedInvitePerson == "Cá nhân") {
       tt.chooseContact({
         multi: true,
@@ -122,7 +170,7 @@ Page({
         success(res) {
           console.log(res);
           res.data.map((item) => {
-            invite.push({ name: item.name }),
+              invite.push({ name: item.name }),
               inviteOpenId.push(item.openId),
               avatarUrl.push({ url: item.avatarUrls[0] }),
               inviteData.push({
@@ -130,7 +178,13 @@ Page({
                 id: item.openId,
                 url: item.avatarUrls[0],
               });
+              inviteDataTemp.push({
+                name: item.name,
+                id: item.openId,
+                url: item.avatarUrls[0],
+              });
           });
+
 
           // inviteData = invite.map((item, index) => ({
           //   id: inviteOpenId[index],
@@ -144,9 +198,97 @@ Page({
             avatarUrl,
             inviteData,
             inviteData2: inviteData,
+            disabledAdd: true,
+            disabledInvite: true,
           });
 
-          console.log(that.data.inviteData);
+          tt.showToast({
+            title: `Vui lòng chờ kiểm tra!!!`,
+            icon: "loading",
+            duration: 5000
+          });
+
+          tt.getStorage({
+            key: "user_access_token",
+            success: (res) => {
+              const access_token = res.data.access_token;
+              const userIds = [{ name: "Nhân", id: "ou_863eed51f511be97513ca7801ae65337", url: "urlnhan" }, { name: "Bình", id: "ou_9b04dc2474d1e22201cb1dbc6017c7e9", url: "urlbinh" }, { name: "Sang", id: "ou_89cf7dbb96c9e44e7ab35e44c9eee208", url: "urlsang" }]; // Assuming 'array' contains user IDs
+              const bodyArray = inviteDataTemp.map(userId => {
+                return {
+                  "time_min": that.data.ngaybatdau + "T00:00:00Z",
+                  "time_max": that.data.ngayketthuc + "T23:59:59Z",
+                  "user_id": userId.id
+                };
+              });
+              console.log(bodyArray);
+
+              const resultsArray = []
+              const participants = []
+              bodyArray.map(body => {
+                return getListBusy(access_token, body).then(rs => {
+                  const t = rs.data?.freebusy_list ? rs.data.freebusy_list.length : 0
+                  console.log(t);
+                  if (t !== 0) {
+                    const userId = body.user_id;
+                    const enrichedRs = rs.data?.freebusy_list?.map(item => ({
+                      start: that.convertUTCtoGMT7Timestamp(item.start_time),
+                      end: that.convertUTCtoGMT7Timestamp(item.end_time),
+                      id: userId
+                    }));
+                    resultsArray.push(...enrichedRs);
+                    // console.log(resultsArray);
+                  }
+                  // return rs; // Return rs for Promise.all to resolve
+                });
+              })
+
+              setTimeout(() => {
+                resultsArray.forEach(result => {
+                  const matchingInvite = inviteDataTemp.find(invite => invite.id === result.id);
+                  if (matchingInvite) {
+                    result.name = matchingInvite.name;
+                    result.url = matchingInvite.url;
+                  }
+                })
+                that.setData({ listBusy: resultsArray })
+              }
+                , 2000)
+              setTimeout(() => {
+                const availableIds = findAvailableIds(that.data.checkBusy, that.data.listBusy)
+                console.log(availableIds);
+                availableIds.map(i => participants.push({ name: i.name, url: i.url, id: i.id, time: `${that.unixTimestampToDateString(i.start)} - ${that.unixTimestampToDateString(i.end)}`, checked: false }))
+                const conflict = `${that.unixTimestampToDateString(that.data.checkBusy[0].start)} - ${that.unixTimestampToDateString(that.data.checkBusy[0].end)}`
+                if (availableIds.length > 0) {
+                  that.setData({
+                    inviteData: that.data.inviteData.filter(itemA => !availableIds.some(itemB => itemB.id === itemA.id)),
+                    inviteOpenId: that.data.inviteOpenId.filter(itemA => !availableIds.some(itemB => itemB.id === itemA)),
+                    inviteData2: that.data.inviteData.filter(itemA => !availableIds.some(itemB => itemB.id === itemA.id)),
+                    participants: that.groupByNameAndUrl(participants),
+                    turnPopup: true,
+                    turnMode: true,
+                    conflict: conflict,
+                    disabledAdd: false,
+                    disabledInvite: false,
+                    hiddenCheck: false
+                  })
+                } else {
+                  // console.log(that.data.participants);
+                  tt.showToast({
+                    title: `Hoàn tất kiểm tra`,
+                    icon: "success",
+                    duration: 1000
+                  });
+                  that.setData({
+                    disabledAdd: false,
+                    disabledInvite: false,
+                  })
+                }
+
+
+              }, 3000)
+            }
+          })
+
         },
         fail(res) {
           console.log(`chooseContact fail: ${JSON.stringify(res)}`);
@@ -178,19 +320,19 @@ Page({
                 url: chatAvatar[index],
                 checked: false,
               }));
-              if(that.data.checkChatStatue.length===0){
+              if (that.data.checkChatStatue.length === 0) {
                 console.log(1);
                 that.setData({
                   chatData
                 })
               } else {
-                chatData = chatData.filter(obj => !that.data.checkChatInvite.map(i =>i.name).includes(obj.name));
+                chatData = chatData.filter(obj => !that.data.checkChatInvite.map(i => i.name).includes(obj.name));
                 console.log(chatData);
                 that.setData({
                   chatData
                 })
               }
-              
+
               that.setData({
                 chat,
                 chatId,
@@ -202,6 +344,47 @@ Page({
     }
   },
 
+  checkConflict(e) {
+    let that = this
+    console.log(e);
+    let currentValue = e.currentTarget.dataset;
+    that.setData({
+      participants: that.data.participants.map((i) => {
+        if (i.id == currentValue.id && i.checked == false) {
+          i.checked = !currentValue.checked;
+        }
+        return i;
+      }),
+    });
+    // console.log(that.data.participants);
+  },
+
+  saveInvite() {
+    let that = this
+    let inviteData = [...that.data.inviteData]
+    let inviteOpenId = [...that.data.inviteOpenId]
+
+    that.data.participants.forEach(itemB => {
+      if (itemB.checked === true) {
+        inviteData.push({
+          url: itemB.url,
+          name: itemB.name,
+          id: itemB.id
+        });
+        inviteOpenId.push(itemB.id)
+      }
+    });
+    that.setData({
+      turnMode: false,
+      turnPopup: false,
+      inviteData: inviteData,
+      inviteData2: inviteData,
+      inviteOpenId: inviteOpenId,
+      participants: []
+    })
+    that.addEventParticipate()
+  },
+  
   onShow() {
     let that = this;
     setTimeout(() => that.listTask(), 2000);
@@ -219,6 +402,14 @@ Page({
     let thu = that.data.thu;
     let theloai = that.data.theloai;
     let recordid = that.data.recordid;
+    let ngaylam = that.data.ngaylam;
+    let ngaygiobatdau = that.data.ngaygiobatdau;
+    let ngaygioketthuc = that.data.ngaygioketthuc;
+    let quantrong = that.data.quantrong;
+    let ghichu = that.data.ghichu;
+    let capbach = that.data.capbach;
+    let sogiocanco = that.data.sogiocanco;
+    that.setData({ disabledAdd: true, disabledInvite: true })
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -231,15 +422,22 @@ Page({
         const body = {
           field_names: [
             "Việc cần làm",
+            "Thể loại",
+            "Quan trọng",
+            "Cấp bách",
+            "Số giờ cần có",
+            "Thứ",
+            "Ngày - Giờ bắt đầu",
+            "Ngày - Giờ kết thúc",
+            "Ngày làm",
+            "Ghi chú",
             "EventID",
             "CalendarID",
-            "Thứ",
-            "Thể loại",
           ],
           sort: [
             {
-              field_name: "Thể loại",
-              desc: false,
+              field_name: "Ngày - Giờ bắt đầu",
+              desc: true,
             },
           ],
           filter: {
@@ -259,6 +457,7 @@ Page({
             title: "Hoàn tất dữ liệu",
             icon: "success",
           });
+          that.setData({ disabledAdd: false, disabledInvite: false })
           console.log(resp);
           (events = []),
             (eventsID = []),
@@ -279,7 +478,14 @@ Page({
               arCalendarId.push(item.fields["CalendarID"][0].text);
               thu.push(item.fields["Thứ"].value[0].text);
               theloai.push(item.fields["Thể loại"]);
+              capbach.push(item.fields["Cấp bách"]);
+              quantrong.push(item.fields["Quan trọng"]);
+              sogiocanco.push(item.fields["Số giờ cần có"]);
+              ghichu.push(item.fields["Ghi chú"]?.[0]?.text);
               recordid.push(item.record_id);
+              ngaylam.push(that.convertTimestampToDate(item.fields["Ngày làm"]));
+              ngaygiobatdau.push(that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"]));
+              ngaygioketthuc.push(that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"]))
             });
           const updatedEvents = events.map((event, index) => {
             // Check if the index matches an ID in eventsID (assuming arrays have same length)
@@ -291,7 +497,14 @@ Page({
                 checked: false,
                 thu: thu[index],
                 theloai: theloai[index],
+                quantrong: quantrong[index],
+                capbach: capbach[index],
+                sogiocanco: sogiocanco[index],
+                ghichu: ghichu[index],
                 recordid: recordid[index],
+                ngaylam: ngaylam[index],
+                ngaygiobatdau: ngaygiobatdau[index],
+                ngaygioketthuc: ngaygioketthuc[index]
               };
             } else {
               // Return the original event if no corresponding ID is found
@@ -300,7 +513,7 @@ Page({
           });
 
           events = updatedEvents;
-          that.setData({ eventsID, events, arCalendarId, thu, recordid });
+          that.setData({ eventsID, events, arCalendarId, thu, recordid, ngaylam, ngaygiobatdau, ngaygioketthuc, quantrong, theloai, capbach, sogiocanco, ghichu });
         });
       },
     });
@@ -322,6 +535,9 @@ Page({
       checkChatInvite: [],
       checkChatStatue: [],
       checkChatId: [],
+      checkBusy: [],
+      disabledAdd: true,
+      disabledCheckBox: true,
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
@@ -330,9 +546,9 @@ Page({
     let checkChatStatue = that.data.checkChatStatue;
     let checkChatInvite = that.data.checkChatInvite;
     let checkChatId = that.data.checkChatId;
-
+    let checkBusy = that.data.checkBusy;
+    checkBusy = []
     Id = that.data.checkId;
-    console.log(currentValue);
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -341,7 +557,44 @@ Page({
           currentValue.calendar,
           currentValue.eventid
         ).then((rs) => {
-          // console.log(rs);
+          console.log(rs);
+          const diff = that.calculateDaysDifference(currentValue.ngaygiobatdau, currentValue.ngaygioketthuc)
+          if (rs.data.event.recurrence !== "") {
+            for (let i = 0; i <= diff; i++) {
+              checkBusy.push({
+                start: (parseInt(rs.data.event.start_time.timestamp) + (i * 86400)).toString(),
+                end: (parseInt(rs.data.event.end_time.timestamp) + (i * 86400)).toString()
+              })
+            }
+            that.setData({
+              checkBusy,
+              ngaybatdau: currentValue.ngaygiobatdau,
+              ngayketthuc: currentValue.ngaygioketthuc,
+            })
+          } else {
+            if (rs.data.event.start_time.timezone === "UTC") {
+              const checkBusy = [{
+                start: that.dateTimeToTimestamp(rs.data.event.start_time.date, "00:00:00"),
+                end: that.dateTimeToTimestamp(rs.data.event.end_time.date, "00:00:00")
+              }]
+              that.setData({
+                ngaybatdau: currentValue.ngaygiobatdau,
+                ngayketthuc: currentValue.ngaygioketthuc,
+                checkBusy: checkBusy
+              })
+            } else {
+              checkBusy = [{
+                start: rs.data.event.start_time.timestamp,
+                end: rs.data.event.end_time.timestamp
+              }]
+              that.setData({
+                checkBusy: checkBusy,
+                ngaybatdau: currentValue.ngaygiobatdau,
+                ngayketthuc: currentValue.ngaygioketthuc,
+              })
+            }
+          }
+          console.log(that.data.checkBusy);
           that.setData({
             events: that.data.events.map((i) => {
               if (i.value == currentValue.eventid && i.checked == false) {
@@ -351,6 +604,7 @@ Page({
               }
               return i;
             }),
+            // disabledCheckBox:false
           });
           if (
             rs.data.event.status !== "confirmed" ||
@@ -378,9 +632,8 @@ Page({
             };
             sendRequest(url, "GET", headers, {}).then((resp) => {
               let lengthItems = resp.data?.items.length || 0;
-              let data = resp.data.items;
+              let data = resp.data.items.filter(i => !(i.rsvp_status === "removed"))
               // let dataPush = resp.data.items.map((item) => item.user_id);
-
               if (lengthItems != 0) {
                 if (that.data.selectedInvitePerson == "Cá nhân") {
                   checkStatue = data
@@ -391,7 +644,7 @@ Page({
                       id: item.user_id,
                     }));
                   // checkStatue = resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
-                  checkId = resp.data.items.map((item) => item.user_id);
+                  checkId = data.map((item) => item.user_id);
                   const url2 =
                     "https://open.larksuite.com/open-apis/contact/v3/users/batch?user_ids=" +
                     checkId.join("&user_ids=");
@@ -402,6 +655,7 @@ Page({
                     checkStatue,
                     checkId,
                     checkInvite: checkStatue,
+                    // disabledCheckBox: false
                   });
                   sendRequest(url2, "GET", headers2, {}).then((rss) => {
                     checkInvite = checkStatue.map((obj, index) => {
@@ -413,7 +667,7 @@ Page({
                           }))[index]?.url || null,
                       };
                     });
-                    that.setData({ checkInvite });
+                    that.setData({ checkInvite, disabledAdd: false, disabledCheckBox: false });
                   });
                 } else {
                   checkChatStatue = data
@@ -434,6 +688,8 @@ Page({
                   });
                 }
                 return;
+              } else {
+                that.setData({ disabledAdd: false, disabledCheckBox: false})
               }
             });
           }
@@ -470,11 +726,11 @@ Page({
     let that = this;
     let inviteOpenId = that.data.inviteOpenId;
     let idGroup = that.data.idGroup;
-
+    let events = that.data.events;
     const isIndividual = that.data.selectedInvitePerson === "Cá nhân";
     const idValid = that.data.idCongViec !== "" && that.data.calendarID !== "";
     const inviteValid = isIndividual ? inviteOpenId.length > 0 : idGroup !== "";
-
+    const newEvents = events.filter(i => (i.recordid === that.data.getRecord && i.value === that.data.idCongViec))
     if (idValid && inviteValid) {
       tt.getStorage({
         key: "user_access_token",
@@ -520,23 +776,55 @@ Page({
                 // Handle invitation sending errors gracefully (optional)
               });
           };
-
+          const bodyTask = {
+            fields: {
+              "Việc cần làm": newEvents[0].name,
+              "Thể loại": newEvents[0].theloai,
+              "Quan trọng": newEvents[0].quantrong,
+              "Cấp bách": newEvents[0].capbach,
+              "Số giờ cần có": parseInt(newEvents[0].sogiocanco),
+              "Person": [
+                {
+                  id: "",
+                },
+              ],
+              "Ngày - Giờ bắt đầu":
+                this.dateTimeToTimestamp(newEvents[0].ngaygiobatdau, "") * 1000,
+              "Ngày - Giờ kết thúc":
+                this.dateTimeToTimestamp(newEvents[0].ngaygioketthuc, "") * 1000,
+              "Ghi chú": newEvents[0].ghichu,
+              "Ngày làm":
+                this.dateTimeToTimestamp(newEvents[0].ngaylam, "") * 1000,
+              "EventID": newEvents[0].value,
+              "CalendarID": newEvents[0].id,
+              // "Số giờ của 1 ngày": Math.abs(
+              //   (this.dateTimeToTimestamp(dataDay.date, dataDay.endTime) -
+              //     this.dateTimeToTimestamp(dataDay.date, dataDay.startTime)) /
+              //   (60 * 60 * 1000)
+              // ) * 1000,
+              "id": newEvents[0].recordid,
+              "Loại": "shared"
+            },
+          };
+          console.log(bodyTask);
           if (isIndividual) {
-            const body2 = {
-              "fields": {
-                "Người làm *" : [{"id" : that.data.inviteData2[0].id}],
-                "Mời": this.data.inviteData2.map((i) => ({"id" : i.id})),
-              },
-            };
-            updateRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then(
-              (res) => {
-                console.log(res);
-              }
-            );
-
             inviteOpenId.forEach((id) => {
               const body = bodyScheduleParticipants("user", id, res);
               createInvitations(body);
+
+              // Create a copy of the body object to avoid modifying the original
+              const newBody = { ...bodyTask };
+              // Update the "id" field with the current element
+              newBody.fields["Person"] = [{ id: id }]; // Assuming Person is an array with one object
+
+              // Call createRecord with the new body object
+              createRecord(tt.getStorageSync("app_access_token"), newBody, appVar.GlobalConfig.tableId).then((rs) => {
+                tt.showToast({
+                  title: "Đã tạo record",
+                  icon: "success",
+                  duration: 2000
+                });
+              })
             });
           } else {
             const bodyGroup = bodyScheduleParticipantsGroup(
@@ -549,10 +837,18 @@ Page({
         },
       });
     } else {
-      tt.showToast({
-        title: "Vui lòng đủ thông tin",
-        icon: "error",
-      });
+      if (!idValid) {
+        return tt.showToast({
+          title: "Vui lòng chọn công việc",
+          icon: "error",
+        });
+      }
+      if (!inviteValid) {
+        return tt.showToast({
+          title: "Vui lòng thêm người tham gia",
+          icon: "error",
+        });
+      }
     }
   },
 
@@ -610,4 +906,72 @@ Page({
       console.error("Element with ID", index, "not found in chatData"); // Handle potential errors
     }
   },
+
+  dateTimeToTimestamp: function (date, time) {
+    let datetime = new Date(`${date} ${time}`);
+    let timestamp = datetime.getTime();
+    return Math.floor(timestamp / 1000);
+  },
+
+  convertTimestampToDate(timestamp) {
+    // Create a new Date object with the given timestamp
+    const date = new Date(timestamp);
+    // Get the day, month, and year from the Date object
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+    // Format the date as dd/mm/yyyy
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  },
+
+  convertUTCtoGMT7Timestamp: function (utcString) {
+    // Create a Date object from the UTC string
+    const utcDate = new Date(utcString);
+    // Add the offset to the UTC date to get GMT+7 date
+    const gmt7Date = new Date(utcDate.getTime() / 1000);
+    // Return the timestamp of the GMT+7 date
+    return gmt7Date.getTime();
+  },
+  unixTimestampToDateString(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1000); // Convert to milliseconds
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    return `${hours}:${minutes}  ${day}/${month}`
+  },
+
+  calculateDaysDifference(startDateString, endDateString) {
+    const startDate = new Date(startDateString);
+    const endDate = new Date(endDateString);
+
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds
+      = endDate - startDate;
+
+    // Convert milliseconds to days
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+    // Round down to get the exact number of days
+    return Math.floor(differenceInDays);
+  },
+  groupByNameAndUrl(array) {
+    const groupedData = {};
+
+    array.forEach(item => {
+      const { name, url, time, checked, id } = item;
+      const key = `${name}-${url}`;
+
+      if (!groupedData[key]) {
+        groupedData[key] = { name, url, times: [], checked, id };
+      }
+
+      groupedData[key].times.push(time);
+    });
+
+    return Object.values(groupedData);
+  }
 });

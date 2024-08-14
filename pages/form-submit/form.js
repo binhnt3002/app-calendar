@@ -39,13 +39,13 @@ Page({
     
     dailyData: [
       { 
-        "Thứ 2": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
-        "Thứ 3": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
-        "Thứ 4": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
-        "Thứ 5": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
-        "Thứ 6": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
-        "Thứ 7": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
-        "Chủ nhật": { date: "", startTime: "", endTime: "", inputNote: "", isLoop: false,},
+        "Thứ 2": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 3": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 4": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 5": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 6": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Thứ 7": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+        "Chủ nhật": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
       },
     ],
 
@@ -60,22 +60,35 @@ Page({
     endTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDayWork: new Date().toISOString().substring(0, 10),
 
-    calendarID: "",
-    eventId: "",
-    lich: [],
-    chonlich: "",
-    dataLich: [],
+      calendarID: "",
+      eventId: "",
+      lich: [],
+      chonlich: "",
+      dataLich: [],
 
     inputValue: "",
     inputNote: "",
+
     listBusy: [],
     tableName: [],
     checkBusy : [],
+
     isSHow: false,
     iSo: true,
     diabledBtn: false,
     disableDayWork: true,
     dailyLoop : false,
+    disaleET: true,
+
+    customStartTimeHours: Array.from({ length: 24 }, (_, i) => (i < 10 ? '0' : '') + i), // Tạo danh sách giờ từ 00 đến 23
+    customStartTimeMinutes: ['00', '15', '30', '45'], // Giới hạn giá trị phút
+    customStartTimeHourIndex: 0, // Giá trị khởi tạo cho giờ
+    customStartTimeMinuteIndex: 0, // Giá trị khởi tạo cho phút
+
+    customEndTimeHours: Array.from({ length: 24 }, (_, i) => (i < 10 ? '0' : '') + i), // Tạo danh sách giờ từ 00 đến 23
+    customEndTimeMinutes: ['00', '15', '30', '45'], // Giới hạn giá trị phút
+    customEndTimeHourIndex: 0, // Giá trị khởi tạo cho giờ
+    customEndTimeMinuteIndex: 0, // Giá trị khởi tạo cho phút
   },
 
   inputHours: function (e) {
@@ -194,29 +207,29 @@ Page({
     });
   },
 
-  onCategoryChange: function (e) {
-    this.setData({
-      selectedCategory: this.data.categoryOptions[e.detail.value],
-    });
-  },
+    onCategoryChange: function (e) {
+      this.setData({
+        selectedCategory: this.data.categoryOptions[e.detail.value],
+      });
+    },
 
-  onImportantChange: function (e) {
-    this.setData({
-      selectedImportant: this.data.importantOptions[e.detail.value],
-    });
-  },
+    onImportantChange: function (e) {
+      this.setData({
+        selectedImportant: this.data.importantOptions[e.detail.value],
+      });
+    },
 
-  onCategoryChange: function (e) {
-    this.setData({
-      selectedCategory: this.data.categoryOptions[e.detail.value],
-    });
-  },
+    onCategoryChange: function (e) {
+      this.setData({
+        selectedCategory: this.data.categoryOptions[e.detail.value],
+      });
+    },
 
-  onUrgentChange: function (e) {
-    this.setData({
-      selectedurgent: this.data.urgentOptions[e.detail.value],
-    });
-  },
+    onUrgentChange: function (e) {
+      this.setData({
+        selectedurgent: this.data.urgentOptions[e.detail.value],
+      });
+    },
 
   onDateChange1: function (e) {
     this.setData({
@@ -234,21 +247,9 @@ Page({
     }
   },
 
-  onTimeChange1: function (e) {
-    this.setData({
-      startTime: e.detail.value,
-    });
-
-    if (this.data.startTime > this.data.endTime) {
-      this.setData({
-        endTime: this.data.startTime,
-      });
-    }
-  },
-
-  onDateChange3: function (e) {
-    let now = new Date(e.detail.value);
-    let dayOfWeek = now.getDay();
+    onDateChange3: function (e) {
+      let now = new Date(e.detail.value);
+      let dayOfWeek = now.getDay();
 
     let dayNames = [
       "Chủ nhật",
@@ -260,18 +261,16 @@ Page({
       "Thứ 7",
     ];
     let dayKey = dayNames[dayOfWeek];
-
     let data = this.data.dailyData[0][dayKey];
     this.setData({
       startTime: data.startTime,
       endTime: data.endTime,
+      customStartTimeHourIndex: data.indexSTH,
+      customStartTimeMinuteIndex: data.indexSTM,
+      customEndTimeHourIndex: data.indexETH,
+      customEndTimeMinuteIndex: data.indexETM,
       isLoop: data.isLoop,
       inputNote: data.inputNote,
-    });
-
-   
-
-    this.setData({
       selectedDayWork: e.detail.value,
       selectedDay: dayKey,
     });
@@ -314,17 +313,67 @@ Page({
     })
   },
 
-  onTimeChange2: function (e) {
-    let that = this
-    let checkBusy = this.data.checkBusy
-    checkBusy = []
+
+  customStartTimeOnHourChange(e) {
+    
+    const customStartTimeHourIndex = e.detail.value;
     this.setData({
-      endTime: e.detail.value,
+      customStartTimeHourIndex: customStartTimeHourIndex,
+      startTime: `${this.data.customStartTimeHours[customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[this.data.customStartTimeMinuteIndex]}`,
+      disaleET : false,
     });
+  },
+
+  customStartTimeOnMinuteChange(e) {
+    const customStartTimeMinuteIndex = e.detail.value;
+    this.setData({
+      customStartTimeMinuteIndex: customStartTimeMinuteIndex,
+      startTime: `${this.data.customStartTimeHours[this.data.customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[customStartTimeMinuteIndex]}`,
+      disaleET : false,
+    });
+  },
+
+  customEndTimeOnHourChange(e) {
+    const customEndTimeHourIndex = e.detail.value;
+    this.setData({
+      customEndTimeHourIndex: customEndTimeHourIndex,
+      endTime: `${this.data.customEndTimeHours[customEndTimeHourIndex]}:${this.data.customEndTimeMinutes[this.data.customEndTimeMinuteIndex]}`
+    });
+
     let data = this.data.dailyData;
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
     data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].indexSTH = this.data.customStartTimeHourIndex;
+    data[0][this.data.selectedDay].indexSTM = this.data.customStartTimeMinuteIndex;
+    data[0][this.data.selectedDay].indexETH = this.data.customEndTimeHourIndex;
+    data[0][this.data.selectedDay].indexETM = this.data.customEndTimeMinuteIndex;
+    data[0][this.data.selectedDay].inputNote = this.data.inputNote;
+    data[0][this.data.selectedDay].isLoop = this.data.isLoop;
+
+    this.setData({
+      dailyData: data,
+    });
+    this.calculateTime();
+  },
+
+  customEndTimeOnMinuteChange(e) {
+    const customEndTimeMinuteIndex = e.detail.value;
+    this.setData({
+      customEndTimeMinuteIndex: customEndTimeMinuteIndex,
+      endTime: `${this.data.customEndTimeHours[this.data.customEndTimeHourIndex]}:${this.data.customEndTimeMinutes[customEndTimeMinuteIndex]}`
+    });
+
+    let that = this
+    let checkBusy = this.data.checkBusy
+    checkBusy = []
+    
+    let data = this.data.dailyData;
+    data[0][this.data.selectedDay].date = this.data.selectedDayWork;
+    data[0][this.data.selectedDay].startTime = this.data.startTime;
+    data[0][this.data.selectedDay].endTime = this.data.endTime;
+    data[0][this.data.selectedDay].index1 = this.data.customEndTimeHourIndex;
+    data[0][this.data.selectedDay].index2 = this.data.customEndTimeMinuteIndex;
     data[0][this.data.selectedDay].inputNote = this.data.inputNote;
     data[0][this.data.selectedDay].isLoop = this.data.isLoop;
 
@@ -332,11 +381,11 @@ Page({
       dailyData: data,
     });
 
-    if (this.data.startTime > this.data.endTime) {
-      this.setData({
-        endTime: this.data.startTime,
-      });
-    }
+    // if (this.data.customStartTime > this.data.customEndTime) {
+    //   this.setData({
+    //     endTime: this.data.startTime,
+    //   });
+    // }
 
     checkBusy = {
       start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
@@ -355,7 +404,7 @@ Page({
             that.setData({
               endTime: "",
               startTime: "",
-              totalHours: ""
+              totalHours: 0
             })
           } 
         },
@@ -369,6 +418,7 @@ Page({
     })
 
     this.calculateTime();
+
   },
 
   onShow() {
@@ -414,6 +464,20 @@ Page({
     let totalHours = 0;
     this.data.dailyData.forEach((item) => {
       if (item[this.data.selectedDay]) {
+        if (parseInt(item[this.data.selectedDay].endTime.split(":")[0]) < parseInt(item[this.data.selectedDay].startTime.split(":")[0])) {
+          tt.showModal({
+            title: "Thông báo",
+            content: "Đã vượt quá giờ cho phép. Vui lòng chọn lại.",
+            confirmText: "Đóng",
+            showCancel: false,
+          })
+          return this.setData({
+            customStartTimeHourIndex: 0,
+            customStartTimeMinuteIndex: 0,
+            customEndTimeHourIndex: 0,
+            customEndTimeMinuteIndex: 0,
+          })
+        }
         totalHours +=
           parseInt(item[this.data.selectedDay].endTime.split(":")[0]) -
           parseInt(item[this.data.selectedDay].startTime.split(":")[0]);
@@ -426,6 +490,7 @@ Page({
 
   createTask() {
     let that = this;
+
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       return tt.showModal({
         title: "Thông báo",
@@ -435,12 +500,14 @@ Page({
       })
     }
 
+    
+
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
         const access_token = res.data.access_token;
         if (
-          that.data.CalendarID != "" &&
+          that.data.calendarID != "" &&
           that.data.inputValue != "" &&
           that.data.startDate != "" &&
           that.data.endDate != "" &&
@@ -546,6 +613,11 @@ Page({
                 endDate: "",
                 startTime: "",
                 endTime: "",
+                totalHours: "",
+                customStartTimeHourIndex: 0,
+                customStartTimeMinuteIndex: 0,
+                customEndTimeHourIndex: 0,
+                customEndTimeMinuteIndex: 0,
                 dailyLoop: false,
                 weekLoop: false,
               });
@@ -639,10 +711,15 @@ Page({
                     selectedurgent: "1",
                     selectedImportant: "A",
                     selectedHours: "1",
-                    startDate: "Chọn ngày",
+                    startDate: that.data.mindate,
                     endDate: "",
                     startTime: "",
                     endTime: "",
+                    customStartTimeHourIndex: 0,
+                    customStartTimeMinuteIndex: 0,
+                    customEndTimeHourIndex: 0,
+                    customEndTimeMinuteIndex: 0,
+                    totalHours: 0,
                     isLoop: false,
                   });
                 });
@@ -653,6 +730,20 @@ Page({
           tt.showToast({
             title: "Vui lòng nhập đầy đủ dữ liệu",
             icon: "error",
+          });
+          this.setData({
+            inputValue: "",
+            inputNote: "",
+            selectedCategory: "Việc chính",
+            selectedurgent: "1",
+            selectedImportant: "A",
+            selectedHours: "1",
+            startDate: that.data.mindate,
+            endDate: "",
+            startTime: "",
+            endTime: "",
+            totalHours: 0,
+            isLoop: false,
           });
         }
       },
@@ -695,5 +786,5 @@ Page({
   },
   getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
-  }
+  },
 });

@@ -8,6 +8,7 @@
   padding-right: 0 !important;
   padding-left: 0 !important;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
 }
 .logo{
   height: fit-content;
@@ -21,17 +22,10 @@
 }
 
 .header-update{
-  padding: 10px;
-  background-color: #045A97;
   width: 100%;
-  text-align: center;
-  color: white;
   display: flex;
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0.5rem;
+  color: #045A97;
   font-size: 20px; 
-  background: #045A97 !important;
   font-weight: bolder;
   border-radius: 10px 10px 0 0;
 }
@@ -122,9 +116,7 @@
   height: auto;
   margin: 0 auto;
   padding-bottom: 100px;
-  }
-
-
+}
 
 .f-icon{
   height:14px;
@@ -135,12 +127,8 @@
 .form{
   padding: 0 30px;
 }
-.box{
-  padding-right: 10px;
-}
 
 .form-1 {
-  /* padding: 30px; */
   height: fit-content;
   border-radius: 10px;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
@@ -158,7 +146,6 @@
   opacity: 0.7 !important;
 }
 
-
 .main{
   padding:0 10px;
   flex-direction: column;
@@ -167,27 +154,19 @@
 }
 .header {
   display: flex;
-  justify-content: space-between;
   height: auto;
   margin-bottom: 10px;
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0.5rem;
   font-size: 20px; 
-  background: #045A97 !important;
   font-weight: bolder;
+  border-bottom: 1px solid #ddd;
+  color: #045A97;
 }
 
-/* .user-info {
-  font-size: 14px;
-} */
+.name-form{
+  flex: 1;
 
-/* .section-user {
-  align-self: flex-end; 
-  padding: 10px;
-  margin-bottom: 10px;
-  margin-right: 40px;
-} */
+}
+
 .task-form {
   display: flex;
   justify-content: space-between;
@@ -224,64 +203,65 @@
   width: 100%;
   background-color: rgb(255, 255, 255,0.8);
   padding: 5px;
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
 }
 
 textarea {
-  /* margin-top: 5px; */
   width: 99%;
   height: 110px;
   padding: 10px 0;
-  /* box-sizing: border-box; */
-  border-radius: 15px;
+  border-radius: 6px;
   resize: none;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
 }
-
+.task-name{
+  margin-right: 10px;
+  background-color: rgb(255, 255, 255,0.8);
+}
 
 .picker-text{
   height: 40px;
   line-height: 35px;
-  background-color: #bbbfc4;
-  border-radius: 20px;
+  background-color: #bbbfc481;
+  border-radius: 6px;
   padding: 0;
   margin-bottom: 5px;
   font-size: 13px;
   width: auto;
   text-align: center;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
 }
 
 .picker-date{
   height:40px; 
   line-height: 35px;
-  background-color: #bbbfc4;
-  border-radius: 30px;
+  background-color: #bbbfc481;
+  border-radius: 5px;
   font-size: 13px;
   min-width:auto;
   text-align: center;  
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
 }
 
 .picker-time{
   height: 40px;
   line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 30px;
+  border-radius: 5px;
   font-size: 13px;
   width: auto;
   text-align: center;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
 }
 
 .title1{
-  font-weight: bold;
+  /* font-weight: bold; */
   font-size: 16px ;
-  color: #045A97 !important;
+  /* color: #045A97 !important; */
 }
 .justify-content-end{
   padding: 15px 0;
@@ -289,11 +269,10 @@ textarea {
 
 
 button{
-  height: 50px !important;
+  padding: 20px 10px !important;
   font-size: 15px !important;
-  line-height: 5px !important;
   background: #045A97 !important;
-  border-radius: 30px !important;
+  border-radius: 6px !important;
 }
 
 .btn:hover{
@@ -327,21 +306,33 @@ button{
   flex: 1;
 }
 
-/* .page-body-info {
-  padding-bottom: 0;
-  height: 260px;
+.cb-l-w{
+  height: 15px; 
+  width: 15px; 
+  transform: scale(1.3);
 }
-.userinfo-avatar {
-  border-radius: 128rpx;
-  width: 100px;
-  height: 100px;
+.cb-l-d{
+  margin-left: 20px;
+  height: 15px; 
+  width: 15px; 
+  transform: scale(1.3);
 }
-.userinfo-nickname {
-  font-weight: bold;
-  /* margin-top: 20rpx; */
-  /* font-size: 20px;
-} */
 
+.checkbox-loop{
+  display: flex;
+  margin-top:5px;
+  padding: 0 !important;
+}
+.name-checkbox-loop{
+  display: flex;
+  margin-top:5px;
+}
+
+.title-loop{
+  font-size: 16px ;
+  padding-bottom: 0 !important;
+  margin-top: 7px;
+}
 
 .sort-icon{
   height: 18px;
@@ -352,4 +343,22 @@ button{
   display: flex;
   gap: 15px;
   margin-top:5px;
+}
+
+.customStartTime-pickerContainer {
+  display: flex;
+  justify-content: space-between; /* Đặt khoảng cách giữa các picker */
+  align-items: center;
+}
+
+.customStartTime-picker {
+  height: 40px;
+  line-height: 35px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  font-size: 15px;
+  width: 48%; /* Điều chỉnh chiều rộng để vừa trên một dòng */
+  text-align: center;
+  border: 1px solid rgb(231, 230, 230);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }

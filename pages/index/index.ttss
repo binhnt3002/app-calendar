@@ -12,8 +12,6 @@
   overflow: hidden;
   font-size: 14px; /* Giảm kích thước chữ chung */
   font-family: Arial, sans-serif;
-  
-  
 }
  .row{
   margin-bottom: 25px;
@@ -59,3 +57,55 @@ text{
 .chuatot {
   color: rgb(255, 0, 0);
 }
+
+.text-detail{
+  font-size: 15px;
+  display: block;
+}
+
+.header{
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+}
+
+.text-center{
+  height: auto !important; 
+  margin-top: 15px;
+}
+
+.detail{
+  border-right: 1px solid rgb(248, 223, 223);
+}
+
+.row-end{
+  border-bottom: 1px solid rgb(248, 223, 223);
+
+}
+
+.last-row{
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.standard{
+  padding-top: 4px;
+}
+
+.row-end-top{
+ border-top: 1px solid rgb(248, 223, 223);
+}
+
+.input{
+  margin-bottom: 5px;
+}
+
+.dashboard-header{
+  padding-top: 8px; 
+  font-size: 15px; 
+  display: flex; 
+  justify-content: center; 
+  font-weight: bold;
+}
+
+
