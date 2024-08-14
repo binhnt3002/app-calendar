@@ -874,7 +874,6 @@ Page({
       turnMode: true,
     })
 
-    tt.showToast({ title: "1", icon: "loading",duration: 2000 })
     // Access the current edit state from component data
     let edit = that.data.edit;    
 
