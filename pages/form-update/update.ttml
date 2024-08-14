@@ -395,21 +395,23 @@
           </view>
         </view>
         <view class="section-2">
-          <view>
-            <view class="note-info">
+          <view class="row align-items-start">
+            <view class="col-12 note-info">
               <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
             </view>
+            <view class="col-12">
+              <textarea style="height:120px;" maxlength="5000" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
+            </view>
+            <block class="col-12">
+              <view class="col-12 py-1 d-flex justify-content-end">
+                <button bindtap="createTask" class="btn-primary m-0" style="border-radius: none !important;">Tạo công việc</button>
+              </view>
+            </block> 
           </view>
-          <view >
-            <textarea style="height:120px;" maxlength="5000" class="input-text" value="{{inputNote}}" bindinput="inputNote"></textarea>
-          </view>
+          
         </view>
       </view>
     </view>
-    <block >
-      <view class="d-flex justify-content-end">
-        <button bindtap="createTask" class="btn-primary m-2" style="border-radius: none !important;">Tạo công việc</button>
-      </view>
-    </block> 
+    
   </view>
 </div>
