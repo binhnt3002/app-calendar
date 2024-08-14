@@ -41,7 +41,13 @@ Page({
     turnPopup: false,
     turnPopup2: false,
     calendarname: "",
-    hours: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    hours: ["0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", 
+      "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", 
+      "12", "12.5", "13", "13.5", "14", "14.5", "15", "15.5", "16", "16.5", 
+      "17", "17.5", "18", "18.5", "19", "19.5", "20", "20.5", "21", "21.5", 
+      "22", "22.5", "23", "23.5", "24", "24.5", "25", "25.5", "26", "26.5", 
+      "27", "27.5", "28", "28.5", "29", "29.5", "30", "30.5", "31", "31.5", 
+      "32", "32.5", "33", "33.5", "34", "34.5", "35", "35.5", "36"],
     selectedDayWork: "",
     mindate: new Date().toISOString().substring(0, 10),
     startDate: new Date().toISOString().substring(0, 10),
@@ -622,7 +628,8 @@ Page({
             "Ghi chú",
             "EventID",
             "CalendarID",
-            "id"
+            "id",
+            "Loại"
           ],
           sort: [
             {
@@ -731,7 +738,7 @@ Page({
           // });
 
           // Combine the processed newData with existing oldData (presumably containing previous tasks)
-          tableData = [...newData, ...that.data.oldData]
+          tableData = [...that.data.newData, ...that.data.oldData]
 
           // Sort the combined tableData array by ID and then by date (for organized display)
           tableData.sort((a, b) => {
@@ -796,6 +803,7 @@ Page({
               sogiocanco: item.fields["Số giờ cần có"],
               recordId: item.record_id,
               id: item?.fields?.["id"]?.[0]?.text,
+              loai: item.fields?.["Loại"]
             };
           });
           console.log(result);
@@ -863,15 +871,20 @@ Page({
   edit(e) {
     // Store a reference to 'this' for clarity and potential scoping issues
     let that = this;
+    that.setData({
+      turnPopup: true,
+      turnMode: true,
+    })
 
     // Access the current edit state from component data
-    let edit = that.data.edit;
+    let edit = that.data.edit;    
 
     // Extract the event target ID (presumably the event ID of the task)
     const currentTarget = e.currentTarget.id;
 
     // Find the specific task object from tableData based on the event ID
     edit = that.data.tableData.find((obj) => obj.eventid === currentTarget);
+    
     // Fetch calendar details using the user's access token (stored asynchronously)
     tt.getStorage({
       key: "user_access_token",
@@ -883,17 +896,39 @@ Page({
       },
     });
     // Update component state to display the edit popup
-    that.setData({
-      turnPopup: true,
-      turnMode: true,
+    this.setData({
       edit,
-      selectedHours: edit.sogiocanco,
-      startDate: edit.ngaygiobatdau,
-      endDate: edit.ngaygioketthuc,
-      inputNote: edit.ghichu,
-      inputValue: edit.vieccanlam,
+    })
 
-    });
+    this.setData({
+      inputValue: edit.vieccanlam,
+    })
+
+    this.setData({
+      startDate: edit.ngaygiobatdau,
+    })
+
+    this.setData({
+      endDate: edit.ngaygioketthuc,
+    })
+
+    this.setData({
+      selectedHours: edit.sogiocanco,
+    })
+
+    this.setData({
+      inputNote: edit.ghichu,
+    })
+
+
+    // that.setData({
+    //   turnPopup: true,
+    //   turnMode: true,
+    //   endDate: edit.ngaygioketthuc,
+    //   selectedHours: edit.sogiocanco,
+    //   inputNote: edit.ghichu,
+    //   s3:1,
+    // });
   },
 
   // Function to handle the edit2 action (presumably triggered by a button click)
@@ -1188,10 +1223,11 @@ Page({
       success(res) {
         if (res.confirm) {
           // If the user confirms, call the deleteItem function
-          that.deleteItem(eventId);
-        } else if (res.cancel) {
+          return that.deleteItem(eventId);
+        }
+        if (res.cancel) {
           // If the user cancels, log a message to the console
-          console.log("User canceled deletion");
+          return console.log("User canceled deletion");
         }
       },
       fail(res) {
