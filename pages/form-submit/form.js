@@ -481,9 +481,9 @@ Page({
             customEndTimeMinuteIndex: 0,
           })
         }
-        totalHours +=
-          parseInt(item[this.data.selectedDay].endTime.split(":")[0]) -
-          parseInt(item[this.data.selectedDay].startTime.split(":")[0]);
+        let startTime = new Date(`2000-01-01 ${item[this.data.selectedDay].startTime}`);
+        let endTime = new Date(`2000-01-01 ${item[this.data.selectedDay].endTime}`);
+        totalHours += (endTime - startTime) / (1000 * 60 * 60);
       }
     });
     this.setData({totalHours})
