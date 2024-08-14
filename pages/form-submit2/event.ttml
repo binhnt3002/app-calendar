@@ -112,7 +112,7 @@
               <button class="btn-primary add" bindtap="addEventParticipate">Thêm sự kiện</button>
             </view>
             <view style="margin-left: 10px;">
-              <button wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn-primary invite" bindtap="listUser">Thêm
+              <button disabled="{{disabledAdd}}" wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn-primary invite" bindtap="listUser">Thêm
                 người</button>
               <button wx:else class="btn-primary invite" bindtap="listUser">Xem nhóm</button>
             </view>
