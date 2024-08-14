@@ -69,7 +69,7 @@ Page({
 
     turnPopup: false,
     turnMode: false,
-
+    hiddenCheck: true
   },
 
   onAgree(e) {
@@ -269,12 +269,13 @@ Page({
                     conflict: conflict,
                     disabledAdd: false,
                     disabledInvite: false,
+                    hiddenCheck: false
                   })
                 } else {
                   // console.log(that.data.participants);
                   tt.showToast({
                     title: `Hoàn tất kiểm tra`,
-                    icon: "loading",
+                    icon: "success",
                     duration: 1000
                   });
                   that.setData({
@@ -381,7 +382,7 @@ Page({
       inviteOpenId: inviteOpenId,
       participants: []
     })
-    // that.addEventParticipate()
+    that.addEventParticipate()
   },
   
   onShow() {
@@ -536,6 +537,7 @@ Page({
       checkChatId: [],
       checkBusy: [],
       disabledAdd: true,
+      disabledCheckBox: true,
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
@@ -547,7 +549,6 @@ Page({
     let checkBusy = that.data.checkBusy;
     checkBusy = []
     Id = that.data.checkId;
-    console.log(currentValue);
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -603,6 +604,7 @@ Page({
               }
               return i;
             }),
+            // disabledCheckBox:false
           });
           if (
             rs.data.event.status !== "confirmed" ||
@@ -653,6 +655,7 @@ Page({
                     checkStatue,
                     checkId,
                     checkInvite: checkStatue,
+                    // disabledCheckBox: false
                   });
                   sendRequest(url2, "GET", headers2, {}).then((rss) => {
                     checkInvite = checkStatue.map((obj, index) => {
@@ -664,7 +667,7 @@ Page({
                           }))[index]?.url || null,
                       };
                     });
-                    that.setData({ checkInvite, disabledAdd: false });
+                    that.setData({ checkInvite, disabledAdd: false, disabledCheckBox: false });
                   });
                 } else {
                   checkChatStatue = data
@@ -686,7 +689,7 @@ Page({
                 }
                 return;
               } else {
-                that.setData({ disabledAdd: false })
+                that.setData({ disabledAdd: false, disabledCheckBox: false})
               }
             });
           }
