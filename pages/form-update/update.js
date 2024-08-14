@@ -574,14 +574,14 @@ Page({
         // Define another body object (presumably for a different table structure)
         const body2 = {
           field_names: [
-            "Tên Task *",
+            "Tên Task",
             "Thể loại",
             "Quan Trọng",
             "Cấp Bách",
             "Số giờ cần có",
             "Thứ",
-            "Thời gian bắt đầu *",
-            "Thời gian kết thúc *",
+            "Thời gian bắt đầu",
+            "Thời gian kết thúc",
             "Ngày làm",
             "Ghi chú",
             "EventID",
@@ -593,7 +593,7 @@ Page({
               asc: true,
             },
             {
-              field_name: "Tên Task *",
+              field_name: "Tên Task",
               asc: true,
             },
           ],
@@ -601,7 +601,7 @@ Page({
             conjunction: "and",
             conditions: [
               {
-                field_name: "Người làm *",
+                field_name: "Người làm",
                 operator: "is",
                 value: [res.data.open_id],
               },
@@ -620,36 +620,40 @@ Page({
           body2
         ).then((rs) => {
           // This section processes data retrieved from the Lark table and prepares it for display
-
-          newData = rs.data.items.map((item) => {
-            return {
-              vieccanlam: item.fields["Tên Task *"][0].text,
-              theloai: item.fields["Thể loại"],
-              quantrong: item.fields["Quan Trọng"],
-              capbach: item.fields["Cấp Bách"],
-              thu: item.fields["Thứ"].value[0].text,
-              ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu *"]),
-              ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc *"]),
-              ghichu: item.fields["Ghi chú"]?.[0].text || "",
-              eventid: item.fields?.["EventID"]?.[0]?.text || "",
-              calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
-              ngaylam: that.convertTimestampToDate(item.fields["Thời gian bắt đầu *"]),
-              sogiocanco: item.fields["Số giờ cần có"],
-              recordId: item.record_id,
-              type: 'new',
-              id: item.record_id
-            };
-          });
+          if (rs.data.items !== null) {
+            newData = rs.data.items.map((item) => {
+              return {
+                vieccanlam: item.fields["Tên Task"][0].text,
+                theloai: item.fields["Thể loại"],
+                quantrong: item.fields["Quan Trọng"],
+                capbach: item.fields["Cấp Bách"],
+                thu: item.fields["Thứ"].value[0].text,
+                ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu"]),
+                ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc"]),
+                ghichu: item.fields["Ghi chú"]?.[0].text || "",
+                eventid: item.fields?.["EventID"]?.[0]?.text || "",
+                calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
+                ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+                sogiocanco: item.fields?.["Số giờ cần có"],
+                recordId: item.record_id,
+                type: 'new',
+                id: item.record_id
+              };
+            });
+          }else{
+            newData = [];
+          }
+          
 
           // Sort the newData array by start date-time in descending order (newest tasks first)
-          newData.sort((a, b) => {
-            // Convert date strings to Date objects for comparison
-            const dateA = new Date(a.ngaygiobatdau);
-            const dateB = new Date(b.ngaygiobatdau);
+          // newData.sort((a, b) => {
+          //   // Convert date strings to Date objects for comparison
+          //   const dateA = new Date(a.ngaygiobatdau);
+          //   const dateB = new Date(b.ngaygiobatdau);
 
-            // Compare dates in descending order
-            return dateB - dateA;
-          });
+          //   // Compare dates in descending order
+          //   return dateB - dateA;
+          // });
 
           // Combine the processed newData with existing oldData (presumably containing previous tasks)
           tableData = [...newData, ...that.data.oldData]
@@ -696,7 +700,12 @@ Page({
 
         //Fetch data from TMT base
         searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
-          const oldData = result.data.items.map((item) => {
+          if (result.data?.items == null) {
+            return that.setData({
+              oldData: [],
+            })
+          }
+          const oldData = result.data?.items?.map((item) => {
             return {
               vieccanlam: item.fields["Việc cần làm"]?.[0]?.text || "",
               theloai: item.fields["Thể loại"],

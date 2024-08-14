@@ -26,7 +26,7 @@
           <view class="col-12 px-0 d-flex" style="align-items: center;">
             <text class="col-7 px-0 block">Danh sách mời</text>
             <view class="col-5">
-              <picker class="picker-text" disabled style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector" id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
+              <picker class="picker-text" hidden style="border: 1px solid gray; padding: 6px; background-color: rgb(225, 225, 225, 0.8);" mode="selector" id="invitePerson" range="{{invitePersonOptions}}" bindchange="onInvitePerson">
                 {{selectedInvitePerson}}
               </picker>
             </view>
