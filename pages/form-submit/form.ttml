@@ -131,12 +131,12 @@
                 </div>
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
-                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
                     {{customEndTimeHours[customEndTimeHourIndex]}}
                   </picker>
                 
                   <!-- Combobox chọn phút -->
-                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
                     {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
                   </picker>
                 </view>

@@ -490,6 +490,7 @@ Page({
 
   createTask() {
     let that = this;
+
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       return tt.showModal({
         title: "Thông báo",
@@ -498,6 +499,8 @@ Page({
         showCancel: false,
       })
     }
+
+    
 
     tt.getStorage({
       key: "user_access_token",

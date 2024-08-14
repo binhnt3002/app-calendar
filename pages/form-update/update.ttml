@@ -207,12 +207,12 @@
                 </div >
                 <view class="customStartTime-pickerContainer">
                   <!-- Combobox chọn giờ -->
-                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
+                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
                     {{customEndTimeHours[customEndTimeHourIndex]}}
                   </picker>
                 
                   <!-- Combobox chọn phút -->
-                  <picker class="customStartTime-picker" mode="selector" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
+                  <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeMinutes}}" value="{{customEndTimeMinuteIndex}}" bindchange="customEndTimeOnMinuteChange">
                     {{customEndTimeMinutes[customEndTimeMinuteIndex]}}
                   </picker>
                 </view>
@@ -223,7 +223,7 @@
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Tổng giờ đã chọn:
                 </div>
-                <view class="picker-time">{{totalHours}}</view>
+                <view class="picker-time" value="0">{{totalHours}}</view>
               </block>
             </div>
           </view>
