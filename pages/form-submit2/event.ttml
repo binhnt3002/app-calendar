@@ -109,7 +109,7 @@
         <view class="col-4">
           <view style="display: flex; justify-content: flex-end;">
             <view>
-              <button class="btn-primary add" bindtap="addEventParticipate">Thêm sự kiện</button>
+              <button disabled="{{disabledInvite}}" class="btn-primary add" bindtap="addEventParticipate">Thêm sự kiện</button>
             </view>
             <view style="margin-left: 10px;">
               <button disabled="{{disabledAdd}}" wx:if="{{selectedInvitePerson==='Cá nhân'}}" class="btn-primary invite" bindtap="listUser">Thêm

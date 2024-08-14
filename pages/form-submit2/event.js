@@ -157,6 +157,7 @@ Page({
     let chatId = that.data.chatId;
     let chatAvatar = that.data.chatAvatar;
     let chatData = that.data.chatData;
+    let inviteDataTemp = []
     if (that.data.selectedInvitePerson == "Cá nhân") {
       tt.chooseContact({
         multi: true,
@@ -169,10 +170,15 @@ Page({
         success(res) {
           console.log(res);
           res.data.map((item) => {
-            invite.push({ name: item.name }),
+              invite.push({ name: item.name }),
               inviteOpenId.push(item.openId),
               avatarUrl.push({ url: item.avatarUrls[0] }),
               inviteData.push({
+                name: item.name,
+                id: item.openId,
+                url: item.avatarUrls[0],
+              });
+              inviteDataTemp.push({
                 name: item.name,
                 id: item.openId,
                 url: item.avatarUrls[0],
@@ -192,6 +198,8 @@ Page({
             avatarUrl,
             inviteData,
             inviteData2: inviteData,
+            disabledAdd: true,
+            disabledInvite: true,
           });
 
           tt.showToast({
@@ -205,7 +213,7 @@ Page({
             success: (res) => {
               const access_token = res.data.access_token;
               const userIds = [{ name: "Nhân", id: "ou_863eed51f511be97513ca7801ae65337", url: "urlnhan" }, { name: "Bình", id: "ou_9b04dc2474d1e22201cb1dbc6017c7e9", url: "urlbinh" }, { name: "Sang", id: "ou_89cf7dbb96c9e44e7ab35e44c9eee208", url: "urlsang" }]; // Assuming 'array' contains user IDs
-              const bodyArray = that.data.inviteData.map(userId => {
+              const bodyArray = inviteDataTemp.map(userId => {
                 return {
                   "time_min": that.data.ngaybatdau + "T00:00:00Z",
                   "time_max": that.data.ngayketthuc + "T23:59:59Z",
@@ -236,7 +244,7 @@ Page({
 
               setTimeout(() => {
                 resultsArray.forEach(result => {
-                  const matchingInvite = that.data.inviteData.find(invite => invite.id === result.id);
+                  const matchingInvite = inviteDataTemp.find(invite => invite.id === result.id);
                   if (matchingInvite) {
                     result.name = matchingInvite.name;
                     result.url = matchingInvite.url;
@@ -258,15 +266,23 @@ Page({
                     participants: that.groupByNameAndUrl(participants),
                     turnPopup: true,
                     turnMode: true,
-                    conflict: conflict
+                    conflict: conflict,
+                    disabledAdd: false,
+                    disabledInvite: false,
+                  })
+                } else {
+                  // console.log(that.data.participants);
+                  tt.showToast({
+                    title: `Hoàn tất kiểm tra`,
+                    icon: "loading",
+                    duration: 1000
+                  });
+                  that.setData({
+                    disabledAdd: false,
+                    disabledInvite: false,
                   })
                 }
-                // console.log(that.data.participants);
-                tt.showToast({
-                  title: `Hoàn tất kiểm tra`,
-                  icon: "loading",
-                  duration: 1000
-                });
+
 
               }, 3000)
             }
@@ -392,6 +408,7 @@ Page({
     let ghichu = that.data.ghichu;
     let capbach = that.data.capbach;
     let sogiocanco = that.data.sogiocanco;
+    that.setData({ disabledAdd: true, disabledInvite: true })
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -439,6 +456,7 @@ Page({
             title: "Hoàn tất dữ liệu",
             icon: "success",
           });
+          that.setData({ disabledAdd: false, disabledInvite: false })
           console.log(resp);
           (events = []),
             (eventsID = []),
@@ -612,9 +630,8 @@ Page({
             };
             sendRequest(url, "GET", headers, {}).then((resp) => {
               let lengthItems = resp.data?.items.length || 0;
-              let data = resp.data.items;
+              let data = resp.data.items.filter(i => !(i.rsvp_status === "removed"))
               // let dataPush = resp.data.items.map((item) => item.user_id);
-
               if (lengthItems != 0) {
                 if (that.data.selectedInvitePerson == "Cá nhân") {
                   checkStatue = data
@@ -625,7 +642,7 @@ Page({
                       id: item.user_id,
                     }));
                   // checkStatue = resp.data.items.map((item) => ({ "name": item.display_name, "status": item.rsvp_status, "id": item.user_id })),
-                  checkId = resp.data.items.map((item) => item.user_id);
+                  checkId = data.map((item) => item.user_id);
                   const url2 =
                     "https://open.larksuite.com/open-apis/contact/v3/users/batch?user_ids=" +
                     checkId.join("&user_ids=");
@@ -818,13 +835,13 @@ Page({
       });
     } else {
       if (!idValid) {
-        tt.showToast({
+        return tt.showToast({
           title: "Vui lòng chọn công việc",
           icon: "error",
         });
       }
       if (!inviteValid) {
-        tt.showToast({
+        return tt.showToast({
           title: "Vui lòng thêm người tham gia",
           icon: "error",
         });
