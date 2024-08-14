@@ -69,7 +69,8 @@ Page({
 
     turnPopup: false,
     turnMode: false,
-    hiddenCheck: true
+    hiddenCheck: true,
+    disabledCont: true,
   },
 
   onAgree(e) {
@@ -161,7 +162,7 @@ Page({
     if (that.data.selectedInvitePerson == "Cá nhân") {
       tt.chooseContact({
         multi: true,
-        ignore: false,
+        ignore: true,
         maxNum: 100,
         limitTips: 10,
         externalContact: true,
@@ -353,9 +354,22 @@ Page({
         if (i.id == currentValue.id && i.checked == false) {
           i.checked = !currentValue.checked;
         }
+        if (i.id == currentValue.id && i.checked == true) {
+          i.checked = !currentValue.checked;
+        }
         return i;
       }),
     });
+    if(that.data.participants.some(obj => obj.checked === true)){
+      that.setData({
+        disabledCont:false
+      })
+    } else {
+      that.setData({
+        disabledCont:true
+      })
+    }
+    
     // console.log(that.data.participants);
   },
 
@@ -382,7 +396,7 @@ Page({
       inviteOpenId: inviteOpenId,
       participants: []
     })
-    that.addEventParticipate()
+    // that.addEventParticipate()
   },
   
   onShow() {
@@ -618,12 +632,13 @@ Page({
               idCongViec: "",
               calendarID: "",
               getRecord: "",
+              disabledCheckBox: false
             });
           } else {
             that.setData({
               idCongViec: currentValue.eventid,
               calendarID: currentValue.calendar,
-              getRecord: currentValue.recordid,
+              getRecord: currentValue.recordid, 
             });
 
             const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.calendarID}/events/${that.data.idCongViec}/attendees`;
