@@ -965,6 +965,7 @@ Page({
     that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
     // Retrieve the user's access token for Lark API calls
     tt.getStorage({
+
       key: "user_access_token",
       success: (res) => {
         const user_access_token = res.data.access_token;
@@ -1207,7 +1208,7 @@ Page({
 
   createTask() {
     let that = this;
-    that.setData({ turnPopup: false, turnMode: false, selectedFilter: "Tất cả" });
+    that.setData({ turnPopup: false, selectedFilter: "Tất cả" });
 
     if (that.calculateTime() > parseInt(that.data.selectedHours)) {
       return tt.showModal({
