@@ -60,11 +60,11 @@ Page({
     endTime: "", // Thêm selectedTime để lưu ngày và giờ được chọn
     selectedDayWork: new Date().toISOString().substring(0, 10),
 
-    calendarID: "",
-    eventId: "",
-    lich: [],
-    chonlich: "",
-    dataLich: [],
+      calendarID: "",
+      eventId: "",
+      lich: [],
+      chonlich: "",
+      dataLich: [],
 
     inputValue: "",
     inputNote: "",
@@ -207,29 +207,29 @@ Page({
     });
   },
 
-  onCategoryChange: function (e) {
-    this.setData({
-      selectedCategory: this.data.categoryOptions[e.detail.value],
-    });
-  },
+    onCategoryChange: function (e) {
+      this.setData({
+        selectedCategory: this.data.categoryOptions[e.detail.value],
+      });
+    },
 
-  onImportantChange: function (e) {
-    this.setData({
-      selectedImportant: this.data.importantOptions[e.detail.value],
-    });
-  },
+    onImportantChange: function (e) {
+      this.setData({
+        selectedImportant: this.data.importantOptions[e.detail.value],
+      });
+    },
 
-  onCategoryChange: function (e) {
-    this.setData({
-      selectedCategory: this.data.categoryOptions[e.detail.value],
-    });
-  },
+    onCategoryChange: function (e) {
+      this.setData({
+        selectedCategory: this.data.categoryOptions[e.detail.value],
+      });
+    },
 
-  onUrgentChange: function (e) {
-    this.setData({
-      selectedurgent: this.data.urgentOptions[e.detail.value],
-    });
-  },
+    onUrgentChange: function (e) {
+      this.setData({
+        selectedurgent: this.data.urgentOptions[e.detail.value],
+      });
+    },
 
   onDateChange1: function (e) {
     this.setData({
@@ -247,9 +247,9 @@ Page({
     }
   },
 
-  onDateChange3: function (e) {
-    let now = new Date(e.detail.value);
-    let dayOfWeek = now.getDay();
+    onDateChange3: function (e) {
+      let now = new Date(e.detail.value);
+      let dayOfWeek = now.getDay();
 
     let dayNames = [
       "Chủ nhật",
