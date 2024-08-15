@@ -703,27 +703,32 @@ Page({
         ).then((rs) => {
           // This section processes data retrieved from the Lark table and prepares it for display
           if (rs.data.items !== null) {
-            newData = rs.data.items.map((item) => {
-              return {
-                vieccanlam: item.fields["Tên Task"][0].text,
-                theloai: item.fields["Thể loại"],
-                quantrong: item.fields["Quan Trọng"],
-                capbach: item.fields["Cấp Bách"],
-                thu: item.fields["Thứ"].value[0].text,
-                ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu"]),
-                ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc"]),
-                ghichu: item.fields["Ghi chú"]?.[0].text || "",
-                eventid: item.fields?.["EventID"]?.[0]?.text || "",
-                calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
-                ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
-                sogiocanco: item.fields?.["Số giờ cần có"],
-                recordId: item.record_id,
-                type: 'new',
-                id: item.record_id
-              };
-            });
+            that.setData({
+              newData: rs.data?.items?.map((item) => {
+                return {
+                  vieccanlam: item.fields?.["Tên Task"][0].text,
+                  theloai: item.fields?.["Thể loại"],
+                  quantrong: item.fields?.["Quan Trọng"],
+                  capbach: item.fields?.["Cấp Bách"],
+                  thu: item.fields?.["Thứ"].value[0].text,
+                  ngaygiobatdau: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+                  ngaygioketthuc: that.convertTimestampToDate(item.fields?.["Thời gian kết thúc"]),
+                  ghichu: item.fields?.["Ghi chú"]?.[0]?.text || "",
+                  eventid: item.fields?.["EventID"]?.[0]?.text || "",
+                  calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
+                  ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+                  sogiocanco: item.fields?.["Số giờ cần có"],
+                  recordId: item.record_id,
+                  type: 'new',
+                  id: item.record_id
+                };
+              })
+            })
+            
           }else{
-            newData = [];
+            that.setData({
+              newData:[]
+            })
           }
           
 

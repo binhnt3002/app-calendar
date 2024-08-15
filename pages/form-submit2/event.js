@@ -549,7 +549,7 @@ Page({
           (events = []),
             (eventsID = []),
             (arCalendarId = []),
-            resp.data.items.forEach((item) => {
+            resp.data?.items?.forEach((item) => {
               // Check if "Việc cần làm" exists and has text
               if (
                 item.fields["Việc cần làm"][0] &&
