@@ -1,6 +1,6 @@
 <view tt:if={{turnMode===false}} class="page-invite-event">
   <view class="py-1 px-1 header-event">
-    <text>Mời người vào sự kiện</text>
+    <text>Mời người vào sự kiện</text><image class="f-icon" src="/images/question-circle-regular.svg"/>
   </view>
   <view class="body py-1">
     <view class="container">

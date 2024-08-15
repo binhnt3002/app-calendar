@@ -248,6 +248,11 @@
   background-size: cover;
 
 }
+.f-icon{
+  height:20px;
+  width: 20px;
+  margin-left: 5px;
+}
 
 .header{
   display: flex;
