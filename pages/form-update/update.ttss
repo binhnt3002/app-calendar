@@ -134,7 +134,7 @@
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
   margin: 0 auto;
   overflow: hidden;
-  font-size: 14px; 
+  font-size: 15px; 
   background-size: cover;
 }
 
@@ -227,7 +227,7 @@ textarea {
   border-radius: 6px;
   padding: 0;
   margin-bottom: 5px;
-  font-size: 13px;
+  font-size: 15px;
   width: auto;
   text-align: center;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
@@ -239,7 +239,7 @@ textarea {
   line-height: 35px;
   background-color: #bbbfc481;
   border-radius: 5px;
-  font-size: 13px;
+  font-size: 15px;
   min-width:auto;
   text-align: center;  
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
@@ -251,7 +251,7 @@ textarea {
   line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
   border-radius: 5px;
-  font-size: 13px;
+  font-size: 15px;
   width: auto;
   text-align: center;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
@@ -260,13 +260,14 @@ textarea {
 
 .title1{
   /* font-weight: bold; */
-  font-size: 16px ;
+  font-size: 15px ;
   /* color: #045A97 !important; */
 }
-.justify-content-end{
-  padding: 15px 0;
-}
 
+.ip{
+  color: red;
+  /* font-weight: 600; */
+}
 
 button{
   padding: 20px 10px !important;
@@ -329,7 +330,7 @@ button{
 }
 
 .title-loop{
-  font-size: 16px ;
+  font-size: 15px ;
   padding-bottom: 0 !important;
   margin-top: 7px;
 }

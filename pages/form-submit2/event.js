@@ -391,6 +391,24 @@ Page({
     }
   },
 
+  // checkConflict(e) {
+  //   let that = this;
+  //   console.log(e);
+  //   let currentValue = e.currentTarget.dataset;
+  //   that.setData({
+  //     participants: that.data.participants.map((i) => {
+  //       if (i.id == currentValue.id && i.checked == false) {
+  //         i.checked = !currentValue.checked;
+  //       }
+  //       if (i.id == currentValue.id && i.checked == true) {
+  //         i.checked = !currentValue.checked;
+  //       }
+  //       return i;
+  //     }),
+  //   });
+  //   // console.log(that.data.participants);
+  // },
+
   checkConflict(e) {
     let that = this;
     console.log(e);
