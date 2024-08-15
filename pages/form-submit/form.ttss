@@ -232,8 +232,6 @@ button{
 .notes {
   color: grey; 
   font-size: 12px;
-  margin-top: 10px;
-  padding-left: 10px;
 }
 
 .input{

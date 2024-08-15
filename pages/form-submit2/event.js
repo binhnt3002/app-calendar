@@ -391,6 +391,24 @@ Page({
     }
   },
 
+  // checkConflict(e) {
+  //   let that = this;
+  //   console.log(e);
+  //   let currentValue = e.currentTarget.dataset;
+  //   that.setData({
+  //     participants: that.data.participants.map((i) => {
+  //       if (i.id == currentValue.id && i.checked == false) {
+  //         i.checked = !currentValue.checked;
+  //       }
+  //       if (i.id == currentValue.id && i.checked == true) {
+  //         i.checked = !currentValue.checked;
+  //       }
+  //       return i;
+  //     }),
+  //   });
+  //   // console.log(that.data.participants);
+  // },
+
   checkConflict(e) {
     let that = this;
     console.log(e);
@@ -441,9 +459,14 @@ Page({
       inviteData2: inviteData,
       inviteOpenId: inviteOpenId,
       participants: [],
+
       hiddenCheck: true
-    });
+
     // that.addEventParticipate();
+
+    });
+    that.addEventParticipate();
+
   },
 
   onShow() {
@@ -676,6 +699,7 @@ Page({
                 checkBusy,
                 ngaybatdau: currentValue.ngaygiobatdau,
                 ngayketthuc: currentValue.ngaygioketthuc,
+
               });
             } else {
               if (rs.data.event.start_time.timezone === "UTC") {
@@ -696,6 +720,7 @@ Page({
                   ngayketthuc: currentValue.ngaygioketthuc,
                   checkBusy: checkBusy,
                 });
+
               } else {
                 checkBusy = [
                   {
@@ -709,8 +734,10 @@ Page({
                   ngayketthuc: currentValue.ngaygioketthuc,
                 });
               }
+
             }
             console.log(that.data.checkBusy);
+
             that.setData({
               events: that.data.events.map((i) => {
                 if (i.value == currentValue.eventid && i.checked == false) {
@@ -744,6 +771,7 @@ Page({
                 calendarID: currentValue.calendar,
                 getRecord: currentValue.recordid,
               });
+
 
               const url = `https://open.larksuite.com/open-apis/calendar/v4/calendars/${that.data.calendarID}/events/${that.data.idCongViec}/attendees`;
               const headers = {
@@ -816,12 +844,14 @@ Page({
                 } else {
                   that.setData({ disabledAdd: false, disabledCheckBox: false });
                 }
+
               });
             }
             console.log(that.data.events);
           });
         },
       });
+
 
   },
 
@@ -856,7 +886,9 @@ Page({
     const isIndividual = that.data.selectedInvitePerson === "Cá nhân";
     const idValid = that.data.idCongViec !== "" && that.data.calendarID !== "";
     const inviteValid = isIndividual ? inviteOpenId.length > 0 : idGroup !== "";
+
     that.setData({hiddenCheck: true})
+
     const newEvents = events.filter(
       (i) =>
         i.recordid === that.data.getRecord && i.value === that.data.idCongViec
@@ -1109,3 +1141,4 @@ Page({
     return Object.values(groupedData);
   },
 });
+
