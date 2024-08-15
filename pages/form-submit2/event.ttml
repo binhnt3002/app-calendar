@@ -1,6 +1,6 @@
 <view tt:if={{turnMode===false}} class="page-invite-event">
   <view class="py-1 px-1 header-event">
-    <text>Mời người vào sự kiện</text><image class="f-icon" src="/images/question-circle-regular.svg"/>
+    <text>Mời người vào sự kiện</text>
   </view>
   <view class="body py-1">
     <view class="container">
@@ -10,8 +10,8 @@
           <scroll-view class="col-12 event-box" scroll-y="true">
             <block wx:for="{{events}}" wx:key="*this.value">
               <view class="event-item">
-                <view class="event-details">
-                  <text class="block">{{item.name}}</text>
+                <view class="event-details-task">
+                  <text class="block1">{{item.name}}</text>
                   <text class="block2">{{item.thu}}</text>
                   <text class="block3">{{item.theloai}}</text>
                 </view>
@@ -42,8 +42,8 @@
                 <block wx:for="{{checkInvite}}" wx:key="*this.value">
                   <view class="event-item" style="background-color: rgb(136, 207, 255);">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
-                    <view class="event-details" style="margin-left: 5px;">
-                      <text class="block">{{item.name}}</text>
+                    <view class="event-details-task" style="margin-left: 5px;">
+                      <text class="block1">{{item.name}}</text>
                     </view>
                     <image class="img-img" wx:if="{{item.status === 'accept'}}" src="/images/circle-check-solid.svg">
                     </image>
@@ -56,7 +56,7 @@
                 <block wx:for="{{inviteData}}" wx:key="*this.value">
                   <view class="event-item">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
-                    <view class="event-details" style="margin-left: 5px;">
+                    <view class="event-details-task" style="margin-left: 5px;">
                       <text class="block">{{item.name}}</text>
                     </view>
                     <image class="img-img" bindtap="removeElement" id="{{item.id}}" src="/images/close-outline.svg">
@@ -68,8 +68,8 @@
                 <block wx:for="{{checkChatInvite}}" wx:key="*this.value">
                   <view class="event-item" style="background-color: rgb(136, 207, 255);">
                     <image class="userinfo-avatar" src="{{item.url}}"></image>
-                    <view class="event-details" style="margin-left: 5px;">
-                      <text class="block">{{item.name}}</text>
+                    <view class="event-details-task" style="margin-left: 5px;">
+                      <text class="block1">{{item.name}}</text>
                     </view>
                     <image wx:if="{{item.status === 'accept'}}" class="img-img" src="/images/circle-check-solid.svg">
                     </image>
@@ -99,7 +99,7 @@
         </view>
       </view>
       <view class="row form-buttons">
-        <view class="col-8"><button class="col-3 btn-primary add" hidden="{{hiddenCheck}}" bindtap="checkPopup">check</button></view>
+        <view class="col-8"><button class="col-3 btn-primary add" hidden="{{hiddenCheck}}" bindtap="checkPopup">Kiểm tra</button></view>
         <view class="col-4">
           <view class="d-flex justify-content-end">
             <view>
@@ -126,44 +126,52 @@
         <view class="del-x" bindtap="exit">x</view>
       </view>
       <view style=" padding-right:20px;">
-        <text style="color: red; font-size: 15px;">Hệ thống phát hiện có người mời bị trùng lịch. Hãy chọn user cần tạo event ở danh sách như bên dưới. Nếu bạn không chọn hoặc tắt form này, hệ thống sẽ loại bỏ user bị trùng ra khỏi danh sách mời.</text>
+        <view style="color: red; font-size: 15px;">Có người mời bị trùng lịch.
+          <view>
+            Vui lòng 
+            <image class="f-icon"  src="/images/tasks.svg" />
+            <text style="color: #045A97">Chọn </text>
+            người cần mời bên dưới, nếu không, họ sẽ bị loại khỏi danh sách mời.</view>
+          </view>
       </view>
     </view>
     <view class="body">
-      <view class="row line">
-        <view class="col-1 stt">
-          <div class="title-col">STT</div>
-        </view>
-        <view class="col-3 person">
-          <div class="title-col">
-            <image class="f-icon" src="/images/tasks.svg" />Người mời bị trùng
-          </div>
-        </view>
-        <view class="col-6 time">
-          <div class="title-col">
-            <image class="f-icon" src="/images/clock.svg" />Giờ trùng lặp / Giờ sự kiện
-          </div>
-        </view>
-        <view class="col-2 status">
-          <div class="title-col">
-            <image class="f-icon" src="/images/tasks.svg" />Chọn
-          </div>
-        </view>
+      <view class="row m-0 line">
+          <view class="col-1 stt">
+            <div class="title-col p-0" style ="width:100% ;text-align:center;">Stt</div>
+          </view>
+          <view class="col-4 person">
+            <div class="title-col">
+              <image class="f-icon" src="/images/tasks.svg" />Người mời bị trùng
+            </div>
+          </view>
+          <view class="col-5 time">
+            <div class="title-col">
+              <image class="f-icon" src="/images/clock.svg" />Giờ trùng lặp / Giờ sự kiện
+            </div>
+          </view>
+          <view class="col-2 status">
+            <div class="title-col">
+              <image class="f-icon" src="/images/tasks.svg" />Chọn
+            </div>
+          </view>     
       </view>
       <scroll-view class="scroll-body" scroll-y="true">
         <view class="row line" wx:for="{{participants}}" wx:key="index">
           <view class="col-1 stt">
             <text class="title-1">{{index + 1}}</text>
           </view>
-          <view class="col-3 person">
+          <view class="col-4 d-flex person" style="align-items: center;">
             <div class="title-1 d-flex">
-              <image class="userinfo-avatar" src="{{item.url}}"></image>
+              <view class="event-detail">
+                <image class="userinfo-avatar" src="{{item.url}}"> </image>
+              </view>
               <view class="event-details">
                 <text class="block">{{item.name}}</text>
               </view>
             </div>
           </view>
-          <view class="col-6 time">
+          <view class="col-5 time">
             <div class="title-1">
               <view wx:for="{{item.times}}" wx:key="timeIndex">
                 <text>{{item}}</text>
