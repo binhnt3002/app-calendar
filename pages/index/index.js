@@ -109,6 +109,13 @@ Page({
         };
 
         sendRequest(url, "POST", headers, body).then((result) => {
+          if (result.data.items == null) {
+            return tt.showToast({
+              title: "Không có dữ liệu",
+              icon: "info",
+              duration: 4000,
+            })
+          }
           console.log(result.data);
           let data = [...result.data.items];
           let listItems = data || 0;

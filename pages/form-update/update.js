@@ -701,29 +701,34 @@ Page({
           },
           body2
         ).then((rs) => {
+          console.log(rs);
           // This section processes data retrieved from the Lark table and prepares it for display
           if (rs.data.items !== null) {
-            newData = rs.data.items.map((item) => {
-              return {
-                vieccanlam: item.fields["Tên Task"][0].text,
-                theloai: item.fields["Thể loại"],
-                quantrong: item.fields["Quan Trọng"],
-                capbach: item.fields["Cấp Bách"],
-                thu: item.fields["Thứ"].value[0].text,
-                ngaygiobatdau: that.convertTimestampToDate(item.fields["Thời gian bắt đầu"]),
-                ngaygioketthuc: that.convertTimestampToDate(item.fields["Thời gian kết thúc"]),
-                ghichu: item.fields["Ghi chú"]?.[0].text || "",
-                eventid: item.fields?.["EventID"]?.[0]?.text || "",
-                calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
-                ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
-                sogiocanco: item.fields?.["Số giờ cần có"],
-                recordId: item.record_id,
-                type: 'new',
-                id: item.record_id
-              };
-            });
+            that.setData({
+              newData: rs.data.items.map((item) => {
+                return {
+                  vieccanlam: item.fields?.["Tên Task"][0].text,
+                  theloai: item.fields?.["Thể loại"],
+                  quantrong: item.fields?.["Quan Trọng"],
+                  capbach: item.fields?.["Cấp Bách"],
+                  thu: item.fields?.["Thứ"].value[0].text,
+                  ngaygiobatdau: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+                  ngaygioketthuc: that.convertTimestampToDate(item.fields?.["Thời gian kết thúc"]),
+                  ghichu: item.fields?.["Ghi chú"]?.[0].text || "",
+                  eventid: item.fields?.["EventID"]?.[0]?.text || "",
+                  calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
+                  ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+                  sogiocanco: item.fields?.["Số giờ cần có"],
+                  recordId: item.record_id,
+                  type: 'new',
+                  id: item.record_id
+                };
+              })
+            })
           }else{
-            newData = [];
+            that.setData({
+              newData:[]
+            })
           }
           
 
@@ -943,8 +948,8 @@ Page({
     // Find the specific task object from tableData based on the record ID
     edit = that.data.tableData.find((obj) => obj.recordId === currentTarget);
     // Log the selected task object for debugging (optional)
-    console.log(edit);
-    if(new Date(e.currentTarget.dataset.date) < that.data.mindate){
+    console.log(e);
+    if(new Date(e.currentTarget.dataset.date) < new Date(that.data.mindate)){
       tt.showToast({
         title: "Task đã hết hạn",
         icon: "error",

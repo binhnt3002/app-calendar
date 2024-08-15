@@ -552,10 +552,10 @@ Page({
             resp.data.items.forEach((item) => {
               // Check if "Việc cần làm" exists and has text
               if (
-                item.fields["Việc cần làm"][0] &&
-                item.fields["Việc cần làm"][0].text
+                item.fields?.["Việc cần làm"]?.[0] &&
+                item.fields?.["Việc cần làm"]?.[0]?.text
               ) {
-                events.push({ name: item.fields["Việc cần làm"][0].text });
+                events.push({ name: item.fields?.["Việc cần làm"]?.[0]?.text });
               } else {
                 events.push({ name: "" });
               }
@@ -572,7 +572,7 @@ Page({
               loai.push(item.fields?.["Loại"]);
               recordid.push(item.record_id);
               ngaylam.push(
-                that.convertTimestampToDate(item.fields["Ngày làm"])
+                that.convertTimestampToDate(item.fields?.["Ngày làm"])
               );
               ngaygiobatdau.push(
                 that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"])
