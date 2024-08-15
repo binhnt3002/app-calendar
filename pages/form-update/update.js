@@ -628,7 +628,8 @@ Page({
             "Ghi chú",
             "EventID",
             "CalendarID",
-            "id"
+            "id",
+            "Loại"
           ],
           sort: [
             {
@@ -802,6 +803,7 @@ Page({
               sogiocanco: item.fields["Số giờ cần có"],
               recordId: item.record_id,
               id: item?.fields?.["id"]?.[0]?.text,
+              loai: item.fields?.["Loại"]
             };
           });
           console.log(result);

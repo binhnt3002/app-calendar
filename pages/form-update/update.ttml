@@ -45,7 +45,7 @@
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{filterData}}" wx:key="index" wx:for-item="item" wx:for-index="index">
-            <view class="title-row" wx:if="{{item.type!=='new'}}">
+            <view class="title-row" wx:if="{{item.type!=='new' && item.loai !=='shared'}}">
               <view class="title-collumn-stt">{{index + 1}}</view>
               <view class="title-collumn">{{item.vieccanlam}}</view>
               <view class="title-collumn">{{item.theloai}}</view>
@@ -73,6 +73,21 @@
               <view class="title-collumn content-icon" >
                 <image id="{{item.recordId}}" data-date="{{item.ngaygioketthuc}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image>
                 <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
+              </view>
+            </view>
+            <view class="title-row" wx:if="{{item.loai==='shared'}}" style="background-color: #FFD9DF;"> 
+              <view class="title-collumn-stt">{{index + 1}}</view>
+              <view class="title-collumn">{{item.vieccanlam}}</view>
+              <view class="title-collumn">{{item.theloai}}</view>
+              <view class="title-collumn">{{item.quantrong}}</view>
+              <view class="title-collumn">{{item.capbach}}</view>
+              <view class="title-collumn">{{item.thu}}</view>
+              <view class="title-collumn">{{item.ngaygiobatdau}}</view>
+              <view class="title-collumn">{{item.ngaygioketthuc}}</view>
+              <view class="title-collumn">{{item.ghichu}}</view>
+              <view class="title-collumn content-icon" >
+                <!-- <image id="{{item.recordId}}" data-date="{{item.ngaygioketthuc}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image> -->
+                <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="confirmDelete" class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
               </view>
             </view>
           </block>
