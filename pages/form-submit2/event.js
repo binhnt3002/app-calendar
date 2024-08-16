@@ -72,6 +72,8 @@ Page({
     turnMode: false,
     hiddenCheck: true,
     disabledCont: true,
+    disabledAdd: true,
+    disabledInvite: true
   },
 
   onAgree(e) {
@@ -159,6 +161,9 @@ Page({
     let chatAvatar = that.data.chatAvatar;
     let chatData = that.data.chatData;
     let inviteDataTemp = [];
+    that.setData({
+      Wdanhsachmoi:""
+    })
     if (that.data.selectedInvitePerson == "Cá nhân") {
       tt.chooseContact({
         multi: true,
@@ -471,7 +476,58 @@ Page({
 
   onShow() {
     let that = this;
-    that.listTask()
+    that.setData({
+      events: [],
+      eventsID: [],
+      invite: [],
+      inviteOpenId: [],
+      avatarUrl: [],
+      inviteData: [],
+      inviteData2: [],
+      checkId: [],
+      checkInvite: [],
+      checkStatue: [],
+      checkChatId: [],
+      checkChatInvite: [],
+      checkChatStatue: [],
+      chat: [],
+      chatId: [],
+      chatAvatar: [],
+      chatData: [],
+      calendarID: "",
+      arCalendarId: [],
+      idCongViec: "",
+      idGroup: "",
+      attendees: [],
+      thu: [],
+      theloai: [],
+      quantrong: [],
+      capbach: [],
+      sogiocanco: [],
+      ghichu: [],
+      recordid: [],
+      loai: [],
+      ngaygiobatdau: [],
+      ngaygioketthuc: [],
+      ngaybatdau: "",
+      ngayketthuc: "",
+      checkBusy: [],
+      ngaylam: [],
+      getRecord: "",
+      listBusy: [],
+      tableName: [],
+
+      conflict: "", // Biến lưu thời gian trùng lặp
+      participants: [],
+
+      turnPopup: false,
+      turnMode: false,
+      hiddenCheck: true,
+      disabledCont: true,
+      disabledAdd: true,
+      disabledInvite: true
+    })
+    setTimeout(() => that.listTask(),1000)
   },
 
   listTask() {
@@ -544,7 +600,7 @@ Page({
             title: "Hoàn tất dữ liệu",
             icon: "success",
           });
-          that.setData({ disabledAdd: false, disabledInvite: false });
+          that.setData({disabledInvite: false });
           console.log(resp);
           (events = []),
             (eventsID = []),
@@ -657,7 +713,9 @@ Page({
       checkBusy: [],
       disabledAdd: true,
       disabledCheckBox: true,
-      hiddenCheck: true
+      hiddenCheck: true,
+      Wdanhsachcongviec:"",
+      Wdanhsachmoi:""
     });
     let currentValue = e.currentTarget.dataset;
     let checkStatue = that.data.checkStatue;
@@ -764,6 +822,7 @@ Page({
                 calendarID: "",
                 getRecord: "",
                 disabledCheckBox: false,
+                Wdanhsachcongviec: "border: 2px solid red;"
               });
             } else {
               that.setData({
@@ -1008,12 +1067,22 @@ Page({
         return tt.showToast({
           title: "Vui lòng chọn công việc",
           icon: "error",
+          success() {
+            that.setData({
+              Wdanhsachcongviec: "border: red 2px solid;"
+            })
+          }          
         });
       }
       if (!inviteValid) {
         return tt.showToast({
           title: "Vui lòng thêm người tham gia",
           icon: "error",
+          success() {
+            that.setData({
+              Wdanhsachmoi: "border: red 2px solid;"
+            })
+          }
         });
       }
     }

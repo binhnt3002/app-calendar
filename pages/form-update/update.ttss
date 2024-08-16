@@ -223,6 +223,20 @@ textarea {
 .picker-text{
   height: 40px;
   line-height: 35px;
+  background-color: rgb(255, 255, 255,0.8);
+  border-radius: 6px;
+  padding: 0;
+  margin-bottom: 5px;
+  font-size: 15px;
+  width: auto;
+  text-align: center;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+}
+
+.picker-lock{
+  height: 40px;
+  line-height: 35px;
   background-color: #bbbfc481;
   border-radius: 6px;
   padding: 0;
@@ -237,7 +251,7 @@ textarea {
 .picker-date{
   height:40px; 
   line-height: 35px;
-  background-color: #bbbfc481;
+  background-color: rgb(255, 255, 255,0.8);
   border-radius: 5px;
   font-size: 15px;
   min-width:auto;

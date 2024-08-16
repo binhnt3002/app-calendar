@@ -125,6 +125,20 @@ textarea {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
+.picker-lock{
+  height: 40px;
+  line-height: 35px;
+  background-color: rgb(255, 255, 255,0.8);
+  border-radius: 6px;
+  padding: 0;
+  margin-bottom: 5px;z
+  font-size: 15px;
+  width: auto;
+  text-align: center;
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+}
+
 
 .picker-date{
   height:40px; 

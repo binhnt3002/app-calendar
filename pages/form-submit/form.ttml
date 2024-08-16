@@ -8,8 +8,8 @@
       <view class="box">
         <view class="section-1">
           <view class="row align-items-start">
-            <view class="col-8">
-              <block class="task-name">
+            <view class="col-8" style="{{Wvieccanlam}}">
+              <block class="task-name" >
                 <div class="title1">
                   <image class="f-icon" src="/images/tasks.svg" />Việc cần làm <text class="ip">(*)</text>
                 </div>
@@ -19,7 +19,7 @@
               </block>
             </view>
             <view class="col-4">
-              <view  style="display:block;">
+              <view  style="display:block;" style="border: 1px solid rgb(255, 0, 0);">
                 <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại <text class="ip">(*)</text></div>
                 <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
                   {{selectedCategory}}
@@ -32,8 +32,8 @@
                 </picker>
               </view>
             </view>
-            <view class="col-8">
-              <block class="task-name">
+            <view class="col-8" style="{{Wchonlich}}">
+              <block class="task-name"style="border: 2px solid blue;">
                 <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch <text class="ip">(*)</text></div>
                 <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
                   {{chonlich}}
@@ -48,7 +48,7 @@
                 </picker>
               </view>
             </view>   
-            <div class="col-4">
+            <div class="col-4" style="{{Wngaybatdau}}">
               <block class="select-time">
                 <div class="title1">
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày bắt đầu <text class="ip">(*)</text>
@@ -59,7 +59,7 @@
                 </picker>
               </block>
             </div>
-            <div class="col-4" >
+            <div class="col-4" style="{{Wngayketthuc}}" >
               <block class="select-time">
                 <div text class="title1">
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc <text class="ip">(*)</text>
@@ -70,7 +70,7 @@
                 </picker>
               </block>
             </div>
-            <div class="col-4">
+            <div class="col-4" style="{{Wtonggiomotviec}}">
               <block class="select-time">
                 <div class="title1">
                   <image class="f-icon" src="/images/warning.svg" mode="" />Tổng giờ một việc <text class="ip">(*)</text>
@@ -106,7 +106,7 @@
                 </picker>
               </view>
             </view>
-            <div class="col-4" >
+            <div class="col-4" style="{{Wgiobatdau}}">
               <block class="select-time">
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu <text class="ip">(*)</text>
@@ -124,7 +124,7 @@
                 </view>
               </block>
             </div>
-            <div class="col-4" >
+            <div class="col-4" style="{{Wgioketthuc}}">
               <block class="select-time">
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc <text class="ip">(*)</text>

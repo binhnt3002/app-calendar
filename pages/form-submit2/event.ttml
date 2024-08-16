@@ -6,8 +6,8 @@
     <view class="container">
       <view class="row">
         <view class="col-8 event-invite">
-          <text class="col-12 px-0 block" >Danh sách công việc</text>
-          <scroll-view class="col-12 event-box" scroll-y="true">
+          <text class="col-12 px-0 block">Danh sách công việc</text>
+          <scroll-view class="col-12 event-box" scroll-y="true" style="{{Wdanhsachcongviec}}">
             <block wx:for="{{events}}" wx:key="*this.value">
               <view class="event-item" wx:if="{{item.loai!=='shared'}}">
                 <view class="event-details">
@@ -55,7 +55,7 @@
               </picker>
             </view>
           </view>
-          <scroll-view class="col-12 event-list" scroll-y="true">
+          <scroll-view class="col-12 event-list" scroll-y="true" style="{{Wdanhsachmoi}}">
             <view class="p-1 list-item">
               <block wx:if="{{selectedInvitePerson==='Cá nhân'}}">
                 <block wx:for="{{checkInvite}}" wx:key="*this.value">
