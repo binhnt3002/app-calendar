@@ -8,12 +8,12 @@
       <view class="box">
         <view class="section-1">
           <view class="row align-items-start">
-            <view class="col-8" style="{{Wvieccanlam}}">
+            <view class="col-8" >
               <block class="task-name" >
                 <div class="title1">
                   <image class="f-icon" src="/images/tasks.svg" />Việc cần làm <text class="ip">(*)</text>
                 </div>
-                <textarea maxlength="100" class="input-text" type="text" value="{{inputValue}}" id="task"
+                <textarea style="{{Wvieccanlam}}" maxlength="100" class="input-text" type="text" value="{{inputValue}}" id="task"
                   placeholder="Nhập chi tiết công việc..." style="margin-right: 10px;"
                   bindinput="inputTittle">
               </block>
@@ -32,10 +32,10 @@
                 </picker>
               </view>
             </view>
-            <view class="col-8" style="{{Wchonlich}}">
+            <view class="col-8">
               <block class="task-name"style="border: 2px solid blue;">
                 <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch <text class="ip">(*)</text></div>
-                <picker class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+                <picker style="{{Wchonlich}}" class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
                   {{chonlich}}
                 </picker>
               </block>
@@ -59,12 +59,12 @@
                 </picker>
               </block>
             </div>
-            <div class="col-4" style="{{Wngayketthuc}}" >
+            <div class="col-4" >
               <block class="select-time">
                 <div text class="title1">
                   <image class="f-icon" src="/images/calendar-day-solid.svg" mode="" />Ngày kết thúc <text class="ip">(*)</text>
                 </div>
-                <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" 
+                <picker style="{{Wngayketthuc}}" class="picker-date" mode="date" id="datePicker" start="{{startDate}}" 
                   bindchange="onDateChange2">
                   {{endDate}}
                 </picker>
@@ -106,12 +106,12 @@
                 </picker>
               </view>
             </view>
-            <div class="col-4" style="{{Wgiobatdau}}">
+            <div class="col-4">
               <block class="select-time">
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ bắt đầu <text class="ip">(*)</text>
                 </div>
-                <view class="customStartTime-pickerContainer">
+                <view class="customStartTime-pickerContainer" style="{{Wgiobatdau}}">
                   <!-- Combobox chọn giờ -->
                   <picker class="customStartTime-picker" mode="selector" range="{{customStartTimeHours}}" value="{{customStartTimeHourIndex}}" bindchange="customStartTimeOnHourChange">
                     {{customStartTimeHours[customStartTimeHourIndex]}}
@@ -124,12 +124,12 @@
                 </view>
               </block>
             </div>
-            <div class="col-4" style="{{Wgioketthuc}}">
+            <div class="col-4">
               <block class="select-time">
                 <div class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode="" />Giờ kết thúc <text class="ip">(*)</text>
                 </div>
-                <view class="customStartTime-pickerContainer">
+                <view class="customStartTime-pickerContainer" style="{{Wgioketthuc}}">
                   <!-- Combobox chọn giờ -->
                   <picker class="customStartTime-picker" mode="selector" disabled="{{disaleET}}" range="{{customEndTimeHours}}" value="{{customEndTimeHourIndex}}" bindchange="customEndTimeOnHourChange">
                     {{customEndTimeHours[customEndTimeHourIndex]}}

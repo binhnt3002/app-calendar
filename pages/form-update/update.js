@@ -555,7 +555,7 @@ Page({
       this.setData({ tableName: filteredTableName });
 
       // Call the listTask function (presumably defined elsewhere) to fetch tasks for the specific table ID
-      this.listTask(this.data.tableName[0].table); // Assuming there's at least one table
+      this.listTask(this.data.tableName?.[0]?.table); // Assuming there's at least one table
     });
   },
 
@@ -691,6 +691,7 @@ Page({
           },
           automatic_fields: false,
         };
+        try{
         // Send request to fetch data from the first Lark table using access token and body
         sendRequest(
           `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables/${this.data.tableName[0].table}/records/search`,
@@ -784,9 +785,13 @@ Page({
             recordId,
           });
         })
-
+        } catch (error) {
+          console.error("Error:", error);
+          // Handle the error, e.g., log, retry, or skip
+        }
         //Fetch data from TMT base
-        searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
+        try {
+          searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
           if (result.data?.items == null) {
             return that.setData({
               oldData: [],
@@ -814,9 +819,9 @@ Page({
           console.log(result);
           console.log(oldData);
 
-
           that.setData({
             oldData,
+            tableData: oldData,
             filterData: oldData,
             capbach,
             quantrong,
@@ -833,6 +838,10 @@ Page({
             recordId,
           });
         });
+        } catch (error) {
+          
+        }
+        
       },
     });
   },
@@ -931,8 +940,8 @@ Page({
     //   turnMode: true,
     //   endDate: edit.ngaygioketthuc,
     //   selectedHours: edit.sogiocanco,
-    //   inputNote: edit.ghichu,
-    //   s3:1,
+    //   inputNote: edit.ghichu,  //   s3:1,
+  
     // });
   },
 

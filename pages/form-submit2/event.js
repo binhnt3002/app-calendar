@@ -70,7 +70,7 @@ Page({
 
     turnPopup: false,
     turnMode: false,
-    hiddenCheck: true,
+    hiddenCheck: false,
     disabledCont: true,
     disabledAdd: true,
     disabledInvite: true
@@ -170,8 +170,8 @@ Page({
         ignore: true,
         maxNum: 100,
         limitTips: 10,
-        externalContact: true,
-        enableChooseDepartment: true,
+        externalContact: false,
+        enableChooseDepartment: false,
         disableChosenIds: [...that.data.inviteOpenId, ...that.data.checkId],
         success(res) {
           console.log(res);
@@ -464,11 +464,7 @@ Page({
       inviteData2: inviteData,
       inviteOpenId: inviteOpenId,
       participants: [],
-
       hiddenCheck: true
-
-    // that.addEventParticipate();
-
     });
     that.addEventParticipate();
 
@@ -522,10 +518,12 @@ Page({
 
       turnPopup: false,
       turnMode: false,
-      hiddenCheck: true,
+      // hiddenCheck: true,
       disabledCont: true,
       disabledAdd: true,
-      disabledInvite: true
+      disabledInvite: true,
+      Wdanhsachcongviec:"",
+      Wdanhsachmoi:""
     })
     setTimeout(() => that.listTask(),1000)
   },

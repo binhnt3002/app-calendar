@@ -1011,14 +1011,14 @@ const appVar = getApp();
             if (that.data.startTime === "") {
               // Handle empty startTime
               that.setData({
-                Wgiobatdau:"border: 2px solid red;"
+                Wgiobatdau:"border: 2px solid red; border-radius: 6px"
               })
               console.error('Missing start time');
             }
             if (that.data.endTime === "") {
               // Handle empty endTime
               that.setData({
-                Wgioketthuc:"border: 2px solid red;"
+                Wgioketthuc:"border: 2px solid red; border-radius: 6px"
               })
               console.error('Missing end time');
             }
