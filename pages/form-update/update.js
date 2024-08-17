@@ -17,7 +17,26 @@ const dayOptions = [
   "Thứ 6",
   "Thứ 7",
 ]
+const aquantrong = [
+  { "A": "ce008135-ac89-4a5f-816f-89a45c18f2a4" },
+  { "B": "32ff4764-4b4f-4f84-9a63-e06670248b07" },
+  { "C": "b29440f9-135e-4caa-9650-55e51d6e7753" }
+]
 
+const acapnach = [
+  { "1": "e680afeb-dc2d-49a6-9b8f-fc45dba00e5f" },
+  { "2": "c9a8b540-fe36-4cd9-ad83-e9397456ca92" },
+  { "3": "905d2a40-503e-4767-9579-2f9b968bf87f" }
+]
+
+const atheloai = [
+  { "Việc chính": "ef1dc08b-fc93-4022-9fde-60a174a1835f" },
+  { "Việc phát sinh": "91fae74d-25e5-4a99-b11f-e4203f907d2a" },
+  { "Dự án": "5acđ29b-1846-4611-a209-f6fd50224288" },
+  { "Đọc & học": "809d2600-b7a3-4911-b117-ef489eac2f80" },
+  { "Việc cần đôn đốc": "c68dd56e-1535-4d0e-8ec8-eb4be58b769d" }
+
+]
 Page({
   data: {
     stt: [],
@@ -41,12 +60,12 @@ Page({
     turnPopup: false,
     turnPopup2: false,
     calendarname: "",
-    hours: ["0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", 
-      "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", 
-      "12", "12.5", "13", "13.5", "14", "14.5", "15", "15.5", "16", "16.5", 
-      "17", "17.5", "18", "18.5", "19", "19.5", "20", "20.5", "21", "21.5", 
-      "22", "22.5", "23", "23.5", "24", "24.5", "25", "25.5", "26", "26.5", 
-      "27", "27.5", "28", "28.5", "29", "29.5", "30", "30.5", "31", "31.5", 
+    hours: ["0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6",
+      "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5",
+      "12", "12.5", "13", "13.5", "14", "14.5", "15", "15.5", "16", "16.5",
+      "17", "17.5", "18", "18.5", "19", "19.5", "20", "20.5", "21", "21.5",
+      "22", "22.5", "23", "23.5", "24", "24.5", "25", "25.5", "26", "26.5",
+      "27", "27.5", "28", "28.5", "29", "29.5", "30", "30.5", "31", "31.5",
       "32", "32.5", "33", "33.5", "34", "34.5", "35", "35.5", "36"],
     selectedDayWork: "",
     mindate: new Date().toISOString().substring(0, 10),
@@ -100,26 +119,26 @@ Page({
     dataLich: [],
     isLoop: false,
     dailyData: [
-      { 
-        "Thứ 2": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
-        "Thứ 3": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
-        "Thứ 4": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
-        "Thứ 5": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
-        "Thứ 6": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
-        "Thứ 7": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
-        "Chủ nhật": { date: "", startTime: "", indexSTH: 0 , indexSTM: 0 , endTime: "",indexETH: 0, indexETM : 0 , inputNote: "", isLoop: false,},
+      {
+        "Thứ 2": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
+        "Thứ 3": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
+        "Thứ 4": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
+        "Thứ 5": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
+        "Thứ 6": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
+        "Thứ 7": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
+        "Chủ nhật": { date: "", startTime: "", indexSTH: 0, indexSTM: 0, endTime: "", indexETH: 0, indexETM: 0, inputNote: "", isLoop: false, },
       },
     ],
 
     selectedDay: dayOptions[new Date().getDay()],
 
     dailyLoop: false,
-    listBusy:[],
+    listBusy: [],
     checkBusy: [],
 
     disableDayWork: true,
     disaleET: true,
-    
+
     customStartTimeHours: Array.from({ length: 24 }, (_, i) => (i < 10 ? '0' : '') + i), // Tạo danh sách giờ từ 00 đến 23
     customStartTimeMinutes: ['00', '15', '30', '45'], // Giới hạn giá trị phút
     customStartTimeHourIndex: 0, // Giá trị khởi tạo cho giờ
@@ -256,10 +275,10 @@ Page({
       });
     }
     checkBusy = {
-      start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
-      end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
+      start: this.dateTimeToTimestamp(this.data.selectedDayWork, this.data.startTime),
+      end: this.dateTimeToTimestamp(this.data.selectedDayWork, this.data.endTime)
     }
-    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+    if (this.isDuringAnyBusyPeriod(checkBusy, this.data.listBusy) === false) {
       tt.showModal({
         "title": "Cảnh báo",
         "content": "Đã có lịch trùng",
@@ -268,18 +287,18 @@ Page({
         "showCancel": true,
         success(res) {
           console.log(JSON.stringify(res));
-          if (res.confirm===false) {
+          if (res.confirm === false) {
             that.setData({
               endTime: "",
               startTime: "",
               totalHours: ""
             })
-          } 
+          }
         },
         fail(res) {
           console.log(`showModal fail: ${JSON.stringify(res)}`);
         }
-    });
+      });
     }
     this.setData({
       checkBusy
@@ -290,12 +309,12 @@ Page({
   },
 
   customStartTimeOnHourChange(e) {
-    
+
     const customStartTimeHourIndex = e.detail.value;
     this.setData({
       customStartTimeHourIndex: customStartTimeHourIndex,
       startTime: `${this.data.customStartTimeHours[customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[this.data.customStartTimeMinuteIndex]}`,
-      disaleET : false,
+      disaleET: false,
     });
   },
 
@@ -304,7 +323,7 @@ Page({
     this.setData({
       customStartTimeMinuteIndex: customStartTimeMinuteIndex,
       startTime: `${this.data.customStartTimeHours[this.data.customStartTimeHourIndex]}:${this.data.customStartTimeMinutes[customStartTimeMinuteIndex]}`,
-      disaleET : false,
+      disaleET: false,
     });
   },
 
@@ -342,7 +361,7 @@ Page({
     let that = this
     let checkBusy = this.data.checkBusy
     checkBusy = []
-    
+
     let data = this.data.dailyData;
     data[0][this.data.selectedDay].date = this.data.selectedDayWork;
     data[0][this.data.selectedDay].startTime = this.data.startTime;
@@ -363,10 +382,10 @@ Page({
     // }
 
     checkBusy = {
-      start: this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.startTime),
-      end:  this.dateTimeToTimestamp(this.data.selectedDayWork,this.data.endTime)
+      start: this.dateTimeToTimestamp(this.data.selectedDayWork, this.data.startTime),
+      end: this.dateTimeToTimestamp(this.data.selectedDayWork, this.data.endTime)
     }
-    if (this.isDuringAnyBusyPeriod(checkBusy,this.data.listBusy) === false){
+    if (this.isDuringAnyBusyPeriod(checkBusy, this.data.listBusy) === false) {
       tt.showModal({
         "title": "Cảnh báo",
         "content": "Đã có lịch trùng",
@@ -375,18 +394,18 @@ Page({
         "showCancel": true,
         success(res) {
           console.log(JSON.stringify(res));
-          if (res.confirm===false) {
+          if (res.confirm === false) {
             that.setData({
               endTime: "",
               startTime: "",
               totalHours: 0
             })
-          } 
+          }
         },
         fail(res) {
           console.log(`showModal fail: ${JSON.stringify(res)}`);
         }
-    });
+      });
     }
     this.setData({
       checkBusy
@@ -468,15 +487,15 @@ Page({
   dailyLoopCheckBoxChange: function (e) {
     if (!e.currentTarget.dataset.check) {
       this.setData({
-        dailyLoop:  !e.currentTarget.dataset.check,
-        weekLoop : true,
-        isLoop:false,
+        dailyLoop: !e.currentTarget.dataset.check,
+        weekLoop: true,
+        isLoop: false,
         disableDayWork: true,
       });
-    }else{
+    } else {
       this.setData({
-        dailyLoop:  !e.currentTarget.dataset.check,
-        weekLoop : false,
+        dailyLoop: !e.currentTarget.dataset.check,
+        weekLoop: false,
         isLoop: false,
         disableDayWork: false,
       });
@@ -691,163 +710,256 @@ Page({
           },
           automatic_fields: false,
         };
-        try{
-        // Send request to fetch data from the first Lark table using access token and body
-        sendRequest(
-          `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables/${this.data.tableName[0].table}/records/search`,
-          "POST",
-          {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          },
-          body2
-        ).then((rs) => {
-          // This section processes data retrieved from the Lark table and prepares it for display
-          if (rs.data.items !== null) {
-            that.setData({
-              newData: rs.data?.items?.map((item) => {
-                return {
-                  vieccanlam: item.fields?.["Tên Task"][0].text,
-                  theloai: item.fields?.["Thể loại"],
-                  quantrong: item.fields?.["Quan Trọng"],
-                  capbach: item.fields?.["Cấp Bách"],
-                  thu: item.fields?.["Thứ"].value[0].text,
-                  ngaygiobatdau: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
-                  ngaygioketthuc: that.convertTimestampToDate(item.fields?.["Thời gian kết thúc"]),
-                  ghichu: item.fields?.["Ghi chú"]?.[0]?.text || "",
-                  eventid: item.fields?.["EventID"]?.[0]?.text || "",
-                  calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
-                  ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
-                  sogiocanco: item.fields?.["Số giờ cần có"],
-                  recordId: item.record_id,
-                  type: 'new',
-                  id: item.record_id
-                };
+
+        const url = `https://open.larksuite.com/open-apis/task/v2/tasks`;
+        const headers = {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        };
+        setTimeout(() => {
+          //Fetch data from Task
+        try {
+          sendRequest(url, "GET", headers, {}).then((rs) => {
+            console.log(rs);
+            const filteredTasks = rs.data.items.filter(task => task.members.some(member => member.role === "follower" && member.id === res.data.open_id));
+            console.log(filteredTasks);  
+            console.log(that.convertTimestampToDate(""));
+            if (rs.data.items !== null) {
+              that.setData({
+                newData: filteredTasks.map((item) => {
+                  return {
+                    vieccanlam: item?.summary,
+                    theloai: Object.keys(atheloai.find(obj => Object.values(obj)[0] === item.custom_fields?.find(field => field.name === "Thể loại").single_select_value) || {})[0],
+                    quantrong: Object.keys(aquantrong.find(obj => Object.values(obj)[0] === item.custom_fields?.find(field => field.name === "Độ quan trọng").single_select_value) || {})[0],
+                    capbach: Object.keys(acapnach.find(obj => Object.values(obj)[0] === item.custom_fields?.find(field => field.name === "Độ cấp bách").single_select_value) || {})[0],
+                    thu: item.fields?.["Thứ"].value[0].text || "",
+                    ngaygiobatdau: that.convertTimestampToDate(item?.start?.timestamp*1),
+                    ngaygioketthuc: that.convertTimestampToDate(item?.due?.timestamp*1),
+                    ghichu: item?.description || "",
+                    eventid: item.fields?.["EventID"]?.[0]?.text || "",
+                    calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
+                    ngaylam: that.convertTimestampToDate(item?.start?.timestamp*1),
+                    sogiocanco: item.fields?.["Số giờ cần có"],
+                    recordId: item?.guid,
+                    type: 'new',
+                    id: item.task_id
+                  };
+                })
               })
+
+            } else {
+              that.setData({
+                newData: []
+              })
+            }
+            // Combine the processed newData with existing oldData (presumably containing previous tasks)
+            tableData = [...that.data.newData, ...that.data.oldData]
+
+            // Sort the combined tableData array by ID and then by date (for organized display)
+            tableData.sort((a, b) => {
+              // First sort by id
+              if (a.id < b.id) {
+                return 1;
+              }
+              if (a.id > b.id) {
+                return -1;
+              }
+              return new Date(a.ngaylam) - new Date(b.ngaylam);
+            });
+            console.log(tableData);
+
+            // Show a success toast notification
+            tt.showToast({
+              title: 'Đã cập nhật !',
+              icon: 'success',
             })
-            
-          }else{
+
+            // Update component state with the processed data
             that.setData({
-              newData:[]
-            })
-          }
-          
-
-          // Sort the newData array by start date-time in descending order (newest tasks first)
-          // newData.sort((a, b) => {
-          //   // Convert date strings to Date objects for comparison
-          //   const dateA = new Date(a.ngaygiobatdau);
-          //   const dateB = new Date(b.ngaygiobatdau);
-
-          //   // Compare dates in descending order
-          //   return dateB - dateA;
-          // });
-
-          // Combine the processed newData with existing oldData (presumably containing previous tasks)
-          tableData = [...that.data.newData, ...that.data.oldData]
-
-          // Sort the combined tableData array by ID and then by date (for organized display)
-          tableData.sort((a, b) => {
-            // First sort by id
-            if (a.id < b.id) {
-              return 1;
-            }
-            if (a.id > b.id) {
-              return -1;
-            }
-            return new Date(a.ngaylam) - new Date(b.ngaylam);
+              newData,
+              tableData,
+              filterData: tableData,
+              capbach,
+              quantrong,
+              theloai,
+              ngaygiobatdau,
+              ngaygioketthuc,
+              ghichu,
+              vieccanlam,
+              thu,
+              eventid,
+              calendarid,
+              ngaylam,
+              sogiocanco,
+              recordId,
+            });
           });
-          console.log(tableData);
-
-          // Show a success toast notification
-          tt.showToast({
-            title: 'Đã cập nhật !',
-            icon: 'success',
-          })
-
-          // Update component state with the processed data
-          that.setData({
-            newData,
-            tableData,
-            filterData: tableData,
-            capbach,
-            quantrong,
-            theloai,
-            ngaygiobatdau,
-            ngaygioketthuc,
-            ghichu,
-            vieccanlam,
-            thu,
-            eventid,
-            calendarid,
-            ngaylam,
-            sogiocanco,
-            recordId,
-          });
-        })
         } catch (error) {
-          console.error("Error:", error);
-          // Handle the error, e.g., log, retry, or skip
+
         }
+        }, 1500);
+        
+
+        //Fetch data from Giao task 2.0
+        // try {
+        //   // Send request to fetch data from the first Lark table using access token and body
+        //   sendRequest(
+        //     `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId2}/tables/${this.data.tableName[0].table}/records/search`,
+        //     "POST",
+        //     {
+        //       Authorization: `Bearer ${access_token}`,
+        //       "Content-Type": "application/json",
+        //     },
+        //     body2
+        //   ).then((rs) => {
+        //     // This section processes data retrieved from the Lark table and prepares it for display
+        //     if (rs.data.items !== null) {
+        //       that.setData({
+        //         newData: rs.data?.items?.map((item) => {
+        //           return {
+        //             vieccanlam: item.fields?.["Tên Task"][0].text,
+        //             theloai: item.fields?.["Thể loại"],
+        //             quantrong: item.fields?.["Quan Trọng"],
+        //             capbach: item.fields?.["Cấp Bách"],
+        //             thu: item.fields?.["Thứ"].value[0].text,
+        //             ngaygiobatdau: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+        //             ngaygioketthuc: that.convertTimestampToDate(item.fields?.["Thời gian kết thúc"]),
+        //             ghichu: item.fields?.["Ghi chú"]?.[0]?.text || "",
+        //             eventid: item.fields?.["EventID"]?.[0]?.text || "",
+        //             calendarid: item.fields?.["CalendarID"]?.[0]?.text || "",
+        //             ngaylam: that.convertTimestampToDate(item.fields?.["Thời gian bắt đầu"]),
+        //             sogiocanco: item.fields?.["Số giờ cần có"],
+        //             recordId: item.record_id,
+        //             type: 'new',
+        //             id: item.record_id
+        //           };
+        //         })
+        //       })
+
+        //     } else {
+        //       that.setData({
+        //         newData: []
+        //       })
+        //     }
+
+
+        //     // Sort the newData array by start date-time in descending order (newest tasks first)
+        //     // newData.sort((a, b) => {
+        //     //   // Convert date strings to Date objects for comparison
+        //     //   const dateA = new Date(a.ngaygiobatdau);
+        //     //   const dateB = new Date(b.ngaygiobatdau);
+
+        //     //   // Compare dates in descending order
+        //     //   return dateB - dateA;
+        //     // });
+
+        //     // Combine the processed newData with existing oldData (presumably containing previous tasks)
+        //     tableData = [...that.data.newData, ...that.data.oldData]
+
+        //     // Sort the combined tableData array by ID and then by date (for organized display)
+        //     tableData.sort((a, b) => {
+        //       // First sort by id
+        //       if (a.id < b.id) {
+        //         return 1;
+        //       }
+        //       if (a.id > b.id) {
+        //         return -1;
+        //       }
+        //       return new Date(a.ngaylam) - new Date(b.ngaylam);
+        //     });
+        //     console.log(tableData);
+
+        //     // Show a success toast notification
+        //     tt.showToast({
+        //       title: 'Đã cập nhật !',
+        //       icon: 'success',
+        //     })
+
+        //     // Update component state with the processed data
+        //     that.setData({
+        //       newData,
+        //       tableData,
+        //       filterData: tableData,
+        //       capbach,
+        //       quantrong,
+        //       theloai,
+        //       ngaygiobatdau,
+        //       ngaygioketthuc,
+        //       ghichu,
+        //       vieccanlam,
+        //       thu,
+        //       eventid,
+        //       calendarid,
+        //       ngaylam,
+        //       sogiocanco,
+        //       recordId,
+        //     });
+        //   })
+        // } catch (error) {
+        //   console.error("Error:", error);
+        //   // Handle the error, e.g., log, retry, or skip
+        // }
         //Fetch data from TMT base
         try {
           searchRecord(access_token, body, appVar.GlobalConfig.tableId).then((result) => {
-          if (result.data?.items == null) {
-            return that.setData({
-              oldData: [],
-            })
-          }
-          const oldData = result.data?.items?.map((item) => {
-            return {
-              vieccanlam: item.fields["Việc cần làm"]?.[0]?.text || "",
-              theloai: item.fields["Thể loại"],
-              quantrong: item.fields["Quan trọng"],
-              capbach: item.fields["Cấp bách"],
-              thu: item.fields["Thứ"].value[0].text,
-              ngaygiobatdau: that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"]),
-              ngaygioketthuc: that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"]),
-              ghichu: item.fields["Ghi chú"]?.[0].text || "",
-              eventid: item.fields["EventID"][0].text, // Assuming single event ID
-              calendarid: item.fields["CalendarID"][0].text, // Assuming single calendar ID
-              ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
-              sogiocanco: item.fields["Số giờ cần có"],
-              recordId: item.record_id,
-              id: item?.fields?.["id"]?.[0]?.text,
-              loai: item.fields?.["Loại"]
-            };
-          });
-          console.log(result);
-          console.log(oldData);
+            if (result.data?.items == null) {
+              return that.setData({
+                oldData: [],
+              })
+            }
+            const oldData = result.data?.items?.map((item) => {
+              return {
+                vieccanlam: item.fields["Việc cần làm"]?.[0]?.text || "",
+                theloai: item.fields["Thể loại"],
+                quantrong: item.fields["Quan trọng"],
+                capbach: item.fields["Cấp bách"],
+                thu: item.fields["Thứ"].value[0].text,
+                ngaygiobatdau: that.convertTimestampToDate(item.fields["Ngày - Giờ bắt đầu"]),
+                ngaygioketthuc: that.convertTimestampToDate(item.fields["Ngày - Giờ kết thúc"]),
+                ghichu: item.fields["Ghi chú"]?.[0].text || "",
+                eventid: item.fields["EventID"][0].text, // Assuming single event ID
+                calendarid: item.fields["CalendarID"][0].text, // Assuming single calendar ID
+                ngaylam: that.convertTimestampToDate(item.fields["Ngày làm"]),
+                sogiocanco: item.fields["Số giờ cần có"],
+                recordId: item.record_id,
+                id: item?.fields?.["id"]?.[0]?.text,
+                loai: item.fields?.["Loại"]
+              };
+            });
+            console.log(result);
+            console.log(oldData);
 
-          that.setData({
-            oldData,
-            tableData: oldData,
-            filterData: oldData,
-            capbach,
-            quantrong,
-            theloai,
-            ngaygiobatdau,
-            ngaygioketthuc,
-            ghichu,
-            vieccanlam,
-            thu,
-            eventid,
-            calendarid,
-            ngaylam,
-            sogiocanco,
-            recordId,
+            that.setData({
+              oldData,
+              tableData: oldData,
+              filterData: oldData,
+              capbach,
+              quantrong,
+              theloai,
+              ngaygiobatdau,
+              ngaygioketthuc,
+              ghichu,
+              vieccanlam,
+              thu,
+              eventid,
+              calendarid,
+              ngaylam,
+              sogiocanco,
+              recordId,
+            });
           });
-        });
         } catch (error) {
-          
+
         }
-        
       },
     });
   },
 
   // Converts a timestamp (in milliseconds) to a formatted date string (YYYY-MM-DD)
   convertTimestampToDate(timestamp) {
+    if (!timestamp) {
+      return "";
+    }
     // Create a new Date object with the given timestamp
     const date = new Date(timestamp);
     // Get the day, month, and year from the Date object
@@ -891,14 +1003,14 @@ Page({
     })
 
     // Access the current edit state from component data
-    let edit = that.data.edit;    
+    let edit = that.data.edit;
 
     // Extract the event target ID (presumably the event ID of the task)
     const currentTarget = e.currentTarget.id;
 
     // Find the specific task object from tableData based on the event ID
     edit = that.data.tableData.find((obj) => obj.eventid === currentTarget);
-    
+
     // Fetch calendar details using the user's access token (stored asynchronously)
     tt.getStorage({
       key: "user_access_token",
@@ -910,39 +1022,15 @@ Page({
       },
     });
     // Update component state to display the edit popup
-    this.setData({
+    that.setData({
       edit,
-    })
-
-    this.setData({
       inputValue: edit.vieccanlam,
-    })
-
-    this.setData({
       startDate: edit.ngaygiobatdau,
-    })
-
-    this.setData({
       endDate: edit.ngaygioketthuc,
-    })
-
-    this.setData({
       selectedHours: edit.sogiocanco,
-    })
-
-    this.setData({
       inputNote: edit.ghichu,
+
     })
-
-
-    // that.setData({
-    //   turnPopup: true,
-    //   turnMode: true,
-    //   endDate: edit.ngaygioketthuc,
-    //   selectedHours: edit.sogiocanco,
-    //   inputNote: edit.ghichu,  //   s3:1,
-  
-    // });
   },
 
   // Function to handle the edit2 action (presumably triggered by a button click)
@@ -958,7 +1046,7 @@ Page({
     edit = that.data.tableData.find((obj) => obj.recordId === currentTarget);
     // Log the selected task object for debugging (optional)
     console.log(edit);
-    if(new Date(e.currentTarget.dataset.date) < that.data.mindate){
+    if (new Date(e.currentTarget.dataset.date) < that.data.mindate) {
       tt.showToast({
         title: "Task đã hết hạn",
         icon: "error",
@@ -970,12 +1058,12 @@ Page({
         success: (res) => {
           const access_token = res.data.access_token;
           const body = {
-            "time_min": this.data.startDate+"T00:00:00Z",
-            "time_max": this.data.endDate+"T23:59:59Z",
+            "time_min": this.data.startDate + "T00:00:00Z",
+            "time_max": this.data.endDate + "T23:59:59Z",
             "user_id": res.data.open_id,
           }
-          
-          getListBusy(access_token,body).then((rs) => {
+
+          getListBusy(access_token, body).then((rs) => {
             console.log(rs);
             rs.data?.freebusy_list?.map(i => listBusy.push({
               start: this.convertUTCtoGMT7Timestamp(i.start_time),
@@ -988,22 +1076,22 @@ Page({
         }
       })
       // Call a function (presumably to set calendar data - unclear without context)
-    that.setCalendarData();
+      that.setCalendarData();
       // Update component state to display the edit2 popup
-    that.setData({
-      turnPopup2: true,
-      turnMode: true,
-      edit,
-      // selectedHours:"",
-      selectedImportant: edit.quantrong,
-      selectedCategory: edit.theloai,
-      selectedurgent: edit.capbach,
-      startDate: edit.ngaygiobatdau,
-      endDate: edit.ngaygioketthuc,
-      inputNote: edit.ghichu,
-      inputValue: edit.vieccanlam,
-      currentTarget
-    });
+      that.setData({
+        turnPopup2: true,
+        turnMode: true,
+        edit,
+        // selectedHours:"",
+        selectedImportant: edit.quantrong,
+        selectedCategory: edit.theloai,
+        selectedurgent: edit.capbach,
+        startDate: edit.ngaygiobatdau,
+        endDate: edit.ngaygioketthuc,
+        inputNote: edit.ghichu,
+        inputValue: edit.vieccanlam,
+        currentTarget
+      });
     }
   },
 
@@ -1349,7 +1437,7 @@ Page({
                   };
 
                   console.log(body2);
-                  
+
                   createRecord(tt.getStorageSync("app_access_token"), body2, appVar.GlobalConfig.tableId).then(
                     (result) => {
                       console.log(result);
@@ -1547,7 +1635,7 @@ Page({
           (that.data.selectedCapBach === "Tất cả" || item.capbach === that.data.selectedCapBach) &&
           (that.data.selectedThu === "Tất cả" || item.thu === that.data.selectedThu)
         // ... similar conditions for other options
-      })  
+      })
     });
   },
   onThuChange(e) {
@@ -1594,7 +1682,7 @@ Page({
           parseInt(item[this.data.selectedDay].startTime.split(":")[0]);
       }
     });
-    this.setData({totalHours})
+    this.setData({ totalHours })
     return totalHours;
   },
 
@@ -1608,14 +1696,14 @@ Page({
   },
 
   isDuringAnyBusyPeriod: (check, list) => {
-    for (const period of list) {      
-        if (
-          (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
-          (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
-          (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
-      ) {  
-            return false; // Return false immediately if any condition is met
-        }
+    for (const period of list) {
+      if (
+        (check.start >= period.start && check.start < period.end) || // check.start is within a busy period
+        (check.end > period.start && check.end <= period.end) || // check.end is within a busy period
+        (check.start <= period.start && check.end >= period.end) // check fully encompasses a busy period
+      ) {
+        return false; // Return false immediately if any condition is met
+      }
     }
     return true; // Return true if no overlap is found
   },
