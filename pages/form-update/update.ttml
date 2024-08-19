@@ -45,7 +45,7 @@
           </view>
           <!-- Các dòng dữ liệu -->
           <block wx:for="{{filterData}}" wx:key="index" wx:for-item="item" wx:for-index="index">
-            <view class="title-row" wx:if="{{item.type!=='new'}}">
+            <view class="title-row" wx:if="{{item.type!=='new' && item.loai !=='shared'}}">
               <view class="title-collumn-stt">{{index + 1}}</view>
               <view class="title-collumn">{{item.vieccanlam}}</view>
               <view class="title-collumn">{{item.theloai}}</view>
@@ -75,6 +75,21 @@
                 <!-- <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="" class="icon icon-del" src=""></image> -->
               </view>
             </view>
+            <view class="title-row" wx:if="{{item.loai==='shared'}}" style="background-color: #FFD9DF;"> 
+              <view class="title-collumn-stt">{{index + 1}}</view>
+              <view class="title-collumn">{{item.vieccanlam}}</view>
+              <view class="title-collumn">{{item.theloai}}</view>
+              <view class="title-collumn">{{item.quantrong}}</view>
+              <view class="title-collumn">{{item.capbach}}</view>
+              <view class="title-collumn">{{item.thu}}</view>
+              <view class="title-collumn">{{item.ngaygiobatdau}}</view>
+              <view class="title-collumn">{{item.ngaygioketthuc}}</view>
+              <view class="title-collumn">{{item.ghichu}}</view>
+              <view class="title-collumn content-icon" >
+                <!-- <image id="{{item.recordId}}" data-date="{{item.ngaygioketthuc}}" bindtap="edit2" class="icon icon-edt" src="/images/pencil-alt-solid.svg"></image> -->
+                <image id="{{item.eventid}}" data-id="{{item.vieccanlam}}" data-record="{{item.recordId}}" bindtap="confirmDelete" class="icon icon-del" src="/images/trash-alt-solid.svg"></image>
+              </view>
+            </view>
           </block>
         </view>
       </scroll-view>  
@@ -95,20 +110,20 @@
             <view class="col-8">
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/tasks.svg"/>Việc cần làm</div>
-                <textarea disabled class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
-                  style="margin-right: 10px; background-color: #bbbfc481" bindinput="inputTittle">
+                <textarea class="input-text" type="text" id="task" value="{{edit.vieccanlam}}"
+                  style="margin-right: 10px; background-color:rgb(255, 255, 255,0.8)" bindinput="inputTittle">
               </block>
             </view>
             <view class="col-4 "> 
               <view style="display: block;">
                 <div class="title1"><image class="f-icon" src="/images/category.svg" mode=""/>Thể loại</div>
-                <picker disabled={true} class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
+                <picker class="picker-text" mode="selector" id="category" range="{{categoryOptions}}" bindchange="onCategoryChange">
                   {{edit.theloai}}
                 </picker>
               </view>
               <view style="display: block;">
                 <div class="title1"><image class="f-icon" src="/images/clock.svg" mode=""/>Cấp bách</div>
-                <picker disabled={true} class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
+                <picker class="picker-text" mode="selector" id="urgent" range="{{urgentOptions}}" bindchange="onUrgentChange">
                   {{edit.capbach}}
                 </picker>
               </view>
@@ -116,7 +131,7 @@
             <view class="col-8">
               <block class="task-name">
                 <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch</div>
-                <picker disabled={true} class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
+                <picker class="picker-lock" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
                   {{calendarname}}
                 </picker>
               </block>
@@ -124,13 +139,13 @@
             <view class="col-4">
               <view style="display:block;">
                 <div class="title1"><image class="f-icon" src="/images/warning.svg" mode=""/>Độ quan trọng</div>
-                <picker disabled={true} class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
+                <picker class="picker-text" mode="selector" id="important" range="{{importantOptions}}" bindchange="onImportantChange">
                   {{edit.quantrong}}
                 </picker>
               </view>
             </view>
             <view class="col-12">
-              <view style="dislay: block;">
+              <view class ="d-block">
                 <view class="note-info">
                   <div class="title1"><image class="f-icon" src="/images/sticky-note-regular.svg"/>Ghi chú</div>
                 </view>
@@ -142,7 +157,7 @@
                 <div  class="title1">
                   <image class="f-icon" src="/images/clock-solid.svg" mode=""/>Tổng giờ một việc
                 </div >
-                <picker disabled  class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
+                <picker  class="picker-text" mode="selector" id="important" range="{{hours}}" bindchange="onSelectedHours">
                   {{selectedHours}}
                 </picker>
               </block>
@@ -151,7 +166,7 @@
               <div  class="title1">
                 <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày bắt đầu
               </div >
-              <picker disabled={true}  class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
+              <picker class="picker-date" mode="date" id="datePicker" bindchange="onDateChange1" start="{{mindate}}">
                 {{edit.ngaygiobatdau}}
               </picker> 
             </div>
@@ -159,7 +174,7 @@
               <div text class="title1">
                 <image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Ngày kết thúc
               </div >
-              <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
+              <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" bindchange="onDateChange2">
                 {{edit.ngaygioketthuc}}
               </picker>
             </div>
@@ -171,7 +186,7 @@
               </view>
             </view>
             <view class="col-8">
-              <picker disabled={true} class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
+              <picker class="picker-date" mode="date" id="datePicker" start="{{startDate}}" end="{{endDate}}"bindchange="onDateChange3" placeholder="yyyy-mm-dd">
                 {{edit.ngaylam}}
               </picker>
             </view>
@@ -271,11 +286,7 @@
             </view>
             <view class="col-8">
               <block class="task-name">
-                <div class="title1"><image class="f-icon" src="/images/calendar-day-solid.svg" mode=""/>Chọn lịch <text class="ip">(*)</text></div>
                 <picker style="background-color: rgb(255, 255, 255,0.8);" class="picker-text" mode="selector" id="week" range="{{lich}}" bindchange="onCalendarChage">
-                  {{chonlich}}
-                </picker>
-              </block>
             </view>
             <view class="col-4">
               <view style="display:block;">
@@ -414,4 +425,4 @@
     </view>
     
   </view>
-</div>
+</div>  

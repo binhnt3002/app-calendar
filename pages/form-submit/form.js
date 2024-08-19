@@ -265,6 +265,7 @@ const appVar = getApp();
     inputTittle: function (e) {
       this.setData({
         inputValue: e.detail.value,
+        Wvieccanlam: ""
       });
     },
 
@@ -285,6 +286,7 @@ const appVar = getApp();
         calendarID: this.data.dataLich.find(
           (item) => item.summary === this.data.lich[e.detail.value]
         ).calendar_id,
+        Wchonlich:""
       });
     },
 
@@ -422,6 +424,7 @@ const appVar = getApp();
       this.setData({
         endDate: e.detail.value,
         disableDayWork: false,
+        Wngayketthuc:""
       });
       if (this.data.startDate > this.data.endDate) {
         this.setData({
@@ -464,6 +467,7 @@ const appVar = getApp();
           this.data.customStartTimeMinutes[this.data.customStartTimeMinuteIndex]
         }`,
         disaleET: false,
+        Wgiobatdau:""
       });
     },
 
@@ -475,6 +479,7 @@ const appVar = getApp();
           this.data.customStartTimeHours[this.data.customStartTimeHourIndex]
         }:${this.data.customStartTimeMinutes[customStartTimeMinuteIndex]}`,
         disaleET: false,
+        Wgiobatdau:""
       });
     },
 
@@ -485,6 +490,7 @@ const appVar = getApp();
         endTime: `${this.data.customEndTimeHours[customEndTimeHourIndex]}:${
           this.data.customEndTimeMinutes[this.data.customEndTimeMinuteIndex]
         }`,
+        Wgioketthuc:""
       });
 
       let data = this.data.dailyData;
@@ -515,6 +521,7 @@ const appVar = getApp();
         endTime: `${
           this.data.customEndTimeHours[this.data.customEndTimeHourIndex]
         }:${this.data.customEndTimeMinutes[customEndTimeMinuteIndex]}`,
+        Wgioketthuc:""
       });
 
       let that = this;
@@ -594,6 +601,16 @@ const appVar = getApp();
           setTimeout(() => that.setCalendarData(), 3000);
         }
       }, 1000);
+      that.setData({
+        Wchonlich:"",
+        Wvieccanlam:"",
+        Wngaybatdau:"",
+        Wngayketthuc:"",
+        Wgiobatdau:"",
+        Wgioketthuc: "",
+        startTime: "",
+        inputValue:""
+      })
     },
 
     setCalendarData() {
@@ -654,7 +671,14 @@ const appVar = getApp();
 
     createTask() {
       let that = this;
-
+      that.setData({
+        Wchonlich:"",
+        Wvieccanlam:"",
+        Wngaybatdau:"",
+        Wngayketthuc:"",
+        Wgiobatdau:"",
+        Wgioketthuc: ""
+      })
       if (that.calculateTime() > parseInt(that.data.selectedHours)) {
         return tt.showModal({
           title: "Thông báo",
@@ -667,10 +691,22 @@ const appVar = getApp();
       if (that.data.chonlich != tt.getStorageSync("user_info").name) {
         return tt.showModal({
           title: "Thông báo",
-          content: "Vui lòng chọn lịch!",
+          content: "Vui lòng chọn lịch cá nhân!",
           confirmText: "Đóng",
           showCancel: false,
+          success(res){
+            console.log(JSON.stringify(res));
+            if (res.confirm === true) {
+              that.setData({
+                Wchonlich: "border: 2px solid red;"
+              });
+            }
+          },
+          fail(res) {
+            console.log(`showModal fail: ${JSON.stringify(res)}`);
+          },
         });
+        // that.setData({Wchonlich: "border: 2px solid red;"})
       }
 
       tt.getStorage({
@@ -804,6 +840,12 @@ const appVar = getApp();
                       customEndTimeMinuteIndex: 0,
                       dailyLoop: false,
                       weekLoop: false,
+                      Wchonlich:"",
+                      Wvieccanlam:"",
+                      Wngaybatdau:"",
+                      Wngayketthuc:"",
+                      Wgiobatdau:"",
+                      Wgioketthuc: ""
                     });
                   }
                 );
@@ -918,6 +960,12 @@ const appVar = getApp();
                       customEndTimeMinuteIndex: 0,
                       totalHours: 0,
                       isLoop: false,
+                      Wchonlich:"",
+                      Wvieccanlam:"",
+                      Wngaybatdau:"",
+                      Wngayketthuc:"",
+                      Wgiobatdau:"",
+                      Wgioketthuc: ""
                     });
                   });
                 }
@@ -928,6 +976,52 @@ const appVar = getApp();
               title: "Vui lòng nhập đầy đủ dữ liệu",
               icon: "error",
             });
+            if (that.data.calendarID === "") {
+              // Handle empty calendarID
+              that.setData({
+                Wchonlich:"border: 2px solid red;"
+              })
+              console.error('Missing calendar ID');
+            }
+            
+            if (that.data.inputValue === "") {
+              // Handle empty inputValue
+              that.setData({
+                Wvieccanlam:"border: 2px solid red;"
+              })
+              console.error('Missing input value');
+            }
+            
+            if (that.data.startDate === "") {
+              // Handle empty startDate
+              that.setData({
+                Wngaybatdau:"border: 2px solid red;"
+              })
+              console.error('Missing start date');
+            }
+            
+            if (that.data.endDate === "") {
+              // Handle empty endDate
+              that.setData({
+                Wngayketthuc:"border: 2px solid red;"
+              })
+              console.error('Missing end date');
+            }
+            
+            if (that.data.startTime === "") {
+              // Handle empty startTime
+              that.setData({
+                Wgiobatdau:"border: 2px solid red; border-radius: 6px"
+              })
+              console.error('Missing start time');
+            }
+            if (that.data.endTime === "") {
+              // Handle empty endTime
+              that.setData({
+                Wgioketthuc:"border: 2px solid red; border-radius: 6px"
+              })
+              console.error('Missing end time');
+            }
           }
         },
       });
