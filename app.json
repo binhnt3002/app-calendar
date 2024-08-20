@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/form-submit/form",
+    "pages/form-submit2/event",
     "pages/form-update/update"
   ],
   "window": {
@@ -21,6 +22,12 @@
         "iconPath": "images/task-black.svg",
         "selectedIconPath": "images/tasks-blue.svg",
         "text": "\t   Tạo công việc"
+      },
+      {
+        "pagePath": "pages/form-submit2/event",
+        "iconPath": "images/event-black.svg",
+        "selectedIconPath": "images/event-blue.svg",
+        "text": "\t   Mời sự kiện"
       },
       {
         "pagePath": "pages/form-update/update",

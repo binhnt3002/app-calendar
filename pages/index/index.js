@@ -1,26 +1,25 @@
 import { sendRequest } from "../../utils/sendRequest";
 import { createSpec } from "./spec/getSpec";
+import { getAllTableName } from "../function/apiFunction";
 
 const appVar = getApp();
 
 Page({
   data: {
     userInfo: {},
-
     // Chart configuration options
-
     styles: `
       height: 50vh;
       width: 100%
     `,
     // spec: createSpec("pie", "data1", 30, 0),
-
     spec2: createSpec("pie", "data2", 30, 0),
-
     spec3: createSpec("pie", "data3", 30, 0),
-
     spec4: createSpec("bar", "data4", 30, 0),
     totalHoursInWeek: 48,
+
+    tableName: [],
+    allData: [],
   },
 
   onShow() {
@@ -49,7 +48,21 @@ Page({
       return total;
     }, 0);
   },
+
   onChangeHoursWeek(e) {
+    if (e.detail.value > 48 || e.detail.value < 1) {
+      return tt.showModal({
+        title: "Thông báo",
+        content: "thời gian trong tuần khoảng 1h - 48h.",
+        confirmText: "Đóng",
+        showCancel: false,
+        success: () => {
+          this.setData({
+            totalHoursInWeek: ""
+          })
+        },
+      })
+    }
     this.setData({
       totalHoursInWeek: e.detail.value,
     });
@@ -63,7 +76,6 @@ Page({
       seriesField: "type",
     };
     Object.assign(this.data.spec4, addInfor);
-
     tt.getStorage({
       key: "user_access_token",
       success: (res) => {
@@ -98,8 +110,9 @@ Page({
 
         sendRequest(url, "POST", headers, body).then((result) => {
           console.log(result.data);
-          let listItems = result.data?.items || 0;
-          let listItemsLength = result.data?.total || 0;
+          let data = [...result.data.items];
+          let listItems = data || 0;
+          let listItemsLength = data.length || 0;
           let totalHours1 = this.calculateTotal(
             listItems,
             "Cấp bách",
@@ -142,217 +155,123 @@ Page({
           let spec3 = this.data.spec3;
           let spec2 = this.data.spec2;
           // Add percentage to each value
+          function calculatePercentage(value, total) {
+            return ((value / total) * 100).toFixed(0);
+          };
           if (distance >= 0) {
+            // Trường hợp thiếu giờ
             spec3.data[0].values = [
               {
                 value: totalHours1,
-                type:
-                  "Cấp bách 1: " +
-                  ((totalHours1 / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHours1 +
-                  " giờ",
+                type: "Cấp bách 1: " + calculatePercentage(totalHours1, this.data.totalHoursInWeek) + "% - " + totalHours1 + " giờ",
               },
               {
                 value: totalHours2,
-                type:
-                  "Cấp bách 2: " +
-                  ((totalHours2 / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHours2 +
-                  " giờ",
+                type: "Cấp bách 2: " + calculatePercentage(totalHours2, this.data.totalHoursInWeek) + "% - " + totalHours2 + " giờ",
               },
               {
                 value: totalHours3,
-                type:
-                  "Cấp bách 3: " +
-                  ((totalHours3 / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHours3 +
-                  " giờ",
+                type: "Cấp bách 3: " + calculatePercentage(totalHours3, this.data.totalHoursInWeek) + "% - " + totalHours3 + " giờ",
               },
               {
                 value: distance,
-                type:
-                  "Thiếu: " +
-                  ((distance / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  distance +
-                  " giờ",
+                type: "Thiếu: " + calculatePercentage(distance, this.data.totalHoursInWeek) + "% - " + distance + " giờ",
               },
             ];
             spec2.data[0].values = [
               {
                 value: totalHoursQuanTrongA,
-                type:
-                  "Quan trọng A: " +
-                  ((totalHoursQuanTrongA / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongA +
-                  " giờ",
+                type: "Quan trọng A: " + calculatePercentage(totalHoursQuanTrongA, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongA + " giờ",
               },
               {
                 value: totalHoursQuanTrongB,
-                type:
-                  "Quan trọng B: " +
-                  ((totalHoursQuanTrongB / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongB +
-                  " giờ",
+                type: "Quan trọng B: " + calculatePercentage(totalHoursQuanTrongB, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongB + " giờ",
               },
               {
                 value: totalHoursQuanTrongC,
-                type:
-                  "Quan trọng C: " +
-                  ((totalHoursQuanTrongC / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongC +
-                  " giờ",
+                type: "Quan trọng C: " + calculatePercentage(totalHoursQuanTrongC, this.data.totalHoursInWeek) + "% - " + totalHoursQuanTrongC + " giờ",
               },
               {
                 value: distance,
-                type:
-                  "Thiếu: " +
-                  ((distance / totalHours) * 100).toFixed(0) +
-                  "% - " +
-                  distance +
-                  " giờ",
+                type: "Thiếu: " + calculatePercentage(distance, this.data.totalHoursInWeek) + "% - " + distance + " giờ",
               },
             ];
           } else {
+            let test = totalHours - distance;
+            // Trường hợp dư giờ
             spec3.data[0].values = [
               {
                 value: totalHours1,
-                type:
-                  "Cấp bách 1: " +
-                  ((totalHours1 / this.data.totalHoursInWeek) * 100).toFixed(
-                    0
-                  ) +
-                  "% - " +
-                  totalHours1 +
-                  " giờ",
+                type: "Cấp bách 1: " + calculatePercentage(totalHours1, test) + "% - " + totalHours1 + " giờ",
               },
               {
                 value: totalHours2,
-                type:
-                  "Cấp bách 2: " +
-                  ((totalHours2 / this.data.totalHoursInWeek) * 100).toFixed(
-                    0
-                  ) +
-                  "% - " +
-                  totalHours2 +
-                  " giờ",
+                type: "Cấp bách 2: " + calculatePercentage(totalHours2, test) + "% - " + totalHours2 + " giờ",
               },
               {
                 value: totalHours3,
-                type:
-                  "Cấp bách 3: " +
-                  ((totalHours3 / this.data.totalHoursInWeek) * 100).toFixed(
-                    0
-                  ) +
-                  "% - " +
-                  totalHours3 +
-                  " giờ",
+                type: "Cấp bách 3: " + calculatePercentage(totalHours3, test) + "% - " + totalHours3 + " giờ",
               },
               {
                 value: -distance,
-                type:
-                  "Dư: " +
-                  ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) +
-                  "% - " +
-                  -distance +
-                  " giờ",
+                type: "Dư: " + calculatePercentage(-distance, test) + "% - " + -distance + " giờ",
               },
             ];
             spec2.data[0].values = [
               {
                 value: totalHoursQuanTrongA,
-                type:
-                  "Quan trọng A: " +
-                  (
-                    (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
-                    100
-                  ).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongA +
-                  " giờ",
+                type: "Quan trọng A: " + calculatePercentage(totalHoursQuanTrongA, test) + "% - " + totalHoursQuanTrongA + " giờ",
               },
               {
                 value: totalHoursQuanTrongB,
-                type:
-                  "Quan trọng B: " +
-                  (
-                    (totalHoursQuanTrongB / this.data.totalHoursInWeek) *
-                    100
-                  ).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongB +
-                  " giờ",
+                type: "Quan trọng B: " + calculatePercentage(totalHoursQuanTrongB, test) + "% - " + totalHoursQuanTrongB + " giờ",
               },
               {
                 value: totalHoursQuanTrongC,
-                type:
-                  "Quan trọng C: " +
-                  (
-                    (totalHoursQuanTrongC / this.data.totalHoursInWeek) *
-                    100
-                  ).toFixed(0) +
-                  "% - " +
-                  totalHoursQuanTrongC +
-                  " giờ",
+                type: "Quan trọng C: " + calculatePercentage(totalHoursQuanTrongC, test) + "% - " + totalHoursQuanTrongC + " giờ",
               },
               {
                 value: -distance,
-                type:
-                  "Dư: " +
-                  ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) +
-                  "% - " +
-                  -distance +
-                  " giờ",
+                type: "Dư: " + calculatePercentage(-distance, test) + "% - " + -distance + " giờ",
               },
             ];
           }
-
           // Calculate total values for percentage calculation
-          const totalTheLoai = result.data?.items?.length || 0;
+          const totalTheLoai = data?.length || 0;
 
           let spec4 = this.data.spec4;
           spec4.data[0].values = [
             {
               value:
-                result.data?.items?.filter(
+                data.filter(
                   (item) => item.fields["Thể loại"] == "Việc chính"
                 )?.length || 0,
               type: "Việc chính",
             },
-
             {
               value:
-                result.data?.items?.filter(
+                data.filter(
                   (item) => item.fields["Thể loại"] == "Việc phát sinh"
                 )?.length || 0,
               type: "Việc phát sinh",
             },
-
             {
               value:
-                result.data?.items?.filter(
+                data.filter(
                   (item) => item.fields["Thể loại"] == "Việc cần đôn đốc"
                 )?.length || 0,
               type: "Việc cần đôn đốc",
             },
-
             {
               value:
-                result.data?.items?.filter(
+                data.filter(
                   (item) => item.fields["Thể loại"] == "Đọc & học"
                 )?.length || 0,
               type: "Đọc & học",
             },
-
             {
               value:
-                result.data?.items?.filter(
+                data.filter(
                   (item) => item.fields["Thể loại"] == "Dự án"
                 )?.length || 0,
               type: "Dự án",
@@ -390,20 +309,21 @@ Page({
             distance1 = ((distance / totalHours) * 100).toFixed(0);
             percentdistance =
               this.data.totalHoursInWeek >= totalHours &&
-              ((distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+                ((distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";
           } else {
+            let test = totalHours - distance;
             percentA = (
-              (totalHoursQuanTrongA / this.data.totalHoursInWeek) *
+              (totalHoursQuanTrongA / test) *
               100
             ).toFixed(0);
             percentB = (
-              (totalHoursQuanTrongB / this.data.totalHoursInWeek) *
+              (totalHoursQuanTrongB / test) *
               100
             ).toFixed(0);
             percentC = (
-              (totalHoursQuanTrongC / this.data.totalHoursInWeek) *
+              (totalHoursQuanTrongC / test) *
               100
             ).toFixed(0);
             assessmentA = percentA > 65 ? "Tốt" : "Chưa tốt";
@@ -411,15 +331,15 @@ Page({
             assessmentC = percentC >= 5 && percentC <= 10 ? "Tốt" : "Chưa tốt";
 
             percent1 = (
-              (totalHours1 / this.data.totalHoursInWeek) *
+              (totalHours1 / test) *
               100
             ).toFixed(0);
             percent2 = (
-              (totalHours2 / this.data.totalHoursInWeek) *
+              (totalHours2 / test) *
               100
             ).toFixed(0);
             percent3 = (
-              (totalHours3 / this.data.totalHoursInWeek) *
+              (totalHours3 / test) *
               100
             ).toFixed(0);
 
@@ -427,12 +347,12 @@ Page({
             assessment2 = percent2 < 30 ? "Tốt" : "Chưa tốt";
             assessment3 = percent3 >= 5 && percent3 <= 10 ? "Tốt" : "Chưa tốt";
             distance1 = (
-              (-distance / this.data.totalHoursInWeek) *
+              (-distance / test) *
               100
             ).toFixed(0);
             percentdistance =
-              this.data.totalHoursInWeek >= totalHours &&
-              ((-distance / this.data.totalHoursInWeek) * 100).toFixed(0) < 10
+            totalHours >= test &&
+                ((-distance / test) * 100).toFixed(0) < 10
                 ? "Tốt"
                 : "Chưa tốt";
           }
@@ -460,7 +380,6 @@ Page({
             totalHours,
             percentdistanceClass,
           });
-
           tt.showToast({
             title: "tải thành công !",
             icon: "success",
@@ -469,12 +388,7 @@ Page({
       },
     });
   },
-
   reloadDashboard: function () {
-    // this.data.spec.data[0].values = [];
-    this.data.spec2.data[0].values = [];
-    this.data.spec3.data[0].values = [];
-    this.data.spec4.data[0].values = [];
     this.getValueRecord();
   },
 });

@@ -90,8 +90,8 @@ const createRecord = (access_token,data) => {
     return sendRequest(url, 'POST', headers, body);
 }
 
-const updateRecord = (access_token,data) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/batch_update`;
+const updateRecord = (access_token,data,tableId) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records/batch_update`;
   const headers = {
       'Authorization': `Bearer ${access_token}`,
       'Content-Type': 'application/json'
@@ -102,8 +102,8 @@ const updateRecord = (access_token,data) => {
   return sendRequest(url, 'POST', headers, body);
 }
 
-const deleteRecord = (access_token,data) => {
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${appVar.GlobalConfig.tableId}/records/batch_delete`;
+const deleteRecord = (access_token,data,tableId) => {
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appVar.GlobalConfig.baseId}/tables/${tableId}/records/batch_delete`;
   const headers = {
       'Authorization': `Bearer ${access_token}`,
       'Content-Type': 'application/json'

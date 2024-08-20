@@ -1,27 +1,28 @@
 @import 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css';
 
 .page-task-form{
-width: 100%;
-height: 1050px;
+max-width: 700px;
+height: auto;
+margin: 0 auto;
+padding-bottom: 100px;
 }
 
 .body{
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-top:10px;
+  padding-left: 35px;
+  padding-right: 35px;  
 }
 
 .form-1 {
-  max-width: 1050px;
+  max-width: 1150px;
   height: fit-content;
   border-radius: 10px;
-  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
   margin: 0 auto;
   overflow: hidden;
-  font-size: 14px; 
+  font-size: 15px; 
   background-size: cover;
-
 }
-
 
 .main{
   padding:0 10px;
@@ -29,18 +30,17 @@ height: 1050px;
   height: 100%;
   width: 100%;
 }
+
 .header {
-  margin-bottom: 10px;
-  color: white;
-  text-align: center;
-  padding: 0.5rem 0;
-  font-size: 20px; 
-  background: #045A97 !important;
-  font-weight: bolder;
+  font-weight: 600;
+  color: black;
+  font-size: 20px;
+  color: #045A97;
+  border-bottom: 1px solid #ddd;
 }
 
 .user-info {
-  font-size: 14px;
+  font-size: 15px;
 }
 .f-icon{
   height:14px;
@@ -93,70 +93,107 @@ height: 1050px;
   padding: 5px;
 }
 
-textarea {
-  margin-top: 5px;
-  width: 99%;
-  height: 80px;
-  padding: 10px 0;
-  box-sizing: border-box;
-  border-radius: 4px;
-  resize: none;
-  border: none;
+
+.input-text1{
+  width: 100%;
+  background-color: rgb(255, 255, 255,0.8);
+  padding: 5px;
 }
 
+textarea {
+  width: 100%;
+  height: 113px;
+  padding: 10px 0;
+  /* box-sizing: border-box; */
+  border-radius: 5px;
+  resize: none;
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+}
 
 .picker-text{
-  height: 30px;
-  line-height: 30px;
-  /* padding-left: 5px; */
+  height: 40px;
+  line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 0;
   margin-bottom: 5px;
-  font-size: 13px;
+  font-size: 15px;
   width: auto;
   text-align: center;
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
-.picker-date{
-  height:30px; 
-  line-height: 30px;
+.picker-lock{
+  height: 40px;
+  line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 5px;
-  font-size: 13px;
+  border-radius: 6px;
+  padding: 0;
+  margin-bottom: 5px;z
+  font-size: 15px;
+  width: auto;
+  text-align: center;
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+
+.picker-date{
+  height:40px; 
+  line-height: 35px;
+  background-color: rgb(255, 255, 255,0.8);
+  border-radius: 6px;
+  font-size: 15px;
   min-width:auto;
   text-align: center;  
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
 .picker-time{
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 35px;
   background-color: rgb(255, 255, 255,0.8);
-  border-radius: 5px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-size: 15px;
   width: auto;
   text-align: center;
+  border: 1px solid rgb(231, 230, 230); /* Đặt màu và độ rộng của border */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
 
 .title1{
-  font-weight: bold;
-  font-size: 16px ;
-  color: #045A97 !important;
+  font-size: 15px ;
+  padding-bottom: 4px;
 }
-
+.title-loop{
+  font-size: 15px ;
+  padding-bottom: 0 !important;
+  margin-top: 7px;
+}
 
 button{
-  height: 50px !important;
+  padding: 10px 20px !important;
   font-size: 15px !important;
-  line-height: 5px !important;
   background: #045A97 !important;
-  border-radius: 5px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  outline: none !important;
 }
+
 
 .btn:hover{
   opacity: 0.8 !important;
   cursor:pointer;
-  position:relative;
+  position:relative; 
+  border: none !important;
+  outline: none !important;
+}
+
+.btn{
+  padding: none !important;
 }
 
 .note-info{
@@ -182,48 +219,72 @@ button{
   flex-direction: row ;
 }
 
+.row{
+  /* margin-top: 15px; */
+}
+
 .box-time picker { 
   flex: 1;
 }
 
-/* .btn:before,.btn:after{
-  content:'';
-  position:absolute;
-  top:0;
-  right:0;
-  height:2px;
-  width:0;
-  background: #007bff;
-  transition:500ms ease all;
+.cb-l-w{
+  height: 15px; 
+  width: 15px; 
+  transform: scale(1.3);
 }
-.btn:after{
-  right:inherit;
-  top:inherit;
-  left:0;
-  bottom:0;
+.cb-l-d{
+  margin-left: 38px;
+  height: 15px; 
+  width: 15px; 
+  transform: scale(1.3);
 }
-.btn:hover:before,.btn:hover:after{
-  width:70%;
-  transition:800ms ease all;
-} */
 .page-body-info {
   padding-bottom: 0;
   height: 260px;
 }
-.userinfo-avatar {
-  border-radius: 128rpx;
-  width: 100px;
-  height: 100px;
-}
-.userinfo-nickname {
-  font-weight: bold;
-  /* margin-top: 20rpx; */
-  font-size: 20px;
-}
 
 .notes {
   color: grey; 
-  font-size: 12px;
+  font-size: 15px;
+}
+
+.ip{
+  color: red;
+  /* font-weight: 600; */
+}
+
+.input{
+  margin-bottom: 5px !important;
+}
+
+.checkbox-loop{
+  display: flex;
+  margin-top:5px;
+  margin-left: -10px;
+}
+.name-checkbox-loop{
+  display: flex;
+  margin-top:5px;
+}
+
+.section-2{
   margin-top: 10px;
-  padding-left: 10px;
+}
+
+.customStartTime-pickerContainer {
+  display: flex;
+  justify-content: space-between; /* Đặt khoảng cách giữa các picker */
+  align-items: center;
+}
+
+.customStartTime-picker {
+  height: 40px;
+  line-height: 35px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  font-size: 15px;
+  width: 48%; /* Điều chỉnh chiều rộng để vừa trên một dòng */
+  text-align: center;
+  border: 1px solid rgb(231, 230, 230);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }
